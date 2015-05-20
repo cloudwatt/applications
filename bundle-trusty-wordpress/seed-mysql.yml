@@ -1,0 +1,28 @@
+- hosts: local
+  user: cloud
+  sudo: true
+
+  vars:
+    wp_db_name: wordpress
+    wp_db_pass: "{{ lookup('password', '/root/keystore chars=ascii_letters,digits,hexdigits,punctuation') }}"
+
+  tasks:
+    - name: wordpress configuration
+      template:
+        src=templates/wordpress.etc.conf.j2
+        dest=/etc/wordpress/config-default.php
+        owner=root
+        group=www-data
+        mode=0640
+        
+    - name: mysql database is created
+      mysql_db:
+        name=wordpress
+        state=present
+
+    - name: mysql user is created
+      mysql_user:
+        name=wordpress
+        password="{{ wp_db_pass }}"
+        priv="wordpress.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER"
+        state=present
