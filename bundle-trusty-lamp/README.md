@@ -102,6 +102,4 @@ Vous pouvez commencer à construire votre site en prenant la main sur votre serv
 * ```/var/www/cw``` : le répertoire de déploiement du mini site php d'exemple
 
 -----
-Have fun. 
-
-Hack in peace.
+Have fun. Hack in peace.

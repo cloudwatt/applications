@@ -111,7 +111,5 @@ Les chemins intéressants sur votre machine :
 - ```/etc/wordpress/config-default.php``` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
 
 
-
-Have fun. 
-
-Hack in peace.
+-----
+Have fun. Hack in peace.
