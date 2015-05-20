@@ -77,6 +77,8 @@ $ ./stack-start.sh LE_BIDULE
 
 Enfin, attendez 5 minutes que le déploiement soit complet.
 
+A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration ```/etc/wordpress/config-default.php```.
+
 ### Enjoy
 
 Une fois tout ceci fait, vous pouvez lancez le script ```stack-get-url.sh``` en passant en paramètre le nom de la stack.
