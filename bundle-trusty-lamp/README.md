@@ -99,7 +99,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 Vous pouvez commencer à construire votre site en prenant la main sur votre serveur. Les points d'entrée utiles :
 
 * ```/etc/apache2/sites-available/default-cw.conf``` : configuration Apache par défaut 
-* ```/var/www/cw``` : le site php d'exemple est déployé
+* ```/var/www/cw``` : le répertoire de déploiement du mini site php d'exemple
 
 -----
 Have fun. 
