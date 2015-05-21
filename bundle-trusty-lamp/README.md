@@ -22,11 +22,9 @@ déployés dans une instance unique.
 
 ### Les versions
 
-Apache 2.0
-
-MySQL 
-
-PHP5
+* Apache 2.0
+* MySQL 
+* PHP5
 
 ### Les pré-requis pour déployer cette stack
 
