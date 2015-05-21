@@ -1,0 +1,16 @@
+- hosts: local
+  user: cloud
+  sudo: true
+
+  vars:
+    pg_admin_pass: "{{ lookup('password', '/root/keystore chars=ascii_letters,digits,hexdigits,punctuation') }}"
+    
+  tasks:        
+    - name: create admin user
+      sudo_user: postgres
+      postgresql_user:
+        name=pgadmin
+        state=present
+        password="{{ pg_admin_pass }}"
+
+        
