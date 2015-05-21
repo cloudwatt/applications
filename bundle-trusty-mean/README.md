@@ -13,13 +13,26 @@ En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-co
 
 ## Préparatifs
 
-Les pré-requis pour déployer cette stack sont les mêmes que pour les épisodes précédents :
+### Les versions
+
+* MongoDB
+* Express
+* Angular 
+* Node.js
+
+### Les pré-requis pour déployer cette stack 
+
+Ce sont les mêmes que pour les épisodes précédents :
 
 * un accès internet
 * un shell Linux
 * un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+
+### Taille de l'instance
+
+Par défaut, le script propose un déploiement sur une instance de type "Small" en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
 ## Tour du propriétaire
 
@@ -48,6 +61,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 ### Ajuster les paramètres
 
 Dans le fichier ```bundle-trusty-mean.heat.yml``` vous trouverez en haut une section ```parameters```. Le seul paramètre obligatoire à ajuster est celui nommé ```keypair_name``` dont la valeur ```default``` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre ```flavor```.
 
 ```
 heat_template_version: 2013-05-23
