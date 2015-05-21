@@ -18,13 +18,27 @@ pas à ouvrir une issue sur Github ou à soumettre une pull-request.
 ## Episode premier : Linux-Apache-MySQL-PHP5
 
 La base de déploiement est une instance Ubuntu Trusty. Les serveurs Apache et MySQL sont
-déployés dans une instance unique. Les pré-requis pour déployer cette stack :
+déployés dans une instance unique. 
+
+### Les versions
+
+Apache 2.0
+
+MySQL 
+
+PHP5
+
+### Les pré-requis pour déployer cette stack
 
 * un accès internet
 * un shell Linux
 * un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+
+### Taille de l'instance
+
+Par défaut, le script propose un déploiement sur un instance de type "Small" en tarification à l'usage. Le prix est disponible sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt . Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
 ## Tour du propriétaire
 
@@ -33,6 +47,7 @@ Une fois le repository cloné, vous trouvez, dans le répertoire ```bundle-trust
 * ```bundle-trusty-lamp.heat.yml``` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * ```stack-start.sh``` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * ```stack-get-url.sh``` : Script de récupération de l'IP d'entrée de votre stack.
+
 
 ## Démarrage
 
@@ -53,6 +68,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 ### Ajuster les paramètres
 
 Dans le fichier ```bundle-trusty-lamp.heat.yml``` vous trouverez en haut une section ```parameters```. Le seul paramètre obligatoire à ajuster est celui nommé ```keypair_name``` dont la valeur ```default``` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre ```flavor```.
 
 ```
 heat_template_version: 2013-05-23
