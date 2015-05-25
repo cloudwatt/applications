@@ -19,7 +19,7 @@
     - name: create partition
       shell: "{{ item }}"
       with_items:
-        - /sbin/parted --script /dev/vdb -- mklabel data
+        - /sbin/parted --script /dev/vdb -- mklabel msdos
         - /sbin/parted --script /dev/vdb -- mkpart primary 0% 100%
         - /sbin/mkfs.ext4 /dev/vdb1
       when: not data_volume_ready
