@@ -42,15 +42,19 @@
         fstype=ext4
         state=mounted
 
-    - name: service down
-      service:
-        name=postgresql
-        state=stopped
-      when: partition_creation|success
+    - name: postgresql data directory
+      stat: path=/var/lib/postgresql/9.3/main
+      register: data_dir
 
     - name: postgresql data directory
       stat: path=/var/lib/postgresql/9.3/main
       register: data_dir
+
+    - name: service down
+      service:
+        name=postgresql
+        state=stopped
+      when: not data_dir.stat.islnk
 
     - name: move data
       shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
