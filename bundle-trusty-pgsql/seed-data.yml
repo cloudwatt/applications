@@ -42,12 +42,6 @@
         fstype=ext4
         state=mounted
 
-    - name: data link
-      file:
-        src=/mnt/data/pgsql_data
-        dest=/var/lib/postgresql/9.3/main
-        state=link
-
     - name: service down
       service:
         name=postgresql
@@ -57,6 +51,12 @@
     - name: move data
       shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
       when: partition_creation|success
+
+    - name: data link
+      file:
+        src=/mnt/data/pgsql_data
+        dest=/var/lib/postgresql/9.3/main
+        state=link
 
     - name: service up
       service:
