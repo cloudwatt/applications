@@ -27,16 +27,6 @@
       set_fact: data_volume_ready=true
       when: partition_creation|success
 
-    - name: service down
-      service:
-        name=postgresql
-        state=stopped
-      when: partition_creation|success
-
-    - name: move data
-      shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
-      when: partition_creation|success
-
     - name: data link
       file:
         src=/mnt/data/pgsql_data
@@ -57,4 +47,21 @@
         src=/dev/vdb1
         fstype=ext4
         state=mounted
+
+    - name: service down
+      service:
+        name=postgresql
+        state=stopped
+      when: partition_creation|success
+
+    - name: move data
+      shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
+      when: partition_creation|success
+
+    - name: service up
+      service:
+        name=postgresql
+        state=started
+        enabled=yes
+
       
