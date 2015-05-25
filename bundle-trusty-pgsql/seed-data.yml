@@ -14,7 +14,7 @@
       register: data_partition
 
     - name: setting fact
-      set_fact: data_volume_ready="{{ vol_link.stat.exists and (not data_partition.stat.exists) }}"
+      set_fact: data_volume_ready="{{ vol_link.stat.exists and data_partition.stat.exists }}"
         
     - name: create partition
       command: "{{ item }}"
@@ -23,6 +23,11 @@
         - /sbin/parted --script /dev/vdb -- mkpart primary 0% 100%
         - /sbin/mkfs.ext4 /dev/vdb1
       when: not data_volume_ready
+      register: partition_creation
+
+    - name: setting fact
+      set_fact: data_volume_ready=true
+      when: partition_creation|success
 
     - name: mountpoint ready
       file:
