@@ -48,9 +48,13 @@
         state=stopped
       when: partition_creation|success
 
+    - name: postgresql data directory
+      stat: path=/var/lib/postgresql/9.3/main
+      register: data_dir
+
     - name: move data
       shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
-      when: partition_creation|success
+      when: not data_dir.stat.islnk
 
     - name: data link
       file:
