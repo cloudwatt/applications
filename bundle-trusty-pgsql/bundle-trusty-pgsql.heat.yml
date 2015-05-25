@@ -86,6 +86,7 @@ resources:
         echo "[local]" >> /etc/ansible/hosts
         echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
         cd /root && git clone https://github.com/cloudwatt/applications.git cw-app
+        ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-data.yml
         ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-pgsql.yml
         rm -rf /root/cw-app
         
