@@ -4,13 +4,11 @@
     
   tasks:
     - name: volume is linked
-      stat:
-        path=/dev/vdb
+      stat: path=/dev/vdb
       register: vol_link
 
     - name: data partition is ready
-      stat:
-        path=/dev/vdb1
+      stat: path=/dev/vdb1
       register: data_partition
 
     - name: setting fact
@@ -28,6 +26,22 @@
     - name: setting fact
       set_fact: data_volume_ready=true
       when: partition_creation|success
+
+    - name: service down
+      service:
+        name=postgresql
+        state=stopped
+      when: partition_creation|success
+
+    - name: move data
+      shell: mv /var/lib/postgresql/9.3/main /mnt/data/pgsql_data
+      when: partition_creation|success
+
+    - name: data link
+      file:
+        src=/mnt/data/pgsql_data
+        dest=/var/lib/postgresql/9.3/main
+        state=link
 
     - name: mountpoint ready
       file:
