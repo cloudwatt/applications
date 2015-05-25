@@ -1,0 +1,13 @@
+- hosts: local
+  user: cloud
+  sudo: true
+    
+  tasks:
+    - name: Data is volume mounted
+      mount:
+        name=/mnt/data
+        src=/dev/vdb1
+        fstype=ext4
+        state=present
+      register: mnt_res
+      ignore_errors: True

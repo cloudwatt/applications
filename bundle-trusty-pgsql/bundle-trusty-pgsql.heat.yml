@@ -54,6 +54,21 @@ resources:
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
+      
+  volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: 10
+      volume_type: standard
+      metadata:
+        fs_type: ext4
+      
+  volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource : server }
+      volume_id: { get_resource : volume }
+
   server:
     type: OS::Nova::Server
     properties:
