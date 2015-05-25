@@ -27,12 +27,6 @@
       set_fact: data_volume_ready=true
       when: partition_creation|success
 
-    - name: data link
-      file:
-        src=/mnt/data/pgsql_data
-        dest=/var/lib/postgresql/9.3/main
-        state=link
-
     - name: mountpoint ready
       file:
         path=/mnt/data
@@ -47,6 +41,12 @@
         src=/dev/vdb1
         fstype=ext4
         state=mounted
+
+    - name: data link
+      file:
+        src=/mnt/data/pgsql_data
+        dest=/var/lib/postgresql/9.3/main
+        state=link
 
     - name: service down
       service:
