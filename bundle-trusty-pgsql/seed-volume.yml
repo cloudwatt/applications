@@ -3,11 +3,40 @@
   sudo: true
     
   tasks:
-    - name: Data is volume mounted
+    - name: volume is linked
+      stat:
+        path=/dev/vdb
+      register: vol_link
+
+    - name: data partition is ready
+      stat:
+        path=/dev/vdb1
+      register: data_partition
+
+    - name: setting fact
+      set_fact:
+        - data_volume_ready="{{ vol_link.stat.exists and (not data_partition.stat.exists) }}"
+        
+    - name: create partition
+      command: "{{ item }}"
+      with_items:
+        - /sbin/parted --script /dev/vdb -- mklabel data
+        - /sbin/parted --script /dev/vdb -- mkpart primary 0% 100%
+        - /sbin/mkfs.ext4 /dev/vdb1
+      when: not data_volume_ready
+
+    - name: mountpoint ready
+      file:
+        path=/mnt/data
+        state=directory
+        owner=root
+        group=root
+        mode=0755
+        
+    - name: data is volume mounted
       mount:
         name=/mnt/data
         src=/dev/vdb1
         fstype=ext4
-        state=present
-      register: mnt_res
-      ignore_errors: True
+        state=mounted
+      
