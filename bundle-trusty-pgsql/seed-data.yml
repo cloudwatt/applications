@@ -14,8 +14,7 @@
       register: data_partition
 
     - name: setting fact
-      set_fact:
-        - data_volume_ready="{{ vol_link.stat.exists and (not data_partition.stat.exists) }}"
+      set_fact: data_volume_ready="{{ vol_link.stat.exists and (not data_partition.stat.exists) }}"
         
     - name: create partition
       command: "{{ item }}"
