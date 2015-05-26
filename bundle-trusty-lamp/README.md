@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode premier : LAMP
+# 5 Minutes Stacks, épisode premier : LAMP #
 
 Bienvenue à l'inauguration de la série des 5 Minutes Stacks !
 
