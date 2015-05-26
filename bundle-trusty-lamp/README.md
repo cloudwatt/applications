@@ -55,11 +55,11 @@ Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cl
 
 Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
 
-```
+~~~ bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-```
+~~~
 
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
