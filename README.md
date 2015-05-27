@@ -10,6 +10,13 @@ L’adoption du modèle cloud dépend de la capacité des entreprises à démarr
 C’est sur ce dernier point que Cloudwatt poursuit ses efforts et lance aujourd’hui ses premières stacks applicatives pour déployer facilement un site web: Wordpress et LAMP (Linux, Apache, MySQL et PHP).
 
 Cette première en appellera d’autres. A un rythme régulier, Cloudwatt publiera de façon conjointe sur son blog technique et sur son github, des stacks applicatives et leurs guides de déploiement pas à pas. 
+
+La procédure prend quelques minutes à préparer et 5 minutes à déployer.
+Une fois la pile applicative déployée, vous êtes maître dessus et vous pouvez commencer à l'exploiter immédiatement.
+
+
 Fidèle à son choix initial de l’opensource, la bibliothèque Cloudwatt s’enrichira dans les prochaines semaines de stacks de déploiement d’applications 100% opensource dont nous partagerons les sources en mode communautaire.
+
+Si vous avez des questions, remarques, idées d'améliorations n'hésitez pas à ouvrir une issue sur Github ou à soumettre une pull-request.
 
 Stay tuned pour les prochains épisodes !
