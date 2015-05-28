@@ -43,7 +43,7 @@ Par défaut, le script propose un déploiement sur une instance de type "Small" 
 
 Une fois le repository cloné, vous trouvez, dans le répertoire ```bundle-trusty-lamp/```:
 
-* ~~~ yaml bundle-trusty-lamp.heat.yml ~~~ : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* ~~~bundle-trusty-lamp.heat.yml ~~~ : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * ```stack-start.sh``` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * ```stack-get-url.sh``` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -69,7 +69,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 Dans le fichier ```bundle-trusty-lamp.heat.yml``` vous trouverez en haut une section ```parameters```. Le seul paramètre obligatoire à ajuster est celui nommé ```keypair_name``` dont la valeur ```default``` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre ```flavor```.
 
-```
+~~~ bash
 heat_template_version: 2013-05-23
 
 
@@ -83,7 +83,7 @@ parameters:
     type: string
 
 [...]
-```
+~~~
 
 ### Démarrer la stack
 
