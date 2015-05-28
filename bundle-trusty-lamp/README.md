@@ -22,9 +22,10 @@ déployés dans une instance unique.
 
 ### Les versions
 
+* Ubuntu 14.04
 * Apache 2.0
 * MySQL 
-* PHP5
+* PHP 5
 
 ### Les pré-requis pour déployer cette stack
 
@@ -42,7 +43,7 @@ Par défaut, le script propose un déploiement sur une instance de type "Small" 
 
 Une fois le repository cloné, vous trouvez, dans le répertoire ```bundle-trusty-lamp/```:
 
-* ```bundle-trusty-lamp.heat.yml``` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* ~~~ yaml bundle-trusty-lamp.heat.yml ~~~ : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * ```stack-start.sh``` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * ```stack-get-url.sh``` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -88,9 +89,9 @@ parameters:
 
 Dans un shell, lancer le script ```stack-start.sh``` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
-```
+~~~
 ./stack-start.sh LE_BIDULE
-```
+~~~
 
 Enfin, attendez 5 minutes que le déploiement soit complet.
 
