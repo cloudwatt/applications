@@ -24,15 +24,15 @@ Wordpress
 
 ### La taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type "Small" en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
+Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire ```bundle-trusty-wordpress/``` :
+Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-wordpress/` :
 
-* ```bundle-trusty-wordpress.heat.yml``` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* ```stack-start.sh``` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* ```stack-get-url.sh``` : Script de récupération de l'IP d'entrée de votre stack.
+* `bundle-trusty-wordpress.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
+* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
 ## Démarrage
 
@@ -42,20 +42,20 @@ Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cl
 
 Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
 
-```
+~~~ bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-```
+~~~ 
 
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 ### Ajuster les paramètres
 
-Dans le fichier ```bundle-trusty-wordpress.heat.yml``` vous trouverez en haut une section ```parameters```. Le seul paramètre obligatoire à ajuster est celui nommé ```keypair_name``` dont la valeur ```default``` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre ```flavor```.
+Dans le fichier `bundle-trusty-wordpress.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
-```
+~~~ bash
 heat_template_version: 2013-05-23
 
 
@@ -69,39 +69,39 @@ parameters:
     type: string
 
 [...]
-```
+~~~ 
 
 ### Démarrer la stack
 
-Dans un shell, lancer le script ```stack-start.sh``` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
-```
+~~~ bash
 $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
 | ed4ac18a-4415-467e-928c-1bef193e4f38 | LE_BIDULE  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
-```
+~~~ 
 
 Enfin, attendez 5 minutes que le déploiement soit complet.
 
-A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration ```/etc/wordpress/config-default.php```.
+A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration `/etc/wordpress/config-default.php`.
 
 ### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script ```stack-get-url.sh``` en passant en paramètre le nom de la stack.
+Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
 
-```
+~~~ bash
 ./stack-get-url.sh LE_BIDULE
 LE_BIDULE 82.40.34.249
-```
+~~~ 
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
 
 ## Dans les coulisses
 
-Le script ```start-stack.sh``` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * démarrer une instance basée sur Ubuntu Trusty Tahr
 * faire une mise à jour de tous les paquets système
@@ -113,13 +113,13 @@ Le script ```start-stack.sh``` s'occupe de lancer les appels nécessaires sur le
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
 
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur ```cloud``` par défaut).
+Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
 Les chemins intéressants sur votre machine :
 
-- ```/usr/share/wordpress``` : Répertoire d'installation de WordPress.
-- ```/var/lib/wordpress/wp-content``` : Répertoire de données spécifiques à votre instance Wordpress (thèmes, médias, ...).
-- ```/etc/wordpress/config-default.php``` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
+- `/usr/share/wordpress` : Répertoire d'installation de WordPress.
+- `/var/lib/wordpress/wp-content` : Répertoire de données spécifiques à votre instance Wordpress (thèmes, médias, ...).
+- `/etc/wordpress/config-default.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
 
 
 -----
