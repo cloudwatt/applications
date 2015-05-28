@@ -43,9 +43,9 @@ Par défaut, le script propose un déploiement sur une instance de type "Small" 
 
 Une fois le repository cloné, vous trouvez, dans le répertoire ```bundle-trusty-lamp/```:
 
-* ~~~bundle-trusty-lamp.heat.yml~~~ : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* ~~~stack-start.sh~~~ : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* ~~~stack-get-url.sh~~~ : Script de récupération de l'IP d'entrée de votre stack.
+* ~~~ bundle-trusty-lamp.heat.yml ~~~ : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* ~~~ stack-start.sh ~~~ : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
+* ~~~ stack-get-url.sh ~~~ : Script de récupération de l'IP d'entrée de votre stack.
 
 
 ## Démarrage
@@ -87,7 +87,7 @@ parameters:
 
 ### Démarrer la stack
 
-Dans un shell, lancer le script ```stack-start.sh``` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell, lancer le script ~~~ stack-start.sh ~~~ en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~
 ./stack-start.sh LE_BIDULE
