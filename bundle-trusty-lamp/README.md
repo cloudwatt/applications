@@ -22,7 +22,7 @@ déployés dans une instance unique.
 
 ### Les versions
 
-* Ubuntu 14.04
+* Ubuntu 14.04.2
 * Apache 2.4.7
 * MySQL 5.5.43
 * PHP 5.5.9

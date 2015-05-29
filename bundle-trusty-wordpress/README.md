@@ -10,9 +10,13 @@ La base de déploiement est une instance unique Ubuntu Trusty pré-provisionnée
 
 ## Préparatifs
 
-### La version
+### Les versions
 
-Wordpress 3.8.2
+* Ubuntu 14.04.2
+* Apache 2.4.7
+* Wordpress 3.8.2
+* MySQL 5.5.43
+* PHP 5.5.9
 
 ### Les pré-requis pour déployer cette stack
 
@@ -55,7 +59,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 Dans le fichier `bundle-trusty-wordpress.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
-~~~ bash
+~~~ yaml
 heat_template_version: 2013-05-23
 
 
@@ -68,6 +72,20 @@ parameters:
     description: Keypair to inject in instances
     type: string
 
+  flavor_name:
+      default: s1.cw.small-1              <-- Mettez ici l'identifiant de votre flavor
+      description: Flavor to use for the deployed instance
+      type: string
+      constraints:
+        - allowed_values:
+            - s1.cw.small-1
+            - n1.cw.standard-1
+            - n1.cw.standard-2
+            - n1.cw.standard-4
+            - n1.cw.standard-8
+            - n1.cw.standard-12
+            - n1.cw.standard-16
+            
 [...]
 ~~~ 
 

@@ -10,6 +10,21 @@ parameters:
     description: Keypair to inject in instances
     type: string
 
+  flavor_name:
+      default: s1.cw.small-1
+      description: Flavor to use for the deployed instance
+      type: string
+      constraints:
+        - allowed_values:
+            - s1.cw.small-1
+            - n1.cw.standard-1
+            - n1.cw.standard-2
+            - n1.cw.standard-4
+            - n1.cw.standard-8
+            - n1.cw.standard-12
+            - n1.cw.standard-16
+
+
 resources:
   network:
     type: OS::Neutron::Net
@@ -44,8 +59,8 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 21acf78c-1d6b-450f-9e26-ce109fde62c8
-      flavor: s1.cw.small-1
+      image: 233b7582-aaf7-45bf-8b83-c608625f64ef
+      flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
       security_groups:
