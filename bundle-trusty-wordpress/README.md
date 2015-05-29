@@ -12,7 +12,7 @@ La base de déploiement est une instance unique Ubuntu Trusty pré-provisionnée
 
 ### La version
 
-Wordpress
+Wordpress 3.8.2
 
 ### Les pré-requis pour déployer cette stack
 
