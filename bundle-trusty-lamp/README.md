@@ -23,9 +23,9 @@ déployés dans une instance unique.
 ### Les versions
 
 * Ubuntu 14.04
-* Apache 2.0
-* MySQL 
-* PHP 5
+* Apache 2.4.7
+* MySQL 5.5.43
+* PHP 5.5.9
 
 ### Les pré-requis pour déployer cette stack
 

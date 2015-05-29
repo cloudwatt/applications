@@ -7,8 +7,22 @@ description: All-in-one LAMP stack
 parameters:
   keypair_name:
     default: amaury-ext-compute
-    description: Keypair to inject in instances
+    description: Keypair to inject in instance
     type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+          - s1.cw.small-1
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
 
 resources:
   network:
@@ -44,8 +58,8 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 814054f8-73c9-4aca-840b-5e8e8985868e
-      flavor: s1.cw.small-1
+      image: 0d5af124-9937-4c97-9627-d8c5f13c2935
+      flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
       security_groups:
