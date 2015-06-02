@@ -58,7 +58,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 0d5af124-9937-4c97-9627-d8c5f13c2935
+      image: c3bf8565-e374-49e7-9693-f7e80999d2cb
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
