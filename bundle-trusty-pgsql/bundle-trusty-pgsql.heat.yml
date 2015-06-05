@@ -10,7 +10,7 @@ parameters:
     description: Keypair to inject in instances
     type: string
 
-  size:
+  flavor_name:
     default: s1.cw.small-1
     description: VM flavor
     type: string
@@ -54,7 +54,6 @@ resources:
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
-      
   volume:
     type: OS::Cinder::Volume
     properties:
@@ -67,14 +66,15 @@ resources:
     type: OS::Cinder::VolumeAttachment
     properties:
       instance_uuid: { get_resource : server }
+      mountpoint: /dev/vdb
       volume_id: { get_resource : volume }
-
+      
   server:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: af36bf42-894a-42c9-920c-1bab5d643d2e
-      flavor: { get_param: size }
+      image: 81b968f1-7da1-4fd8-befd-302555a1eb9a
+      flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
       security_groups:
@@ -86,7 +86,6 @@ resources:
         echo "[local]" >> /etc/ansible/hosts
         echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
         cd /root && git clone https://github.com/cloudwatt/applications.git cw-app
-        ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-data.yml
         ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-pgsql.yml
         rm -rf /root/cw-app
         
