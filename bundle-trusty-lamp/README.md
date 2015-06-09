@@ -41,7 +41,7 @@ Par défaut, le script propose un déploiement sur une instance de type " Small 
 
 ### Au fait...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur ce lien 
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
 
 ## Tour du propriétaire
 
@@ -121,6 +121,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 ### Enjoy
 
 Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va récupérer l'url d'entrée de votre stack.
+
+<a name="console" />
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
