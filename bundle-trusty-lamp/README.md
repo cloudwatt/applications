@@ -39,6 +39,10 @@ déployés dans une instance unique.
 
 Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
+### Au fait...
+
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur ce lien 
+
 ## Tour du propriétaire
 
 Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
@@ -117,6 +121,23 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 ### Enjoy
 
 Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va récupérer l'url d'entrée de votre stack.
+
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
+1.	Allez sur le Github Cloudwatt dans le répertoire de l’application choisie
+2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin) 
+5.	Connectez-vous avec votre compte sur la console
+6.	Cliquez sur « Stacks » dans le menu de gauche
+7.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+8.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+9.	Entrez votre keypair dans le champ « keypair_name »
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement. Vous pouvez voir la progression de la création en cliquant sur son nom. Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur. 
+C’est (déjà) FINI !
 
 
 ## So watt ?
