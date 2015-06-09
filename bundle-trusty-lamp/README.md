@@ -125,6 +125,7 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
+
 1.	Allez sur le Github Cloudwatt dans le répertoire de l’application choisie
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
