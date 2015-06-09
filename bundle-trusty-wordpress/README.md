@@ -8,6 +8,16 @@ Aujourd'hui nous mettons à votre disposition de quoi démarrer votre instance W
 
 La base de déploiement est une instance unique Ubuntu Trusty pré-provisionnée avec les serveurs Apache et MySQL.
 
+## Nota Bene pour les plus pressés
+
+Une image "Application Ubuntu 14.04.2 WORDPRESS" est disponible dans le catalogue des images publiques de la
+console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MySQL et n'est donc pas 
+fonctionnelle en mode "Lancer une instance". 
+
+Cette image est destinée à servir de base de déploiement au template Heat que nous allons détailler dans cet article.
+Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création 
+d'utilisateur, création de la base MySQL pour Wordpress et configuration finale de Wordpress pour les accès à MySQL.
+
 ## Préparatifs
 
 ### Les versions
