@@ -137,7 +137,7 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur Wordpress :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-wordpress
 2.	Cliquez sur le fichier nommé bundle-trusty-wordpress.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
