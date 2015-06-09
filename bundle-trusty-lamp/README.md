@@ -126,18 +126,19 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va 
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire de l’application choisie
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin) 
-5.	Connectez-vous avec votre compte sur la console
+5.	Connectez-vous avec votre compte sur la [console] (https://console.cloudwatt.com/project/access_and_security/api_access/openrc/)
 6.	Cliquez sur « Stacks » dans le menu de gauche
 7.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 8.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 9.	Entrez votre keypair dans le champ « keypair_name »
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement. Vous pouvez voir la progression de la création en cliquant sur son nom. Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur. 
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+
 C’est (déjà) FINI !
 
 
