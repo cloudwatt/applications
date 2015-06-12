@@ -27,6 +27,9 @@ relationnelles bien connu : PostgreSQL. En suivant ce tutoriel, vous obtiendrez 
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
+### Au fait...
+
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
  
 ## Tour du propriétaire
 
@@ -139,6 +142,26 @@ Le contenu de ce fichier contient votre mot de passe unique pour le super-utilis
 A partir de là, avec votre navigateur préféré, rendez-vous sur `http://localhost:8080/phppgadmin` et 
 connectez vous avec l'utilisateur `pgadmin` et le mot de passe que vous venez de récupérer. 
 Vous êtes maintenant en autonomie sur la gestion de la base.
+
+<a name="console" />
+
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur de base de données relationnelles PostgreSQL :
+
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-mean
+2.	Cliquez sur le fichier nommé bundle-trusty-pgsql.heat.yml
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+
+C’est (déjà) FINI !
 
 ## So watt ?
 
