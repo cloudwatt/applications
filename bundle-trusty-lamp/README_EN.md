@@ -31,9 +31,9 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL are depl
 * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
-### Taille de l'instance
+### Size of the instance
 
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
+Per default, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
 ### By the way...
 
@@ -43,7 +43,7 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
 
-* `bundle-trusty-lamp.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* `bundle-trusty-lamp.heat.yml` : HEAT orchestration template, qui va servir à déployer l'infrastructure nécessaire.
 * `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -52,7 +52,7 @@ Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-
 
 ### Initialiser l'environnement
 
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Munissez-vous de vos identifiants Cloudwatt, et click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
 Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
 
@@ -64,7 +64,7 @@ Please enter your OpenStack Password:
 
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
-### Ajuster les paramètres
+### Adjust the parameters
 
 Dans le fichier `bundle-trusty-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
@@ -78,12 +78,12 @@ description: Basic all-in-one LAMP stack
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute         <-- Mettez ici le nom de votre paire de clés
+    default: amaury-ext-compute         <-- Indicate here your keypair
     description: Keypair to inject in instances
     type: string
 
   flavor_name:
-    default: s1.cw.small-1              <-- Mettez ici l'identifiant de votre flavor
+    default: s1.cw.small-1              <-- indicate here the flavor size
     description: Flavor to use for the deployed instance
     type: string
     constraints:
