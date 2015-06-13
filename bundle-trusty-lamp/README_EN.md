@@ -14,23 +14,22 @@ If you have questions, remarks, enhancement requests, do not hesitate to open an
 
 ## Episode premier : Linux-Apache-MySQL-PHP5
 
-La base de déploiement est une instance Ubuntu Trusty. Les serveurs Apache et MySQL sont
-déployés dans une instance unique. 
+The deployement base is an Ubuntu trusty instance. The Apache and MySQL are deployed on a single instance.
 
-### Les versions
+### The versions
 
 * Ubuntu 14.04.2
 * Apache 2.4.7
 * MySQL 5.5.43
 * PHP 5.5.9
 
-### Les pré-requis pour déployer cette stack
+### The prerequisites to deploy this stack
 
-* un accès internet
-* un shell Linux
-* un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
-* les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+* an internet acces
+* a Linux shell
+* a [Cloudwatt account](https://www.cloudwatt.com/authentification), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
 
