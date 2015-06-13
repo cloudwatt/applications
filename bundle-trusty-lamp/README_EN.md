@@ -1,23 +1,16 @@
 # 5 minutes stacks episode one : LAMP #
 
-Bienvenue à l'inauguration de la série des 5 Minutes Stacks !
-Welcome to the xxx of the 5 minutes stacks series !
+Welcome to the inauguration of the 5 Minutes Stacks series !
 
 ## The concept
-
-Régulièrement, Cloudwatt publiera, de façon conjointe sur ce blog et
-sur son github, des stacks applicatives avec un guide de déploiement.
-Le but est de vous facilitez la vie pour démarrer des projets. La
-procédure prend quelques minutes à préparer et 5 minutes à déployer.
 
 Regularly, Cloudwatt will publish, on his technical blog and his github, applicative stacks with their deployement guide. 
 The goal is to facilitate your while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
 
-Une fois la pile applicative déployée, vous êtes maître dessus et vous
-pouvez commencer à l'exploiter immédiatement.
+Once the stack is deployed, you become its master and you can immediately to play with 
+it.
 
-Si vous avez des questions, remarques, idées d'améliorations n'hésitez
-pas à ouvrir une issue sur Github ou à soumettre une pull-request.
+If you have questions, remarks, enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
 
 ## Episode premier : Linux-Apache-MySQL-PHP5
 
