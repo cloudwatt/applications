@@ -7,7 +7,7 @@ Welcome to the inauguration of the 5 Minutes Stacks series !
 Regularly, Cloudwatt will publish, on his technical blog and his github, applicative stacks with their deployement guide. 
 The goal is to facilitate your while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
 
-Once the stack is deployed, you become its master and you can immediately to play with 
+Once the stack is deployed, you become its master and you can immediately play with 
 it.
 
 If you have questions, remarks, enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
@@ -35,9 +35,9 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL are depl
 
 Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
-### Au fait...
+### By the way...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
+If you do not like command lines, you can go directly to the "run it thru the console" section by cliking [here](#console) 
 
 ## Tour du propriétaire
 
