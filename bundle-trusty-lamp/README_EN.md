@@ -1,4 +1,4 @@
-# 5 minutes stacks episode one : LAMP #
+# nDRAFT english version - 5 minutes stacks episode one : LAMP #
 
 Welcome to the inauguration of the 5 Minutes Stacks series !
 
@@ -116,13 +116,13 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 ### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va récupérer l'url d'entrée de votre stack.
+Once all of this done, you can run the `stack-get-url.sh` script qui va récupérer l'url d'entrée de votre stack.
 
 <a name="console" />
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! Using the console, you can deply a LAMP server :
+Et bien si ! Using the console, you can deploy a LAMP server :
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
@@ -153,12 +153,3 @@ Vous pouvez commencer à construire votre site en prenant la main sur votre serv
 
 -----
 Have fun. Hack in peace.
-
-
-
-
-
-
-
-
-
