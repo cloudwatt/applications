@@ -99,15 +99,15 @@ parameters:
 [...]
 ~~~
 
-### Démarrer la stack
+### Start up the stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+In a shell, run the script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~
 ./stack-start.sh MA_LAMPE
 ~~~
 
-Enfin, attendez 5 minutes que le déploiement soit complet.
+Last, wait 5 minutes until the deployement been completed.
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
@@ -120,9 +120,9 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va 
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
+Et bien si ! Using the console, you can deply a LAMP server :
 
 1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
