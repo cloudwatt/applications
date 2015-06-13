@@ -1,4 +1,4 @@
-# nDRAFT english version - 5 minutes stacks episode one : LAMP #
+# DRAFT english version - 5 minutes stacks episode one : LAMP #
 
 Welcome to the inauguration of the 5 Minutes Stacks series !
 
