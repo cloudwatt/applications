@@ -124,9 +124,9 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va 
 
 Et bien si ! Using the console, you can deply a LAMP server :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
+3.	Clic on RAW, a web page appear with the script detail
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
@@ -142,7 +142,7 @@ C’est (déjà) FINI !
 ## So watt ?
 
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+This tutorial a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
