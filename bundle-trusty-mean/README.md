@@ -15,10 +15,10 @@ En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-co
 
 ### Les versions
 
-* MongoDB
-* Express
-* Angular 
-* Node.js
+* MongoDB 2.4.9
+* Express 4.10.8
+* Angular 1.2.28
+* Node.js 0.10.25
 
 ### Les pré-requis pour déployer cette stack 
 
