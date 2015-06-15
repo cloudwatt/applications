@@ -45,23 +45,22 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
+## What will you find in the repository
 
+Once you have cloned the github, you will find in the  `bundle-trusty-wordpress/` repository:
 
-## Tour du propriétaire
+* `bundle-trusty-wordpress.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
+* `stack-get-url.sh` : Flotting IP recovery script.
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-wordpress/` :
+## Start-up
 
-* `bundle-trusty-wordpress.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
+### Initialize the environment
 
-## Démarrage
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-### Initialiser l'environnement
-
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis vous le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
-
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
+Source the downloaded file in your shell. Your password will be requested. 
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -69,12 +68,11 @@ Please enter your OpenStack Password:
 
 ~~~ 
 
-Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
-### Ajuster les paramètres
+### Adjust the parameters
 
-Dans le fichier `bundle-trusty-wordpress.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+With the `bundle-trusty-wordpress.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -85,12 +83,12 @@ description: All-in-one Wordpress stack
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute         <-- Mettez ici le nom de votre paire de clés
+    default: amaury-ext-compute         <-- Indicate here your keypair
     description: Keypair to inject in instances
     type: string
 
   flavor_name:
-      default: s1.cw.small-1              <-- Mettez ici l'identifiant de votre flavor
+      default: s1.cw.small-1              <-- Indicate here the flavor size
       description: Flavor to use for the deployed instance
       type: string
       constraints:
@@ -106,9 +104,9 @@ parameters:
 [...]
 ~~~ 
 
-### Démarrer la stack
+### Start up the stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~ bash
 $ ./stack-start.sh LE_BIDULE
@@ -119,7 +117,7 @@ $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~ 
 
-Enfin, attendez 5 minutes que le déploiement soit complet.
+Last, wait 5 minutes until the deployement been completed.
 
 A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration `/etc/wordpress/config-default.php`.
 
