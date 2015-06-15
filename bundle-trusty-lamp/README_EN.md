@@ -4,14 +4,13 @@ Welcome to the inauguration of the 5 Minutes Stacks series !
 
 ## The concept
 
-Regularly, Cloudwatt will publish on his technical blog and his github, applicative stacks with their associated deployement guide. 
-The goal is to facilitate your life while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
+Regularly, Cloudwatt will publish on his technical blog and his github, applicative stacks with their associated deployement guide. Its goal is to facilitate your life while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
 
 Once the stack is deployed, you become its master and you can immediately play with it.
 
 If you have any questions, remarks or enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
 
-## Episode premier : Linux-Apache-MySQL-PHP5
+## Episode One : Linux-Apache-MySQL-PHP5
 
 The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
@@ -62,11 +61,12 @@ Please enter your OpenStack Password:
 
 ~~~
 
-Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
 ### Adjust the parameters
 
-Dans le fichier `bundle-trusty-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain 
+dont la valeur  doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
