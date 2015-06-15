@@ -35,9 +35,9 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 ### By the way...
 
-If you do not like command lines, you can go directly to the "run it thru the console" section by cliking [here](#console) 
+If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
-## Tour du propriétaire
+## What will you find in the repository
 
 Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository :
 
@@ -53,7 +53,7 @@ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repo
 Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
 If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-Sourcez le fichier téléchargé dans votre shell. Your password will be requested. 
+Source the downloaded file in your shell. Your password will be requested. 
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -99,7 +99,7 @@ parameters:
 
 ### Start up the stack
 
-In a shell, run the script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+In a shell, run the script `stack-start.sh` with the name you want to give it as parameter :
 
 ~~~
 ./stack-start.sh MA_LAMPE
@@ -114,7 +114,7 @@ The `start-stack.sh` script is taking care of running the API necessary requests
 
 ### Enjoy
 
-Once all of this done, you can run the `stack-get-url.sh` script qui va récupérer l'url d'entrée de votre stack.
+Once all of this done, you can run the `stack-get-url.sh` script. It will gather the entry url of your stack.
 
 <a name="console" />
 
@@ -124,15 +124,15 @@ Yes ! Using the console, you can deploy a LAMP server :
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
 2.	Click on the file nammed bundle-trusty-lamp.heat.yml
-3.	Click on RAW, a web page appear with the script detail
+3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
 6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
-7.	Named your stack in the  « Stack name » field
+7.	Named your stack in the « Stack name » field
 8.	Enter your keypair in the « keypair_name » field
 9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" Menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
 It is (already) FINISH !
 
