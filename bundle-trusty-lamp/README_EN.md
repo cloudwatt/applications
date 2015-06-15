@@ -144,8 +144,8 @@ You have a SSH access point on your virtual machine thru the flotting IP and you
 
 You can start building your internet website on your virtual instance. Its entry access points are:
 
-* `/etc/apache2/sites-available/default-cw.conf` :  default Apache configuration 
-* `/var/www/cw` : the deployement repository of the little php website exemple
+* `/etc/apache2/sites-available/default-cw.conf`:  default Apache configuration 
+* `/var/www/cw`: the deployement repository of the little php website exemple
 
 -----
 Have fun. Hack in peace.
