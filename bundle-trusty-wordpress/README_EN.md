@@ -9,15 +9,12 @@ Today, Cloudwatt provides the necessary toolset to start your Wordpress instance
 
 The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
-## Nota Bene pour les plus pressés
+## Nota Bene for the impatient
 
-Une image "Application Ubuntu 14.04.2 WORDPRESS" est disponible dans le catalogue des images publiques de la
-console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MySQL et n'est donc pas 
-fonctionnelle en mode "Lancer une instance". 
+An image named "Stack Orchestration Heat Ubuntu 14.04.2 WORDPRESS" is available in the public image catalogue of the Cloudwatt console. For security reasons, this image does not include the initialisation of the MySQL database and therefore is not working when spawning directly the image thru the "Launch instance" button.
 
-Cette image est destinée à servir de base de déploiement au template Heat que nous allons détailler dans cet article.
-Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création 
-d'utilisateur, création de la base MySQL pour Wordpress et configuration finale de Wordpress pour les accès à MySQL.
+This image has to be launched thru the Orchestration Stack menu with the Heat template that we are detailling in this article. The heat template includes the mandatory steps required after the launch to generated the passsword, the creation of the user, the creation of the MySQL database for Wordpress and the final configuration of Wordpress for the MySQL accesses.
+
 
 ## Preparations
 
