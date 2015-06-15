@@ -5,7 +5,7 @@
 
 For this third episode, lets focus on the MEAN stack :
 
-* MongoDB : Le désormais célèbre moteur NoSQL orienté document
+* MongoDB : The famous NoSQL motor document oriented
 * Express.js : The web framework for Node.js
 * Angular.js : Front-web applications framework 
 * Node.js : The Javascript application server
