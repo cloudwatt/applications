@@ -123,18 +123,18 @@ Once all of this done, you can run the `stack-get-url.sh` script qui va récupé
 Yes ! Using the console, you can deploy a LAMP server :
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Clic on the file nammed bundle-trusty-lamp.heat.yml
-3.	Clic on RAW, a web page appear with the script detail
+2.	Click on the file nammed bundle-trusty-lamp.heat.yml
+3.	Click on RAW, a web page appear with the script detail
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
-6.	Clic on « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the  « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" Menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
-C’est (déjà) FINI !
+It is (already) FINISH !
 
 
 ## So watt ?
