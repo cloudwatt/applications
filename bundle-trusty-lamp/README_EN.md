@@ -139,15 +139,13 @@ It is (already) FINISH !
 
 ## So watt ?
 
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-This tutorial a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+You can start building your internet website on your virtual instance. Its entry access points are :
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
-
-Vous pouvez commencer à construire votre site en prenant la main sur votre serveur. Les points d'entrée utiles :
-
-* `/etc/apache2/sites-available/default-cw.conf` : configuration Apache par défaut 
-* `/var/www/cw` : le répertoire de déploiement du mini site php d'exemple
+* `/etc/apache2/sites-available/default-cw.conf` :  default Apache configuration 
+* `/var/www/cw` : the deployement repository of the little php website exemple
 
 -----
 Have fun. Hack in peace.
