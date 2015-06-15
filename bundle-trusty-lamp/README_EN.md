@@ -4,17 +4,16 @@ Welcome to the inauguration of the 5 Minutes Stacks series !
 
 ## The concept
 
-Regularly, Cloudwatt will publish, on his technical blog and his github, applicative stacks with their deployement guide. 
-The goal is to facilitate your while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
+Regularly, Cloudwatt will publish on his technical blog and his github, applicative stacks with their associated deployement guide. 
+The goal is to facilitate your life while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
 
-Once the stack is deployed, you become its master and you can immediately play with 
-it.
+Once the stack is deployed, you become its master and you can immediately play with it.
 
-If you have questions, remarks, enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
+If you have any questions, remarks or enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
 
 ## Episode premier : Linux-Apache-MySQL-PHP5
 
-The deployement base is an Ubuntu trusty instance. The Apache and MySQL are deployed on a single instance.
+The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
 ### The versions
 
@@ -33,7 +32,7 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL are depl
 
 ### Size of the instance
 
-Per default, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
+Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find amore details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
@@ -41,16 +40,16 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
+Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository :
 
-* `bundle-trusty-lamp.heat.yml` : HEAT orchestration template, qui va servir à déployer l'infrastructure nécessaire.
-* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
+* `bundle-trusty-lamp.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
+* `stack-get-url.sh` : Flotting IP recovery script.
 
 
-## Démarrage
+## Start-up
 
-### Initialiser l'environnement
+### Initialize the environment
 
 Munissez-vous de vos identifiants Cloudwatt, et click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
