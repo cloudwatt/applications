@@ -141,17 +141,17 @@ It is (already) FINISH !
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
 
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-Les chemins intéressants sur votre machine :
+The interesting entry access points are:
 
-- `/var/lib/www` : Répertoire d'installation de l'application MeanJS. C'est le répertoire exposé par Node.js
-- `/etc/nginx/sites-available/node_proxy` : Fichier de configuration de Nginx dédié au proxying HTTP vers Node.js
-- `/etc/init.d/nodejs` : Script d'init du service Node.js via Foreverjs.
+- `/var/lib/www` : Installation directory of the MeanJS application. This is the directory exposed by Node.js
+- `/etc/nginx/sites-available/node_proxy` : Nginx configuration file dedicated to the proxying HTTP towards Node.js
+- `/etc/init.d/nodejs` : Init script of the Node.js thru Foreverjs.
 
-Quelques ressources qui pourraient vous intéresser :
+Other resources you could be interested in :
 
 * [Documentation NGinx](http://nginx.org/en/docs/)
 * [Framework MeanJS](http://meanjs.org/)
