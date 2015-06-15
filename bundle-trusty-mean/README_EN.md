@@ -109,14 +109,14 @@ Once all of this done, you can run the `stack-get-url.sh` script. It will gather
 IM_MEAN 82.40.34.249
 ~~~ 
 
-qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
+It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and start to configure your MEAN instance.
 
-## Dans les coulisses
+## In the background
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The  `start-stack.sh` script is taking care of running the API necessary requests to: 
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr
-* l'exposer sur Internet via une IP flottante
+* start an Ubuntu Trusty Tahr based instance
+* show a flotting IP on the internet
 
 <a name="console" />
 
