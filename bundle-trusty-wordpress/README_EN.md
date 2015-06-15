@@ -119,20 +119,20 @@ $ ./stack-start.sh LE_BIDULE
 
 Last, wait 5 minutes until the deployement been completed.
 
-A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration `/etc/wordpress/config-default.php`.
+At each new deployement of the stack, a mySQL password is generated directly in the `/etc/wordpress/config-default.php` configuration file.
 
 ### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
+Once all of this done, you can run the `stack-get-url.sh` script. 
 
 ~~~ bash
-./stack-get-url.sh LE_BIDULE
-LE_BIDULE 82.40.34.249
+./stack-get-url.sh THE_THING
+THE_THING 82.40.34.249
 ~~~ 
 
-qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
+It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and tart to configure your Wordpress instance.
 
-## Dans les coulisses
+## In the background
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
@@ -144,24 +144,23 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Wordpress :
+Yes ! Using the console, you can deploy a Wordless server:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-wordpress
-2.	Cliquez sur le fichier nommé bundle-trusty-wordpress.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-wordpress repository
+2.	Click on the file nammed bundle-trusty-wordpress.heat.yml
+3.	Click on RAW, a web page appear with the script details
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
-C’est (déjà) FINI !
-
+It is (already) FINISH !
 
 ## So watt ?
 
