@@ -122,10 +122,10 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Yes ! Using the console, you can deploy a LAMP server:
+Yes ! Using the console, you can deploy a MEAN server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Click on the file nammed bundle-trusty-lamp.heat.yml
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
+2.	Click on the file nammed bundle-trusty-mean.heat.yml
 3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
