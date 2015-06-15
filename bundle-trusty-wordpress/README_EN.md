@@ -164,16 +164,14 @@ It is (already) FINISH !
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+The interesting entry access points are:
 
-Les chemins intéressants sur votre machine :
-
-- `/usr/share/wordpress` : Répertoire d'installation de WordPress.
-- `/var/lib/wordpress/wp-content` : Répertoire de données spécifiques à votre instance Wordpress (thèmes, médias, ...).
-- `/etc/wordpress/config-default.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
-
+- `/usr/share/wordpress` : Wordpress installation repository
+- `/var/lib/wordpress/wp-content` : Repository of the specific data of your Wordpress instance (themes, media, ...)
+- `/etc/wordpress/config-default.php` : Wordpress configuration file, in which you can find the password of the MySQL user that has been generated buring the installation.
 
 -----
 Have fun. Hack in peace.
