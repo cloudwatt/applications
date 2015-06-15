@@ -51,7 +51,8 @@ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repo
 
 ### Initialize the environment
 
-Munissez-vous de vos identifiants Cloudwatt, et click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+If you are not logged in yet, you will go thru the authentication screeen then the swript download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
 Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
 
