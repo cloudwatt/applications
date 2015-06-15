@@ -21,23 +21,23 @@ En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-co
 * Angular 
 * Node.js
 
-### Les pré-requis pour déployer cette stack 
+### The prerequisites to deploy this stack
 
 Ce sont les mêmes que pour les épisodes précédents :
 
-* un accès internet
-* un shell Linux
-* un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
-* les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+* an internet acces
+* a Linux shell
+* a [Cloudwatt account](https://www.cloudwatt.com/authentification), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
-### Taille de l'instance
+### Size of the instance
 
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
+Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
-### Au fait...
+### By the way...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
+If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
 ## Tour du propriétaire
 
