@@ -2,7 +2,7 @@
 
 ## Episode Two : Wordpress
 
-In the CMS Open-Source galaxy, WordPress is the most used in term of community, available functionalities and user adoption.
+In the CMS Open-Source galaxy, WordPress is the most used in term of community, available features and user adoption.
 The Automattic compagny, which develop and distribute Wordpress, provides a SaaS offer allowing a user to create its blog in few minutes. However, those who experiments know that limits can be easily found by the wordpress.com hosting capabilities.
 
 Today, Cloudwatt provides the necessary toolset to start your Wordpress instance in a few minutes and to become its master.
