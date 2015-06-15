@@ -127,7 +127,7 @@ Once all of this done, you can run the `stack-get-url.sh` script.
 THE_THING 82.40.34.249
 ~~~ 
 
-It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and tart to configure your Wordpress instance.
+It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and start to configure your Wordpress instance.
 
 ## In the background
 
