@@ -9,7 +9,7 @@ Today, Cloudwatt provides the necessary toolset to start your Wordpress instance
 
 The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
-## Nota Bene for the impatient
+## Nota Bene for the impatients
 
 An image named "Stack Orchestration Heat Ubuntu 14.04.2 WORDPRESS" is available in the public image catalogue of the Cloudwatt console. For security reasons, this image does not include the initialisation of the MySQL database and therefore is not working when spawning directly the image thru the "Launch instance" button.
 
