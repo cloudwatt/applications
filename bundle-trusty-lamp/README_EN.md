@@ -123,11 +123,11 @@ Once all of this done, you can run the `stack-get-url.sh` script qui va récupé
 Yes ! Using the console, you can deploy a LAMP server :
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
+2.	Clic on the file nammed bundle-trusty-lamp.heat.yml
 3.	Clic on RAW, a web page appear with the script detail
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Clic on « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
 9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
