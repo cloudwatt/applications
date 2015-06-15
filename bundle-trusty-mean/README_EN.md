@@ -66,8 +66,8 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-Dans le fichier `bundle-trusty-mean.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+
+With the `bundle-trusty-lamp.mean.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ bash
 heat_template_version: 2013-05-23
@@ -78,7 +78,7 @@ description: All-in-one MEAN stack
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute         <-- Mettez ici le nom de votre paire de clés
+    default: amaury-ext-compute         <-- Indicate here your keypair
     description: Keypair to inject in instances
     type: string
 
