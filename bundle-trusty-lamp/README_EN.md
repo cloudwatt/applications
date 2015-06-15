@@ -53,7 +53,7 @@ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repo
 Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
 If you are not logged in yet, you will go thru the authentication screeen then the swript download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
+Sourcez le fichier téléchargé dans votre shell. Your password will be requested. 
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -65,8 +65,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.
-This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -108,10 +107,10 @@ In a shell, run the script `stack-start.sh` en passant en paramètre le nom que 
 
 Last, wait 5 minutes until the deployement been completed.
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The `start-stack.sh` script is taking care of running the API necessary requests to :
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack LAMP
-* l'exposer sur Internet via une IP flottante
+* start up an Ubuntu Trusty Tahr instance, pre-provisionned with the LAMP stack
+* Show a flotting IP on the internet
 
 ### Enjoy
 
@@ -121,7 +120,7 @@ Once all of this done, you can run the `stack-get-url.sh` script qui va récupé
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! Using the console, you can deploy a LAMP server :
+Yes ! Using the console, you can deploy a LAMP server :
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
 2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
