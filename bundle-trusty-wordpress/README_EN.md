@@ -131,19 +131,19 @@ It will gather the assigned flotting IP of your stack. You can then paste this I
 
 ## In the background
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The  `start-stack.sh` script is taking care of running the API necessary requests to: 
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr
-* faire une mise à jour de tous les paquets système
-* installer Apache, PHP, MySQL et Wordpress dessus
-* configurer MySQL avec un utilisateur et une base dédiés à WordPres, avec mot de passe généré
-* l'exposer sur Internet via une IP flottante
+* start an Ubuntu Trusty Tahr based instance
+* do an update of the system packages
+* install Apache, PHP, MySQL and Wordpress
+* configure MySQL with a wordpress dedicated user and database, with a generated password
+* show a flotting IP on the internet
 
 <a name="console" />
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Yes ! Using the console, you can deploy a Wordless server:
+Yes ! Using the console, you can deploy a Wordpress server:
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-wordpress repository
 2.	Click on the file nammed bundle-trusty-wordpress.heat.yml
