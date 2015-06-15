@@ -1,4 +1,4 @@
-# DRAFT english version - 5 minutes stacks episode one : LAMP #
+# DRAFT english version - 5 minutes stacks episode one: LAMP #
 
 Welcome to the inauguration of the 5 Minutes Stacks series !
 
@@ -39,11 +39,11 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
-Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository :
+Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository:
 
-* `bundle-trusty-lamp.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
-* `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
-* `stack-get-url.sh` : Flotting IP recovery script.
+* `bundle-trusty-lamp.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
+* `stack-get-url.sh`: Flotting IP recovery script.
 
 
 ## Start-up
@@ -99,15 +99,15 @@ parameters:
 
 ### Start up the stack
 
-In a shell, run the script `stack-start.sh` with the name you want to give it as parameter :
+In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
 
-~~~
+~~~ bash
 ./stack-start.sh MA_LAMPE
 ~~~
 
 Last, wait 5 minutes until the deployement been completed.
 
-The `start-stack.sh` script is taking care of running the API necessary requests to :
+The `start-stack.sh` script is taking care of running the API necessary requests to:
 
 * start up an Ubuntu Trusty Tahr instance, pre-provisionned with the LAMP stack
 * Show a flotting IP on the internet
@@ -120,7 +120,7 @@ Once all of this done, you can run the `stack-get-url.sh` script. It will gather
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Yes ! Using the console, you can deploy a LAMP server :
+Yes ! Using the console, you can deploy a LAMP server:
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
 2.	Click on the file nammed bundle-trusty-lamp.heat.yml
@@ -142,7 +142,7 @@ It is (already) FINISH !
 The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
 You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-You can start building your internet website on your virtual instance. Its entry access points are :
+You can start building your internet website on your virtual instance. Its entry access points are:
 
 * `/etc/apache2/sites-available/default-cw.conf` :  default Apache configuration 
 * `/var/www/cw` : the deployement repository of the little php website exemple
