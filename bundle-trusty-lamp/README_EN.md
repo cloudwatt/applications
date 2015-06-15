@@ -31,7 +31,7 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers 
 
 ### Size of the instance
 
-Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find amore details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
+Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
@@ -51,7 +51,7 @@ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repo
 ### Initialize the environment
 
 Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
-If you are not logged in yet, you will go thru the authentication screeen then the swript download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
 Sourcez le fichier téléchargé dans votre shell. Your password will be requested. 
 
