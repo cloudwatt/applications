@@ -10,9 +10,7 @@ For this third episode, lets focus on the MEAN stack :
 * Angular.js : Front-web applications framework 
 * Node.js : The Javascript application server
 
-Following this tutorial, you will get an Ubuntu Trusty Tahr instance, pre-configured with an NGinx on the port 80....
-
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), une instance MongoDB et un déploiement fonctionnel de l'application de démonstration de [MeanJS](http://meanjs.org/). Pour des considérations de sécurité, MongoDB n'accepte de connexions que depuis le serveur lui-même.
+Following this tutorial, you will get an Ubuntu Trusty Tahr instance, pre-configured with an NGinx on the port 80 which is forwarding towards a Node.js server, monitored by [Foreverjs](https://github.com/foreverjs/forever), a MongoDB instance and a functional deployement of the [MeanJS](http://meanjs.org/) demonstration application. For security reasons, MongoDB does accept conections only from itself.
 
 ## Preparations
 
