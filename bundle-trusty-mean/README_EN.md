@@ -3,16 +3,16 @@
 ## Work in progress
 ## Episode three : MEAN
 
-Pour ce troisème volet, nous nous penchons sur la stack MEAN :
+For this third episode, lets focus on the MEAN stack :
 
 * MongoDB : Le désormais célèbre moteur NoSQL orienté document
-* Express.js : Le framework web pour Node.js
-* Angular.js : Framework d'applications Front-web
-* Node.js : Le serveur d'application en Javascript
+* Express.js : The web framework for Node.js
+* Angular.js : Front-web applications framework 
+* Node.js : The Javascript application server
 
 En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), une instance MongoDB et un déploiement fonctionnel de l'application de démonstration de [MeanJS](http://meanjs.org/). Pour des considérations de sécurité, MongoDB n'accepte de connexions que depuis le serveur lui-même.
 
-## Préparatifs
+## Preparations
 
 ### The versions
 
