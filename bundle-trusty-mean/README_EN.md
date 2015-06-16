@@ -1,6 +1,5 @@
 
 # 5 Minutes Stacks, episode three : MEAN - English version
-## Work in progress
 ## Episode three : MEAN
 
 For this third episode, lets focus on the MEAN stack :
