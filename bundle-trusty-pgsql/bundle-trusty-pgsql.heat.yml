@@ -6,13 +6,13 @@ description: Postgresql with PhpPgAdmin
 
 parameters:
   keypair_name:
-    description: Keypair to inject in instances
+    description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
     default: s1.cw.small-1
-    description: VM flavor
+    description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
     constraints:
@@ -25,11 +25,11 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-          
+
 resources:
   network:
     type: OS::Neutron::Net
-      
+
   subnet:
     type: OS::Neutron::Subnet
     properties:
@@ -62,14 +62,14 @@ resources:
       volume_type: standard
       metadata:
         fs_type: ext4
-      
+
   volume_attachement:
     type: OS::Cinder::VolumeAttachment
     properties:
       instance_uuid: { get_resource : server }
       mountpoint: /dev/vdb
       volume_id: { get_resource : volume }
-      
+
   server:
     type: OS::Nova::Server
     properties:
@@ -89,7 +89,7 @@ resources:
         cd /root && git clone https://github.com/cloudwatt/applications.git cw-app
         ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-pgsql.yml
         rm -rf /root/cw-app
-        
+
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
     properties:
