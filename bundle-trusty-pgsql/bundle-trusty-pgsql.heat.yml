@@ -6,14 +6,15 @@ description: Postgresql with PhpPgAdmin
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute
     description: Keypair to inject in instances
+    label: SSH Keypair
     type: string
 
   flavor_name:
     default: s1.cw.small-1
     description: VM flavor
     type: string
+    label: Instance Type (Flavor)
     constraints:
       - allowed_values:
           - s1.cw.small-1
