@@ -3,12 +3,12 @@
 
 ## PostgreSQL
 
-Dans ce quatrième épisode, nous allons monter un serveur de base de données 
-relationnelles bien connu : PostgreSQL. En suivant ce tutoriel, vous obtiendrez :
+For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relationnal database server : PostgreSQL. 
+Following this tutorial, you will get :
 
-* une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur PostgreSQL
-* une interface d'aministration web
-* un volume de données hébergeant  les données des bases, pour plus de simplicité à monter les backups
+* an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
+* an web based administration interface
+* a data volume hosting the basic data allowing easier backups procedure 
 
 ### The versions
 
@@ -112,16 +112,16 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 * show a flotting IP on the internet
 
 
-### Bienvenue
+### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va récupérer l'url d'entrée de votre stack.
+Once all of this done, you can run the `stack-get-url.sh` script. It will gather the entry url of your stack.
 
 ~~~ bash
 ./stack-get-url.sh ACID
 ACID 82.40.34.249
 ~~~ 
 
-### Interface d'administration
+### Administration interface
 
 Dans cette stack, nous avons adjoint à PostgreSQL une instance de PhpPgAdmin pour pouvoir facilement administrer la base.
 Pour plus de sûreté, les Security Group créés n'exposent pas cette interface à l'extérieur. pour vous y rendre, le moyen 
