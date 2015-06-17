@@ -3,7 +3,7 @@
 
 ## PostgreSQL
 
-For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relationnal database server : PostgreSQL. 
+For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relational database server : PostgreSQL. 
 Following this tutorial, you will get :
 
 * an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
@@ -123,27 +123,26 @@ ACID 82.40.34.249
 
 ### Administration interface
 
-Dans cette stack, nous avons adjoint à PostgreSQL une instance de PhpPgAdmin pour pouvoir facilement administrer la base.
-Pour plus de sûreté, les Security Group créés n'exposent pas cette interface à l'extérieur. pour vous y rendre, le moyen 
-le plus sûr est d'établir un tunnel ssh vers votre instance.
+For this stack, we have added on top of PostgreSQL a PhpPgAdmin instance to easily administrate the database.
+For security reasons, the created security groups are not exposing this interface on the internet (à l'extérieur ?). To get out, the most secure way is to mount a SSH tunnel to your instance.
 
 ~~~ bash
 $ ssh cloud@82.40.34.249 -i ~/.ssh/$VOTRE_KEYPAIR -L 8080:localhost:80
 ~~~
 
-Cela va établir un transfert du port 80 de votre serveur de base, vers le port 8080 de votre machine locale. Profitez 
-donc d'être connecté pour récupérer le mot de passe généré pour votre instance.
+This will establish a translation of the port 80 of your databse towards the port 8080 of your local machine. Take advantage of being connected to retrieve the generated password for your instance.
+
 
 ~~~ bash
-# à lancer sur le serveur lancé
+# to be launched on the ran server
 $ sudo cat /root/keystore
 ~~~
 
-Le contenu de ce fichier contient votre mot de passe unique pour le super-utilisateur de PostgreSQL.
+This file includes your unique password as PostgreSQL superuser.
+Then, using your favorite browser, go on `http://localhost:8080/phppgadmin` and login as `pgadmin` user with the password you just gathered.
 
-A partir de là, avec votre navigateur préféré, rendez-vous sur `http://localhost:8080/phppgadmin` et 
-connectez vous avec l'utilisateur `pgadmin` et le mot de passe que vous venez de récupérer. 
-Vous êtes maintenant en autonomie sur la gestion de la base.
+You are now in autonomy ofor the management of the database.
+
 
 <a name="console" />
 
@@ -172,7 +171,9 @@ The goal of this tutorial is to accelarate your start. At this point you are the
 
 You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-Parmi les pistes pour vous approprier ces ressources et les utiliser dans la Vraie Vie :
+Among the ways to take ownership of these resources and use them in Real Life:
+
+
 
 * organiser des backups par des snapshots réguliers du volume de data.
 * retravailler le template heat pour déployer votre instance PostgreSQL dans une zone privée, accessible depuis vos frontaux web.
