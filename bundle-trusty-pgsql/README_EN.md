@@ -64,7 +64,6 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-
 With the `bundle-trusty-pgsql.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
@@ -81,7 +80,7 @@ parameters:
     type: string
 
   flavor_name:
-    default: s1.cw.small-1              <-- indicate here the flavor size
+    default: s1.cw.small-1              <-- Indicate here the flavor size
     description: Flavor to use for the deployed instance
     type: string
     constraints:
@@ -169,9 +168,9 @@ It is (already) FINISH !
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
 Parmi les pistes pour vous approprier ces ressources et les utiliser dans la Vraie Vie :
 
@@ -179,8 +178,7 @@ Parmi les pistes pour vous approprier ces ressources et les utiliser dans la Vra
 * retravailler le template heat pour déployer votre instance PostgreSQL dans une zone privée, accessible depuis vos frontaux web.
 * déployer manuellement l'image publique `Application Ubuntu 14.04.2 PGSQL` dans votre architecture.
 
-Dans ce dernier cas, pensez, soit à appliquer le [playbook ansible](http://docs.ansible.com/playbooks.html) `seed-pgsql.yml` sur le serveur, ou au moins a le lire pour 
-avoir le détail des opérations de configuration post-lancement.
+Dans ce dernier cas, pensez, soit à appliquer le [playbook ansible](http://docs.ansible.com/playbooks.html) `seed-pgsql.yml` sur le serveur, ou au moins a le lire pour avoir le détail des opérations de configuration post-lancement.
 
 -----
 Have fun. Hack in peace.
