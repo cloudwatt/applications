@@ -179,5 +179,6 @@ Among the ways to take ownership of these resources and use them in Real Life:
 
 In this last case, do not forget to aplly either the [ansible playbook](http://docs.ansible.com/playbooks.html) `seed-pgsql.yml` on the server, or to read it to gather the details of the configuration operations post-launch.
 
+
 -----
 Have fun. Hack in peace.
