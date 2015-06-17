@@ -6,14 +6,15 @@ description: All-in-one MEAN stack
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute
     description: Keypair to inject in instances
+    label: SSH Keypair
     type: string
 
   flavor_name:
         default: s1.cw.small-1
         description: Flavor to use for the deployed instance
         type: string
+        label: Instance Type (Flavor)
         constraints:
           - allowed_values:
               - s1.cw.small-1
