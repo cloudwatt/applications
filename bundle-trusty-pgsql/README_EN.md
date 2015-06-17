@@ -139,7 +139,7 @@ $ sudo cat /root/keystore
 ~~~
 
 This file includes your unique password as PostgreSQL superuser.
-Then, using your favorite browser, go on `http://localhost:8080/phppgadmin` and login as `pgadmin` user with the password you just gathered.
+Then, using your favorite browser, go on `http://localhost:8080/phppgadmin` and login as `pgadmin` user with the password you've just gathered.
 
 You are now in autonomy for the management of the database.
 
