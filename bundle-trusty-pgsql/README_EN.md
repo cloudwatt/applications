@@ -31,32 +31,29 @@ There are the same than for the previous episodes :
 
 ### Size of the instance
 
-Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
+Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1). Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
 If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
-## Tour du propriétaire
+## What will you find in the repository
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
+Once you have cloned the github, you will find in the `bundle-trusty-pgsql/` repository:
 
-* `bundle-trusty-pgsql.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* `seed-pgsql.yml` : Playbook Ansible de post-configuration, qui va générer le mot de passe d'administration, vérifier les points de montages, etc.
-* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
+* `bundle-trusty-pgsql.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `seed-pgsql.yml` : Post-configuration Ansible playbook that will generate the admin password, verify the mounting points, etc.
+* `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
+* `stack-get-url.sh`: Flotting IP recovery script.
 
-### Taille de l'instance
+## Start-up
 
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut.
+### Initialize the environment
 
-## Démarrage
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-### Initialiser l'environnement
-
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
-
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
+Source the downloaded file in your shell. Your password will be requested. 
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -64,7 +61,9 @@ Please enter your OpenStack Password:
 
 ~~~
 
-Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
+
+
 
 ### Ajuster les paramètres
 
