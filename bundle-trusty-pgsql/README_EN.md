@@ -1,7 +1,6 @@
 # 5 Minutes Stacks, Episode four : PostgreSQL
 ## Work in progress
 
-
 ## PostgreSQL
 
 Dans ce quatrième épisode, nous allons monter un serveur de base de données 
@@ -63,12 +62,10 @@ Please enter your OpenStack Password:
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
+### Adjust the parameters
 
 
-### Ajuster les paramètres
-
-Dans le fichier `bundle-trusty-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+With the `bundle-trusty-pgsql.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -79,12 +76,12 @@ description: Postgresql with PhpPgAdmin
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute         <-- Mettez ici le nom de votre paire de clés
+    default: amaury-ext-compute         <-- Indicate here your keypair
     description: Keypair to inject in instances
     type: string
 
   flavor_name:
-    default: s1.cw.small-1              <-- Mettez ici l'identifiant de votre flavor
+    default: s1.cw.small-1              <-- indicate here the flavor size
     description: Flavor to use for the deployed instance
     type: string
     constraints:
@@ -100,20 +97,21 @@ parameters:
 [...]
 ~~~
 
-### Démarrer la stack
+### Start up the stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~
 ./stack-start.sh ACID
 ~~~
 
-Enfin, attendez 5 minutes que le déploiement soit complet.
+Last, wait 5 minutes until the deployement been completed.
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The  `start-stack.sh` script is taking care of running the API necessary requests to: 
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack LAMP
-* l'exposer sur Internet via une IP flottante
+* start an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
+* show a flotting IP on the internet
+
 
 ### Bienvenue
 
@@ -150,23 +148,24 @@ Vous êtes maintenant en autonomie sur la gestion de la base.
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur de base de données relationnelles PostgreSQL :
+Yes ! Using the console, you can deploy a pgSQL server:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-mean
-2.	Cliquez sur le fichier nommé bundle-trusty-pgsql.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
+2.	Click on the file nammed bundle-trusty-pgsql.heat.yml
+3.	Click on RAW, a web page appear with the script details
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
-C’est (déjà) FINI !
+It is (already) FINISH !
+
 
 ## So watt ?
 
