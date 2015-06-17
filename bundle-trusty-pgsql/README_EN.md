@@ -141,7 +141,7 @@ $ sudo cat /root/keystore
 This file includes your unique password as PostgreSQL superuser.
 Then, using your favorite browser, go on `http://localhost:8080/phppgadmin` and login as `pgadmin` user with the password you just gathered.
 
-You are now in autonomy ofor the management of the database.
+You are now in autonomy for the management of the database.
 
 
 <a name="console" />
@@ -173,13 +173,11 @@ You have a SSH access point on your virtual machine thru the flotting IP and you
 
 Among the ways to take ownership of these resources and use them in Real Life:
 
+* organize backups by regular data volume snapshots
+* rework the heat template to deploy your PostgreSQL instance in a private area accessible from your web frontends
+* manually deploy the public image 'Stack orchestration heat Ubuntu 14.04.2 PGSQL' in your architecture
 
-
-* organiser des backups par des snapshots réguliers du volume de data.
-* retravailler le template heat pour déployer votre instance PostgreSQL dans une zone privée, accessible depuis vos frontaux web.
-* déployer manuellement l'image publique `Application Ubuntu 14.04.2 PGSQL` dans votre architecture.
-
-Dans ce dernier cas, pensez, soit à appliquer le [playbook ansible](http://docs.ansible.com/playbooks.html) `seed-pgsql.yml` sur le serveur, ou au moins a le lire pour avoir le détail des opérations de configuration post-lancement.
+In this last case, do not forget to aplly either the [ansible playbook](http://docs.ansible.com/playbooks.html) `seed-pgsql.yml` on the server, or to read it to gather the details of the configuration operations post-launch.
 
 -----
 Have fun. Hack in peace.
