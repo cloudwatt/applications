@@ -33,7 +33,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
  
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
+Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-pgsql/`:
 
 * `bundle-trusty-pgsql.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `seed-pgsql.yml` : Playbook Ansible de post-configuration, qui va générer le mot de passe d'administration, vérifier les points de montages, etc.
@@ -62,7 +62,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-trusty-pgsql.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -107,7 +107,7 @@ Enfin, attendez 5 minutes que le déploiement soit complet.
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack LAMP
+* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack pgSQL
 * l'exposer sur Internet via une IP flottante
 
 ### Bienvenue
