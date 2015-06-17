@@ -127,7 +127,7 @@ For this stack, we have added on top of PostgreSQL a PhpPgAdmin instance to easi
 For security reasons, the created security groups are not exposing this interface on the internet (à l'extérieur ?). To get out, the most secure way is to mount a SSH tunnel to your instance.
 
 ~~~ bash
-$ ssh cloud@82.40.34.249 -i ~/.ssh/$VOTRE_KEYPAIR -L 8080:localhost:80
+$ ssh cloud@82.40.34.249 -i ~/.ssh/$YOUR_KEYPAIR -L 8080:localhost:80
 ~~~
 
 This will establish a translation of the port 80 of your databse towards the port 8080 of your local machine. Take advantage of being connected to retrieve the generated password for your instance.
