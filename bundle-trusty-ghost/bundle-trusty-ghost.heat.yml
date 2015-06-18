@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: All-in-one MEAN stack
+description: All-in-one GHOST stack
 
 
 parameters:
