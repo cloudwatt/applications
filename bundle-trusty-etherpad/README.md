@@ -1,16 +1,16 @@
-# 5 Minutes Stacks, épisode cinq : Ghost
-## Episode cinq : Ghost
+# 5 Minutes Stacks, épisode six : Etherpad
+## Episode six : Etherpad
 
-Pour ce cinquième volet, nous nous penchons sur Ghost. Le projet Ghost est un moteur de blog simple et puissant. Il est basé sur Node.js et permet de rédiger ses blog posts au format Markdown. Ghost assure une offre SaaS, mais comme c'est un projet open source, il est également possible de l'installer sur un serveur en propre.
+Pour ce sixème volet, nous vous livrons le projet Etherpad. Etherpad est un éditeur de texte collaboratif temps réel. Il permet à plusieurs utilisateurs d'éditer en même temps un document et de voir les modifications des collaborateurs au fil de l'eau.
 
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), qui propulse une instance du moteur Ghost.
+En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), qui propulse une instance Etherpad.
 
 ## Préparatifs
 
 ### Les versions
 
 * Node.js 0.10.25
-* Ghost 0.6.4
+* Etherpad 1.5.6
 
 ### Les pré-requis pour déployer cette stack
 
@@ -32,9 +32,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-ghost/` :
+Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-etherpad/` :
 
-* `bundle-trusty-ghost.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* `bundle-trusty-etherpad.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -56,14 +56,14 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-ghost.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-trusty-etherpad.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ bash
 heat_template_version: 2013-05-23
 
 
-description: All-in-one GHOST stack
+description: All-in-one ETHERPAD stack
 
 
 parameters:
@@ -86,11 +86,11 @@ parameters:
 Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~ bash
-$ ./stack-start.sh CASPER
+$ ./stack-start.sh DIETHYL
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
-| ed4ac18a-4415-467e-928c-1bef193e4f38 | CASPER     | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+| ed4ac18a-4415-467e-928c-1bef193e4f38 | DIETHYL    | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
@@ -101,8 +101,8 @@ Enfin, attendez 5 minutes que le déploiement soit complet.
 Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
 
 ~~~ bash
-./stack-get-url.sh CASPER
-CASPER 82.40.34.249
+./stack-get-url.sh DIETHYL
+DIETHYL 82.40.34.249
 ~~~
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
@@ -118,10 +118,10 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Ghost :
+Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Etherpad :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-ghost
-2.	Cliquez sur le fichier nommé bundle-trusty-ghost.heat.yml
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-etherpad
+2.	Cliquez sur le fichier nommé bundle-trusty-etherpad.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
@@ -142,14 +142,13 @@ Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottan
 
 Les chemins intéressants sur votre machine :
 
-- `/var/lib/www` : Répertoire d'installation de l'application Ghost. C'est le répertoire exposé par Node.js
+- `/var/lib/www` : Répertoire d'installation de l'application Etherpad. C'est le répertoire exposé par Node.js
 - `/etc/nginx/sites-available/node_proxy` : Fichier de configuration de Nginx dédié au proxying HTTP vers Node.js
 - `/etc/init.d/nodejs` : Script d'init du service Node.js via Foreverjs.
 
 Quelques ressources qui pourraient vous intéresser :
 
 * [Documentation NGinx](http://nginx.org/en/docs/)
-* [Documentation Ghost](http://docs.ghost.org/fr/usage//)
 
 
 -----
