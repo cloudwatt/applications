@@ -40,14 +40,6 @@ Once you have cloned the github, you will find in the `bundle-trusty-ghost/` rep
 * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 * `stack-get-url.sh`: Flotting IP recovery script.
 
-## Tour du propriétaire
-
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-ghost/` :
-
-* `bundle-trusty-ghost.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
-* `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
-* `stack-get-url.sh` : Flotting IP recovery script.
-
 ## Start-up
 
 ### Initialize the environment
