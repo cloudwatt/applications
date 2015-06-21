@@ -16,7 +16,7 @@ La procédure prend quelques minutes à préparer et 5 minutes à déployer.
 
 Une fois la pile applicative déployée, vous êtes maître dessus et vous pouvez commencer à l'exploiter immédiatement.
 
-Fidèle à son choix initial de l’opensource, la bibliothèque Cloudwatt s’enrichira dans les prochaines semaines de stacks de déploiement d’applications 100% opensource dont nous partagerons les sources en mode communautaire.
+Fidèle à son choix initial de l’opensource, la [bibliothèque Cloudwatt](https://www.cloudwatt.com/fr/applications/index.html) s’enrichira dans les prochaines semaines de stacks de déploiement d’applications 100% opensource dont nous partagerons les sources en mode communautaire.
 
 Si vous avez des questions, remarques, idées d'améliorations n'hésitez pas à ouvrir une issue sur Github ou à soumettre une pull-request.
 
