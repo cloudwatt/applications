@@ -1,11 +1,13 @@
 # 5 Minutes Stacks, episode five : Ghost
 ## Episode cinq : Ghost
 
+## Work in Progress
+
 Pour ce cinquième volet, nous nous penchons sur Ghost. Le projet Ghost est un moteur de blog simple et puissant. Il est basé sur Node.js et permet de rédiger ses blog posts au format Markdown. Ghost assure une offre SaaS, mais comme c'est un projet open source, il est également possible de l'installer sur un serveur en propre.
 
 En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), qui propulse une instance du moteur Ghost.
 
-### Les versions
+### The versions
 
 * Node.js 0.10.25
 * Ghost 0.6.4
@@ -28,7 +30,7 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
-## Préparatifs
+## Preparations
 
 ## What will you find in the repository
 
@@ -46,13 +48,14 @@ Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-
 * `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
-## Démarrage
+## Start-up
 
-### Initialiser l'environnement
+### Initialize the environment
 
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis vous le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé.
+Source the downloaded file in your shell. Your password will be requested. 
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -60,12 +63,11 @@ Please enter your OpenStack Password:
 
 ~~~
 
-Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
-### Ajuster les paramètres
+### Adjust the parameters
 
-Dans le fichier `bundle-trusty-ghost.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+With the `bundle-trusty-pgsql.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ bash
 heat_template_version: 2013-05-23
@@ -76,7 +78,7 @@ description: All-in-one GHOST stack
 
 parameters:
   keypair_name:
-    default: my-keypair-name                   <-- Rajoutez cette ligne avec le nom de votre paire de clés
+    default: my-keypair-name                   <-- Indicate here your keypair
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
@@ -89,9 +91,9 @@ parameters:
 [...]
 ~~~
 
-### Démarrer la stack
+### Start up the stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~ bash
 $ ./stack-start.sh CASPER
@@ -102,59 +104,59 @@ $ ./stack-start.sh CASPER
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Enfin, attendez 5 minutes que le déploiement soit complet.
+Last, wait 5 minutes until the deployement been completed.
 
 ### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
+Once all of this done, you can run the `stack-get-url.sh` script. It will gather the entry url of your stack.
 
 ~~~ bash
 ./stack-get-url.sh CASPER
 CASPER 82.40.34.249
 ~~~
 
-qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
+It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and start to configure your Ghost instance.
 
-## Dans les coulisses
+## In the background
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The  `start-stack.sh` script is taking care of running the API necessary requests to: 
+* start an Ubuntu Trusty Tahr based instance
+* show a flotting IP on the internet
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr
-* l'exposer sur Internet via une IP flottante
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Ghost :
+Yes ! Using the console, you can deploy a MEAN server:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-ghost
-2.	Cliquez sur le fichier nommé bundle-trusty-ghost.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
+2.	Click on the file nammed bundle-trusty-mean.heat.yml
+3.	Click on RAW, a web page appear with the script details
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
-C’est (déjà) FINI !
+It is (already) FINISH !
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
 
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
 
-Les chemins intéressants sur votre machine :
+The interesting entry access points are:
 
 - `/var/lib/www` : Répertoire d'installation de l'application Ghost. C'est le répertoire exposé par Node.js
 - `/etc/nginx/sites-available/node_proxy` : Fichier de configuration de Nginx dédié au proxying HTTP vers Node.js
 - `/etc/init.d/nodejs` : Script d'init du service Node.js via Foreverjs.
 
-Quelques ressources qui pourraient vous intéresser :
+Other resources you could be interested in :
 
 * [Documentation NGinx](http://nginx.org/en/docs/)
 * [Documentation Ghost](http://docs.ghost.org/fr/usage//)
