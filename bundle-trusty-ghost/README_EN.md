@@ -1,7 +1,5 @@
 # 5 Minutes Stacks, episode five : Ghost
-## Episode cinq : Ghost
-
-## Work in Progress
+## Episode five : Ghost
 
 For this fifth episode, lets talk about Ghost. The Ghost project is a simple but powerfull blog engine. It is based on  Node.js and accept blog posts edition with Markdown format. Ghost comercializes a SaaS offer but as this is an opensource projet, it is abso possible to install it on a dedicated virtual machine.
 
@@ -120,7 +118,7 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 
 ### All of this is fine, but you do not have a way to run the stack thru the console ?
 
-Yes ! Using the console, you can deploy a MEAN server:
+Yes ! Using the console, you can deploy a Ghost server:
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-ghost repository
 2.	Click on the file nammed bundle-trusty-ghost.heat.yml
