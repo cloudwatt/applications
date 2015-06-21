@@ -10,7 +10,7 @@ The adoption of the cloud model depends on the ability of firms to start quickly
 
 It is on this last point that Cloudwatt is continuing its efforts and is launching this week its first application stacks to easily deploy a website Wordpress and LAMP (Linux, Apache, MySQL and PHP).
 
-This first call in others. At a steady pace, Cloudwatt will publish on both its technical blog and on his github, application stacks and step-by-step deployment guides.
+This first will call in others. At a steady pace, Cloudwatt will publish on both its [technical blog](http://dev.cloudwatt.com/fr/blog/index.html) and on his github, application stacks and step-by-step deployment guides.
 
 The procedure takes few minutes to prepare and 5 minutes to deploy.
 
