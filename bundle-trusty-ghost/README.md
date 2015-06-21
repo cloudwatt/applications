@@ -132,7 +132,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur Ghost :
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
 
-C’est (déjà) FINI !
+C’est (déjà) FINI ! A vous de jouer maintenant.
 
 ## So watt ?
 
