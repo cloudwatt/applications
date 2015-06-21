@@ -1,7 +1,7 @@
 # 5 Minutes Stacks, Episode six : Etherpad
 ## Episode six : Etherpad
 
-For this sixth episode, it is now the time to talk abour Etherpad. Etherpad is a real time collaborative text editor. It allows different users to edit a document simultaneously and to display in real time the modifications done by other contributors.
+For this sixth episode, it is now time to talk about Etherpad. Etherpad is a real time collaborative text editor. It allows different users to edit a document simultaneously and to display in real time the modifications done by other contributors.
 
 Following this tutorial, you will get an Ubuntu Trusty Tahr instance, pre-configured with an NGinx on the port 80 which is forwarding towards a Node.js server, monitored by [Foreverjs](https://github.com/foreverjs/forever) and which display an instance of the Etherpad engine.
 
