@@ -152,9 +152,9 @@ You have a SSH access point on your virtual machine thru the flotting IP and you
 
 The interesting entry access points are:
 
-- `/var/lib/www` : Répertoire d'installation de l'application Ghost. C'est le répertoire exposé par Node.js
-- `/etc/nginx/sites-available/node_proxy` : Fichier de configuration de Nginx dédié au proxying HTTP vers Node.js
-- `/etc/init.d/nodejs` : Script d'init du service Node.js via Foreverjs.
+- `/var/lib/www` : Installation directory of the Ghost application. This is the directory exposed by Node.js
+- `/etc/nginx/sites-available/node_proxy` : Nginx configuration file dedicated to the proxying HTTP towards Node.js
+- `/etc/init.d/nodejs` : Init script of the Node.js thru Foreverjs.
 
 Other resources you could be interested in :
 
