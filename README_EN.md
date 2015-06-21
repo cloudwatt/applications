@@ -16,7 +16,7 @@ The procedure takes few minutes to prepare and 5 minutes to deploy.
 
 Once the application stack is deployed, you become its master and can start to operate it immediately.
 
-Faithful to its original choice of opensource, the Cloudwatt' library will grow in the coming weeks of application deployment stacks 100% opensource sources which will be shared in community mode.
+Faithful to its original choice of opensource, the [Cloudwatt library](https://www.cloudwatt.com/fr/applications/index.html) will grow in the coming weeks of application deployment stacks 100% opensource sources which will be shared in community mode.
 
 If you have questions, comments, ideas for improvements please open an issue on Github or submit a pull request.
 
