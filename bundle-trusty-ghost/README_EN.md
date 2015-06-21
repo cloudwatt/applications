@@ -3,9 +3,9 @@
 
 ## Work in Progress
 
-Pour ce cinquième volet, nous nous penchons sur Ghost. Le projet Ghost est un moteur de blog simple et puissant. Il est basé sur Node.js et permet de rédiger ses blog posts au format Markdown. Ghost assure une offre SaaS, mais comme c'est un projet open source, il est également possible de l'installer sur un serveur en propre.
+For this fifth episode, lets talk about Ghost. The Ghost project is a simple but powerfull blog engine. It is based on  Node.js and accept blog posts edition with Markdown format. Ghost comercializes a SaaS offer but as this is an opensource projet, it is abso possible to install it on a dedicated virtual machine.
 
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), qui propulse une instance du moteur Ghost.
+Following this tutorial, you will get an Ubuntu Trusty Tahr instance, pre-configured with an NGinx on the port 80 which is forwarding towards a Node.js server, monitored by [Foreverjs](https://github.com/foreverjs/forever) and which display an instance of the Ghost engine.
 
 ### The versions
 
@@ -28,7 +28,7 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 ### By the way...
 
-If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
+If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console). 
 
 ## Preparations
 
@@ -44,9 +44,9 @@ Once you have cloned the github, you will find in the `bundle-trusty-ghost/` rep
 
 Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-ghost/` :
 
-* `bundle-trusty-ghost.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
+* `bundle-trusty-ghost.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
+* `stack-get-url.sh` : Flotting IP recovery script.
 
 ## Start-up
 
@@ -67,7 +67,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-pgsql.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-trusty-ghost.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ bash
 heat_template_version: 2013-05-23
@@ -130,8 +130,8 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 
 Yes ! Using the console, you can deploy a MEAN server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
-2.	Click on the file nammed bundle-trusty-mean.heat.yml
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-ghost repository
+2.	Click on the file nammed bundle-trusty-ghost.heat.yml
 3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
