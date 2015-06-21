@@ -32,7 +32,7 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## Preparations
 
-## What will you find in the repository
+### What will you find in the repository
 
 Once you have cloned the github, you will find in the `bundle-trusty-ghost/` repository:
 
