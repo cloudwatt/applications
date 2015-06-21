@@ -1,9 +1,9 @@
-# 5 Minutes Stacks, Episode sixt : Etherpad
-## Episode sixt : Etherpad
+# 5 Minutes Stacks, Episode six : Etherpad
+## Episode six : Etherpad
 
-Pour ce sixème volet, nous vous livrons le projet Etherpad. Etherpad est un éditeur de texte collaboratif temps réel. Il permet à plusieurs utilisateurs d'éditer en même temps un document et de voir les modifications des collaborateurs au fil de l'eau.
+For this sixth episode, it is now the time to talk abour Etherpad. Etherpad is a real time collaborative text editor. It allows different users to edit a document simultaneously and to display in real time the modifications done by other contributors.
 
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec un serveur NGinx en frontal sur le port 80, forwardant vers un serveur Node.js, monitoré et maintenu en vie par [Foreverjs](https://github.com/foreverjs/forever), qui propulse une instance Etherpad.
+Following this tutorial, you will get an Ubuntu Trusty Tahr instance, pre-configured with an NGinx on the port 80 which is forwarding towards a Node.js server, monitored by [Foreverjs](https://github.com/foreverjs/forever) and which display an instance of the Etherpad engine.
 
 ## Preparations
 
@@ -122,7 +122,7 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 Yes ! Using the console, you can deploy a Etherpad server:
 
 1.	Go the Cloudwatt Github in the applications/bundle-trusty-etherpad repository
-2.	Click on the file nammed bundle-trusty-ghost.heat.yml
+2.	Click on the file nammed bundle-trusty-etherpad.heat.yml
 3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
