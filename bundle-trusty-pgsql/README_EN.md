@@ -1,10 +1,10 @@
-# 5 Minutes Stacks, Episode four : PostgreSQL
+# 5 Minutes Stacks, Episode four: PostgreSQL
 ## Work in progress
 
 ## PostgreSQL
 
 For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relational database server : PostgreSQL. 
-Following this tutorial, you will get :
+Following this tutorial, you will get:
 
 * an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
 * an web based administration interface
