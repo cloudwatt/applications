@@ -1,7 +1,7 @@
 # 5 Minutes Stacks, Episode four: PostgreSQL
 ## Work in progress
 
-## PostgreSQL
+## Episode four: PostgreSQL
 
 For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relational database server : PostgreSQL. 
 Following this tutorial, you will get:
