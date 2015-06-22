@@ -161,7 +161,7 @@ Yes ! Using the console, you can deploy a pgSQL server:
 8. Enter your keypair in the « keypair_name » field
 9. Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed.
 
 It is (already) FINISH !
 
