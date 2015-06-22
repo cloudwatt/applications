@@ -122,7 +122,7 @@ ACID 82.40.34.249
 ### Interface d'administration
 
 Dans cette stack, nous avons adjoint à PostgreSQL une instance de PhpPgAdmin pour pouvoir facilement administrer la base.
-Pour plus de sûreté, les Security Group créés n'exposent pas cette interface à l'extérieur. pour vous y rendre, le moyen 
+Pour plus de sûreté, les Security Group créés n'exposent pas cette interface à l'extérieur. Pour vous y rendre, le moyen 
 le plus sûr est d'établir un tunnel ssh vers votre instance.
 
 ~~~ bash
@@ -159,7 +159,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur de base d
 8.	Entrez votre keypair dans le champ « keypair_name »
 9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée.
 
 C’est (déjà) FINI !
 
