@@ -1,6 +1,4 @@
 # 5 Minutes Stacks, épisode quatre : PostgreSQL
-## Work in progress
-
 
 ## Episode quatre : PostgreSQL
 
