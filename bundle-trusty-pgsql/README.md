@@ -2,7 +2,7 @@
 ## Work in progress
 
 
-## PostgreSQL
+## Episode quatre : PostgreSQL
 
 Dans ce quatrième épisode, nous allons monter un serveur de base de données 
 relationnelles bien connu : PostgreSQL. En suivant ce tutoriel, vous obtiendrez :
