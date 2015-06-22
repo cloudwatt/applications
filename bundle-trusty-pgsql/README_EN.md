@@ -3,7 +3,8 @@
 
 ## Episode four: PostgreSQL
 
-For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relational database server : PostgreSQL. 
+For this fourth episode of the 5 minutes Stacks serie, we will mount a well-known relational database server: PostgreSQL. 
+
 Following this tutorial, you will get:
 
 * an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
@@ -20,7 +21,7 @@ Following this tutorial, you will get:
 
 ### The prerequisites to deploy this stack
 
-There are the same than for the previous episodes :
+There are the same than for the previous episodes:
 
 * an internet acces
 * a Linux shell
@@ -41,7 +42,7 @@ If you do not like command lines, you can go directly to the "run it thru the co
 Once you have cloned the github, you will find in the `bundle-trusty-pgsql/` repository:
 
 * `bundle-trusty-pgsql.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
-* `seed-pgsql.yml` : Post-configuration Ansible playbook that will generate the admin password, verify the mounting points, etc.
+* `seed-pgsql.yml`: Post-configuration Ansible playbook that will generate the admin password, verify the mounting points, etc.
 * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -106,7 +107,7 @@ In a shell, run the script `stack-start.sh` with the name you want to give it as
 
 Last, wait 5 minutes until the deployement been completed.
 
-The  `start-stack.sh` script is taking care of running the API necessary requests to: 
+The `start-stack.sh` script is taking care of running the API necessary requests to: 
 
 * start an Ubuntu Trusty Tahr based instance, preprovisionned with the pgSQL stack
 * show a flotting IP on the internet
@@ -150,15 +151,15 @@ You are now in autonomy for the management of the database.
 
 Yes ! Using the console, you can deploy a pgSQL server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
-2.	Click on the file nammed bundle-trusty-pgsql.heat.yml
-3.	Click on RAW, a web page appear with the script details
-4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
-5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
-6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
-7.	Named your stack in the « Stack name » field
-8.	Enter your keypair in the « keypair_name » field
-9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
+1. Go the Cloudwatt Github in the applications/bundle-trusty-mean repository
+2. Click on the file nammed bundle-trusty-pgsql.heat.yml
+3. Click on RAW, a web page appear with the script details
+4. Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5. Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6. Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7. Named your stack in the « Stack name » field
+8. Enter your keypair in the « keypair_name » field
+9. Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
 
 The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
 
