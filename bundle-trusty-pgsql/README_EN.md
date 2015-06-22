@@ -124,7 +124,7 @@ ACID 82.40.34.249
 ### Administration interface
 
 For this stack, we have added on top of PostgreSQL a PhpPgAdmin instance to easily administrate the database.
-For security reasons, the created security groups are not exposing this interface on the internet (à l'extérieur ?). To get out, the most secure way is to mount a SSH tunnel to your instance.
+For security reasons, the created security groups are not exposing this interface on the internet. To get out, the most secure way is to mount a SSH tunnel to your instance.
 
 ~~~ bash
 $ ssh cloud@82.40.34.249 -i ~/.ssh/$YOUR_KEYPAIR -L 8080:localhost:80
