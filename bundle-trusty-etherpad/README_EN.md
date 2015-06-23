@@ -1,4 +1,7 @@
 # 5 Minutes Stacks, Episode six : Etherpad
+
+Work in progress - The image that will be used to deploy Etherpad will be published the first week of july. Please be patient! Thanks :) 
+
 ## Episode six : Etherpad
 
 For this sixth episode, it is now time to talk about Etherpad. Etherpad is a real time collaborative text editor. It allows different users to edit a document simultaneously and to display in real time the modifications done by other contributors.
