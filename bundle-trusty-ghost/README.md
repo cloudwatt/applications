@@ -1,4 +1,7 @@
 # 5 Minutes Stacks, épisode cinq : Ghost
+
+Work in progress - L'image permettant de déployer Ghost sera publiée la dernière semaine de juin. Soyez patient ! :)
+
 ## Episode cinq : Ghost
 
 Pour ce cinquième volet, nous nous penchons sur Ghost. Le projet Ghost est un moteur de blog simple et puissant. Il est basé sur Node.js et permet de rédiger ses blog posts au format Markdown. Ghost assure une offre SaaS, mais comme c'est un projet open source, il est également possible de l'installer sur un serveur en propre.
