@@ -1,0 +1,9 @@
+- hosts: local
+  user: cloud
+  sudo: true
+
+  tasks:
+    - name: cloudwatt user password set
+      user:
+        name=cloudwatt
+        password="{{ cw_pass }}"
