@@ -1,4 +1,7 @@
 # 5 Minutes Stacks, episode five : Ghost
+
+Work in progress - The image that will be used to deploy Ghost will be published the last week of june. Please be patient! Thanks :) 
+
 ## Episode five : Ghost
 
 For this fifth episode, lets talk about Ghost. The Ghost project is a simple but powerfull blog engine. It is based on  Node.js and accept blog posts edition with Markdown format. Ghost comercializes a SaaS offer but as this is an opensource projet, it is abso possible to install it on a dedicated virtual machine.
