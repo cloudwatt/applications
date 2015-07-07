@@ -22,6 +22,6 @@ If you have questions, comments, ideas for improvements please open an issue on 
 
 Stay tuned for the next episode!
 
-License #
+# License
 
 The content of this deposit is owned and placed under Cloudwatt [GPLv3] (http://www.gnu.org/licenses/gpl.html).
