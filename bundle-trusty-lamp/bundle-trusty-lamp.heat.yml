@@ -81,7 +81,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  lamp_url:
+  floating_ip_url:
     description: LAMP URL
     value:
       str_replace:
