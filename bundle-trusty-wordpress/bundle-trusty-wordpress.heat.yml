@@ -91,7 +91,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  wordpress_url:
+  floating_ip_url:
     description: Wordpress URL
     value:
       str_replace:
