@@ -82,7 +82,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  etherpad_url:
+  floating_ip:
     description: Etherpad URL
     value:
       str_replace:
