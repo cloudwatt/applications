@@ -82,7 +82,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  ghost_url:
+  floating_ip_url:
     description: ghost URL
     value:
       str_replace:
