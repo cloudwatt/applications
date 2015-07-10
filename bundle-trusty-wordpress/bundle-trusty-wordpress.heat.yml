@@ -90,3 +90,12 @@ resources:
     properties:
       floating_ip: { get_resource: floating_ip }
       server_id: { get_resource: server }
+
+outputs:
+  wordpress_url:
+    description: Wordpress URL
+    value:
+      str_replace:
+        template: http://$floating_ip/
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
