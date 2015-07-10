@@ -6,7 +6,6 @@ description: All-in-one WordPress stack
 
 parameters:
   keypair_name:
-    default: amaury-ext-compute
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
