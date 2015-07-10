@@ -81,7 +81,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  mean_url:
+  floating_ip_url:
     description: MEAN URL
     value:
       str_replace:
