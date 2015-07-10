@@ -93,7 +93,7 @@ resources:
       server_id: { get_resource: server }
       
 outputs:
-  vdi_url:
+  floating_ip_url:
     description: VDI URL
     value:
       str_replace:
