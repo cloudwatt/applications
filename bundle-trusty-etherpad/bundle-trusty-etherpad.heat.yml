@@ -7,14 +7,14 @@ description: All-in-one Etherpad stack
 parameters:
   keypair_name:
     description: Keypair to inject in instance
-    label: SSH Keypair
+    label: Paire de cles SSH - SSH Keypair
     type: string
 
   flavor_name:
     default: s1.cw.small-1
     description: Flavor to use for the deployed instance
     type: string
-    label: Instance Type (Flavor)
+    label: Type instance - Instance Type (Flavor)
     constraints:
       - allowed_values:
           - t1.cw.tiny
