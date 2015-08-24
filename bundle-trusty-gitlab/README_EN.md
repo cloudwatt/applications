@@ -32,9 +32,9 @@ Stack parameters, of course, are yours to tweak at your fancy.
 
 ### By the way...
 
-You may have noticed a few extra files in the directory. The new 'Restore' heat and 'Backup' script enable you to make the best use of Cinder Volume Storage, allowing the creation of Cinder Backups: Save states of your GitLab Stack for you to redeploy at your fancy with the 'Restore' heat template.
+You may have noticed a few extra files in the directory. The new `.restore` heat and `backup.sh` script enable you to make the best use of Cinder Volume Storage, allowing the creation of Cinder Volume Backups: Save states of your GitLab Stack for you to redeploy at your fancy with the `.restore` heat template.
 
-While creating a 'restored' stack from a backup can be accomplished from the [console](#console), backups must be initialized with our handy backup script and take a curt 5 minutes from start to full return of functionality.
+While creating a 'restored' stack from a backup can be accomplished from the [console](#console), backups must be initialized with our handy backup script and take a curt 5 minutes from start to full return of functionality. [(More about backing up your GitLab...)](#backup)
 
 Of course, normal stacks can still be generated directly from the [console](#console), should command line make you squeamish.
 
@@ -68,10 +68,11 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-In the `.heat.yml` files, you will find a section named `parameters` near the top. The sole mandatory parameter to adjust is the one called `keypair_name`.
-Its `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to avoid repeatedly typing it into the command line.
-This is within this same file that you can adjust (and set the defaults for) the instance type and volume sizes by playing with the `flavor` and `volume_size` parameters.
-FIXME
+In the `.heat.yml` files, you will find a section named `parameters` near the top. The sole mandatory parameter is `keypair_name`. Its `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to avoid repeatedly typing it into the command line.
+
+It is within this same file that you can adjust (and set the defaults for) the instance type, volume size, and volume type by playing with the `flavor`, `volume_size`, and `volume_type` parameters accordingly.
+
+By default, the stack network and subnet are generated for the stack, in which the GitLab server sits alone. This behavior can be changed within the `.heat.yml` as well, if need be.
 
 ~~~ bash
 heat_template_version: 2013-05-23
@@ -96,18 +97,44 @@ parameters:
       - range: { min: 10, max: 10000 }
         description: Volume must be at least 10 gigabytes
 
+  volume_type:
+    default: standard                       <-- Indicate your volume type here
+    description: Performance flavor of the linked Volume for GitLab Storage
+    label: GitLab Volume Type
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
+
   flavor_name:
     default: n1.cw.standard-1               <-- Indicate your instance type here
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          [...]
+
+resources:
+  network:                                  <-- Network settings
+    type: OS::Neutron::Net
+
+  subnet:                                   <-- Subnet settings
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
 [...]
 
 ~~~
 
 ### Start up the stack
 
-In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
+In a shell, run the script `stack-start.sh` with its unique new name as parameter:
 
 ~~~ bash
 $ ./stack-start.sh GitCERN
@@ -118,7 +145,16 @@ $ ./stack-start.sh GitCERN
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Last, wait 5 minutes until the deployment been completed.
+Last, wait 5 minutes until the deployment been completed. (Use watch to see the status in real-time)
+
+~~~ bash
+$ watch heat stack-list
++--------------------------------------+------------+-----------------+----------------------+
+| id                                   | stack_name | stack_status    | creation_time        |
++--------------------------------------+------------+-----------------+----------------------+
+| xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | GitCERN    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
++--------------------------------------+------------+-----------------+----------------------+
+~~~
 
 ### Enjoy
 
@@ -145,8 +181,8 @@ The  `start-stack.sh` script is takes care of running the API necessary requests
 
 We do indeed! Using the console, you can deploy a GitLab server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-gitlab repository
-2.	Click on the file named bundle-trusty-gitlab.heat.yml
+1.	Go the Cloudwatt Github in the [applications/bundle-trusty-gitlab](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-gitlab) repository
+2.	Click on the file named `bundle-trusty-gitlab.heat.yml` (or `bundle-trusty-gitlab.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
@@ -160,13 +196,35 @@ The stack will be automatically created (you can see its progress by clicking on
 
 If you've reached this point, you're already done! Go enjoy GitLab!
 
+<a name="backup" />
+
 ## Back up and Restoration
 
-FIXME
+Backing your GitLab, sounds like great idea, right? After all, *ipsa scientia potestas est*, and you never feel as powerless as when you lose your code.
+Thankfully we've worked hard to make saving your work quick and easy.
+
+~~~ bash
+$ ./backup.sh GitCERN
+~~~
+
+And five minutes later you're back in business and your conscience is at ease!
+Restoration is as simple as building another stack, although this time with the `.restore.heat.yml`, and specifying the ID of the backup you want. A list of backups can be found in the « Volume Backups » tab under « Volumes » in the console, or from the command line with the Cinder API:
+
+~~~ bash
+$ cinder backup-list
+
++------+-----------+-----------+-----------------------------------+------+--------------+---------------+
+|  ID  | Volume ID |   Status  |                Name               | Size | Object Count |   Container   |
++------+-----------+-----------+-----------------------------------+------+--------------+---------------+
+| XXXX | XXXXXXXXX | available | gitlab-backup-2025/10/23-07:27:69 |  10  |     206      | volumebackups |
++------+-----------+-----------+-----------------------------------+------+--------------+---------------+
+~~~
+
+Remember however, that while we have greatly simplified the restoration process, your local Git tools will not take into account changes in IP address. SSH Keys will still be valid, but you should make sure to correct any hosts and project remote addresses before continuing your work.
 
 ## So watt?
 
-The goal of this tutorial is to accelerate your start. At this point ***you*** are the master of the stack.
+The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
 
 You now have an SSH access point on your virtual machine through the floating IP and your private keypair (default user name `cloud`).
 
