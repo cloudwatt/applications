@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, Episode seven: GitLab
 
-## Episode six: GitLab
+## Episode seven: GitLab
 
 For this seventh episode, we took on GitLab. GitLab is an awesome tool which brings the power and dexterity of applications such as BitBucket and GitHub to personal servers. It allows anyone to become master of their own remote Git repository, and control and view the modifications done to its projects by its users using GitLab's sleek interface designed by its dedicated community.
 
@@ -45,7 +45,7 @@ Once you have cloned the github, you will find in the `bundle-trusty-gitlab/` re
 * `bundle-trusty-gitlab.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 * `bundle-trusty-gitlab.restore.heat.yml`: HEAT orchestration template. It deploys the necessary infrastructure, and restores your data from a previous backup!
 * `backup.sh`: Backup creation script. This magical script that will save you from certain demise, and completes a full volume backup ready for later redeployment in only 5 minutes.
-* `stack-start.sh`: Stack launching script. This is a small script that will save you 10 seconds (over and over), courtesy of Clouwatt.
+* `stack-start.sh`: Stack launching script. This is a small script that will save you 10 seconds (over and over), courtesy of Cloudwatt.
 * `stack-get-url.sh`: A handy-dandy URL maker. Just look at all this time we save you!
 
 ## Start-up
@@ -74,7 +74,7 @@ It is within this same file that you can adjust (and set the defaults for) the i
 
 By default, the stack network and subnet are generated for the stack, in which the GitLab server sits alone. This behavior can be changed within the `.heat.yml` as well, if need be.
 
-~~~ bash
+~~~ yaml
 heat_template_version: 2013-05-23
 
 
@@ -129,7 +129,6 @@ resources:
       allocation_pools:
         - { start: 10.0.1.100, end: 10.0.1.199 }
 [...]
-
 ~~~
 
 ### Start up the stack
@@ -188,11 +187,11 @@ We do indeed! Using the console, you can deploy a GitLab server:
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
 7.	Name your stack in the « Stack name » field
-8.	Enter your the name of your keypair in the « SSH Keypair » field
-8.	Confirm the volume size (in gigabytes) in the « GitLab Volume Size » field
-9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+8.	Enter the name of your keypair in the « SSH Keypair » field
+9.	Confirm the volume size (in gigabytes) in the « GitLab Volume Size » field
+10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be complete. Then you can go to the "Instances" menu to discover the floating IP that was generated, or refresh the current page and check the Overview tab for a handy link.
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
 If you've reached this point, you're already done! Go enjoy GitLab!
 
