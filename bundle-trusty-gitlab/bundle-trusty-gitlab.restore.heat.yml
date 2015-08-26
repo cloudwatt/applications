@@ -1,0 +1,172 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one GitLab stack
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  volume_size:
+    default: 10
+    description: Size of Volume for GitLab Storage (Gigabytes)
+    label: GitLab Volume Size
+    type: number
+    constraints:
+      - range: { min: 10, max: 10000 }
+        description: Volume must be at least 10 gigabytes
+
+  volume_type:
+    default: standard
+    description: Performance flavor of the linked Volume for GitLab Storage
+    label: GitLab Volume Type
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
+
+  backup_id:
+    description: Backup from which to create Volume
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  volume:
+    type: OS::Cinder::Volume
+    properties:
+      backup_id: { get_param: backup_id }
+      size: { get_param: volume_size }
+      volume_type: { get_param: volume_type }
+      metadata:
+        fs_type: ext4
+
+  volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
+      volume_id: { get_resource: volume }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  gitlab_config_set:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        write_files:
+        - path: /etc/gitlab/gitlab.rb
+          permissions: '0755'
+          content:
+            str_replace:
+              template: |
+                external_url "https://$floating_ip$"
+                # GitLab Hostname for Git URLs
+                gitlab_rails['gitlab_host'] = '$floating_ip$'
+                gitlab_rails['gitlab_port'] = '443'
+                gitlab_rails['gitlab_https'] = 'true'
+                # SSH Setup
+                nginx['redirect_http_to_https'] = true
+                nginx['redirect_http_to_https_port'] = 80
+                nginx['ssl_certificate'] = "/etc/gitlab/ssl/gitlab.crt"
+                nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/gitlab.key"
+                # Pretty Verification Emails
+                gitlab_rails['gitlab_email_from'] = 'gitlab@no-reply.com'
+                gitlab_rails['gitlab_email_display_name'] = 'GitLab'
+                logrotate['enable'] = false
+              params:
+                $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+        - path: /etc/stack_public_entry_point
+          permissions: '0755'
+          content:
+            str_replace:
+              template: |
+                $floating_ip$
+              params:
+                $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+
+  reset_gitlab:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: |
+        #!/bin/bash
+        gitlab-ctl reconfigure
+
+  init_gitlab:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: gitlab_config_set }
+      - config: { get_resource: reset_gitlab }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 417aa678-bf11-4f66-b11d-122ae49085a9
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: init_gitlab
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: Stack URL
+    value:
+      str_replace:
+        template: http://$floating_ip/
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
