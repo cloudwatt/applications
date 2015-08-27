@@ -44,7 +44,7 @@ D’autre part, comme d’habitude, si vous n’aimez pas les lignes de commande
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-gitlab/`:
+Une fois le répertoire cloné, vous trouvez, dans le répertoire `bundle-trusty-gitlab/`:
 
 * `bundle-trusty-gitlab.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `bundle-trusty-gitlab.restore.heat.yml` : Template d'orchestration HEAT. Il déploie l’infrastructure necessaire et restaure vos données depuis un backup !
