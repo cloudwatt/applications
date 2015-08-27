@@ -8,7 +8,7 @@ For this seventh episode, we doubled back and prepared a classic: Tomcat 7.
 
 ### The version
 
-* Tomcat 7 (name) FIXME
+* Tomcat 7 (tomcat7) 7.0.52-1ubuntu0.3
 
 ### The prerequisites to deploy this stack
 

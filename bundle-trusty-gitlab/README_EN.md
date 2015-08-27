@@ -32,7 +32,7 @@ Stack parameters, of course, are yours to tweak at your fancy.
 
 ### By the way...
 
-You may have noticed a few extra files in the directory. The new `.restore` heat and `backup.sh` script enable you to make the best use of Cinder Volume Storage, allowing the creation of Cinder Volume Backups: Save states of your GitLab Stack for you to redeploy at your fancy with the `.restore` heat template.
+You may have noticed a few extra files in the directory. The new `.restore` heat and `backup.sh` script enable you to make the best use of Cinder Volume Storage, allowing the creation of Cinder Volume Backups: Save states of your GitLab stack's volume for you to redeploy at your fancy with the `.restore` heat template.
 
 While creating a 'restored' stack from a backup can be accomplished from the [console](#console), backups must be initialized with our handy backup script and take a curt 5 minutes from start to full return of functionality. [(More about backing up your GitLab...)](#backup)
 
