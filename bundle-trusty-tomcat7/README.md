@@ -121,7 +121,7 @@ $ ./stack-start.sh Bobcat8
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Enfin, attendez **5 minutes** que le déploiement soit complet (vous pouvez utiliser la commande `watch` pour voir le statut en temps réel).
+Enfin, attendez 5 minutes que le déploiement soit complet (vous pouvez utiliser la commande `watch` pour voir le statut en temps réel).
 
 ~~~ bash
 $ watch heat stack-list
