@@ -2,7 +2,7 @@
 
 ## Episode eight: Tomcat 7
 
-For this seventh episode, we doubled back and prepared a classic: Tomcat 7.
+For this eighth episode, we doubled back and prepared a classic: Tomcat 7.
 
 ## Preparations
 
