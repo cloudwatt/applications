@@ -69,7 +69,7 @@ $ [whatever mind-blowing stuff you have planned...]
 
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
-### Adjust the parameters
+### Ajuster les paramètres
 
 Dans le fichier `bundle-trusty-gitlab.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 
