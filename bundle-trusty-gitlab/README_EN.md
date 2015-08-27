@@ -24,7 +24,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-Unlike previous stacks the minimum instance type we recommend is a light "Standard" (n1.cw.standard-1). This is due to the minimum disk space recommended by GitLab, and while it is possible to deploy on a smaller instance, it would likely lead to unintended consequences. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+Unlike previous stacks the minimum instance type we recommend is a light "Standard" (n1.cw.standard-1). This is due to the minimum memory space recommended by GitLab, and while it is possible to deploy on a smaller instance, it would likely lead to unintended consequences. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
 
 Furthermore, our GitLab stacks are tailored to make good use of Cinder Volume Storage. This ensures the protection of your precious projects, and allows you to pay only for the space you use. Volume size can be selected from the console, and the GitLab stack can support tens to tens of hundreds of gigabytes worth of project space.
 
