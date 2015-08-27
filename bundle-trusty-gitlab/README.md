@@ -1,10 +1,10 @@
-# 5 Minutes Stacks, Episode sept: GitLab
+# 5 Minutes Stacks, Episode sept : GitLab
 
-## Episode sept: GitLab
+## Episode sept : GitLab
 
-Pour ce septième episode, nous vous livrons Gitlab. Gitlab est un outil génial qui apporte la puissance and la fléxibilité à des applications telles que BitBucket et Github [to personal servers]. Il permet à quiconque de devenir maître à distance de leur propre dépôt Git et de contrôler / visualiser les modifications effectuées à ses projets par ses contributeurs en utilisant l’interface élégante de GitLab conçue par sa communauté dédiée.
+Pour ce septième episode, nous vous livrons Gitlab. Gitlab est un outil génial qui apporte la puissance et la fléxibilité à des applications telles que BitBucket et Github à vos serveurs personels. Il permet à quiconque de devenir maître à distance de leur propre dépôt Git et de contrôler / visualiser les modifications effectuées à ses projets par ses contributeurs en utilisant l’interface de GitLab (conçue par sa communauté dédiée).
 
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configuré avec GitLab sur https port 443 (redirigé automatiquement depuis le port 80). Toutes les données de GitLab seront stockées dans un volume dédié adapté à vos besoins et que vous pourrez sauvegarder à la demande.
+En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec GitLab sur le port https 443 (redirigé automatiquement depuis le port 80). Toutes les données de GitLab seront stockées dans un volume dédié adapté à vos besoins et que vous pourrez sauvegarder à la demande.
 À partir du panneau d'administration intégré de GitLab, vous serez en mesure d'ajuster les contrôles d’accès ainsi que divers autres paramètres de votre instance Gitlab permettant à vous et votre équipe de bénéficier de toute la puissance de Git.
 
 
@@ -27,7 +27,7 @@ Ce devrait être la routine maintenant :
 
 ### Taille de l'instance
 
-Contrairement aux stacks précédentes, le type d'instance minimum que nous recommandons est une "Standard" (n1.cw.standard-1). Ceci est dû à l'espace disque minimum recommandé par GitLab. Il est possible de déployer Gitlab sur un plus petit gabarit, mais cela induirait probablement des  conséquences inattendues.
+Contrairement aux stacks précédentes, le type d'instance minimum que nous recommandons est une "Standard" (n1.cw.standard-1). Ceci est dû à l'espace mémoire minimum recommandé par GitLab. Il est possible de déployer Gitlab sur un plus petit gabarit, mais cela induirait probablement des conséquences inattendues.
 La tarification est à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 En outre, notre stack GitLab est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack GitLab peut supporter des dizaines à des milliers de gigaoctets d'espace de stockage.
@@ -36,19 +36,15 @@ Les paramètres de la stack sont bien sur modifiables à volonté.
 
 ### Au fait...
 
-You may have noticed a few extra files in the directory. The new `.restore` heat and `backup.sh` script enable you to make the best use of Cinder Volume Storage, allowing the creation of Cinder Volume Backups: Save states of your GitLab Stack for you to redeploy at your fancy with the `.restore` heat template.
+Vous avez peut-être remarqué quelques fichiers supplémentaires dans le répertoire. Le nouveau script `backup.sh` et le template heat `.restore` vous permettent de faire usage du stockage bloc Cinder par la création de volume de sauvegarde. Ainsi vous pouvez sauvegarder votre Gitlab et le restaurer à votre convenance en utilisant le template heat `.restore`.
 
-Vous avez peut-être remarqué quelques fichiers supplémentaires dans le répertoire. Le nouveau script `backup.sh` et le template heat `.restore`
-vous permettent de faire usage du stockage bloc Cinder par la création de volume de sauvegarde. Ainsi vous pouvez sauvegarder votre Gitlab et le restaurer à votre convenance en utilisant le template heat `.restore`.
-
-La restauration d’un Gitlab à partir d’une sauvegarde peut être réalisée à partir de la [console] (# console). Pour cela les sauvegardes doivent être initialisées avec notre script de sauvegarde et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre GitLab ...)] (#backup)
+La restauration d’un Gitlab à partir d’une sauvegarde peut être réalisée à partir de la [console] (# console). Pour cela, les sauvegardes doivent être initialisées avec notre script de sauvegarde et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre GitLab ...)] (#backup)
 
 D’autre part, comme d’habitude, si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console)
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire 
-`bundle-trusty-gitlab/`:
+Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-gitlab/`:
 
 * `bundle-trusty-gitlab.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `bundle-trusty-gitlab.restore.heat.yml` : Template d'orchestration HEAT. Il déploie l’infrastructure necessaire et restaure vos données depuis un backup !
