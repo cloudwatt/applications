@@ -106,7 +106,7 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en pass
 CASPER 82.40.34.249
 ~~~
 
-qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
+qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Ghost.
 
 ## Dans les coulisses
 
