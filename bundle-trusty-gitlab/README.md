@@ -30,7 +30,7 @@ Ce devrait être la routine maintenant :
 Contrairement aux stacks précédentes, le type d'instance minimum que nous recommandons est une "Standard" (n1.cw.standard-1). Ceci est dû à l'espace mémoire minimum recommandé par GitLab. Il est possible de déployer Gitlab sur un plus petit gabarit, mais cela induirait probablement des conséquences inattendues.
 La tarification est à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-En outre, notre stack GitLab est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack GitLab peut supporter des dizaines à des milliers de gigaoctets d'espace de stockage.
+En outre, notre stack GitLab est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack GitLab peut supporter des dizaines à des teraoctets d'espace de stockage.
 
 Les paramètres de la stack sont bien sur modifiables à volonté.
 
