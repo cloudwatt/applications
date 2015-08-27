@@ -148,7 +148,7 @@ $ ./stack-start.sh GitCERN
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Enfin, attendez **5 minutes** que le déploiement soit complet (vous pouvez utiliser la commande `watch` our voir le statut en temps réel).
+Enfin, attendez **5 minutes** que le déploiement soit complet (vous pouvez utiliser la commande `watch` pour voir le statut en temps réel).
 
 ~~~ bash
 $ watch heat stack-list
@@ -168,7 +168,7 @@ $ ./stack-get-url.sh GitCERN
 GitCERN http://70.60.637.17
 ~~~
 
-qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et confirmer votre intérêt en acceptant le certificat de sécurité.
+qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et confirmer votre intérêt en **acceptant le certificat de sécurité**.
 
 
 ## Dans les coulisses
@@ -224,7 +224,7 @@ $ cinder backup-list
 +------+-----------+-----------+-----------------------------------+------+--------------+---------------+
 ~~~
 
-Toutefois, notez que même si cette méthode permet de restaurer facilement votre service, Gitlab ne prendra pas en compte le changement d’adresse IP. Votre paire de clés reste valide mais vous devez vous assurer de corriger l’adresse IP d’accès à Gitlab avant de continuer votre travail.
+Toutefois, notez que même si cette méthode permet de restaurer facilement votre service, Gitlab ne prendra pas en compte le changement d’adresse IP. Votre paire de clés reste valide mais vous devez vous assurer de **corriger l’adresse IP d’accès à Gitlab** avant de continuer votre travail.
 
 
 ## So watt?
