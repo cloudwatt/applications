@@ -1,0 +1,198 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one LDAP stack with LDAP Account Manager
+
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+
+  subnet_id:
+    label: Subnet ID
+    description: Subnet to attach to router to allow connection to LDAP
+    type: string
+
+  volume_size:
+    default: 10
+    label: LDAP Volume Size
+    description: Size of Volume for LDAP Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 2, max: 1000 }
+        description: Volume must be at least 2 gigabytes
+
+  volume_type:
+    default: standard
+    description: Performance flavor of the linked Volume for GitLab Storage
+    label: GitLab Volume Type
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
+
+  backup_id:
+    description: Backup from which to create Volume
+    type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+          - s1.cw.small-1
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.27.27.0/24
+      allocation_pools:
+        - { start: 10.27.27.100, end: 10.27.27.199 }
+
+  router:
+    type: OS::Neutron::Router
+    # properties:
+    #   name: ldap-router
+
+  ldap_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
+
+  other_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_param: subnet_id }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 389, port_range_max: 389 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+  volume:
+    type: OS::Cinder::Volume
+    properties:
+      backup_id: { get_param: backup_id }
+      size: { get_param: volume_size }
+      volume_type: { get_param: volume_type }
+      metadata:
+        fs_type: ext4
+
+  volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
+      volume_id: { get_resource: volume }
+
+  stack_public_entry_point:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        write_files:
+        - path: /etc/stack_public_entry_point
+          permissions: '0755'
+          content:
+            str_replace:
+              template: |
+                $floating_ip$
+              params:
+                $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+
+  init_ldap:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: stack_public_entry_point }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: a08c0927-8628-4561-8ce9-9ded49efe20d
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: init_ldap
+
+outputs:
+  floating_ip:
+    description: Stack URL
+    value:
+      str_replace:
+        template: http://$floating_ip$/
+        params:
+          $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+
+  router-interface-ip:
+    description: |
+      Find given subnet's router-interface IP with:
+    value:
+      str_replace:
+        template: |
+          $ neutron router-port-list $router_name$ | grep $subnet_id$ | cut -d"\"" -f8
+        params:
+          $router_name$: { get_attr: [router, name] }
+          $subnet_id$: { get_param: subnet_id }
+
+  ldap_access_configuration:
+    description: |
+      From the SSH terminal of any server in the subnet (passed as parameter), add access to LDAP with:
+    value:
+      str_replace:
+        template: |
+          $ sudo ip route add $fixed_ip$ via <router-interface-ip>
+        params:
+          $fixed_ip$: { get_attr: [server, first_address] }
+
+  ldap_ip_address_via_router:
+    description: |
+      Once access to LDAP has been configured as shown here,
+    value:
+      str_replace:
+        template: |
+          LDAP will then be accessible from ldap://$fixed_ip$:389
+        params:
+          $fixed_ip$: { get_attr: [server, first_address] }
