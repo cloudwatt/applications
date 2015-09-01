@@ -207,7 +207,7 @@ $ ./backup.sh GitCERN
 ~~~
 
 And five minutes later you're back in business and your conscience is at ease!
-Restoration is as simple as building another stack, although this time with the `.restore.heat.yml`, and specifying the ID of the backup you want. A list of backups can be found in the « Volume Backups » tab under « Volumes » in the console, or from the command line with the Cinder API:
+Restoration is as simple as building another stack, although this time with the `.restore.heat.yml`, and specifying the ID of the backup you want. The new volume size should not be smaller than the original, to avoid loss to data. A list of backups can be found in the « Volume Backups » tab under « Volumes » in the console, or from the command line with the Cinder API:
 
 ~~~ bash
 $ cinder backup-list

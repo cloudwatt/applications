@@ -6,9 +6,32 @@ description: All-in-one GitLab stack
 
 parameters:
   keypair_name:
-    description: Keypair to inject in instance
-    label: SSH Keypair
+    description: Paire de cles a injecter dans instance - Keypair to inject in instance
+    label: Paire de cles SSH - SSH Keypair
     type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    description: Type instance a deployer - Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
 
   volume_size:
     default: 10
@@ -28,20 +51,6 @@ parameters:
       - allowed_values:
           - standard
           - performant
-
-  flavor_name:
-    default: n1.cw.standard-1
-    description: Flavor to use for the deployed instance
-    type: string
-    label: Instance Type (Flavor)
-    constraints:
-      - allowed_values:
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
 
 resources:
@@ -160,7 +169,7 @@ resources:
 
 outputs:
   floating_ip:
-    description: Stack URL
+    description: GitLab URL
     value:
       str_replace:
         template: http://$floating_ip/
