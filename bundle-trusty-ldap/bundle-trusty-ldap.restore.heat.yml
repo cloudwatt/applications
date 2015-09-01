@@ -6,9 +6,32 @@ description: All-in-one LDAP stack with LDAP Account Manager
 
 parameters:
   keypair_name:
-    label: SSH Keypair
-    description: Keypair to inject in instance
+    description: Paire de cles a injecter dans instance - Keypair to inject in instance
+    label: Paire de cles SSH - SSH Keypair
     type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    description: Type instance a deployer - Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
 
   subnet_id:
     label: Subnet ID
@@ -17,7 +40,7 @@ parameters:
 
   volume_size:
     default: 10
-    label: LDAP Volume Size
+    label: LDAP Volume Size (Should not be smaller than original volume)
     description: Size of Volume for LDAP Storage (Gigabytes)
     type: number
     constraints:
@@ -38,20 +61,6 @@ parameters:
     description: Backup from which to create Volume
     type: string
 
-  flavor_name:
-    default: s1.cw.small-1
-    label: Instance Type (Flavor)
-    description: Flavor to use for the deployed instance
-    type: string
-    constraints:
-      - allowed_values:
-          - s1.cw.small-1
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
 resources:
   network:
@@ -147,7 +156,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: a08c0927-8628-4561-8ce9-9ded49efe20d
+      image: $IMAGE$
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
