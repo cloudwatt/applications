@@ -84,9 +84,18 @@ description: All-in-one GitLab stack
 parameters:
   keypair_name:
     default: my-keypair-name                <-- Indicate your keypair here
-    description: Keypair to inject in instance
-    label: SSH Keypair
+    description: Paire de cles a injecter dans instance - Keypair to inject in instance
+    label: Paire de cles SSH - SSH Keypair
     type: string
+
+  flavor_name:
+    default: n1.cw.standard-1               <-- Indicate your instance type here
+    description: Type instance a deployer - Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          [...]
 
   volume_size:
     default: 10                             <-- Indicate your volume size here
@@ -106,15 +115,6 @@ parameters:
       - allowed_values:
           - standard
           - performant
-
-  flavor_name:
-    default: n1.cw.standard-1               <-- Indicate your instance type here
-    description: Flavor to use for the deployed instance
-    type: string
-    label: Instance Type (Flavor)
-    constraints:
-      - allowed_values:
-          [...]
 
 resources:
   network:                                  <-- Network settings

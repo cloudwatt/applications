@@ -88,9 +88,18 @@ description: All-in-one GitLab stack
 parameters:
   keypair_name:
     default: my-keypair-name                <-- Indiquer ici votre paire de clés par défaut
-    description: Keypair to inject in instance
-    label: SSH Keypair
+    description: Paire de cles a injecter dans instance - Keypair to inject in instance
+    label: Paire de cles SSH - SSH Keypair
     type: string
+
+  flavor_name:
+    default: n1.cw.standard-1               <-- Indiquer ici la taille de l’instance par défaut
+    description: Type instance a deployer - Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          [...]
 
   volume_size:
     default: 10                             <-- Indiquer ici la taille du volume par défaut
@@ -110,15 +119,6 @@ parameters:
       - allowed_values:
           - standard
           - performant
-
-  flavor_name:
-    default: n1.cw.standard-1               <-- Indiquer ici la taille de l’instance par défaut
-    description: Flavor to use for the deployed instance
-    type: string
-    label: Instance Type (Flavor)
-    constraints:
-      - allowed_values:
-          [...]
 
 resources:
   network:                                  <-- Paramètres réseau
@@ -212,7 +212,7 @@ $ ./backup.sh GitCERN
 ~~~
 
 Et 5 minutes plus tard, vous retrouvez votre environnement Gitlab.
-La restauration est aussi simple que reconstruire une nouvelle stack mais cette fois avec le fichier heat `.restore.heat.yml`, et en indiquant l’ID de la sauvegarde que vous souhaitez restaurer. Vous pouvez voir la liste des sauvegardes dans la console dans l’onglet « Sauvegardes de Volume » du menu « Volume » ou par les lignes de commandes : 
+La restauration est aussi simple que reconstruire une nouvelle stack mais cette fois avec le fichier heat `.restore.heat.yml`, et en indiquant l’ID de la sauvegarde que vous souhaitez restaurer. Vous pouvez voir la liste des sauvegardes dans la console dans l’onglet « Sauvegardes de Volume » du menu « Volume » ou par les lignes de commandes :
 
 ~~~ bash
 $ cinder backup-list
