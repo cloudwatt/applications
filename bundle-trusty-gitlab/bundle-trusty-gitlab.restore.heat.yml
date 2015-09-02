@@ -11,7 +11,7 @@ parameters:
     type: string
 
   flavor_name:
-    default: s1.cw.small-1
+    default: n1.cw.standard-1
     description: Type instance a deployer - Flavor to use for the deployed instance
     type: string
     label: Type instance - Instance Type (Flavor)
