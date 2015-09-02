@@ -90,7 +90,7 @@ resources:
         ansible-playbook /root/cw-app/bundle-trusty-pgsql/seed-pgsql.yml
         rm -rf /root/cw-app
 
-  floating_ip_link:
+  floating_ip_url:
     type: OS::Nova::FloatingIPAssociation
     properties:
       floating_ip: { get_resource: floating_ip }

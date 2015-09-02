@@ -91,7 +91,7 @@ resources:
     properties:
       floating_ip: { get_resource: floating_ip }
       server_id: { get_resource: server }
-      
+
 outputs:
   floating_ip_url:
     description: VDI URL

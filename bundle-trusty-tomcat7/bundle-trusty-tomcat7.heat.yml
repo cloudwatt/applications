@@ -80,7 +80,7 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip:
+  floating_ip_url:
     description: Tomcat7 URL
     value:
       str_replace:

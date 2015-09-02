@@ -167,7 +167,7 @@ resources:
         get_resource: init_ldap
 
 outputs:
-  floating_ip:
+  floating_ip_url:
     description: Stack URL
     value:
       str_replace:
