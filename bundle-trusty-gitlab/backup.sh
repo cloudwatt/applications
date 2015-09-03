@@ -43,25 +43,43 @@ if [ ! "$SERVER_ID" ] || [ ! "$VOLUME_ID" ]; then
     exit 1
 fi
 
+if [ "$(nova show $SERVER_ID | grep "| status" | tr -d " " | cut -d"|" -f3)" == "ACTIVE" ]; then
+  echo "Halting server..."
+  ssh cloud@$SERVER_IP -i $KEYPAIR sudo halt
+  if [ "0" -ne "$?" ]; then
+    echo "ERROR: SSH Connection failed"
+    exit 1
+  fi
+  echo -n "Waiting for server to halt gracefully."
+  for i in {1..12}; do
+    sleep 5
+    echo -n "."
+  done; echo "."
+fi
 echo "Stopping server..."
-
-ssh cloud@$SERVER_IP -i $KEYPAIR sudo halt
-echo "Waiting for server to become available..."
-sleep 60
 nova stop "$SERVER_ID"
+echo -n "Waiting for server status \"SHUTOFF\"."
+while [ "$(nova show $SERVER_ID | grep "| status" | tr -d " " | cut -d"|" -f3)" != "SHUTOFF" ]; do
+  sleep 2
+  echo -n "."
+done; echo "."
 
 echo "Detaching volume from server..."
 nova volume-detach "$SERVER_ID" "$VOLUME_ID"
-echo "Waiting for volume to become available..."
+echo -n "Waiting for volume to become available."
 while [ "$(cinder list | grep "$VOLUME_ID" | tr -d " " | cut -d"|" -f3)" != "available" ]; do
   sleep 2
-done
+  echo -n "."
+done; echo "."
 BACKUP_NAME="$STACK_NAME-backup-$(date "+%Y-%m-%d-%X")"
 echo "Creating volume backup..."
 cinder backup-create --display-name "$BACKUP_NAME" "$VOLUME_ID"
+echo -n "Waiting for backup creation to finish."
 while [ "$(cinder backup-list | grep "$BACKUP_NAME" | tr -d " " | cut -d"|" -f4)" == "creating" ]; do
   sleep 8
-done
+  echo -n "."
+done; echo "."
+
 VOLUME_STATE="$(cinder backup-list | grep "$BACKUP_NAME" | tr -d " " | cut -d"|" -f4)"
 if [ "$VOLUME_STATE" == "available" ]; then
   echo "Volume now available. Attaching volume to server..."

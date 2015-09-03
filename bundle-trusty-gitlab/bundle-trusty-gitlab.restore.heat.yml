@@ -50,6 +50,10 @@ parameters:
           - standard
           - performant
 
+  backup_id:
+    description: Backup from which to create Volume
+    type: string
+
 
 resources:
   network:
