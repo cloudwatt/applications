@@ -1,7 +1,5 @@
 # 5 Minutes Stacks, Episode eight: Tomcat 7
 
-**Draft - image not yet available**
-
 ## Episode eight: Tomcat 7
 
 For this eighth episode, we doubled back and prepared a classic: Tomcat 7.
