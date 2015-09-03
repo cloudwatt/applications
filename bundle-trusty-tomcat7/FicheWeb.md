@@ -1,4 +1,3 @@
----
 layout: applications-fiche
 pictonic: true
 title: "Tomcat"
@@ -23,4 +22,3 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-huit-tomcat.html
 install-url:
 comingsoon: false
----
