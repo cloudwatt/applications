@@ -46,6 +46,10 @@ fi
 if [ "$(nova show $SERVER_ID | grep "| status" | tr -d " " | cut -d"|" -f3)" == "ACTIVE" ]; then
   echo "Halting server..."
   ssh cloud@$SERVER_IP -i $KEYPAIR sudo halt
+  if [ "0" -ne "$?" ]; then
+    echo "ERROR: SSH Connection failed"
+    exit 1
+  fi
   echo -n "Waiting for server to halt gracefully."
   for i in {1..12}; do
     sleep 5
