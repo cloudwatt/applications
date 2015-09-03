@@ -29,6 +29,8 @@ Other stack parameters, of course, are yours to tweak at your fancy.
 ### By the way...
 
 Should the word 'terminal' conjure images of mortal illnesses, do not fret. Tomcat 7 stacks can be started directly from the [console](#console), just like its predecessors.
+If you wish, you can even launch this stack in 1-click from the [Applications page](https://www.cloudwatt.com/fr/applications/index.html) on Cloudwatt web site.
+
 
 ## What will you find in the repository
 
