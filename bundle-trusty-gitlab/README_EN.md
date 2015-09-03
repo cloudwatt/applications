@@ -168,7 +168,7 @@ As shown above, it will parse the assigned floating IP of your stack into a URL 
 
 ## In the background
 
-The  `start-stack.sh` script is takes care of running the API necessary requests to execute the normal heat template which:
+The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 * starts an Ubuntu Trusty Tahr based instance
 * attaches an exposed floating IP
 * starts, attaches, and formats a fresh volume for GitLab to exploit
@@ -238,7 +238,7 @@ The interesting directories are:
 - `/mnt/vdb/`: `/dev/vdb` mounted here
 - `/mnt/vdb/gitlab/`: Mounts onto `/var/opt/gitlab/` and contains all of GitLab's data
 - `/mnt/vdb/gitlab/.gitlab-secrets.json`: Copy of GitLab's secrets in volume for safekeeping and restoration
-- `/mnt/vdb/stack_public_entry_point`: Contains last known IP address, used to replace IP address in all locations when it changes
+- `/mnt/vdb/stack_public_entry_point`: Contains last known IP address, used to replace the IP address in all locations when it changes
 
 Other resources you could be interested in:
 
