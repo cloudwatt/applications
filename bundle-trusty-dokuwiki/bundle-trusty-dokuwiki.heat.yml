@@ -6,15 +6,15 @@ description: All-in-one DokuWiki stack
 
 parameters:
   keypair_name:
-    description: Keypair to inject in instance
     label: SSH Keypair
+    description: Keypair to inject in instance
     type: string
 
   flavor_name:
     default: s1.cw.small-1
+    label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
-    label: Instance Type (Flavor)
     constraints:
       - allowed_values:
           - s1.cw.small-1
@@ -27,8 +27,8 @@ parameters:
 
   volume_size:
     default: 10
-    description: Size of Volume for LDAP Storage (Gigabytes)
-    label: LDAP Volume Size
+    label: Dokuwiki Volume Size
+    description: Size of Volume for Dokuwiki Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 2, max: 1000 }
@@ -36,8 +36,8 @@ parameters:
 
   volume_type:
     default: standard
-    description: Performance flavor of the linked Volume for LDAP Storage
-    label: GitLab Volume Type
+    label: Dokuwiki Volume Type
+    description: Performance flavor of the linked Volume for Dokuwiki Storage
     type: string
     constraints:
       - allowed_values:
@@ -132,7 +132,7 @@ resources:
 
 
 outputs:
-  floating_ip:
+  floating_ip_url:
     description: Stack URL
     value:
       str_replace:
