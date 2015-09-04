@@ -50,7 +50,7 @@ parameters:
   volume_type:
     default: standard
     label: LDAP Volume Type
-    description: Performance flavor of the linked Volume for GitLab Storage
+    description: Performance flavor of the linked Volume for LDAP Storage
     type: string
     constraints:
       - allowed_values:
@@ -58,6 +58,7 @@ parameters:
           - performant
 
   backup_id:
+    label: Backup ID
     description: Backup from which to create Volume
     type: string
 
