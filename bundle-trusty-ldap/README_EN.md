@@ -263,6 +263,18 @@ Voila! You can now securely access LDAP from your other servers. LAM is public, 
 
 <a name="backup" />
 
+## LAM (Light Attack Munitions)
+
+Except not really: LDAP Account Manager presents your LDAP database as if it were a user management tool, one of it's most common uses. It also provides a more development/broad-use oriented interface, but for most users the main panel is best, as it is much more intuitive and requires little to no knowledge of LDAP.
+
+By default, the password for the main login (username: Administrator), the *master* password, and the *server preferences* password are all **c10udw477**, but each can be changed individually.
+
+Try it out, tweak it's configuration, read it's manual if you wish: LAM is very modular and I'm sure it can be easily structured to meet any needs you may have in an LDAP GUI. However if you don't want it, or if fool-proof security is very important to you, can always just disassociate its floating-IP, either from the console in the «Access & Security» tab, or from the command line.
+
+~~~ bash
+$ nova help floating-ip-disassociate
+~~~
+
 ## Back up and Restoration
 
 Backing your LDAP, sounds like great idea, right? After all, *ipsa scientia potestas est*, and you never feel as powerless as when you lose your code.
