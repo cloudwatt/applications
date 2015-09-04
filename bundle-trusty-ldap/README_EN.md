@@ -2,6 +2,8 @@
 
 ## Episode nine: LDAP
 
+**Draft - Image not yet available...**
+
 So... LDAP...
 
 Following this tutorial, you will create an Ubuntu Trusty Tahr instance, pre-configured with LDAP, on it's own network.
