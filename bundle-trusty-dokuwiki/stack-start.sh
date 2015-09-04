@@ -9,7 +9,7 @@ Include backup ID only when restoring from backup.
 fi
 
 if [ ! "$3" ]; then
-  heat stack-create $1 -f bundle-trusty-gitlab.heat.yml -P keypair_name="$2"
+  heat stack-create $1 -f bundle-trusty-dokuwiki.heat.yml -P keypair_name="$2"
 else
-  heat stack-create $1 -f bundle-trusty-gitlab.restore.heat.yml -P keypair_name="$2" -P backup_id="$3"
+  heat stack-create $1 -f bundle-trusty-dokuwiki.restore.heat.yml -P keypair_name="$2" -P backup_id="$3"
 fi
