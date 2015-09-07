@@ -9,6 +9,7 @@ parameters:
     label: SSH Keypair
     description: Keypair to inject in instance
     type: string
+
   username:
     label: Apache2 Auth Username
     description: Basic auth username for all users
@@ -32,13 +33,21 @@ parameters:
     type: string
     constraints:
       - allowed_values:
+          - t1.cw.tiny
           - s1.cw.small-1
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
           - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
 
 resources:
   network:
@@ -105,5 +114,9 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: IP address of the deployed compute instance
-    value: { get_attr: [floating_ip, floating_ip_address] }
+    description: Jenkins URL
+    value:
+      str_replace:
+        template: http://$floating_ip$/
+        params:
+          $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
