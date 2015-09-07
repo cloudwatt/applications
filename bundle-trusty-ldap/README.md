@@ -1,12 +1,10 @@
 # 5 Minutes Stacks, Episode neuf: LDAP
 
-**Draft - WIP et Image non encore disponible...**
-
 ## Episode neuf: LDAP
 
 Alors... LDAP...
 
-En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec LDAP sur son propre réseau. 
+En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec LDAP sur son propre réseau.
 Ce réseau de LDAP (et un autre réseau de votre choix) sera relié par un routeur Neutron, permettant un accès sécurisé et privé depuis vos autres instances à LDAP.
 Comme pour l’application GitLab, toutes les données du LDAP seront stockées dans un volume dédié qui pourra être sauvegardé sur demande.
 Par défaut, l’application LAM (LDAP Access Manager) sera également exécutée sur l'instance et accessible par port 443 via HTTPS (automatiquement redirigé depuis le port 80).
@@ -70,7 +68,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-gitlab.ldap.yml` vous trouverez en haut une section `parameters`. Les deux seuls paramètres obligatoires à ajuster sont 
+Dans le fichier `bundle-trusty-gitlab.ldap.yml` vous trouverez en haut une section `parameters`. Les deux seuls paramètres obligatoires à ajuster sont
 * celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur
 * et celui nommé `subnet_id`
 
