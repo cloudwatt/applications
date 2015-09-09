@@ -2,7 +2,7 @@
 layout: applications-fiche
 pictonic: true
 title: "LDAP"
-url: Gitlab.html
+url: ldap.html
 date: 2015-09-14 00:00:00
 date-creation: "14 Septembre 2015"
 date-maj: "14 Septembre 2015"
