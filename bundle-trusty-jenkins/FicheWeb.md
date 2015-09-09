@@ -4,7 +4,7 @@ pictonic: true
 title: "Jenkins"
 url: jenkins.html
 date: 2015-09-17 00:00:00
-date-creation: "21 Septembre 2015"
+date-creation: "17 Septembre 2015"
 date-maj: "17 Septembre 2015"
 description: "Jenkins est un outil open source d'intégration continue."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins
