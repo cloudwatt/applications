@@ -28,5 +28,5 @@ prix: "Gratuit pour l'application + consommation à l'usage"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-neuf-ldap.html
 install-url:
-comingsoon: true
+comingsoon: false
 ---
