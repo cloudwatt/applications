@@ -6,7 +6,9 @@ Alors... LDAP...
 
 En suivant ce tutoriel, vous obtiendrez une instance Ubuntu Trusty Tahr, pré-configurée avec LDAP sur son propre réseau.
 Ce réseau de LDAP (et un autre réseau de votre choix) sera relié par un routeur Neutron, permettant un accès sécurisé et privé depuis vos autres instances à LDAP.
+
 Comme pour l’application GitLab, toutes les données du LDAP seront stockées dans un volume dédié qui pourra être sauvegardé sur demande.
+
 Par défaut, l’application LAM (LDAP Access Manager) sera également exécutée sur l'instance et accessible par port 443 via HTTPS (automatiquement redirigé depuis le port 80).
 A travers l’application LAM vous serez en mesure de modifier votre base de données LDAP rapidement et efficacement grâce à une interface intuitive même pour les moins aguerris à LDAP.
 
@@ -30,7 +32,9 @@ Ce devrait être la routine maintenant :
 ### Taille de l'instance
 
 Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sûr, vous pouvez ajuster les paramètres de la stack et en particulier sa taille par défaut.
-En outre, notre stack LDAP est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack GitLab peut supporter des dizaines à des teraoctets d'espace de stockage.
+
+En outre, notre stack LDAP est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack LDAP peut supporter des dizaines à des teraoctets d'espace de stockage.
+
 Les paramètres de la stack sont bien sur modifiables à volonté.
 
 ### Au fait...
@@ -191,8 +195,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
 Bon... en fait non. LDAP ne s'y prête pas alors pas de 1-clic pour cette application dans la bibliothèque Cloudwatt. 
+La stack peut se lancer completement depuis la console (cf ci-dessous) mais pour autoriser d'autres serveurs du sous-réseau à se connecter, vous allez devoir vous connecterà ces serveurs en SSH.  
 
-The actual creation of the stack can be done entirely from our console, but to allow other servers in the provided subnet to connect, you're going to have to connect to those servers in SSH.
 
 ### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
@@ -248,13 +252,13 @@ http://«lam-public-ip»/
 
 ##
 
-For those who like a little more instruction in their instructions:
+Pour ceux qui souhaitent plus d'informations sur ces instructions :
 
 1.  First, from the terminal on your computer, run the command to obtain the *router-interface-ip*, which you will need in the next few steps. The variables will already be inserted, so you can just copy-paste the line into the terminal. Neat right?
 2. Armed with the *router-interface-ip*, connect with SSH to a server in the provided subnet and enter the *ldap_access_configuration* command. Running `sudo ip route` will show you the route that was just added, if you're curious.
 3. Verify that you can actually connect to LDAP by running `curl «ldap_ip_address_via_router»` with the *ldap_ip_address_via_router* found in the output.
 
-Voila! You can now securely access LDAP from your other servers. LAM is public, however, and can be used through any browser from the *floating_ip_url*.
+Voila ! Vous pouvez maintenance accéder en toute sécurité à la base LDAP depuis vos autres serveurs. LAM, quant à lui, est publique et accessible à travers n'importe quel navigateur depuis l'adrees IP *floating_ip_url*.
 
 <a name="backup" />
 
