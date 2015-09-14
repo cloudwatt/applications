@@ -35,11 +35,11 @@ Les paramètres de la stack sont bien sur modifiables à volonté.
 
 ### Au fait...
 
-As with the GitLab Bundle, the `.restore` heat template and `backup.sh` script enable you to manipulate Cinder Volume Storage. With these files, you may create Cinder Volume Backups: Save states of your LDAP stack's volume for you to redeploy with the `.restore` heat template when needed.
+Comme pour l'application Gilab, le  script `backup.sh` et le template heat `.restore` vous permettent de faire usage du stockage bloc Cinder par la création de volume de sauvegarde. Ainsi vous pouvez sauvegarder votre base LDAP et la restaurer à votre convenance en utilisant le template heat `.restore`.
 
-Both normal and 'restored' stacks can be launched from the [console](#console), but our nifty `stack-start.sh` also allows you to create both kinds of stacks easily from a [terminal](#startup).
+A la fois les stacks natives ou celles 'restaurées' peuvent être lancées depuis la [console](#console), mais pour ceux qui préfèrent les lignes de commande, notre script `stack-start.sh` vous permet de créer les 2 types de stack facilement depuis un [terminal](#startup).
 
-Backups must be initialized with our handy `backup.sh` script and take a curt 5 minutes from start to full return of functionality. [(More about backing up and restoring your LDAP...)](#backup)
+Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre GitLab ...)] (#backup)
 
 ## Tour du propriétaire
 
