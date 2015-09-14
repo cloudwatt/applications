@@ -188,21 +188,20 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 <a name="console" />
 
-### Bash is what I do with my head against a wall when I think of shell.
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-That's okay! But not actually. Sorry folks, but LDAP is not for kids: if you want to play, better get used to that blocky cursor. The actual creation of the stack can be done entirely from our console, but to allow other servers in the provided subnet to connect, you're going to have to connect to those servers in SSH.
+Et bien si ! En utilisant la console, vous pouvez déployer votre serveur LDAP :
 
-En utilisant la console, vous pouvez déployer votre serveur LDAP :
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-ldap](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-ldap)
-2.	Cliquez sur le fichier nommé `bundle-trusty-ldap.heat.yml` ou `bundle-trusty-ldap.restore.heat.yml` pour [restaurer depuis une sauvegarde](#backup))
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.	Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Confirmez la taille du volume de stockage (en Go) dans le champ « LDAP Volume Size »
-10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+2.	2.	Cliquez sur le fichier nommé `bundle-trusty-ldap.heat.yml` ou `bundle-trusty-ldap.restore.heat.yml` pour [restaurer depuis une sauvegarde](#backup))
+3.	3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.	5.	Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	8.	Entrez votre keypair dans le champ « keypair_name »
+9.	9.	Confirmez la taille du volume de stockage (en Go) dans le champ « LDAP Volume Size »
+10.	10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement ou simplement recharger la page et allez dans l’onglet « vue d’ensemble ». Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
 
@@ -210,7 +209,14 @@ C’est (déjà) FINI ! A vous de jouer maintenant.
 
 Is what I wish I could say. At this point LDAP will be running, and LAM will work and modify the LDAP database, but no other server has access! The next section covers how to gain access to LDAP from a server in the provided subnet.
 
-## So you wanna see my LDAP?
+### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait non. LDAP ne s'y prête pas alors pas de 1-clic pour cette application dans la bibliothèque Cloudwatt. 
+
+That's okay! But not actually. Sorry folks, but LDAP is not for kids: if you want to play, better get used to that blocky cursor. The actual creation of the stack can be done entirely from our console, but to allow other servers in the provided subnet to connect, you're going to have to connect to those servers in SSH.
+
+
+## Vous voulez voir le LDAP ?
 
 Thankfully, I made it easy. In the output of the stack, either in the Overview tab of your stack's page on the console, or with:
 
@@ -256,7 +262,7 @@ Voila! You can now securely access LDAP from your other servers. LAM is public, 
 
 <a name="backup" />
 
-## LAM (Light Attack Munitions)
+## LAM (LDAP Access Manager)
 
 Except not really: LDAP Account Manager presents your LDAP database as if it were a user management tool, one of it's most common uses. It also provides a more development/broad-use oriented interface, but for most users the main panel is best, as it is much more intuitive and requires little to no knowledge of LDAP.
 
