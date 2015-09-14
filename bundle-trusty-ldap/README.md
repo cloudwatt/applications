@@ -39,7 +39,7 @@ Comme pour l'application Gilab, le  script `backup.sh` et le template heat `.res
 
 A la fois les stacks natives ou celles 'restaurées' peuvent être lancées depuis la [console](#console), mais pour ceux qui préfèrent les lignes de commande, notre script `stack-start.sh` vous permet de créer les 2 types de stack facilement depuis un [terminal](#startup).
 
-Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre GitLab ...)] (#backup)
+Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre LDAP ...)] (#backup)
 
 ## Tour du propriétaire
 
@@ -182,7 +182,7 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 * démarrer une instance basée sur Ubuntu Trusty Tahr
 * attaché une IP flottante pour l’application LAM
-* démarrer, attacher et formater un volume de stockage pour LDAP ou en restaurer un depuis <<< a provided backup_id>>>
+* démarrer, attacher et formater un volume de stockage pour LDAP ou en restaurer un à partir d'un id de backup
 * reconfigurer LDAP pour que le stockage des données se fasse sur le volume
 * Ecrire un guide simple dans sorties de la stack (comment utiliser LDAP depuis un server d’un sous-réseau) <<< how to use the LDAP server from the provided subnet's servers>>>
 
@@ -227,17 +227,16 @@ Ces étapes ressemblent à ceci :
 
 ##
 
-**router-interface-ip** : Find given subnet's router-interface IP with:
+**router-interface-ip** : Trouve l'interface IP du sous-réseau avec : 
 
 ~~~ bash
 $ neutron router-port-list «ldap-router-name» | grep «provided-subnet-id» | cut -d\"\\\"\" -f8
 ~~~
 
-**ldap_ip_address_via_router** : Once access to LDAP has been configured as shown here,
+**ldap_ip_address_via_router** : Une fois que l'accès à LDAP a été configuré comme indiqué, 
+LDAP sera accessible depuis ldap://«ldap-through-router-ip»:389
 
-LDAP will then be accessible from ldap://«ldap-through-router-ip»:389
-
-**ldap_access_configuration** : From the SSH terminal of any server in the subnet (passed as parameter)add access to LDAP with:
+**ldap_access_configuration** : Depuis un terminal SSH de n'importe quel serveur du sous-réseau (passé comme paramètre), ajoutez l'accès à LDAP en tapant :
 
 ~~~ bash
 $ sudo ip route add «ldap-through-router-ip» via «router-interface-ip»
