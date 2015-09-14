@@ -122,7 +122,7 @@ parameters:
 
   volume_type:
     default: standard                       <-- Indicate your volume type here
-    label: GitLab Volume Type
+    label: LDAP Volume Type
     description: Performance flavor of the linked Volume for LDAP Storage
     type: string
     constraints:
