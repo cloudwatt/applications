@@ -2,55 +2,54 @@
 
 ## Episode 10: Jenkins
 
-**Draft - Image not yet available...**
+**Projet - Image actuellement non disponible...**
 
-Alfred Thaddeus Crane Pennyworth is Bruce Wayne's valet at Wayne Manor. He knows that Bruce is secretly Batman and [aids him in every way imaginable](https://wiki.jenkins-ci.org/display/JENKINS/Plugins). After a [varied career](https://wiki.jenkins-ci.org/display/JENKINS/Awards), Alfred Pennyworth was [employed as the Wayne family valet](https://wiki.jenkins-ci.org/pages/viewpage.action?pageId=58001258) when Bruce Wayne's parents were killed. Alfred [raised the young orphan](https://github.com/jenkinsci/jenkins/commits/master) alone and eventually aided him in his quest to [become Batman](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins). His [impressive skill-set](https://wiki.jenkins-ci.org/display/JENKINS/Awards) makes him Bruce's staunchest ally, boasting a formal demeanor that does little to hide the [intelligence](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Best+Practices) behind his eyes.
+Alfred Thaddeus Crane Pennyworth est le valet de Bruce Wayne dans Wayne Manor. il sait bien que Bruce est secretement Batman et [l'aide de manière  imaginable](https://wiki.jenkins-ci.org/display/JENKINS/Plugins). Apres [ une carrière bien varié ](https://wiki.jenkins-ci.org/display/JENKINS/Awards), Alfred Pennyworth a [ été employé comme valet dans la famille de Wayne ](https://wiki.jenkins-ci.org/pages/viewpage.action?pageId=58001258) when Bruce Wayne's parents were killed. Alfred [raised the young orphan](https://github.com/jenkinsci/jenkins/commits/master) alone and eventually aided him in his quest to [become Batman](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins). His [impressive skill-set](https://wiki.jenkins-ci.org/display/JENKINS/Awards) makes him Bruce's staunchest ally, boasting a formal demeanor that does little to hide the [intelligence](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Best+Practices) behind his eyes.
 
-Jenkins is our Alfred Pennyworth.
+Jenkins est notre Alfred Pennyworth à nous.
 
-Jenkins, [originally named Hudson](https://en.wikipedia.org/wiki/Jenkins_%28software%29#History), is an amazing tool. I am not qualified to sing its praises, [but I'm not the only one who wants to](https://wiki.jenkins-ci.org/display/JENKINS/Awards). To learn about the power of Jenkins, [check out everything people use it for, live](http://www.google.com/search?ie=UTF-8&q=%22Dashboard+%5BJenkins%5D%22).
+Jenkins, [historiquement appellé Hudson](https://en.wikipedia.org/wiki/Jenkins_%28software%29#History), est un magnifique outil. je ne suis pas apte à chanter ses louanges, [mais je ne suis pas le seul à le souhaiter](https://wiki.jenkins-ci.org/display/JENKINS/Awards). Pour comprendre la puissance de Jenkins, [ vérifier ce pourquoi les gens l'utilisent](http://www.google.com/search?ie=UTF-8&q=%22Dashboard+%5BJenkins%5D%22).
 
-[Or you know, just Google it.](http://lmgtfy.com/?q=jenkins)
+[Ou, faites une recherche Google.](http://lmgtfy.com/?q=jenkins)
 
-## Preparations
+## Préparations
 
-### The version
+### La version
 
 * Jenkins (jenkins) 1.627
 
-### The prerequisites to deploy this stack
+### les pré-requis pour déployer cette stack
 
-These should be routine by now:
+Ceci devrait être une routine dès cet instant:
 
-* Internet access
-* A Linux shell
-* A [Cloudwatt account](https://www.cloudwatt.com/authentification) with a [valid keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
-* The tools of the trade: [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* A local clone of the [Cloudwatt applications](https://github.com/cloudwatt/applications) git repository
+* Un accès internet
+* Un shell linux
+* Un [compte Cloudwatt](https://www.cloudwatt.com/authentification) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
-### Size of the instance
+### Taille de l'instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturés à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Clowdwatt).
 
-Stack parameters, of course, are yours to tweak at your fancy.
+vous pouvez ajuster les parametres de la stack à votre goût
 
-## What will you find in the repository
+## Que trouverez-vous dans le reférentiel
 
-Once you have cloned the github, you will find in the `bundle-trusty-jenkins/` repository:
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-jenkins/
 
-* `bundle-trusty-jenkins.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
-* `stack-start.sh`: Stack launching script, which simplifies the parameters.
-* `stack-get-url.sh`: Returns the floating-IP in a URL, which can also be found in the stack output.
+* `bundle-trusty-jenkins.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `stack-start.sh`: Script de lancement de la stack. C'est un micro-script vous permettant d'économiser quelques copier-coller.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans la sortie de la stack.
 
 ## Start-up
 
-### Initialize the environment
+### Initialiser l'environnement
 
-Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
-If you are not logged in yet, complete the authentication and save the credentials script.
-With it, you will be able to wield the amazing powers of the Cloudwatt APIs.
+Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
-Source the downloaded file in your shell and enter your password when prompted to begin using the OpenStack clients.
+Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -59,17 +58,18 @@ Please enter your OpenStack Password:
 $ [whatever mind-blowing stuff you have planned...]
 ~~~
 
-Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
+Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
-### Adjust the parameters
+### Ajuster les paramètres
 
-In the `.heat.yml` files (heat templates), you will find a section named `parameters` near the top. The mandatory parameters are the `keypair_name`, and the `username` and `password` for Digest login. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+Dans le fichier `.heat.yml` (templates heat), vous trouverez en haut une section `paramètres` .Les paramètres obligatoires pour la connexion sont la `keypair_name`, le `username` et le `password` for Digest login. La valeur de la `keypair_name` par `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur, si vous souhaitez l'avoir par défaut dans la console.
 
-The `username` and `password` fields provide the values for Basic Auth, a simple HTTP authentication module belonging to Apache2, providing light security in the case that someone stumbles upon your IP. Since Jenkins is only a build tool, no other security is implemented by default, although you are always free to implement more yourself.
+Le champs `username` et `password` fournissent les valeurs pour une authentification basique, un simple module d'authentication HTTP appartenant a Apache2, fournisant une legère sécurité au cas où quelqu'un essaierait de passer par votre IP. Du fait que Jenkins est seulement un outil de construction, aucune autre sécurité n'est implémentée par défaut, bien que vous êtes toujours libre d'en mettre plus vous-même.
 
-Within these heat templates, you can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
+Dans ces templates heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre ` flavor`.
 
-By default, the stack network and subnet are generated for the stack, in which the Jenkins server sits alone. This behavior can be changed within the `.heat.yml` as well, if needed.
+Par défaut, le réseau et sous-réseau de la stack  sont générés pour la stack, dans lequel le serveur Jenkins est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
+
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -80,7 +80,7 @@ description: All-in-one Jenkins stack
 
 parameters:
   keypair_name:
-    default: my-keypair-name                <-- Indicate your keypair here
+    default: my-keypair-name                <-- Mettez ici le nom de votre paire de clés
     label: SSH Keypair
     description: Keypair to inject in instance
     type: string
@@ -102,7 +102,7 @@ parameters:
         description: Password must be between 6 and 24 characters
 
   flavor_name:
-    default: s1.cw.small-1                  <-- Indicate your instance type here
+    default: s1.cw.small-1                  <-- Mettez ici le nom de votre type d'instance
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
@@ -127,9 +127,9 @@ resources:
 
 <a name="startup" />
 
-### Start up the stack
+### Démarrer la stack
 
-In a shell, run the script `stack-start.sh`:
+Dans un shell, lancer le script `stack-start.sh`:
 
 ~~~ bash
 $ ./stack-start.sh PENNYWORTH «my-keypair-name»
@@ -144,7 +144,7 @@ Creating stack...
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+Au bout de 5 minutes, la stack sera totallement opérationnelle. (Utiliser une montre pour voir le statut en temps réel)
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -155,78 +155,83 @@ $ watch -n 1 heat stack-list
 +--------------------------------------+------------+-----------------+----------------------+
 ~~~
 
-### Enjoy
+### Profitez
 
-Once all of this done, you can run the `stack-get-url.sh` script.
+Une fois tout ceci fait, vous pouvez lancer le script 'stack-get-url.sh'.
 
 ~~~ bash
 $ ./stack-get-url.sh PENNYWORTH
 PENNYWORTH  http://70.60.637.17
 ~~~
 
-As shown above, it will parse the assigned floating-IP of your stack into a URL link. You can then click or paste this into your browser of choice, confirm the use of the self-signed certificate, and bask in the glory of a fresh Jenkins instance. Alfred Pennyworth would be proud.
+Comme indiqué ci-dessus, il va analyser les IP flottantes attribuées à votre stack dans un lien URL.
+Vous pouvez alors cliquer ou le coller dans un navigateur de votre choix, confirmer l'utilisation du certificat auto-signé, et se prélasser dans la gloire d'une nouvelle instance Jenkins
 
-### In the background
+Alfred Pennyworth devrait être fier.
 
-The `start-stack.sh` script runs the necessary OpenStack API requests to execute the heat template which:
-* Starts a Ubuntu Trusty Tahr based instance
-* Attaches an exposed floating-IP
-* Reconfigures Apache with your Basic Auth username and password
+### En arrière plan
+
+Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire pour le template heat qui:
+
+* Démarre une instance basée Ubuntu Trusty Tahr
+* Fixe une IP-flottante exposée
+* Reconfigure Apache avec votre nom d'utilisateur et votre mot de passe de base.
 
 <a name="console" />
 
-### I'd rather leave shell to the tortoises
+### Je préfère laisser shell pour les tortues
 
-If you handle a terminal as well as a _Testudo graeca_ would, then you might want to create your Jenkins stacks from our console instead!
+Si vous gérez un terminal aussi bien qu'un Testudo graeca le ferait, alors vous voudriez peut-être créer vos stacks Jenkins depuis notre console!
 
-To create our Jenkins stack from the console:
+Pour créer une stack Jenkins depuis la console:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-jenkins](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins) repository
-2.	Click on the file named `bundle-trusty-jenkins.heat.yml` (or `bundle-trusty-jenkins.restore.heat.yml` to [restore from backup](#backup))
-3.	Click on RAW, a web page will appear containing purely the template
-4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
-5.  Go to the «[Stacks](https://console.cloudwatt.com/project/stacks/)» section of the console
-6.	Click on «Launch stack», then «Template file» and select the file you just saved to your PC, and finally click on «NEXT»
-7.	Name your stack in the «Stack name» field
-8.	Enter the name of your keypair in the «SSH Keypair» field
+1.	Allez sur le Github Cloudwatt dans le dépôt [applications/bundle-trusty-jenkins](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins)
+2.	Cliquez sur le fichier nommé `bundle-trusty-jenkins.heat.yml` (ou `bundle-trusty-jenkins.restore.heat.yml` pour [restore from backup](#backup))
+3.	Cliquez sur RAW, une page web apparait avec les détails du template
+4.	Enregistrez le fichier sur votre Pc. Vous pouvez utiliser le nom proposé par votre navigateur (il faudrait juste enlever le .txt)
+5.  Allez dans la section «[Stacks](https://console.cloudwatt.com/project/stacks/)»  de la console
+6.	Cliquez sur «Launch stack», puis «Template file» et sélectioner le fichier que vous venez d'enregistr sur votre PC, et pour finir cliquez sur «NEXT»
+7.	Donnez un nom à votre stack dans le champ «Stack name»
+8.	Entrez le nom de votre keypair dans le champ «SSH Keypair»
 9.	Enter your new Basic Auth username and password in their respective fields.
-10.	Choose your instance size using the «Instance Type» dropdown and click on «LAUNCH»
+10.	Choisissez la taille de votre instance dans le menu déroulant « Type d'instance » et cliquez sur «LANCER»
 
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
+La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
-If you've reached this point, you're already done! Go enjoy Jenkins!
+Si vous avez atteint ce point, alors y êtes arrivé! Profitez de Jenkins!
 
 ## So watt?
 
-The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
+Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, vous êtes maître(sse) à bord.
 
-You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante et votre clé privée (utilisateur par défaut cloud).
 
 ~~~ bash
 $ ssh «floating-IP» -l cloud -i /path/to/your/.ssh/keypair.pem
 ~~~
 
-#### The interesting directories are:
+#### Les dossiers importants sont:
 
-- `/etc/apache2/sites-available/default-jenkins.conf`: Apache2 configuration file
-- `/etc/htpasswd/.htpasswd`: Basic Auth username and password file.
-- `/root/jenkins-cli.jar`: Jenkins' CLI `.jar` file
-- `/var/lib/jenkins/`: Main Jenkins directory
+- `/etc/apache2/sites-available/default-jenkins.conf`: Fichier de configuration d'Apache2
+- `/etc/htpasswd/.htpasswd`: Fichier d'authentification de base username et password.
+- `/root/jenkins-cli.jar`: Jenkins' CLI ficher `.jar`
+- `/var/lib/jenkins/`: Dossier principal Jenkins
 - `/etc/default/jenkins`: Jenkins default settings upon startup, including HTTP port, prefix, webroot, UNIX user/group and more
-- `/usr/share/jenkins/jenkins.war`: Jenkins WAR file
-- `/var/cache/jenkins/war/`: Decompressed Jenkins WAR
-- `/var/log/jenkins/jenkins.log`: Jenkins' system level log file
+- `/usr/share/jenkins/jenkins.war`: Fichier WAR Jenkins
+- `/var/cache/jenkins/war/`: WAR Jenkins décompressé
+- `/var/log/jenkins/jenkins.log`: Fichier système log Jenkins
 
-Jenkins has an... interesting command-line interface (CLI), which works with a jar we conveniently placed at `/root/jenkins-cli.jar`.
-Input commands using the syntax shown below:
+Jenkins a une intéressante interface ligne de commande (CLI), qui fonctionne avec un jar que nous avons placé à `/root/jenkins-cli.jar`.
+
+Rentrez les commandes en utilisant les syntaxes ci-dessous:
 
 ~~~ bash
 $ java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080 «jenkins-cli-command»
 ~~~
 
-The uses for this vary; for ideas I recommend starting with `help`, which lists the possible commands. Tell us what you find!
+Les avantages sont multiples; Pour un début je recomman de commencer par `help`, qui fournit la liste des commandes possible. Partagez avec nous vos trouvailles!
 
-#### Other resources you could be interested in:
+#### Autres ressources qui pourraient vous être utiles:
 
 * [Jenkins Homepage](https://jenkins-ci.org/)
 * [Jenkins CLI Reference](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI)
@@ -237,4 +242,4 @@ The uses for this vary; for ideas I recommend starting with `help`, which lists 
 
 
 -----
-Have fun. Hack in peace.
+Amusez vous bien.
