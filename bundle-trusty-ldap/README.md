@@ -55,7 +55,8 @@ Une fois le répertoire cloné, vous trouvez, dans le répertoire `bundle-trusty
 ### Initialiser l'environnement
 
 Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis vous le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
-Source the downloaded file in your shell and enter your password when prompted to begin using the OpenStack clients.
+
+Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -115,7 +116,7 @@ parameters:
 
   volume_type:
     default: standard                       <-- Indiquer ici le type du volume par défaut
-    label: GitLab Volume Type
+    label: LDAP Volume Type
     description: Performance flavor of the linked Volume for LDAP Storage
     type: string
     constraints:
