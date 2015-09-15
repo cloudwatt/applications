@@ -4,11 +4,11 @@
 
 **Projet - Image actuellement non disponible...**
 
-Alfred Thaddeus Crane Pennyworth est le valet de Bruce Wayne dans Wayne Manor. il sait bien que Bruce est secretement Batman et [l'aide de manière  imaginable](https://wiki.jenkins-ci.org/display/JENKINS/Plugins). Apres [ une carrière bien varié ](https://wiki.jenkins-ci.org/display/JENKINS/Awards), Alfred Pennyworth a [ été employé comme valet dans la famille de Wayne ](https://wiki.jenkins-ci.org/pages/viewpage.action?pageId=58001258) when Bruce Wayne's parents were killed. Alfred [raised the young orphan](https://github.com/jenkinsci/jenkins/commits/master) alone and eventually aided him in his quest to [become Batman](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins). His [impressive skill-set](https://wiki.jenkins-ci.org/display/JENKINS/Awards) makes him Bruce's staunchest ally, boasting a formal demeanor that does little to hide the [intelligence](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Best+Practices) behind his eyes.
+Alfred Thaddeus Crane Pennyworth est le valet de Bruce Wayne dans Wayne Manor. il sait bien que Bruce est secretement Batman et [l'aide de manière  imaginable](https://wiki.jenkins-ci.org/display/JENKINS/Plugins). Apres [une carrière bien variée ](https://wiki.jenkins-ci.org/display/JENKINS/Awards), Alfred Pennyworth a [été employé comme valet dans la famille de Wayne ](https://wiki.jenkins-ci.org/pages/viewpage.action?pageId=58001258) quand les parents de Bruce ont été tués. Alfred [a élevé le jeune orphelin](https://github.com/jenkinsci/jenkins/commits/master) seul et l'a aidé finalement dans sa quête pour [devenir Batman](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins). His [impressive skill-set](https://wiki.jenkins-ci.org/display/JENKINS/Awards) makes him Bruce's staunchest ally, boasting a formal demeanor that does little to hide the [intelligence](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Best+Practices) behind his eyes.
 
 Jenkins est notre Alfred Pennyworth à nous.
 
-Jenkins, [historiquement appellé Hudson](https://en.wikipedia.org/wiki/Jenkins_%28software%29#History), est un magnifique outil. je ne suis pas apte à chanter ses louanges, [mais je ne suis pas le seul à le souhaiter](https://wiki.jenkins-ci.org/display/JENKINS/Awards). Pour comprendre la puissance de Jenkins, [ vérifier ce pourquoi les gens l'utilisent](http://www.google.com/search?ie=UTF-8&q=%22Dashboard+%5BJenkins%5D%22).
+Jenkins, [historiquement appellé Hudson](https://en.wikipedia.org/wiki/Jenkins_%28software%29#History), est un magnifique outil. Je ne suis pas apte à chanter ses louanges, [mais je ne suis pas le seul à le souhaiter](https://wiki.jenkins-ci.org/display/JENKINS/Awards). Pour comprendre la puissance de Jenkins, [vérifier ce pourquoi les gens l'utilisent](http://www.google.com/search?ie=UTF-8&q=%22Dashboard+%5BJenkins%5D%22).
 
 [Ou, faites une recherche Google.](http://lmgtfy.com/?q=jenkins)
 
@@ -18,7 +18,7 @@ Jenkins, [historiquement appellé Hudson](https://en.wikipedia.org/wiki/Jenkins_
 
 * Jenkins (jenkins) 1.627
 
-### les pré-requis pour déployer cette stack
+### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine dès cet instant:
 
@@ -30,7 +30,7 @@ Ceci devrait être une routine dès cet instant:
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturés à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Clowdwatt).
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturés à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
 
@@ -39,7 +39,7 @@ Vous pouvez ajuster les parametres de la stack à votre goût.
 Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version "Je lance en 1-clic" ou "Je lance avec la console" en cliquant sur [ce lien](#console)...
 
 
-## Que trouverez-vous dans le reférentiel
+## Tour du propriétaire
 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-jenkins/
 
@@ -47,7 +47,7 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-jenkins
 * `stack-start.sh`: Script de lancement de la stack. C'est un micro-script vous permettant d'économiser quelques copier-coller.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans la sortie de la stack.
 
-## Start-up
+## Démarrage
 
 ### Initialiser l'environnement
 
@@ -71,7 +71,7 @@ Dans le fichier `.heat.yml` (templates heat), vous trouverez en haut une section
 
 Le champs `username` et `password` fournissent les valeurs pour une authentification basique, un simple module d'authentication HTTP appartenant a Apache2, fournisant une legère sécurité au cas où quelqu'un essaierait de passer par votre IP. Du fait que Jenkins est seulement un outil de construction, aucune autre sécurité n'est implémentée par défaut, bien que vous êtes toujours libre d'en mettre plus vous-même.
 
-Dans ces templates heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre ` flavor`.
+Dans ces templates heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre `flavor`.
 
 Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Jenkins est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
 
@@ -107,7 +107,7 @@ parameters:
         description: Password must be between 6 and 24 characters
 
   flavor_name:
-    default: s1.cw.small-1                  <-- Mettez ici le nom de votre type d'instance
+    default: s1.cw.small-1                  <-- Mettez ici votre taille d'instance
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
