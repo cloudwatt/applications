@@ -32,7 +32,12 @@ Ceci devrait être une routine dès cet instant:
 
 Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturés à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Clowdwatt).
 
-vous pouvez ajuster les parametres de la stack à votre goût
+Vous pouvez ajuster les parametres de la stack à votre goût.
+
+### Au fait...
+
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version "Je lance en 1-clic" ou "Je lance avec la console" en cliquant sur [ce lien](#console)...
+
 
 ## Que trouverez-vous dans le reférentiel
 
@@ -68,7 +73,7 @@ Le champs `username` et `password` fournissent les valeurs pour une authentifica
 
 Dans ces templates heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre ` flavor`.
 
-Par défaut, le réseau et sous-réseau de la stack  sont générés pour la stack, dans lequel le serveur Jenkins est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
+Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Jenkins est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
 
 
 ~~~ yaml
@@ -144,7 +149,7 @@ Creating stack...
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Au bout de 5 minutes, la stack sera totallement opérationnelle. (Utiliser une montre pour voir le statut en temps réel)
+Au bout de **5 minutes**, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande `watch` pour voir le statut en temps réel).
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -171,7 +176,7 @@ Alfred Pennyworth devrait être fier.
 
 ### En arrière plan
 
-Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire pour le template heat qui:
+Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire pour le template heat qui :
 
 * Démarre une instance basée Ubuntu Trusty Tahr
 * Fixe une IP-flottante exposée
@@ -179,9 +184,13 @@ Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire po
 
 <a name="console" />
 
-### Je préfère laisser shell pour les tortues
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Si vous gérez un terminal aussi bien qu'un Testudo graeca le ferait, alors vous voudriez peut-être créer vos stacks Jenkins depuis notre console!
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard vous avez votre Jenkins !  
+
+### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Jenkins :
 
 Pour créer une stack Jenkins depuis la console:
 
@@ -202,7 +211,7 @@ Si vous avez atteint ce point, alors y êtes arrivé! Profitez de Jenkins!
 
 ## So watt?
 
-Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, vous êtes maître(sse) à bord.
+Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante et votre clé privée (utilisateur par défaut cloud).
 
@@ -229,7 +238,7 @@ Rentrez les commandes en utilisant les syntaxes ci-dessous:
 $ java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080 «jenkins-cli-command»
 ~~~
 
-Les avantages sont multiples; Pour un début je recomman de commencer par `help`, qui fournit la liste des commandes possible. Partagez avec nous vos trouvailles!
+Les avantages sont multiples. Pour un début je recommande commencer par `help`, qui fournit la liste des commandes possible. Partagez avec nous vos trouvailles!
 
 #### Autres ressources qui pourraient vous être utiles:
 
@@ -242,4 +251,4 @@ Les avantages sont multiples; Pour un début je recomman de commencer par `help`
 
 
 -----
-Amusez vous bien.
+Have fun. Hack in peace.
