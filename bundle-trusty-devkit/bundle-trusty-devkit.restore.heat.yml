@@ -1,0 +1,229 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Jenkins stack
+
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-2
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
+
+  volume_size:
+    default: 10
+    label: GitLab Volume Size
+    description: Size of Volume for GitLab Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 10, max: 10000 }
+        description: Volume must be at least 10 gigabytes
+
+  volume_type:
+    default: standard
+    label: GitLab Volume Type
+    description: Performance flavor of the linked Volume for GitLab Storage
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
+
+  backup_id:
+    label: Backup ID
+    description: Backup from which to create Volume
+    type: string
+
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 8081, port_range_max: 8081 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  volume:
+    type: OS::Cinder::Volume
+    properties:
+      backup_id: { get_param: backup_id }
+      size: { get_param: volume_size }
+      volume_type: { get_param: volume_type }
+      metadata:
+        fs_type: ext4
+
+  volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
+      volume_id: { get_resource: volume }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+  gitlab_config_set:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        write_files:
+        - path: /etc/gitlab/gitlab.rb
+          permissions: '0755'
+          content:
+            str_replace:
+              template: |
+                external_url "https://$floating_ip$/"
+                # GitLab Hostname for Git URLs
+                gitlab_rails['gitlab_host'] = '$floating_ip$'
+                gitlab_rails['gitlab_port'] = '443'
+                gitlab_rails['gitlab_https'] = 'true'
+                # Web Setup
+                nginx['enable'] = false
+                web_server['external_users'] = ['www-data']
+                # Pretty Verification Emails
+                gitlab_rails['gitlab_email_from'] = 'gitlab@no-reply.com'
+                gitlab_rails['gitlab_email_display_name'] = 'GitLab'
+                logrotate['enable'] = false
+                # LDAP
+                # For omnibus packages
+                gitlab_rails['ldap_enabled'] = true
+                gitlab_rails['ldap_servers'] = YAML.load <<-EOS # remember to close this block with 'EOS' below
+                main: # 'main' is the GitLab 'provider ID' of this LDAP server
+                  label: 'LDAP' # A human-friendly name for your LDAP server.
+                  host: 'localhost'
+                  port: 389
+                  uid: 'uid'
+                  method: 'plain' # "tls" or "ssl" or "plain"
+                  #bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
+                  #password: '_the_password_of_the_bind_user'
+
+                  # This setting specifies if LDAP server is Active Directory LDAP server.
+                  # For non AD servers it skips the AD specific queries.
+                  # If your LDAP server is not AD, set this to false.
+                  active_directory: false
+                  # If allow_username_or_email_login is enabled, GitLab will ignore everything
+                  # after the first '@' in the LDAP username submitted by the user on login.
+                  # Example: 'jane.doe@example.com' --> 'jane.doe'
+                  allow_username_or_email_login: false
+                  # To control number of active users on your GitLab,
+                  # enable this setting to keep new users blocked until they have been cleared by admin
+                  block_auto_created_users: false
+                  # Base where we can search for users
+                  # Ex. ou=People,dc=gitlab,dc=example
+                  base: 'ou=People,dc=devkit,dc=cw'
+                  # Filter LDAP users
+                  user_filter: ''
+                EOS
+              params:
+                $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+        - path: /etc/stack_public_entry_point
+          permissions: '0755'
+          content:
+            str_replace:
+              template: |
+                $floating_ip$
+              params:
+                $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+
+  reset_gitlab:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: |
+        #!/bin/bash
+        gitlab-ctl reconfigure
+
+  init_gitlab:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: gitlab_config_set }
+      - config: { get_resource: reset_gitlab }
+
+  config_nginx:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+            sudo sed -i "s/FLOATING_IP/$floating_ip$/g" /etc/nginx/sites-available/devkit.conf
+            sudo service nginx restart
+          params:
+            $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+
+  server_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: init_gitlab }
+        type: multipart
+      - config: { get_resource: config_nginx }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 4100baae-26f1-4f10-aa1e-a2c8fa691231
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_init
+
+outputs:
+  floating_ip_url:
+    description: DevKit URL
+    value:
+      str_replace:
+        template: http://$floating_ip$/
+        params:
+          $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
