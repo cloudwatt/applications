@@ -186,13 +186,11 @@ Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire po
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard vous avez votre Jenkins !  
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !  
 
 ### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Jenkins :
-
-Pour créer une stack Jenkins depuis la console:
 
 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/bundle-trusty-jenkins](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins)
 2.	Cliquez sur le fichier nommé `bundle-trusty-jenkins.heat.yml` (ou `bundle-trusty-jenkins.restore.heat.yml` pour [restore from backup](#backup))
@@ -207,7 +205,7 @@ Pour créer une stack Jenkins depuis la console:
 
 La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
-Si vous avez atteint ce point, alors y êtes arrivé! Profitez de Jenkins!
+Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Jenkins!
 
 ## So watt?
 
