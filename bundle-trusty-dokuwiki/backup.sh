@@ -3,7 +3,7 @@
 USAGE="\
 Usage: backup.sh <STACK_NAME> <PATH_TO_KEYPAIR>
 
-Creates a backup for volume of GitLab Stack"
+Creates a backup for volume of Dokuwiki Stack"
 
 STACK_NAME="$1"
 KEYPAIR="$2"
