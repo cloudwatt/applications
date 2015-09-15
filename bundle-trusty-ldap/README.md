@@ -27,7 +27,7 @@ Ce devrait être la routine maintenant :
 * un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
-* L'ID du sous-réseau contenant le serveur qui doit se connecter à l'instance LDAP.
+* L'ID du sous-réseau contenant le serveur qui doit se connecter à l'instance LDAP
 
 ### Taille de l'instance
 
@@ -35,13 +35,13 @@ Par défaut, le script propose un déploiement sur une instance de type " Small 
 
 En outre, notre stack LDAP est adaptée pour faire bon usage du stockage bloc Cinder. Cela garantit la protection de vos projets et vous permet de ne payer que pour l'espace que vous utilisez. La taille du volume peut être ajustée dans la console. La stack LDAP peut supporter des dizaines à des teraoctets d'espace de stockage.
 
-Les paramètres de la stack sont bien sur modifiables à volonté.
+Les paramètres de la stack sont, bien sur, modifiables à volonté.
 
 ### Au fait...
 
 Comme pour l'application Gilab, le  script `backup.sh` et le template heat `.restore` vous permettent de faire usage du stockage bloc Cinder par la création de volume de sauvegarde. Ainsi vous pouvez sauvegarder votre base LDAP et la restaurer à votre convenance en utilisant le template heat `.restore`.
 
-A la fois les stacks natives ou celles 'restaurées' peuvent être lancées depuis la [console](#console), mais pour ceux qui préfèrent les lignes de commande, notre script `stack-start.sh` vous permet de créer les 2 types de stack facilement depuis un [terminal](#startup).
+A la fois les stacks natives ou celles "restaurées" peuvent être lancées depuis la [console](#console), mais pour ceux qui préfèrent les lignes de commande, notre script `stack-start.sh` vous permet de créer les 2 types de stack facilement depuis un [terminal](#startup).
 
 Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre LDAP ...)] (#backup)
 
@@ -185,10 +185,10 @@ qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors a
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour exécuter le script heat :
 
 * démarrer une instance basée sur Ubuntu Trusty Tahr
-* attaché une IP flottante pour l’application LAM
+* attacher une IP flottante pour l’application LAM
 * démarrer, attacher et formater un volume de stockage pour LDAP ou en restaurer un à partir d'un id de backup
 * reconfigurer LDAP pour que le stockage des données se fasse sur le volume
-* Ecrire un guide simple dans sorties de la stack (comment utiliser LDAP depuis un server d’un sous-réseau) <<< how to use the LDAP server from the provided subnet's servers>>>
+* Ecrire un guide simple dans les paramètres de sorties de la stack sur comment utiliser LDAP depuis un server d’un sous-réseau
 
 <a name="console" />
 
@@ -254,21 +254,22 @@ http://«lam-public-ip»/
 
 Pour ceux qui souhaitent plus d'informations sur ces instructions :
 
-1.  First, from the terminal on your computer, run the command to obtain the *router-interface-ip*, which you will need in the next few steps. The variables will already be inserted, so you can just copy-paste the line into the terminal. Neat right?
-2. Armed with the *router-interface-ip*, connect with SSH to a server in the provided subnet and enter the *ldap_access_configuration* command. Running `sudo ip route` will show you the route that was just added, if you're curious.
-3. Verify that you can actually connect to LDAP by running `curl «ldap_ip_address_via_router»` with the *ldap_ip_address_via_router* found in the output.
+1.  Tout d'abord, depuis le terminal de votre ordinateur, lancer la commande pour obtenir la *router-interface-ip* dont vous aurez besoin dans les prochaines étapes. Les variables seront déjà pré-provisionnées donc vous n'avez juste qu'a copier-coller la ligne dans votre terminal.
+2. Armé de cette information *router-interface-ip*, connectez vous en SSH à un serveur dans le sous-réeau fourni et lancez la commande  *ldap_access_configuration*. `sudo ip route` vous montrera la route que vous venez d'ajouter.
+3. Vérifiez que vous pouvez cous connecter à LDAP en lancant `curl «ldap_ip_address_via_router»` avec la valeur de  *ldap_ip_address_via_router* que vous trouvez dans les paramètres de sortie de la stack.
 
-Voila ! Vous pouvez maintenance accéder en toute sécurité à la base LDAP depuis vos autres serveurs. LAM, quant à lui, est publique et accessible à travers n'importe quel navigateur depuis l'adrees IP *floating_ip_url*.
+Voila ! Vous pouvez maintenance accéder en toute sécurité à la base LDAP depuis vos autres serveurs. LAM, quant à lui, est publique et accessible à travers n'importe quel navigateur depuis l'adresse IP *floating_ip_url*.
 
 <a name="backup" />
 
 ## LAM (LDAP Access Manager)
 
-Except not really: LDAP Account Manager presents your LDAP database as if it were a user management tool, one of it's most common uses. It also provides a more development/broad-use oriented interface, but for most users the main panel is best, as it is much more intuitive and requires little to no knowledge of LDAP.
+LDAP Account manager présente votre base de données LDAP comme si elle était un outil de gestion des utilisateurs ce qui son utilisation la plus courante. Il fournit également une interface orientée développement / large utilisation. Mais pour la plupart des utilisateurs, le panneau principal est le meilleur car il est intuitif et nécessite peu ou aucune connaissance de LDAP.
 
-By default, the password for the main login (username: Administrator), the *master* password, and the *server preferences* password are all **c10udw477**, but each can be changed individually.
+Par défaut, le mot de passe pour la connexion principale (nom d'utilisateur: Administrator), le mot de passe *master* et le mot de passe des *server preferences* sont tous par défaut à **c10udw477**, mais chacun d'entre eux peut être modifié individuellement.
 
-Try it out, tweak it's configuration, read it's manual if you wish: LAM is very modular and I'm sure it can be easily structured to meet any needs you may have in an LDAP GUI. However if you don't want it, or if fool-proof security is very important to you, can always just disassociate its floating-IP, either from the console in the «Access & Security» tab, or from the command line.
+Essayez-le, peaufinez sa configuration, lisez son manuel utilisateur si vous le souhaitez: LAM est très modulaire et je suis sûr que son interface graphique peut être facilement configurée de manière à répondre à tous les besoins que vous pourriez avoir. Toutefois, si vous ne voulez pas l'utiliser ou si les considérations de sécurité sont très importantes pour vous, vous pouvez toujours juste dissocier son IP flottante, soit à partir de la console dans l'onglet «Accès et Sécurité», ou par ligne de commande.
+
 
 ~~~ bash
 $ nova help floating-ip-disassociate
@@ -297,7 +298,8 @@ $ cinder backup-list
 +------+-----------+-----------+-----------------------------------+------+--------------+---------------+
 ~~~
 
-Toutefois, notez que même si cette méthode permet de restaurer facilement votre service, <<<your local Git tools>>>  ne prendra pas en compte le changement d’adresse IP. Votre paire de clés SS reste valide mais vous devez vous assurer de **corriger any hosts and project remote addresses ** avant de continuer votre travail.
+Toutefois, notez que même si cette méthode permet de restaurer facilement votre service LDAP, les services s'interfaçant avec LDAP, eux, ne prendront pas en compte le changement d’adresse IP. Les adresses IP internes peuvent devenir invalides et vous devez vous assurer de **corriger les routes IP** sur vos autres serveurs avant de continuer votre travail.
+
 
 ## So watt?
 
