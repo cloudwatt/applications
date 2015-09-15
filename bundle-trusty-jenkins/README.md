@@ -170,7 +170,7 @@ PENNYWORTH  http://70.60.637.17
 ~~~
 
 Comme indiqué ci-dessus, il va analyser les IP flottantes attribuées à votre stack dans un lien URL.
-Vous pouvez alors cliquer ou le coller dans un navigateur de votre choix, confirmer l'utilisation du certificat auto-signé, et se prélasser dans la gloire d'une nouvelle instance Jenkins
+Vous pouvez alors cliquer ou le coller dans un navigateur de votre choix, confirmer l'utilisation du certificat auto-signé, et se prélasser dans la gloire d'une nouvelle instance Jenkins.
 
 Alfred Pennyworth devrait être fier.
 
@@ -184,11 +184,9 @@ Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire po
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+## C’est bien tout ça, mais...
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !  
-
-### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Jenkins :
 
@@ -200,12 +198,17 @@ Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Jenkin
 6.	Cliquez sur «Launch stack», puis «Template file» et sélectioner le fichier que vous venez d'enregistr sur votre PC, et pour finir cliquez sur «NEXT»
 7.	Donnez un nom à votre stack dans le champ «Stack name»
 8.	Entrez le nom de votre keypair dans le champ «SSH Keypair»
-9.	Enter your new Basic Auth username and password in their respective fields.
+9.	Entrez votre nouvel Basic Auth username et mot de passe dans les champs indiqués
 10.	Choisissez la taille de votre instance dans le menu déroulant « Type d'instance » et cliquez sur «LANCER»
 
 La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
-Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Jenkins!
+Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Jenkins !
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !  
+
 
 ## So watt?
 
@@ -238,7 +241,7 @@ $ java -jar /root/jenkins-cli.jar -s http://127.0.0.1:8080 «jenkins-cli-command
 
 Les avantages sont multiples. Pour un début je recommande commencer par `help`, qui fournit la liste des commandes possible. Partagez avec nous vos trouvailles!
 
-#### Autres ressources qui pourraient vous être utiles:
+#### Autres ressources qui pourraient vous être utiles :
 
 * [Jenkins Homepage](https://jenkins-ci.org/)
 * [Jenkins CLI Reference](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI)
