@@ -229,8 +229,6 @@ You will find three steps, not necessarily in the correct order, to aid you on y
 Booty, of course, being access to your new LDAP database from a server in the provided subnet.
 The steps should look similar to this:
 
-##
-
 **router-interface-ip** : Find given subnet's router-interface IP with:
 
 ~~~ bash
@@ -250,8 +248,6 @@ $ sudo ip route add «ldap-through-router-ip» via «router-interface-ip»
 **floating_ip_url** : LDAP Account Manager External URL
 
 http://«lam-public-ip»/
-
-##
 
 For those who like a little more instruction in their instructions:
 
