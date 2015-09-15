@@ -297,7 +297,7 @@ $ cinder backup-list
 +------+-----------+-----------+-----------------------------------+------+--------------+---------------+
 ~~~
 
-Remember however, that while we have greatly simplified the restoration process, your local Git tools will not take into account changes in IP address. SSH Keys will still be valid, but you should make sure to correct any hosts and project remote addresses before continuing your work.
+Remember however, that while we have greatly simplified the restoration process, your other services interfacing with LDAP will not take into account changes in IP address. Internal IP addresses may become invalid, so you should make sure to correct any relevant ip routes on your other servers before continuing your work.
 
 ## So watt?
 
