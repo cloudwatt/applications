@@ -229,8 +229,6 @@ $ heat output-show «stack-name» --all
 Vous trouverez trois étapes à suivre pour accéder à votre nouvelle base LDAP depuis un serveur dans le sous-réseau indiqué.
 Ces étapes ressemblent à ceci :
 
-##
-
 **router-interface-ip** : Trouve l'interface IP du sous-réseau avec : 
 
 ~~~ bash
@@ -249,8 +247,6 @@ $ sudo ip route add «ldap-through-router-ip» via «router-interface-ip»
 **floating_ip_url** : LDAP Account Manager External URL
 
 http://«lam-public-ip»/
-
-##
 
 Pour ceux qui souhaitent plus d'informations sur ces instructions :
 
