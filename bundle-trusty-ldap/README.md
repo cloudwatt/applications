@@ -9,7 +9,7 @@ Ce réseau de LDAP (et un autre réseau de votre choix) sera relié par un route
 
 Comme pour l’application GitLab, toutes les données du LDAP seront stockées dans un volume dédié qui pourra être sauvegardé sur demande.
 
-Par défaut, l’application LAM (LDAP Access Manager) sera également exécutée sur l'instance et accessible par port 443 via HTTPS (automatiquement redirigé depuis le port 80).
+Par défaut, l’application LAM (LDAP Account Manager) sera également exécutée sur l'instance et accessible par port 443 via HTTPS (automatiquement redirigé depuis le port 80).
 A travers l’application LAM vous serez en mesure de modifier votre base de données LDAP rapidement et efficacement grâce à une interface intuitive même pour les moins aguerris à LDAP.
 
 ## Préparations
@@ -194,9 +194,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait non. LDAP ne s'y prête pas alors pas de 1-clic pour cette application dans la bibliothèque Cloudwatt. 
-La stack peut se lancer completement depuis la console (cf ci-dessous) mais pour autoriser d'autres serveurs du sous-réseau à se connecter, vous allez devoir vous connecterà ces serveurs en SSH.  
-
+Bon... en fait non. LDAP ne s'y prête pas alors pas de 1-clic pour cette application dans la bibliothèque Cloudwatt.
+La stack peut se lancer completement depuis la console (cf ci-dessous) mais pour autoriser d'autres serveurs du sous-réseau à se connecter, vous allez devoir vous connecterà ces serveurs en SSH.
 
 ### C’est bien tout ça (bis), mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
@@ -229,13 +228,13 @@ $ heat output-show «stack-name» --all
 Vous trouverez trois étapes à suivre pour accéder à votre nouvelle base LDAP depuis un serveur dans le sous-réseau indiqué.
 Ces étapes ressemblent à ceci :
 
-**router-interface-ip** : Trouve l'interface IP du sous-réseau avec : 
+**router-interface-ip** : Trouve l'interface IP du sous-réseau avec :
 
 ~~~ bash
 $ neutron router-port-list «ldap-router-name» | grep «provided-subnet-id» | cut -d\"\\\"\" -f8
 ~~~
 
-**ldap_ip_address_via_router** : Une fois que l'accès à LDAP a été configuré comme indiqué, 
+**ldap_ip_address_via_router** : Une fois que l'accès à LDAP a été configuré comme indiqué,
 LDAP sera accessible depuis ldap://«ldap-through-router-ip»:389
 
 **ldap_access_configuration** : Depuis un terminal SSH de n'importe quel serveur du sous-réseau (passé comme paramètre), ajoutez l'accès à LDAP en tapant :
@@ -256,9 +255,7 @@ Pour ceux qui souhaitent plus d'informations sur ces instructions :
 
 Voila ! Vous pouvez maintenance accéder en toute sécurité à la base LDAP depuis vos autres serveurs. LAM, quant à lui, est publique et accessible à travers n'importe quel navigateur depuis l'adresse IP *floating_ip_url*.
 
-<a name="backup" />
-
-## LAM (LDAP Access Manager)
+## LAM (LDAP Account Manager)
 
 LDAP Account manager présente votre base de données LDAP comme si elle était un outil de gestion des utilisateurs ce qui son utilisation la plus courante. Il fournit également une interface orientée développement / large utilisation. Mais pour la plupart des utilisateurs, le panneau principal est le meilleur car il est intuitif et nécessite peu ou aucune connaissance de LDAP.
 
@@ -326,7 +323,7 @@ Quelques ressources qui pourraient vous intéresser :
 * [Ubuntu OpenLDAP Server Guide](https://help.ubuntu.com/lts/serverguide/openldap-server.html)
 * [LAM Manual](https://www.ldap-account-manager.org/static/doc/manual-onePage/index.html)
 * [OpenLDAP Documentation Catalog](http://www.openldap.org/doc/)
-* [OpenLDAP  Independent Publications](http://www.openldap.org/pub/)
+* [OpenLDAP Independent Publications](http://www.openldap.org/pub/)
 * [Online OpenLDAP Man Pages](http://www.openldap.org/software/man.cgi)
 
 

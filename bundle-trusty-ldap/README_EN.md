@@ -257,8 +257,6 @@ For those who like a little more instruction in their instructions:
 
 Voila! You can now securely access LDAP from your other servers. LAM is public, however, and can be used through any browser from the *floating_ip_url*.
 
-<a name="backup" />
-
 ## LAM (Light Attack Munitions)
 
 Except not really: LDAP Account Manager presents your LDAP database as if it were a user management tool, one of it's most common uses. It also provides a more development/broad-use oriented interface, but for most users the main panel is best, as it is much more intuitive and requires little to no knowledge of LDAP.
@@ -270,6 +268,8 @@ Try it out, tweak it's configuration, read it's manual if you wish: LAM is very 
 ~~~ bash
 $ nova help floating-ip-disassociate
 ~~~
+
+<a name="backup" />
 
 ## Back up and Restoration
 
@@ -286,11 +286,11 @@ Restoration is as simple as building another stack, although this time with the 
 ~~~ bash
 $ cinder backup-list
 
-+------+-----------+-----------+-----------------------------------+------+--------------+---------------+
-|  ID  | Volume ID |   Status  |                Name               | Size | Object Count |   Container   |
-+------+-----------+-----------+-----------------------------------+------+--------------+---------------+
++------+-----------+-----------+---------------------------------+------+--------------+---------------+
+|  ID  | Volume ID |   Status  |               Name              | Size | Object Count |   Container   |
++------+-----------+-----------+---------------------------------+------+--------------+---------------+
 | XXXX | XXXXXXXXX | available | ldap-backup-2025/10/23-07:27:69 |  10  |     206      | volumebackups |
-+------+-----------+-----------+-----------------------------------+------+--------------+---------------+
++------+-----------+-----------+---------------------------------+------+--------------+---------------+
 ~~~
 
 Remember however, that while we have greatly simplified the restoration process, your other services interfacing with LDAP will not take into account changes in IP address. Internal IP addresses may become invalid, so you should make sure to correct any relevant ip routes on your other servers before continuing your work.
