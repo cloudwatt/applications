@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: All-in-one Jenkins stack
+description: All-in-one DevKit stack
 
 
 parameters:
@@ -32,8 +32,8 @@ parameters:
 
   volume_size:
     default: 10
-    label: GitLab Volume Size
-    description: Size of Volume for GitLab Storage (Gigabytes)
+    label: DevKit Volume Size
+    description: Size of Volume for DevKit Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 10, max: 10000 }
@@ -41,8 +41,8 @@ parameters:
 
   volume_type:
     default: standard
-    label: GitLab Volume Type
-    description: Performance flavor of the linked Volume for GitLab Storage
+    label: DevKit Volume Type
+    description: Performance flavor of the linked Volume for DevKit Storage
     type: string
     constraints:
       - allowed_values:
