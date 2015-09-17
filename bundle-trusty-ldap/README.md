@@ -22,6 +22,7 @@ A travers l’application LAM vous serez en mesure de modifier votre base de don
 ### Les pré-requis pour déployer cette stack
 
 Ce devrait être la routine maintenant :
+
 * un accès internet
 * un shell Linux
 * un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
@@ -43,11 +44,12 @@ Comme pour l'application Gilab, le  script `backup.sh` et le template heat `.res
 
 A la fois les stacks natives ou celles "restaurées" peuvent être lancées depuis la [console](#console), mais pour ceux qui préfèrent les lignes de commande, notre script `stack-start.sh` vous permet de créer les 2 types de stack facilement depuis un [terminal](#startup).
 
-Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre LDAP ...)] (#backup)
+Les sauvegardes doivent être initialisées avec notre script de sauvegarde `backup.sh`et la restauration prend environ 5 minutes du début au plein retour de la fonctionnalité. [(En savoir plus sur la sauvegarde de votre LDAP ...)](#backup)
 
 ## Tour du propriétaire
 
 Une fois le répertoire cloné, vous trouvez, dans le répertoire `bundle-trusty-ldap/`:
+
 * `bundle-trusty-gitlab.ldap.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `bundle-trusty-ldap.restore.heat.yml` : Template d’orchestration HEAT. Il déploie l’infrastructure nécessaire et restaure vos données depuis un backup !
 * `backup.sh` : Script de création de sauvegarde. Ce script magique permet la sauvegarde de vos données dans un volume de stockage bloc prêt à l’emploi en cas de malheur (redéploiement en seulement 5 minutes)
@@ -74,8 +76,9 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 ### Ajuster les paramètres
 
 Dans le fichier `bundle-trusty-gitlab.ldap.yml` vous trouverez en haut une section `parameters`. Les deux seuls paramètres obligatoires à ajuster sont
-* celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur
-* et celui nommé `subnet_id`
+
+* Celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur
+* Celui nommé `subnet_id`
 
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance, la taille du volume, et le type du stockage en jouant sur les paramètres `flavor`, `volume_size` et `volume_type`.
 
@@ -171,11 +174,12 @@ $ watch -n 1 heat stack-list
 
 ### Enjoy
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh`.
+Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh`
 
 ~~~ bash
 $ ./stack-get-url.sh DAPPER
 DAPPER  http://70.60.637.17
+
 ~~~
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et confirmer votre intérêt en **acceptant le certificat de sécurité**.
@@ -223,6 +227,7 @@ Dans les paramètres de sortie de la stack, visible soit dans l'onglet "Vue d'En
 
 ~~~ bash
 $ heat output-show «stack-name» --all
+
 ~~~
 
 Vous trouverez trois étapes à suivre pour accéder à votre nouvelle base LDAP depuis un serveur dans le sous-réseau indiqué.
@@ -232,6 +237,7 @@ Ces étapes ressemblent à ceci :
 
 ~~~ bash
 $ neutron router-port-list «ldap-router-name» | grep «provided-subnet-id» | cut -d\"\\\"\" -f8
+
 ~~~
 
 **ldap_ip_address_via_router** : Une fois que l'accès à LDAP a été configuré comme indiqué,
@@ -241,6 +247,7 @@ LDAP sera accessible depuis ldap://«ldap-through-router-ip»:389
 
 ~~~ bash
 $ sudo ip route add «ldap-through-router-ip» via «router-interface-ip»
+
 ~~~
 
 **floating_ip_url** : LDAP Account Manager External URL
@@ -276,6 +283,7 @@ Sauvegarder votre travail semble une bonne idée, n’est-ce pas ? Nous avons d�
 
 ~~~ bash
 $ ./backup.sh DAPPER
+
 ~~~
 
 Et 5 minutes plus tard, vous retrouvez votre environnement LDAP.
@@ -289,6 +297,7 @@ $ cinder backup-list
 +------+-----------+-----------+-----------------------------------+------+--------------+---------------+
 | XXXX | XXXXXXXXX | available | ldap-backup-2025/10/23-07:27:69   |  10  |     206      | volumebackups |
 +------+-----------+-----------+-----------------------------------+------+--------------+---------------+
+
 ~~~
 
 Toutefois, notez que même si cette méthode permet de restaurer facilement votre service LDAP, les services s'interfaçant avec LDAP, eux, ne prendront pas en compte le changement d’adresse IP. Les adresses IP internes peuvent devenir invalides et vous devez vous assurer de **corriger les routes IP** sur vos autres serveurs avant de continuer votre travail.

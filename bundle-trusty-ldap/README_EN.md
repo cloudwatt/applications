@@ -71,6 +71,7 @@ $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
 $ [whatever mind-blowing stuff you have planned...]
+
 ~~~
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
@@ -179,6 +180,7 @@ Once all of this done, you can run the `stack-get-url.sh` script.
 ~~~ bash
 $ ./stack-get-url.sh DAPPER
 DAPPER  http://70.60.637.17
+
 ~~~
 
 As shown above, it will parse the assigned floating-IP of your stack into a URL link. You can then click or paste this into your browser of choice, confirm the use of the self-signed certificate, and bask in the glory of a secure LDAP instance.
@@ -223,6 +225,7 @@ Thankfully, I made it easy. In the output of the stack, either in the Overview t
 
 ~~~ bash
 $ heat output-show «stack-name» --all
+
 ~~~
 
 You will find three steps, not necessarily in the correct order, to aid you on your quest for booty.
@@ -233,6 +236,7 @@ The steps should look similar to this:
 
 ~~~ bash
 $ neutron router-port-list «ldap-router-name» | grep «provided-subnet-id» | cut -d\"\\\"\" -f8
+
 ~~~
 
 **ldap_ip_address_via_router** : Once access to LDAP has been configured as shown here,
@@ -243,6 +247,7 @@ LDAP will then be accessible from ldap://«ldap-through-router-ip»:389
 
 ~~~ bash
 $ sudo ip route add «ldap-through-router-ip» via «router-interface-ip»
+
 ~~~
 
 **floating_ip_url** : LDAP Account Manager External URL
@@ -267,6 +272,7 @@ Try it out, tweak it's configuration, read it's manual if you wish: LAM is very 
 
 ~~~ bash
 $ nova help floating-ip-disassociate
+
 ~~~
 
 <a name="backup" />
@@ -278,6 +284,7 @@ Thankfully we've worked hard to make saving your work quick and easy.
 
 ~~~ bash
 $ ./backup.sh DAPPER
+
 ~~~
 
 And five minutes later you're back in business and your conscience is at ease!
@@ -291,6 +298,7 @@ $ cinder backup-list
 +------+-----------+-----------+---------------------------------+------+--------------+---------------+
 | XXXX | XXXXXXXXX | available | ldap-backup-2025/10/23-07:27:69 |  10  |     206      | volumebackups |
 +------+-----------+-----------+---------------------------------+------+--------------+---------------+
+
 ~~~
 
 Remember however, that while we have greatly simplified the restoration process, your other services interfacing with LDAP will not take into account changes in IP address. Internal IP addresses may become invalid, so you should make sure to correct any relevant ip routes on your other servers before continuing your work.
