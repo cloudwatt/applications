@@ -221,6 +221,8 @@ Each tool will need to be configured, however. It won't take long: I've written 
 
 Getting your DevKit tools ready is simple, but maybe not the first time: follow this guide and you will be good to go in no time. For the sake of simplicity, we'll omit the IP address when naming links. Since the DevKit uses self-signed SSL certificates, it rubs a few browsers the wrong way, **Firefox worst of all**. (You've been warned.) Don't worry about what your browser says, validate the SSL exceptions and whatnot, and from then on it shouldn't bother you any further.
 
+#### LAM
+
 **LAM** can be found at `/lam`, and password for the main login (username: Administrator), the *master* password, and the *server preferences* password are all **c10udw477** by default. Just log in to the main login for now.
 
 ![LAM Login](img/lam_login.png)
@@ -245,7 +247,19 @@ Do not save your new user account yet! First, set the user's password: the butto
 
 ![Random password](img/random_pw.png)
 
-Alright, done creating a user! These users cannot access LAM, but they *can* change their own password using the Dokuwiki account settings page.
+Alright, done creating a user! **Make sure to save the user before exiting.** These users cannot access LAM by default, but this can be changed through the `Edit server profiles` LAM configuration page.
+
+![LAM Main Login Settings](img/lam_login_settings.png)
+
+Before moving on to the next tool, we recommend you change the *master* password (for `Edit general settings`) and the *server preferences* password (for `Edit server profiles`). Log out of LAM (top-right) to return to the login page. From the login page you can access the two LAM configuration pages (also top-right). Remember that all LAM passwords are **c10udw477** by default.
+
+`Edit general settings`
+![LAM Change Master Password](img/lam_master_pw.png)
+
+`Edit server profiles`
+![LAM Change Master Password](img/lam_confmain_pw.png)
+
+#### GitLab
 
 **GitLab** is next! You may have noticed you fell onto the GitLab login page when you entered the DevKit IP address. We put GitLab at the root to simplify the usage of Git. Before you begin using GitLab, you will want to configure the admin account.
 
@@ -271,9 +285,13 @@ The only setting that is truly important for the DevKit is likely the `Sign-up e
 
 ![GitLab settings: Sign-in Restrictions](img/gitlab_settings2.png)
 
-**Don't forget to save at the bottom of the Settings page!** If you don't save, none of the changes will be taken into account. Also remember that only the *root* account has access to the administrative section of GitLab, and that it is NOT managed by LDAP.
+**Don't forget to save at the bottom of the Settings page!** If you don't save, none of the changes will be taken into account. Also remember that only the *root* account has access to the administrative section of GitLab, and that the *root* account is NOT managed by LDAP.
+
+On a side note, if you ever need to receive mail from the DevKit (whichever tool it's from), *check your Spam*. Email from fresh new servers behind an domain-less IP address is a surefire way to the Spam folder, so make that your first stop after your inbox.
 
 That's it for the GitLab setup! Once you are satisfied with the settings, log out of the *root* account and head on to `/dokuwiki`!
+
+#### Dokuwiki
 
 **Dokuwiki** has it's own port, `:8081`, so validate the HTTPS certificate again (depending on your browser) and you will reach the homepage, `:8081/doku.php`. (For convenience, `/dokuwiki` rewrites to `:8081`.)
 
@@ -287,11 +305,12 @@ A few things of note here:
 
 * Name the wiki whatever you wish.
 * You definitely want ACL enabled.
-* The `Superuser` **must be a valid LDAP user**.
-* The `Real Name` and `E-Mail` fields will not be taken into account at all, and will be replaced with what you entered in LAM (LDAP).
-* The password must be the one for the LDAP user you entered above.
+* The `Superuser` **must be a valid LDAP user**. They will be the only one with access to the Dokuwiki admin panel by default.
+* The `Real Name` and `E-Mail` and `Password` fields will not be taken into account at all, and will be replaced with what you entered in LAM (LDAP).
 * Set the ACL level to suit your needs.
-* Allowing users to register themselves is counterproductive, unless you don't mind your wiki being a free-for-all.
+* Allowing users to register themselves is counterproductive, unless you don't mind your wiki being a free-for-all. LDAP users will automatically have access.
+
+Below it will ask you to pick a license for your wiki, study up if you wish, then make your pick and save. Dokuwiki is now ready: sign in and go to `:8081/doku.php?id=wiki:welcome` to start using your wiki!
 
 <================================ HERE
 
