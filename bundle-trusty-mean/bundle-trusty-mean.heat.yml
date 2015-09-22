@@ -58,7 +58,7 @@ resources:
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
 
-  floating_ip_url:
+  floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
@@ -67,7 +67,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: b9091975-dc3a-4455-ac0b-9bdca75d167d
+      image: 35ce027f-0df6-464a-beef-08736dad876b
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
