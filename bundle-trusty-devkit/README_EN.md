@@ -9,10 +9,11 @@ I present to you, hackers and gentlefolk, a true gem of a bundle: the DevKit.
 * **Dokuwiki** is a highly versatile wiki software that functions entirely without a database. Easy to edit and maintain, the uses of Dokuwiki can extend much further than those of a traditional wiki.
 * **OpenLDAP** is a respected implementation of the Lightweight Directory Access Protocol (LDAP). The DevKit makes use of OpenLDAP to centralize user management and modification, greatly simplifying things for you or your team manager. Log in with the same username and password everywhere across the DevKit!
 * **LDAP Account Manager**, or LAM, is a PHP-based frontend designed to make LDAP management as easy as possible for the user. It abstracts from the technical details of LDAP, allowing even those without a technical background to manage LDAP entries. If one still wishes to play with the nitty-gritty of their LDAP database, they can directly edit entries via the integrated LDAP browser.
+* **Let's Chat** is a quality web-chat application tailored for small development teams. Developed by [Security Compass](http://securitycompass.com/), Let's Chat is a solid tool for any team, boasting features including persistent messages (with searchable archives), infinite rooms, browser notifications, mentions, file uploads and image embedding, code pasting recognition, private rooms and more!
 
-Of course, each and every one of these tools is completely **Open Source**.
+Of course, each and every one of these tools is completely **Open Source**, and each and every tool uses **shared internal LDAP authentication**.
 
-Together, these tools provide anyone the foundations of a development environment. **Code** and commit your work using the tried and true practices of Git with GitLab. **Compile** and test your project with the aid of Jenkins for immediate feedback as you progress. **Communicate** and document your creations and practices with your team and beyond thanks to Dokuwiki. **Control** all user accounts quickly and efficiently through LAM, allowing you to easily adjust your team as contributers come and go.
+Together, these tools provide anyone the foundations of a development environment. **Code** and commit your work using the tried and true practices of Git with GitLab. **Compile** and test your project with the aid of Jenkins for immediate feedback as you progress. **Communicate** and collaborate internally using the fun and fluid Let's Chat. **Corroborate** your ideas and document your creations and practices with your team and beyond thanks to Dokuwiki. **Control** all user accounts quickly and efficiently through LAM, allowing you to easily adjust your team as contributers come and go.
 
 ## Preparations
 
@@ -23,6 +24,7 @@ Together, these tools provide anyone the foundations of a development environmen
 * Dokuwiki :: 2015-08-10a "Detritus"
 * OpenLDAP :: 2.4.31-1
 * LDAP Account Manager :: 4.4-1
+* Let's Chat :: 0.4.2
 
 ### The prerequisites to deploy this stack
 
@@ -254,9 +256,11 @@ Alright, done creating a user! **Make sure to save the user before exiting.** Th
 Before moving on to the next tool, we recommend you change the *master* password (for `Edit general settings`) and the *server preferences* password (for `Edit server profiles`). Log out of LAM (top-right) to return to the login page. From the login page you can access the two LAM configuration pages (also top-right). Remember that all LAM passwords are **c10udw477** by default.
 
 `Edit general settings`
+
 ![LAM Change Master Password](img/lam_master_pw.png)
 
 `Edit server profiles`
+
 ![LAM Change Master Password](img/lam_confmain_pw.png)
 
 #### GitLab
@@ -310,9 +314,33 @@ A few things of note here:
 * Set the ACL level to suit your needs.
 * Allowing users to register themselves is counterproductive, unless you don't mind your wiki being a free-for-all. LDAP users will automatically have access.
 
-Below it will ask you to pick a license for your wiki, study up if you wish, then make your pick and save. Dokuwiki is now ready: sign in and go to `:8081/doku.php?id=wiki:welcome` to start using your wiki!
+Below it will ask you to pick a license for your wiki, study up if you wish, then make your pick and save. Dokuwiki is now ready: follow the link on the page you were redirected to (or go to `:8081/doku.php?id=wiki:welcome`) and sign in to start using your wiki!
 
-<================================ HERE
+![Start using Dokuwiki](img/dokuwiki_start_using.png)
+
+#### Jenkins
+
+**Jenkins** has the easiest setup, and is found at `/jenkins`. There is actually *no* setup. Login in with any LDAP user and start making builds!
+
+![Jenkins Login](img/jenkins_login.png)
+
+#### Let's Chat
+
+**Let's Chat**, just like Dokuwiki, can be found on a separate port: `:8082`, (`/lets-chat` redirects there for convenience). Log in with an LDAP account (with a valid email!) to start chatting! Your avatar will be inherited from Gravatar (thanks to your email), so take the time to make a free Gravatar account for a unique user picture.
+
+![Let's Chat Login](img/lets_chat_login.png)
+
+Let's Chat will soon become second nature, but the minimalistic interface may be jarring at first. Start by creating a room to chat in with the **+** button on the upper right.
+
+![Create a Room](img/lets_chat_create_room.png)
+
+Once you've saved it, voila! Your room exists! The room you just made should be added to the list. On the right of the room information there is a toggle switch: This allows you to choose whether or not you want notifications from that room, and if you want it in your "room bar" on the left. Click on the room name to enter it!
+
+![Let's Chat Screenshot](img/lets_chat_screenshot.png)
+
+Voila! Messages are written at the bottom of the page. The arrow on the top-right lets you see who's in the room and a list of uploaded files. Near the room name is a set of buttons to edit the room, see/search the archives, upload files, and send gifs.
+
+Let's Chat had become the established messaging application within my team *days* after I introduced it for field-testing. I hope your experience with it is as pleasant as it has been for us.
 
 <a name="backup" />
 
