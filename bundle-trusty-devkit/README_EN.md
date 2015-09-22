@@ -74,21 +74,20 @@ With it, you will be able to wield the amazing powers of the OpenStack APIs.
 Source the downloaded file in your shell and enter your password when prompted to begin using the OpenStack clients.
 
 ~~~ bash
-$ source COMPUTE-[...]-openrc.sh
+$ source ~/Downloads/COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-$ [whatever mind-blowing stuff you have planned...]
 ~~~
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
 ### Adjust the parameters
 
-In the `.heat.yml` files (the heat templates), you will find a section named `parameters` near the top. The sole mandatory parameter is `keypair_name`. Its `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to avoid repeatedly typing it into the command line.
+In the `.heat.yml` files (the heat templates), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. You should set the `default` value to a valid keypair with regards to your Cloudwatt user account, as this is how you connect to your stack remotely. A keypair can be generated from the `Key Pairs` tab under `Access & Security` on the console. Make sure to save the public key, otherwise you will not be able to connect to your machine by SSH.
 
 It is within this same file that you can adjust (and set the defaults for) the instance type, volume size, and volume type by playing with the `flavor`, `volume_size`, and `volume_type` parameters accordingly.
 
-By default, the stack network and subnet are generated for the stack, in which the GitLab server sits alone. This behavior can be changed within the `.heat.yml` as well, if need be.
+By default, the stack network and subnet are generated for the stack, in which the DevKit server sits alone. This behavior can be changed within the `.heat.yml` as well, if need be.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -162,6 +161,7 @@ $ ./stack-start.sh OMNITOOL «my-keypair-name»
 +--------------------------------------+------------+--------------------+----------------------+
 | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | OMNITOOL   | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
 +--------------------------------------+------------+--------------------+----------------------+
+
 ~~~
 
 Within 5 minutes the stack will be fully operational. (Use `watch` to see the status in real-time)
@@ -173,6 +173,7 @@ $ watch -n 1 heat stack-list
 +--------------------------------------+------------+-----------------+----------------------+
 | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | OMNITOOL   | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
 +--------------------------------------+------------+-----------------+----------------------+
+
 ~~~
 
 ### Enjoy
@@ -182,6 +183,7 @@ Once all of this done, you can run the `stack-get-url.sh` script.
 ~~~ bash
 $ ./stack-get-url.sh OMNITOOL
 OMNITOOL  http://70.60.637.17
+
 ~~~
 
 As shown above, it will parse the assigned floating-IP of your stack into a URL link. You can then click or paste this into your browser of choice, confirm the use of the self-signed certificate, and bask in the glory of your own powerful DevKit.
@@ -193,12 +195,13 @@ The `start-stack.sh` script runs the necessary OpenStack API requests to execute
 * Attaches an exposed floating-IP for the DevKit
 * Starts, attaches, and formats a fresh volume for all of the DevKit data, or restores one from a provided backup_id
 * Reconfigures the DevKit to store its data in the volume
+* Configures the DevKit to use the exposed floating-IP address. (This is then further handled by scripts internally.)
 
 <a name="console" />
 
 ### Command line sounds as friendly as military management
 
-Lucky for you, then, nearly all of the setup for the DevKit can be accomplished using only the web-interfaces of each tool. As usual though, backing up your beloved DevKit involves our super handy `backup.sh`
+Lucky for you then, all of the setup for the DevKit can be accomplished using only the web-interfaces of each tool. As usual though, backing up your beloved DevKit involves our super handy `backup.sh` script.
 
 To create your DevKit stack from the console:
 
@@ -215,17 +218,21 @@ To create your DevKit stack from the console:
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy the DevKit!
+If you've reached this point, your stack is up! Go enjoy the DevKit!
 
 Each tool will need to be configured, however. It won't take long: I've written this little guide below to help!
 
 ## Tweak your toolbox
 
-Getting your DevKit tools ready is simple, but maybe not the first time: follow this guide and you will be good to go in no time. For the sake of simplicity, we'll omit the IP address when naming links. Since the DevKit uses self-signed SSL certificates, it rubs a few browsers the wrong way, **Firefox worst of all**. (You've been warned.) Don't worry about what your browser says, validate the SSL exceptions and whatnot, and from then on it shouldn't bother you any further.
+Getting your DevKit tools ready is simple, but maybe not the first time: follow this guide and you will be good to go.
+
+For the sake of simplicity, we'll omit the IP address when naming links: if your floating-IP URL is `http://70.60.637.17`, then `/some/path` would be `http://70.60.637.17/some/path`.
+
+Since the DevKit uses self-signed SSL certificates, it rubs a few browsers the wrong way, **Firefox worst of all**. (You've been warned.) Don't worry about what your browser says: validate the SSL exceptions and whatnot, and from then on the browser shouldn't bother you any further.
 
 #### LAM
 
-**LAM** can be found at `/lam`, and password for the main login (username: Administrator), the *master* password, and the *server preferences* password are all **c10udw477** by default. Just log in to the main login for now.
+**LAM** can be found at `/lam`, and password for the main login (username: *Administrator*), the *master* password, and the *server preferences* password are all **c10udw477** by default. Just log in through the main login for now.
 
 ![LAM Login](img/lam_login.png)
 
@@ -233,23 +240,25 @@ Now create your first LDAP account. The `cloudwatt` account already present is t
 
 ![Create LAM user](img/create_ldap_user.png)
 
-Once on the user creation page, enter the details of your new user. On this first tab (the Personal tab), the only information LAM requires is the last name, but also fill in the email field, as it is requested by GitLab and Dokuwiki. Once you are satisfied, move on to the Unix tab.
+Once on the user creation page, enter the details of your new user. On this first tab (the Personal tab), the only information LAM requires is the last name, but also fill in the email field, as it is requested by GitLab and Dokuwiki. Once you are satisfied, move to the Unix tab.
 
 ![Enter user information](img/enter_user_info.png)
 
 ![Enter user email](img/enter_user_email.png)
 
-The username and common name fields are filled with examples generated by LAM, but replace them with whatever you wish. The username is what will be used to log in to every tool in DevKit, and is the only field that cannot be changed later. The common name is often the name the DevKit will use to refer to you, rather than your username. For standard usage of the DevKit, you may ignore the remained fields: their default values are fine.
+The `User name` and `Common name` fields are filled with examples generated by LAM, but replace them with whatever you wish. The `User name` is what will be used to log in to every tool in DevKit, **and is the only field that cannot be changed later**. The `Common name` is often the name the DevKit will use to refer to you, rather than your `User name`. For standard usage of the DevKit, you may ignore the remained fields: their default values are fine.
 
 ![Enter user data](img/enter_user_data.png)
 
-Do not save your new user account yet! First, set the user's password: the button is located to the right of the save button. You can generate a random password or input one yourself, either way, the change will not take effect until you save. If you generate a random password, make sure to copy it elsewhere before saving.
+Do not save your new user account yet! First, set the user's password: the button is located to the right of the save button.
 
 ![Set user password](img/set_user_pw.png)
 
+You can generate a random password or input one yourself, either way, the change will not take effect until you save. If you generate a random password, make sure to copy it elsewhere before saving the account.
+
 ![Random password](img/random_pw.png)
 
-Alright, done creating a user! **Make sure to save the user before exiting.** These users cannot access LAM by default, but this can be changed through the `Edit server profiles` LAM configuration page.
+Alright, done creating a user! **Make sure to save the user before exiting.** These users cannot access LAM by default, but this can be changed through the `Edit server profiles` LAM configuration page. Users logged into LAM (other than the *Administrator*) will only be able to modify their own account.
 
 ![LAM Main Login Settings](img/lam_login_settings.png)
 
@@ -354,7 +363,7 @@ $ ./backup.sh OMNITOOL
 ~~~
 
 And five minutes later you're back in business and your conscience is at ease!
-Restoration is as simple as building another stack, although this time with the `.restore.heat.yml`, and specifying the ID of the backup you want. The new volume size should not be smaller than the original, to avoid loss to data. A list of backups can be found in the «Volume Backups» tab under «Volumes» in the console, or from the command line with the Cinder API:
+Restoration is as simple as building another stack, although this time with the `.restore.heat.yml`, and specifying the ID of the backup you want. The new volume size should not be smaller than the original in order to avoid data loss/corruption. A list of backups can be found in the «Volume Backups» tab under «Volumes» in the console, or from the command line with the Cinder API:
 
 ~~~ bash
 $ cinder backup-list
@@ -364,41 +373,50 @@ $ cinder backup-list
 +------+-----------+-----------+-------------------------------------+------+--------------+---------------+
 | XXXX | XXXXXXXXX | available | OMNITOOL-backup-2025/10/23-07:27:69 |  10  |     206      | volumebackups |
 +------+-----------+-----------+-------------------------------------+------+--------------+---------------+
+
 ~~~
 
-Remember however, that while we have greatly simplified the restoration process, other services interfacing with DevKit will not take into account changes in IP address, namely your Git configurations. Your local Git SSH Keys will still be valid, but you should make sure to correct any hosts and project remote addresses before continuing your work.
+Remember however, that while we have greatly simplified the restoration process and entirely handled the change in floating-IP within the DevKit, **other services interfacing with the DevKit will not take into account changes in IP address, namely your Git configurations**. Your local Git SSH Keys will still be valid, but you should make sure to correct any hosts and project remote addresses before continuing your work.
 
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
 
-You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
+You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name *cloud*).
 
 The interesting directories are:
 
 - `/dev/vdb`: Volume mount point
-- `/mnt/vdb/`: `/dev/vdb` mounts here
-- `/mnt/vdb/ldap/`: Mounts onto `/var/lib/ldap/` and contains all of LDAP's data
-- `/var/lib/ldap/`: LDAP stores its database here; `/mnt/vdb/ldap/` mounts here
-- `/etc/ldap`: LDAP Configuration; only the `ssl/` directory is backed up in the volume here, however this only contains the config database: LDAP accounts and other user-created data are stored in the database at `/var/lib/ldap/`, and are properly stored in the volume
-- `/etc/ldap/ssl/`: Apache's '.key' and '.crt' for HTTPS
-- `/etc/ldap/ldap-volume.sh`: Script run upon reboot to remount the volume and verify LDAP is ready to function again
-- `/usr/share/ldap-account-manager`: Root of LAM's site; some LAM configuration
-- `/etc/ldap-account-manager`: More LAM configuration files
-- `/var/lib/ldap-account-manager`: LAM's working directory (config, sessions, temporary files)
-- `/var/lib/ldap-account-manager/config/`: Another set of LAM configuration files
-- `/etc/ldap-account-manager/apache.conf`: `/etc/apache2/conf-available/ldap-account-manager.conf` redirects here; contains Apache-relevant configuration for LAM
-- `/etc/apache2/sites-available/ssl-lam.conf`: Apache site configuration for LAM through SSL. Enabled by default.
-- `/etc/apache2/sites-available/http-lam.conf`: Apache site configuration for LAM through HTTP. Disabled by default.
-- `/mnt/vdb/stack_public_entry_point`: Contains last known IP address, used to replace the IP address in all locations when it changes
+- `/mnt/vdb/`: `/dev/vdb` mounts here: contains all DevKit data, save that of Let's Chat
+- `/mnt/vdb/stack_public_entry_point`: Contains last known floating-IP address, used to replace the floating-IP address in all locations when it changes
+- `/etc/nginx/`: Nginx configuration files
+- `/etc/devkit/ssl/`: The server's `.key` and self-signed `.crt` for HTTPS
+- `/etc/devkit/devkit-volume.sh`: Script run upon reboot to remount the volume and verify the DevKit is ready to function again
+
+- `/var/opt/gitlab`: Gitlab volume mount point
+- `/var/www/dokuwiki`: Dokuwiki volume mount point
+- `/var/lib/ldap`: Ldap volume mount point
+- `/var/lib/jenkins`: Jenkins volume mount point
+- `/var/lib/lets-chat`: Let's Chat installation point
 
 Other resources you could be interested in:
 
-* [Ubuntu OpenLDAP Server Guide](https://help.ubuntu.com/lts/serverguide/openldap-server.html)
 * [LAM Manual](https://www.ldap-account-manager.org/static/doc/manual-onePage/index.html)
 * [OpenLDAP Documentation Catalog](http://www.openldap.org/doc/)
-* [OpenLDAP  Independent Publications](http://www.openldap.org/pub/)
-* [Online OpenLDAP Man Pages](http://www.openldap.org/software/man.cgi)
+* [Doc for GitLab CE](http://doc.gitlab.com/ce/)
+* [Jenkins Homepage](https://jenkins-ci.org/)
+* [Jenkins Wiki](https://wiki.jenkins-ci.org/display/JENKINS/Home)
+* [Let's Chat Documentation](https://github.com/sdelements/lets-chat/wiki)
+* [Dokuwiki Homepage](https://www.dokuwiki.org)
+* [Nginx - How to Configure Nginx](https://www.linode.com/docs/websites/nginx/how-to-configure-nginx)
+* [Nginx - Rewrite Module](http://nginx.org/en/docs/http/ngx_http_rewrite_module.html)
+* [Nginx - Logging](http://nginx.org/en/docs/debugging_log.html)
+* [Nginx - Guide to Nginx](https://www.nginx.com/resources/admin-guide/nginx-web-server/)
+* [Nginx - Dokuwiki & Nginx #1](https://www.dokuwiki.org/install:nginx#dokuwiki_with_nginx_on_ubuntu_linux_1204_and_newer)
+* [Nginx - Dokuwiki & Nginx #2](https://wiki.boetes.org/dokuwiki_on_nginx)
+* [Nginx - Dokuwiki & Nginx #3](http://wiki.nginx.org/Dokuwiki)
+* [Nginx - LAM & Nginx](https://www.ldap-account-manager.org/static/doc/manual/apbs07.html)
+* [Nginx - Jenkins & Nginx](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+behind+an+NGinX+reverse+proxy)
 
 
 -----
