@@ -2,6 +2,8 @@
 
 ## Episode 11: DevKit
 
+**Draft - Image not yet available...**
+
 I present to you, hackers and gentlefolk, a true gem of a bundle: the DevKit.
 
 * **GitLab** is an amazing project management utility, providing a truly personal GitHub for you and your team.
