@@ -242,7 +242,7 @@ Now create your first LDAP account. The `cloudwatt` account already present is t
 
 ![Create LAM user](img/create_ldap_user.png)
 
-Once on the user creation page, enter the details of your new user. On this first tab (the Personal tab), the only information LAM requires is the last name, but also fill in the email field, as it is requested by GitLab and Dokuwiki. Once you are satisfied, move to the Unix tab.
+Once on the user creation page, enter the details of your new user. On this first tab (the Personal tab), the only information LAM requires is the last name, but also fill in the email field, as it is requested by GitLab, Let's Chat, and Dokuwiki. Once you are satisfied, move to the Unix tab.
 
 ![Enter user information](img/enter_user_info.png)
 
