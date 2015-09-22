@@ -310,8 +310,6 @@ That's it for the GitLab setup! Once you are satisfied with the settings, log ou
 
 **Dokuwiki** has it's own port, `:8081`, so validate the HTTPS certificate again (depending on your browser) and you will reach the homepage, `:8081/doku.php`. (For convenience, `/dokuwiki` rewrites to `:8081`.)
 
-![Dokuwiki first access](img/dokuwiki_first_access.png)
-
 Don't worry, it looks worse than it is! Dokuwiki just wants you to finish the setup. Simply go to `:8081/install.php` to "install" Dokuwiki.
 
 ![Dokuwiki install.php](img/dokuwiki_install_php.png)
