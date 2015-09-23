@@ -250,7 +250,7 @@ Since the DevKit uses self-signed SSL certificates, it rubs a few browsers the w
 
 [Jenkins Login Screenshot](tutorials/img/jenkins_login.png)
 
-**Let's Chat**, just like Dokuwiki, can be found on a separate port: `:8082`, (`/lets-chat` redirects there for convenience). Check out the steps below to get a feel for it!
+**Let's Chat**, just like Dokuwiki, can be found on a separate port: `:8082`. (For convenience, `/lets-chat` redirects to `:8082`.) Check out the steps below to get a feel for it!
 
 [Using Let's Chat](tutorials/lets_chat.md)
 
