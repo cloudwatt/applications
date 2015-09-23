@@ -15,4 +15,4 @@ Once you've saved it, voila! Your room exists! The room you just made should be 
 
 Voila! Messages are written at the bottom of the page. The arrow on the top-right lets you see who's in the room and a list of uploaded files. Near the room name is a set of buttons to edit the room, see/search the archives, upload files, and send gifs.
 
-Let's Chat had become the established messaging application within my team *days* after I introduced it for field-testing. I hope your experience with it is as pleasant as it has been for us.
+Let's Chat became the established messaging application within my team *days* after I introduced it for field-testing. I hope your experience with it is as pleasant as it has been for us.
