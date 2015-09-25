@@ -17,13 +17,21 @@ parameters:
     type: string
     constraints:
       - allowed_values:
+          - t1.cw.tiny
           - s1.cw.small-1
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
           - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
 
   volume_size:
     default: 10
@@ -126,7 +134,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 60291ec6-1433-49c6-b6c1-b286304c7c4e
+      image: 581dd19a-8053-441e-822f-174a3809cacc
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
