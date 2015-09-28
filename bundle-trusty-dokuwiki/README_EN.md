@@ -245,7 +245,7 @@ Dokuwiki is now ready: follow the `your new DokuWiki` link on the page you were 
 
 ![Start using Dokuwiki](img/start_using.png)
 
-[Configuring your Dokuwiki](https://www.dokuwiki.org/config)
+[Configure your Dokuwiki~](https://www.dokuwiki.org/config)
 
 <a name="backup" />
 
