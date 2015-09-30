@@ -37,7 +37,6 @@ These should be routine by now:
 * A [Cloudwatt account](https://www.cloudwatt.com/authentification) with a [valid keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * The tools of the trade: [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * A local clone of the [Cloudwatt applications](https://github.com/cloudwatt/applications) git repository
-* The ID of an Neutron Subnet containing servers who need to connect to your LDAP instance.
 
 ### Size of the instance
 
