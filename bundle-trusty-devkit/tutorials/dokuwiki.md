@@ -1,21 +1,30 @@
 
 #### Dokuwiki
 
-**Dokuwiki** has it's own port, `:8081`, so validate the HTTPS certificate again (depending on your browser) and you will reach the homepage, `:8081/doku.php`. (For convenience, `/dokuwiki` rewrites to `:8081`.)
+**Dokuwiki** a son propre port `:8081`, vous devez donc accepter à nouveau le certificat auto-signé
+en fonctionde votre navigateur avant d'arriver sur la homepage `:8081/doku.php`. (Par confort, `/dokuwiki`
+redirige vers le bon port `:8081`.)
 
-Don't worry, it looks worse than it is! Dokuwiki just wants you to finish the setup. Simply go to `:8081/install.php` to "install" Dokuwiki.
+Vous aurez droit à une erreur pour votre premier passage, mais c'est moins grave qu'il n'y parait.
+Dokuwiki veut seulement finir son installation avec vous : rendez vous à `:8081/install.php`
+et laissez vous guider.
 
 ![Dokuwiki install.php](img/dokuwiki_install_php.png)
 
-A few things of note here:
+Quelques choses à garder à l'esprit :
 
-* Name the wiki whatever you wish.
-* You definitely want ACL enabled.
-* The `Superuser` **must be a valid LDAP user**. They will be the only one with access to the Dokuwiki admin panel by default.
-* The `Real Name` and `E-Mail` and `Password` fields will not be taken into account at all, and will be replaced with what you entered in LAM (LDAP).
-* Set the ACL level to suit your needs.
-* Allowing users to register themselves is counterproductive, unless you don't mind your wiki being a free-for-all. LDAP users will automatically have access.
+* Nommez le wiki selon vos désirs.
+* Definitivement, vous souhaitez activer les ACL.
+* Le `Superuser` **doit être un utilisateur LDAP valide**. Il sera le seul à avoir accès à l'admin de Dokuwiki
+par la suite.
+* Les champs `Real Name` et `E-Mail` et `Password` ne seront pas pris en compte, puisque la référence sera
+ le compte LDAP.
+* Définissez les ACL selon vos désirs.
+* Autoriser l'enregistrement d'utilisateur est une mauvaise idée, sauf si vous souhaitez un espace ouvert
+ à la planète. Les utilisateur LDAP auront accès sans plus de configuration.
 
-Below it will ask you to pick a license for your wiki, study up if you wish, then make your pick and save. Dokuwiki is now ready: follow the link on the page you were redirected to (or go to `:8081/doku.php?id=wiki:welcome`) and sign in to start using your wiki!
+Enfin, choisissez une licence couvrant le contenu de votre Wiki et sauvegardez. Dokuwiki est maintenant prêt.
+Suivez le lien fourni sur la dernière page ou rendez vous à `:8081/doku.php?id=wiki:welcome` et identifiez-vous pour
+commencer à utiliser votre wiki !
 
 ![Start using Dokuwiki](img/dokuwiki_start_using.png)
