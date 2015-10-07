@@ -192,6 +192,18 @@ resources:
           params:
             $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
 
+  config_lets_chat:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config: |
+        #!/bin/bash
+        cd /var/lib/lets-chat/
+        git stash
+        git stash clear
+        git pull origin master
+        sudo npm install
+        service lets-chat restart
+
   server_init:
     type: OS::Heat::MultipartMime
     properties:
@@ -199,6 +211,7 @@ resources:
       - config: { get_resource: init_gitlab }
         type: multipart
       - config: { get_resource: config_nginx }
+      - config: { get_resource: config_lets_chat }
 
   server:
     type: OS::Nova::Server
