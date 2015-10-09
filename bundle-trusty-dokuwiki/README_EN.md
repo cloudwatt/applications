@@ -2,8 +2,6 @@
 
 ## Episode 12: Dokuwiki
 
-**Draft - Image not yet available...**
-
 Dokuwiki is a completely open source and [highly versatile](https://www.dokuwiki.org/features) wiki software that functions entirely without a database. Easy to edit and boasting a strong library of [plugins](https://www.dokuwiki.org/plugins) and [themes](https://www.dokuwiki.org/template), the uses of Dokuwiki can extend much further than those of a traditional wiki. Want a preview? Dokuwiki's [entire website](https://www.dokuwiki.org) is actually a Dokuwiki.
 
 ## Preparation
