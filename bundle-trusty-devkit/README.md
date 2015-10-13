@@ -30,12 +30,12 @@ Ensemble, ces outils fournissent les bases d'un environnement de développement.
 
 ### Les Versions
 
-* GitLab :: 7.14.3-ce.0
-* Jenkins :: 1.628
-* Dokuwiki :: 2015-08-10a "Detritus"
-* OpenLDAP :: 2.4.31-1
-* LDAP Account Manager :: 4.4-1
-* Let's Chat :: 0.4.2
+* GitLab : 7.14.3-ce.0
+* Jenkins : 1.628
+* Dokuwiki : 2015-08-10a "Detritus"
+* OpenLDAP : 2.4.31-1
+* LDAP Account Manager : 4.4-1
+* Let's Chat : 0.4.2
 
 ### Les pré-requis pour déployer cette stack
 
@@ -50,29 +50,22 @@ A l'épisode 11, cette liste doit maintenant vous être familière :
 
 ### Taille de l'instance
 
-La Stack DevKit installe tous les outils sur la même instance, pour simplifier la sauvegarde du volume, la configuration et la
-sécurité. Cela crée une charge potentiellement importante, c'est pourquoi nous recommandons que votre instance soit au moins du type
-" Standard- 2 " ( n1.cw.standard - 2).
+La Stack DevKit installe tous les outils sur la même instance, pour simplifier la sauvegarde du volume, la configuration et la sécurité. Cela crée une charge potentiellement importante, c'est pourquoi nous recommandons que votre instance soit au moins du type " Standard- 2 " ( n1.cw.standard - 2).
 
-Les Stacks DevKit suivent les traces de nos précédentes stacks GitLab et LDAP, en faisant bon usage des volumes de stockage Cinder pour assurer
-la protection de vos données et vous permettant ainsi de payer uniquement pour l'espace que vous utilisez. La taille du volume est entièrement
-ajustable, et la stack de DevKit peut supporter des dizaines à des centaines de gigaoctets d'espace nécessaire à votre projet.
+Les Stacks DevKit suivent les traces de nos précédentes stacks GitLab et LDAP, en faisant bon usage des volumes de stockage Cinder pour assurer la protection de vos données et vous permettant ainsi de payer uniquement pour l'espace que vous utilisez. La taille du volume est entièrement ajustable, et la stack de DevKit peut supporter des dizaines à des centaines de gigaoctets d'espace nécessaire à votre projet.
 
 Bien sûr les paramètres de la stack, sont à manipuler selon vos besoins.
 
 
 ### Au fait...
 
-Comme avec les bundles Gitlab le template Heat `.restore` et et le script `backup.sh` vous permettent de manipuler les volumes de stockage
-Cinder. Avec ces fichiers, vous pouvez créer des volumes de backup Cinder : Sauvegardez les états de volume de votre stack de DevKit qui pourront
-être redéployé avec le modèle du template `.restore` en cas de besoin.
+Comme avec les bundles Gitlab le template Heat `.restore` et et le script `backup.sh` vous permettent de manipuler les volumes de stockage Cinder. Avec ces fichiers, vous pouvez créer des volumes de backup Cinder : Sauvegardez les états de volume de votre stack de DevKit qui pourront être redéployé avec le modèle du template `.restore` en cas de besoin.
 
-De la même façon que les stack normales, celles 'restaurées' peuvent être lancées à partir de la [ console ] ( # console), mais notre
-astucieux `stack-start.sh` vous permet également de lancer facilement deux types de stacks depuis un [Terminal]
+De la même façon que les stack normales, celles 'restaurées' peuvent être lancées à partir de la [ console ] ( # console), mais notre astucieux `stack-start.sh` vous permet également de lancer facilement deux types de stacks depuis un [Terminal]
 
 Les sauvegardes doivent être initialisées avec notre script` backup.sh` et cela prend environ 5 minutes du début au retour à la fonctionnalité finale. [ ( Plus sur la sauvegarde et la restauration de votre DevKit ... ) ] (# backup)
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version "Je lance en 1-clic" ou "Je lance avec la console" en cliquant sur [ce lien](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version *"Je lance en 1-clic"* ou *"Je lance avec la console"* en cliquant sur [ce lien](#console)...
 
 ## Détails des fichiers
 
@@ -109,18 +102,14 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `.heat.yml` (templates heat), vous trouverez en haut une section paramètres. Le seul paramètre obligatoire pour la
-connexion est la `keypair_name`.
+Dans le fichier `.heat.yml` (templates heat), vous trouverez en haut une section paramètres. Le seul paramètre obligatoire pour la connexion est la `keypair_name`.
 
-Vous devez paramétrer la valeur par défaut de la keypair en relation avec votre compte utilisateur Cloudwatt, vu que ceci est votre moyen
-de connexion à distance. Une keypair peut être générée depuis l'onglet `Key Pairs` sous `Access & Security` depuis la console.
+Vous devez paramétrer la valeur par défaut de la keypair en relation avec votre compte utilisateur Cloudwatt, vu que ceci est votre moyen de connexion à distance. Une keypair peut être générée depuis l'onglet `Key Pairs` sous `Access & Security` depuis la console.
 Rassurez-vous d'avoir enregistré la clé publique, sinon il vous sera impossible de vous connecter à votre machine par SSH.
 
-C'est dans ce même fichier que vous pouvez ajuster(et définir les valeurs par défaut pour) le type d'instance, la taille du volume,
-et le type de volume en jouant avec le `flavor`, `volume_size`, et `volume_type` selon les paramètres.
+C'est dans ce même fichier que vous pouvez ajuster(et définir les valeurs par défaut pour) le type d'instance, la taille du volume, et le type de volume en jouant avec le `flavor`, `volume_size`, et `volume_type` selon les paramètres.
 
-Par défaut, le réseau de la stack et le sous-réseau sont générés pour la stack, dans laquelle le serveur de DevKit est logé. Ce
-comportement peut être modifié dans le `.heat.yml` si besoin.
+Par défaut, le réseau de la stack et le sous-réseau sont générés pour la stack, dans laquelle le serveur de DevKit est logé. Ce comportement peut être modifié dans le `.heat.yml` si besoin.
 
 
 ~~~ yaml
@@ -198,7 +187,7 @@ $ ./stack-start.sh OMNITOOL «my-keypair-name»
 
 ~~~
 
-Au bout de 5 minutes, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande watch pour voir le statut en temps réel)
+Au bout de *5 minutes*, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande watch pour voir le statut en temps réel)
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -245,8 +234,7 @@ Le script `start-stack.sh` exécute les requêtes des API OpenStack nécessaires
 
 ### La ligne de commande vous semble aussi agréable qu'un stage de survie en Guyane
 
-Heureusement pour vous, la totalité de la configuration de la DevKit peut être accomplie en utilisant seulement les interfaces
-Web de chaque outil . Comme habituellement pensé, la sauvegarde de votre DevKit implique notre super et pratique script `backup.sh`.
+Heureusement pour vous, la totalité de la configuration de la DevKit peut être accomplie en utilisant seulement les interfaces Web de chaque outil . Comme habituellement pensé, la sauvegarde de votre DevKit implique notre super et pratique script `backup.sh`.
 
 Pour créer une stack DevKit depuis la console:
 
@@ -261,11 +249,9 @@ Pour créer une stack DevKit depuis la console:
 9.	Confirmez le type et la taille du volume (en gigaoctets) dans les champs «DevKit Volume Type» et «DevKit Volume Size»
 10.	Choisissez la taille de votre isnstance en utilisant le menu déroulant «Instance Type» et cliquez sur «LAUNCH»
 
-La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création
-sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours
-pour avoir le lien.
+La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
-Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez DevKit!
+Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez du DevKit!
 
 Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela!
 
