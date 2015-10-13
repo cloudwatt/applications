@@ -2,8 +2,6 @@
 
 ## Episode 11: DevKit
 
-**Draft - Image Non disponible pour le moment...**
-
 Je vous présente chers hackers et gentilshommes une vrai perle bundle: Le DevKit.
 
 * **GitLab** est un utilitaire de gestion de projet, offrant un équivalent de GitHub pour vous et votre équipe.
