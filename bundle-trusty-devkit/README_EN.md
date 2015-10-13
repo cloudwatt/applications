@@ -19,12 +19,12 @@ Together, these tools provide anyone the foundations of a development environmen
 
 ### The Versions
 
-* GitLab :: 7.14.3-ce.0
-* Jenkins :: 1.628
-* Dokuwiki :: 2015-08-10a "Detritus"
-* OpenLDAP :: 2.4.31-1
-* LDAP Account Manager :: 4.4-1
-* Let's Chat :: 0.4.2
+* GitLab : 7.14.3-ce.0
+* Jenkins : 1.628
+* Dokuwiki : 2015-08-10a "Detritus"
+* OpenLDAP : 2.4.31-1
+* LDAP Account Manager : 4.4-1
+* Let's Chat : 0.4.2
 
 ### The prerequisites to deploy this stack
 
@@ -51,6 +51,8 @@ As with the other volume-friendly bundles, the `.restore` heat template and `bac
 Both normal and 'restored' stacks can be launched from the [console](#console), but our nifty `stack-start.sh` also allows you to create both kinds of stacks easily from a [terminal](#startup).
 
 Backups must be initialized with our handy `backup.sh` script and take a curt 5 minutes from start to full return of functionality. [(More about backing up and restoring your DevKit...)](#backup)
+
+If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console). 
 
 ## What will you find in the repository
 
@@ -198,6 +200,8 @@ The `start-stack.sh` script runs the necessary OpenStack API requests to execute
 
 <a name="console" />
 
+## That's fine but...
+
 ### Command line sounds as friendly as military management
 
 Lucky for you then, all of the setup for the DevKit can be accomplished using only the web-interfaces of each tool. As usual though, backing up your beloved DevKit involves our super handy `backup.sh` script.
@@ -218,6 +222,12 @@ To create your DevKit stack from the console:
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
 
 If you've reached this point, your stack is up! Go enjoy the DevKit!
+
+Each tool will need to be configured, however. It won't take long: I've written this little guide below to help!
+
+### Or an easier way thru a 1-click ?
+
+... Yes! Go to the Apps page on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 5 minutes later, a green button appears... ACCEDER: you have your DevKit!
 
 Each tool will need to be configured, however. It won't take long: I've written this little guide below to help!
 
