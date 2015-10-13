@@ -247,19 +247,19 @@ Pour créer une stack DevKit depuis la console:
 7.	Donnez un nom à votre stack dans le champ «Stack name»
 8.	Entrez le nom de votre keypair dans le champ «SSH Keypair»
 9.	Confirmez le type et la taille du volume (en gigaoctets) dans les champs «DevKit Volume Type» et «DevKit Volume Size»
-10.	Choisissez la taille de votre isnstance en utilisant le menu déroulant «Instance Type» et cliquez sur «LAUNCH»
+10.	Choisissez la taille de votre instance en utilisant le menu déroulant «Instance Type» et cliquez sur «LAUNCH»
 
 La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
 Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez du DevKit!
 
-Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela!
+Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre DevKit !
 
-Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela!
+Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela !
 
 ## Préparez votre boîte à outils
 
