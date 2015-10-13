@@ -2,8 +2,6 @@
 
 ## Episode 10: Jenkins
 
-**Projet - Image actuellement non disponible...**
-
 Alfred Thaddeus Crane Pennyworth est le valet de Bruce Wayne dans Wayne Manor. il sait bien que Bruce est secretement Batman et [l'aide de manière  imaginable](https://wiki.jenkins-ci.org/display/JENKINS/Plugins). Apres [une carrière bien variée ](https://wiki.jenkins-ci.org/display/JENKINS/Awards), Alfred Pennyworth a [été employé comme valet dans la famille de Wayne ](https://wiki.jenkins-ci.org/pages/viewpage.action?pageId=58001258) quand les parents de Bruce ont été tués. Alfred [a élevé le jeune orphelin](https://github.com/jenkinsci/jenkins/commits/master) seul et l'a aidé finalement dans sa quête pour [devenir Batman](https://wiki.jenkins-ci.org/display/JENKINS/Use+Jenkins). His [impressive skill-set](https://wiki.jenkins-ci.org/display/JENKINS/Awards) makes him Bruce's staunchest ally, boasting a formal demeanor that does little to hide the [intelligence](https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Best+Practices) behind his eyes.
 
 Jenkins est notre Alfred Pennyworth à nous.
