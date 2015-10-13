@@ -227,7 +227,7 @@ Each tool will need to be configured, however. It won't take long: I've written 
 
 ### Or an easier way thru a 1-click ?
 
-... Yes! Go to the Apps page on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 5 minutes later, a green button appears... ACCEDER: you have your DevKit!
+... Yes! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 5 minutes later, a green button appears... ACCEDER: you have your DevKit!
 
 Each tool will need to be configured, however. It won't take long: I've written this little guide below to help!
 
