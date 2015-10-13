@@ -1,13 +1,17 @@
-WORK IN PROGRESS
 ---
 layout: applications-fiche
 pictonic: true
 title: "Dev Kit"
 url: devkit.html
-date: 2015-10-01 00:00:00
-date-creation: "1er Octobre 2015"
-date-maj: "1er Octobre 2015"
-description: ""
+date: 2015-10-13 00:00:00
+date-creation: "13 Octobre 2015"
+date-maj: "13 Octobre 2015"
+description: "Ce kit apporte aux adminstrateurs systèmes une série de 4 utilitaires indispensables pour déveopper avec efficacité vos applications dans le cloud. Il comprend :
+- Gitlab un utilitaire de gestion de projet, offrant un équivalent de GitHub pour vous et votre équipe
+- Jenkins une forge logiciel
+- Dokuwiki un logiciel de wiki très polyvalent qui fonctionne sans base de données
+- Let's Chat une application webchat adaptée pour les petites équipes de développement
+Ces 4 applications sont intégrées dans un LDAP pour une gestion simplifiée des utilisateurs."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-devkit
 siteofficiel: 
 sitesupport: 
