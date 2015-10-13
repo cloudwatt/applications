@@ -2,7 +2,7 @@
 
 ## Episode 11: DevKit
 
-Je vous présente chers hackers et gentilshommes une vrai perle bundle: Le DevKit.
+Je vous présente chers hackers et gentilshommes une vraie perle bundle: **Le DevKit**.
 
 * **GitLab** est un utilitaire de gestion de projet, offrant un équivalent de GitHub pour vous et votre équipe.
 
@@ -65,7 +65,7 @@ De la même façon que les stack normales, celles 'restaurées' peuvent être la
 
 Les sauvegardes doivent être initialisées avec notre script` backup.sh` et cela prend environ 5 minutes du début au retour à la fonctionnalité finale. [ ( Plus sur la sauvegarde et la restauration de votre DevKit ... ) ] (# backup)
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version *"Je lance en 1-clic"* ou *"Je lance avec la console"* en cliquant sur [ce lien](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version **"Je lance en 1-clic"** ou **"Je lance avec la console"** en cliquant sur [ce lien](#console)...
 
 ## Détails des fichiers
 
@@ -187,7 +187,7 @@ $ ./stack-start.sh OMNITOOL «my-keypair-name»
 
 ~~~
 
-Au bout de *5 minutes*, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande watch pour voir le statut en temps réel)
+Au bout de **5 minutes**, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande watch pour voir le statut en temps réel)
 
 ~~~ bash
 $ watch -n 1 heat stack-list
