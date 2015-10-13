@@ -72,6 +72,7 @@ astucieux `stack-start.sh` vous permet également de lancer facilement deux type
 
 Les sauvegardes doivent être initialisées avec notre script` backup.sh` et cela prend environ 5 minutes du début au retour à la fonctionnalité finale. [ ( Plus sur la sauvegarde et la restauration de votre DevKit ... ) ] (# backup)
 
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version "Je lance en 1-clic" ou "Je lance avec la console" en cliquant sur [ce lien](#console)...
 
 ## Détails des fichiers
 
@@ -240,6 +241,8 @@ Le script `start-stack.sh` exécute les requêtes des API OpenStack nécessaires
 
 <a name="console" />
 
+## C’est bien tout ça, mais...
+
 ### La ligne de commande vous semble aussi agréable qu'un stage de survie en Guyane
 
 Heureusement pour vous, la totalité de la configuration de la DevKit peut être accomplie en utilisant seulement les interfaces
@@ -263,6 +266,12 @@ sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retro
 pour avoir le lien.
 
 Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez DevKit!
+
+Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela!
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre DevKit !
 
 Chaque outil devra être configuré, cependant cela ne prendra pas beaucoup de temps: le guide écrit ci-dessous vous sera utile pour cela!
 
