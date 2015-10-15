@@ -43,6 +43,8 @@ if [ ! "$SERVER_ID" ] || [ ! "$VOLUME_ID" ]; then
     exit 1
 fi
 
+export OS_VOLUME_API_VERSION=1
+
 if [ "$(nova show $SERVER_ID | grep "| status" | tr -d " " | cut -d"|" -f3)" == "ACTIVE" ]; then
   echo "Halting server..."
   ssh cloud@$SERVER_IP -i $KEYPAIR sudo halt
