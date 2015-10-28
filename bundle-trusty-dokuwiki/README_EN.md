@@ -37,6 +37,8 @@ Both normal and 'restored' stacks can be launched from the [console](#console), 
 
 Backups must be initialized with our handy `backup.sh` script and take a curt 5 minutes from start to full return of functionality. [(More about backing up and restoring your Dokuwiki...)](#backup)
 
+If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console). 
+
 ## What will you find in the repository
 
 Once you have cloned the github, you will find in the `bundle-trusty-dokuwiki/` repository:
@@ -189,7 +191,9 @@ The `start-stack.sh` script runs the necessary OpenStack API requests to execute
 
 <a name="console" />
 
-## Command line sounds as friendly as military management
+## That's fine but...
+
+### Command line sounds as friendly as military management
 
 Lucky for you then, all of the setup for Dokuwiki can be accomplished using only the web-interface. As usual however, backing up your beloved Dokuwiki involves our super handy `backup.sh` script.
 
@@ -209,6 +213,10 @@ To create your Dokuwiki stack from the [Cloudwatt Console](https://console.cloud
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
 
 If you've reached this point, your stack is up! Go set up and enjoy Dokuwiki!
+
+### Or an easier way thru a 1-click ?
+
+... Yes! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 5 minutes later, a green button appears... ACCEDER: you have your Dokuwiki!
 
 <a name="using_stack" />
 
