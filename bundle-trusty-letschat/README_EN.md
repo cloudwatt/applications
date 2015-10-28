@@ -33,6 +33,10 @@ By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A 
 
 All stack parameters, of course, are yours to tweak at your fancy.
 
+### By the way...
+
+If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console). 
+
 ## What will you find in the repository
 
 Once you have cloned the github, you will find in the `bundle-trusty-letschat/` repository:
@@ -123,6 +127,8 @@ The `start-stack.sh` script runs the necessary OpenStack API requests to execute
 
 <a name="console" />
 
+## That's fine but...
+
 ### I already came out of my shell in order to chat... do I have to go back?
 
 Nah, you can keep your eyes on the browser: all Let's Chat setup can accomplished from the console.
@@ -144,6 +150,11 @@ The stack will be automatically generated (you can see its progress by clicking 
 ![Stack Topology](img/stack_topology.png)
 
 If you've reached this point, Let's Chat is running!
+
+### Or an easier way thru a 1-click ?
+
+... Yes! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 2 minutes later, a green button appears... ACCEDER: you have your Let's Chat!
+
 
 ## So watt?
 
