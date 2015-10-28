@@ -2,9 +2,6 @@
 
 ## Episode 12: Dokuwiki
 
-**Projet - Image actuellement non disponible...**
-
-
 Dokiwiki est un logiciel wiki open source et [très polyvalent](https://www.dokuwiki.org/features) qui fonctionne
 sans base de données. Facile à customiser et bénéficiant d'une bonne bibliothèque
 de [plugins](https://www.dokuwiki.org/plugins) et [themes](https://www.dokuwiki.org/template). Les utilisations
@@ -58,6 +55,8 @@ Les deux stacks 'normal' et 'restored' peuvent être lancées depuis [console](#
 Les sauvegardes doivent être initialisées avec notre script 'backup.sh` et cela prendra environ
 5 minutes entre le lancement et la mise à disposition du service.
 [(Plus sur le backup et la restauration de votre Dokuwiki...)](#backup)
+
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version **"Je lance en 1-clic"** ou **"Je lance avec la console"** en cliquant sur [ce lien](#console)...
 
 ## Que trouverez-vous dans le dépôt
 
@@ -217,11 +216,11 @@ Le script `start-stack.sh` execute les requettes des API OpenStack nécessaires 
 
 <a name="console" />
 
-## Une Ligne de commande semble aussi amical qu'un management à la militaire
+## C’est bien tout ça, mais...
 
+### Une Ligne de commande semble aussi amical qu'un management à la militaire
 
 Heureusement pour vous alors, la totalité de la configuration de DokuWiki peut être faite en utilisant uniquement l'interface web. Comme d'habitude cependant, la sauvegarde de votre bien-aimé Dokuwiki implique notre superbe script `backup.sh`.
-
 
 Pour créer votre stack Dokuwiki depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
@@ -240,6 +239,10 @@ Pour créer votre stack Dokuwiki depuis la [Console Cloudwatt](https://console.c
 La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
 
 Si vous avez atteint ce point, alors votre stack est fonctionnelle! Mettez en place et profitez de Dokiwiki.
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Dokuwiki !
 
 <a name="using_stack" />
 
