@@ -6,7 +6,7 @@ url: devkit.html
 date: 2015-10-13 00:00:00
 date-creation: "13 Octobre 2015"
 date-maj: "13 Octobre 2015"
-description: "Ce kit apporte aux adminstrateurs systèmes une série de 4 utilitaires indispensables pour déveopper avec efficacité vos applications dans le cloud. Il comprend :
+description: "Ce kit apporte aux administrateurs systèmes une série de 4 utilitaires indispensables pour développer avec efficacité vos applications dans le cloud. Il comprend :
 - Gitlab un utilitaire de gestion de projet, offrant un équivalent de GitHub pour vous et votre équipe
 - Jenkins une forge logiciel
 - Dokuwiki un logiciel de wiki très polyvalent qui fonctionne sans base de données
