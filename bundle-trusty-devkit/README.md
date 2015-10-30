@@ -10,7 +10,7 @@ Je vous présente chers hackers et gentilshommes une vraie perle bundle: **Le De
 
 * **Dokuwiki** est un logiciel de wiki très polyvalent qui fonctionne entièrement sans base de données.
 
-* **OpenLDAP** est une implémentation libre et respectée de la Lightweight Directory Access Protocol(LDAP). Le DevKit centralise s'appuie sur OpenLDAP pour la gestion des utilisateurs, ce qui simplifie largement les choses pour vous ou pour votre gestionnaire d'équipe. Connectez-vous avec le même nom d'utilisateur et même mot de passe partout à travers le DevKit.
+* **OpenLDAP** est une implémentation libre et respectée de la Lightweight Directory Access Protocol(LDAP). Le DevKit  s'appuie sur OpenLDAP pour centraliser la gestion des utilisateurs, ce qui simplifie largement les choses pour vous ou pour votre gestionnaire d'équipe. Connectez-vous avec le même nom d'utilisateur et même mot de passe partout à travers le DevKit.
 
 * **LDAP Account Manager**, ou LAM, est une interface PHP conçue pour rendre la gestion de LDAP aussi facile que possible pour l'utilisateur. Il fait abstraction des détails techniques de LDAP, permettant même à ceux sans connaissances techniques de gérer les entrées LDAP. Si l'on souhaite manipuler la base de données LDAP, on peut directement apporter des modifications via le navigateur LDAP intégré.
 
