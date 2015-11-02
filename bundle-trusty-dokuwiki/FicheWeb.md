@@ -1,4 +1,3 @@
-WORK IN PROGRESS
 ---
 layout: applications-fiche
 pictonic: true
