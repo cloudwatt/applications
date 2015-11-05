@@ -2,8 +2,6 @@
 
 ## Episode 13: Let's Chat
 
-**Draft - Image not yet available...**
-
 Using this bundle as-is, you will set up a "free-for-all" Let's Chat application where anyone can create a user and begin messaging in seconds.
 
 Let's Chat is a quality web-chat application tailored for small development teams. Developed by [Security Compass](http://securitycompass.com/) and released under the [MIT license](https://raw.githubusercontent.com/sdelements/lets-chat/master/LICENSE), Let's Chat is a solid tool for any team, boasting features including persistent messages (with searchable archives), infinite rooms, browser notifications, mentions, file uploads and image embedding, code-paste recognition, private rooms and more!
