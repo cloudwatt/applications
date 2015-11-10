@@ -151,7 +151,7 @@ La stack sera automatiquement générée (vous pourrez voir sa progression en cl
 
 ![Stack Topology](img/stack_topology.png)
 
-Si vous avez atteint ce point, alors votre stack est fonctionnelle! Mettez en place et profitez de Let's Chat.
+Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de Let's Chat.
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
