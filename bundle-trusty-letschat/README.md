@@ -1,9 +1,5 @@
 # 5 Minutes Stacks, Episode 13: Let's Chat
 
-## Episode 12: Let's Chat
-
-
-
 ## Préparation
 
 ### La version
@@ -18,8 +14,7 @@ Ceci devrait maintenant être de la routine :
 * Un shell Linux
 * Un [compte Cloudwatt](https://www.cloudwatt.com/authentification) avec [une paire de clé existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * Les outils Openstack [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* Un clone local du dépôt git[Cloudwatt applications](https://github.com/cloudwatt/applications) (si la création de votre stack se fait depuis un shell)
-* The ID of an Neutron Subnet containing servers who need to connect to your Let's Chat instance
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications) (si la création de votre stack se fait depuis un shell)
 
 ### Taille de l'instance
 
@@ -47,9 +42,7 @@ Une fois le github cloné, vous trouverez dans le dépôt `bundle-trusty-letscha
 
 ### Initialiser l'environnement
 
-Se connecter à [la console Cloudwatt](https://console.cloudwatt.com) et
-
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [Télécharger un script d'identité 'Cloudwatt API' ](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Se connecter à [la console Cloudwatt](https://console.cloudwatt.com) et munissez-vous de vos identifiants Cloudwatt, et cliquez [Télécharger un script d'identité 'Cloudwatt API' ](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
 Avec cela, vous serez en possession de pouvoirs extraordinaires sur les API Opensatck.
 
 Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
@@ -101,7 +94,7 @@ $ ./stack-start.sh THATCHAT «my-keypair-name»
 
 ~~~
 
-Au bout de 5 minutes, la stack sera totalement opérationnelle; regardez votre `watch` pour voir le statut en temps réel.
+Au bout de 5 minutes, la stack sera totalement opérationnelle; vous pouvez utiliser la commande `watch` pour voir le statut en temps réel.
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -134,16 +127,15 @@ Le script `start-stack.sh` execute les requettes des API OpenStack nécessaires 
 
 * Démarre une instance basée Ubuntu Trusty Tahr
 * Attache une IP-flottante pour Let's Chat
-* Reconfigure Let's Chat pour stocker ses données dans le volume
+* Configure Let's Chat pour utiliser l'IP-flottante
 
 <a name="console" />
 
 ## C’est bien tout ça, mais...
 
 ### Une Ligne de commande semble aussi amical qu'un management à la militaire
-### I already came out of my shell in order to chat... do I have to go back?
 
-Heureusement pour vous alors, la totalité de la configuration deLet's Chat DokuWiki peut être faite en utilisant uniquement l'interface web. Comme d'habitude cependant, la sauvegarde de votre bien-aimé Dokuwiki implique notre superbe script `backup.sh`.
+Heureusement pour vous alors, la totalité de la configuration de Let's Chat peut être faite en utilisant uniquement l'interface web. 
 
 Pour créer votre stack Let's Chat depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
@@ -159,11 +151,13 @@ Pour créer votre stack Let's Chat depuis la [Console Cloudwatt](https://console
 
 La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
 
+![Stack Topology](img/stack_topology.png)
+
 Si vous avez atteint ce point, alors votre stack est fonctionnelle! Mettez en place et profitez de Let's Chat.
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Dokuwiki !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Tchatter maintenant !
 
 <a name="using_stack" />
 
