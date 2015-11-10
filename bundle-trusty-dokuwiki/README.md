@@ -22,8 +22,7 @@ Ceci devrait maintenant être de la routine :
 * Un shell Linux
 * Un [compte Cloudwatt](https://www.cloudwatt.com/authentification) avec [une paire de clé existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * Les outils Openstack [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* Un clone local du dépôt git[Cloudwatt applications](https://github.com/cloudwatt/applications) (si la création de votre stack se fait depuis un shell)
-* L'ID d'un sous-réseau Neutron contenant des serveurs qui ont un besoin de connexion à votre instance LDAP
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications) (si la création de votre stack se fait depuis un shell)
 
 ### Taille de l'instance
 
@@ -176,7 +175,7 @@ $ ./stack-start.sh TRUEWIKI «my-keypair-name»
 
 ~~~
 
-Au bout de 5 minutes, la stack sera totalement opérationnelle; regardez votre `watch` pour voir le statut en temps réel.
+Au bout de 5 minutes, la stack sera totalement opérationnelle; vous pouvez utiliser la commande `watch` pour voir le statut en temps réel.
 
 ~~~ bash
 $ watch -n 1 heat stack-list
