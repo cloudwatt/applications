@@ -70,9 +70,7 @@ Une fois le github cloné, vous trouverez dans le dépôt `bundle-trusty-dokuwik
 
 ### Initialiser l'environnement
 
-Se connecter à [la console Cloudwatt](https://console.cloudwatt.com) et
-
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [Télécharger un script d'identité 'Cloudwatt API' ](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Se connecter à [la console Cloudwatt](https://console.cloudwatt.com) et munissez-vous de vos identifiants Cloudwatt, et cliquez [Télécharger un script d'identité 'Cloudwatt API' ](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
 Avec cela, vous serez en possession de pouvoirs extraordinaires sur les API Opensatck.
 
 Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
