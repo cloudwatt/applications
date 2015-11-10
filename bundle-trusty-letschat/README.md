@@ -117,9 +117,7 @@ THATCHAT  http://70.60.637.17
 
 ~~~
 
-Comme indiqué ci-dessus, il va analyser le l'IP flottante attribuée à votre stack dans un lien URL. Vous pourrez alors cliquer ou coller cela dans le navigateur de votre choix, confirmer l'utilisation du certificat auto-signé, et [ être prêt au wiki~](#using_stack)
-
-As shown above, it will parse the assigned floating-IP of your stack into a URL link. You can then click or paste this into your browser of choice, confirm the use of the self-signed certificate, and enjoy the simplicity of Let's Chat.
+Comme indiqué ci-dessus, il va analyser le l'IP flottante attribuée à votre stack dans un lien URL. Vous pourrez alors cliquer ou coller cela dans le navigateur de votre choix, confirmer l'utilisation du certificat auto-signé, et profitez de la simplicité de Let's Chat.
 
 ### En arrière plan
 
