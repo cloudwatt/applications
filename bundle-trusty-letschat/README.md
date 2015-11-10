@@ -159,11 +159,9 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 <a name="using_stack" />
 
-~~~
-
 ## So watt?
 
-Le but de ce tutoriel est d'accélerer votre démarrage. A ce ce niveau **vous** êtes mâitre de votre stack.
+Le but de ce tutoriel est d'accélerer votre démarrage. A ce ce niveau **vous** êtes maître de votre stack.
 
 Vous avez un point d'accès en SSH sur votre machine virtuelle à travers l'IP flottante et votre keypair privée
 (nom d'utilisateur par défaut *cloud*).
