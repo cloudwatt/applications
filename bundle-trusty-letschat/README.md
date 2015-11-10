@@ -24,7 +24,7 @@ vous avez besoin. Les instances sont facturées à la minute, vous permettant de
 services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails
 sur [La page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-Les paramètres de la Stack sont, bien sûr modifiable delon vos souhaits.
+Les paramètres de la Stack sont, bien sûr, modifiables selon vos souhaits.
 
 
 ### Au fait...
@@ -64,7 +64,7 @@ Seulement alors les outils de commande en ligne d'OpenStack peuvent interagir av
 Dans le fichier '.heat.yml' (templates heat), vous trouverez en haut une section paramètres. Le seul paramètre qui n'est pas par défaut est la `keypair_name`. Réglez la valeur `default` à une paire de clés valides en rapport avec votre compte utilisateur Cloudwatt, comme **ce sera la paire de clés que vous utiliserez pour vous connecter à votre stack à distance** Une keypair peut être génerée depuis [l'onglet `Key Pairs` sous `Access & Security` de la console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab).
 Assurez-vous d'enregistrer la clé publique, sinon vous ne serez pas en mesure de vous connecter à votre machine par SSH.
 
-Il est également possible dans les templates heat d'ajuster (et définir les valeurs par défaut pour ) le type d'instance, la taille du volume, et le type de volume en jouant avec le ` flavor_name`, le` volume_size` et le 'volume_type` selon les paramètres.
+Il est également possible dans les templates heat d'ajuster et définir les valeurs par défaut pour le type d'instance.
 
 Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Dokiwiki est seul installé. Ce comportement peut être modifié si necessaire dans le template heat.
 
