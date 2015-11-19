@@ -4,6 +4,13 @@
 
 **Draft - Image not yet available...**
 
+Graylog is an open source log management platform capable of manipulating and presenting data from virtually any source. At it's core, Graylog consists of a 3-tier architecture:
+
+* The Graylog Web Interface is a powerful tool that allows anyone to manipulate the entirety of what Graylog has to offer through an intuitive and appealing web application. Furthermore, the dashboard and widget mechanism makes creating strong visual &&&&&&& a breeze.
+
+
+Graylog stands as a strong and versatile log management solution.
+
 ## Preparations
 
 ### The version
