@@ -65,11 +65,11 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `.heat.yml` (templates heat), vous trouverez en haut une section `paramètres` .Les paramètres obligatoires pour la connexion sont la `keypair_name`, le `username` et le `password` for Digest login. La valeur de la `keypair_name` par `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur, si vous souhaitez l'avoir par défaut dans la console.
+Dans le fichier `.heat.yml` (template heat), vous trouverez en haut une section `paramètres`. Les paramètres obligatoires pour la connexion sont la `keypair_name`, le `username` et le `password` pour Digest login. La valeur de la `keypair_name` par `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur, si vous souhaitez l'avoir par défaut dans la console.
 
 Le champs `username` et `password` fournissent les valeurs pour une authentification basique, un simple module d'authentication HTTP appartenant a Apache2, fournisant une legère sécurité au cas où quelqu'un essaierait de passer par votre IP. Du fait que Jenkins est seulement un outil de construction, aucune autre sécurité n'est implémentée par défaut, bien que vous êtes toujours libre d'en mettre plus vous-même.
 
-Dans ces templates heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre `flavor`.
+Dans ce template heat, vous pouvez également ajuster (et régler par défaut) le type d'instance en jouant en conséquence avec le paramètre `flavor`.
 
 Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Jenkins est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
 
@@ -189,9 +189,9 @@ Le script `start-stack.sh`execute les requettes des API OpenStack nécessaire po
 Et bien si ! En utilisant la console, vous pouvez déployer votre serveur Jenkins :
 
 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/bundle-trusty-jenkins](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins)
-2.	Cliquez sur le fichier nommé `bundle-trusty-jenkins.heat.yml` (ou `bundle-trusty-jenkins.restore.heat.yml` pour [restore from backup](#backup))
+2.	Cliquez sur le fichier nommé `bundle-trusty-jenkins.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec les détails du template
-4.	Enregistrez le fichier sur votre Pc. Vous pouvez utiliser le nom proposé par votre navigateur (il faudrait juste enlever le .txt)
+4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par votre navigateur (il faudrait juste enlever le .txt)
 5.  Allez dans la section «[Stacks](https://console.cloudwatt.com/project/stacks/)»  de la console
 6.	Cliquez sur «Launch stack», puis «Template file» et sélectioner le fichier que vous venez d'enregistr sur votre PC, et pour finir cliquez sur «NEXT»
 7.	Donnez un nom à votre stack dans le champ «Stack name»
@@ -205,8 +205,7 @@ Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Jenkins 
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !  
-
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !
 
 ## So watt?
 

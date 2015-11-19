@@ -65,7 +65,7 @@ In the `.heat.yml` files (heat templates), you will find a section named `parame
 
 The `username` and `password` fields provide the values for Basic Auth, a simple HTTP authentication module belonging to Apache2, providing light security in the case that someone stumbles upon your IP. Since Jenkins is only a build tool, no other security is implemented by default, although you are always free to implement more yourself.
 
-Within these heat templates, you can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
+You can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
 
 By default, the stack network and subnet are generated for the stack, in which the Jenkins server sits alone. This behavior can be changed within the `.heat.yml` as well, if needed.
 
@@ -180,7 +180,7 @@ If you handle a terminal as well as a _Testudo graeca_ would, then you might wan
 To create our Jenkins stack from the console:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-jenkins](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-jenkins) repository
-2.	Click on the file named `bundle-trusty-jenkins.heat.yml` (or `bundle-trusty-jenkins.restore.heat.yml` to [restore from backup](#backup))
+2.	Click on the file named `bundle-trusty-jenkins.heat.yml`
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the «[Stacks](https://console.cloudwatt.com/project/stacks/)» section of the console
