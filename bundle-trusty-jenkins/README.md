@@ -39,7 +39,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-jenkins/
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-jenkins/`
 
 * `bundle-trusty-jenkins.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack. C'est un micro-script vous permettant d'économiser quelques copier-coller.
@@ -205,13 +205,13 @@ Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Jenkins 
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Jenkins !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur **DEPLOYER** et laisser vous guider... 5 minutes plus tard un bouton vert apparait... **ACCEDER** : vous avez votre Jenkins !
 
 ## So watt?
 
 Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord.
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante et votre clé privée (utilisateur par défaut cloud).
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante et votre clé privée (utilisateur par défaut `cloud`).
 
 ~~~ bash
 $ ssh «floating-IP» -l cloud -i /path/to/your/.ssh/keypair.pem
