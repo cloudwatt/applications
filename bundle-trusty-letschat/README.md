@@ -2,7 +2,7 @@
 
 Grace à cette application, vous allez mettre en place un espace Let's Chat où, en quelques secondes, tout le monde peut se créer un utilisateur et commencer à tchater.
 
-Let's Chat est une application de tchat web adaptée pour les petites équipes de développement . Développée par [Compass Security](http://securitycompass.com/) et placée sous la [licence MIT](https://raw.githubusercontent.com/sdelements/lets-chat/master/LICENSE), Let's Chat est un outil solide pour toute équipe , offrant des fonctionnalités avancées comme des messages persistants (avec archives consultables), un nombre infini de tchat rooms, des notifications, la possibilité de télécharger des fichiers et d'inclure des images, le copier/coller, des rooms privées et plus encore !
+Let's Chat est une application web de tchat adaptée pour les petites équipes de développement . Développée par [Compass Security](http://securitycompass.com/) et placée sous la [licence MIT](https://raw.githubusercontent.com/sdelements/lets-chat/master/LICENSE), Let's Chat est un outil solide pour toute équipe , offrant des fonctionnalités avancées comme des messages persistants (avec archives consultables), un nombre infini de tchat rooms, des notifications, la possibilité de télécharger des fichiers et d'inclure des images, le copier/coller, des rooms privées et plus encore !
 
 Let's Chat est devenu l'application de messagerie dans mon équipe seulement quelques jours après que je l'ai présentée pour essayer. Je souhaite que votre expérience avec Let's Chat sera aussi agréable que cela a été pour nous.
 
