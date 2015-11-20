@@ -6,7 +6,7 @@ url: letschat.html
 date: 2015-11-10 00:00:00
 date-creation: "10 Novembre 2015"
 date-maj: "10 Novembre 2015"
-description: ""
+description: "Let's Chat est une application webchat adaptée pour les petites équipes de développement. Développée par Security Compass, Let's Chat gère les messages persistants, les salons de discussions, les notifications via le navigateur, le transfert des fichiers et l'embarquement d'images, la coloration syntaxique, les chambres privées et plus encore !"
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-letschat
 siteofficiel: 
 sitesupport: https://github.com/sdelements/lets-chat/blob/master/TROUBLESHOOTING.md
