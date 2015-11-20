@@ -185,7 +185,7 @@ Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Tchatter maintenant !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Chatter maintenant !
 
 <a name="using_stack" />
 
@@ -196,14 +196,14 @@ Le but de ce tutoriel est d'accélerer votre démarrage. A ce ce niveau **vous**
 Vous avez un point d'accès en SSH sur votre machine virtuelle à travers l'IP flottante et votre keypair privée
 (nom d'utilisateur par défaut *cloud*).
 
-Les dossiers importants sont:
+Ressources qui pourraient vous être utiles :
 
-- `/some/path`: FIXME
-
-Autres ressources qui pourraient vous être utiles :
-
-* [Ubuntu](https://help.ubuntu.com/)
-
+* [Let's Chat Github](https://github.com/sdelements/lets-chat)
+* [Let's Chat Wiki](https://github.com/sdelements/lets-chat/wiki)
+* [Let's Chat LDAP Plugin](https://github.com/sdelements/lets-chat-ldap)
+* [NPM common error discussion](http://stackoverflow.com/questions/16151018/npm-throws-error-without-sudo/24404451#24404451)
+* [NodeJS common error discussion](http://stackoverflow.com/questions/9704660/node-error-cannot-find-module-already-installed)
+* [Installing latest MongoDB on Ubuntu 14.04](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
 
 -----
 Have fun. Hack in peace.

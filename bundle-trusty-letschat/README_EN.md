@@ -179,10 +179,9 @@ The stack will be automatically generated (you can see its progress by clicking 
 
 If you've reached this point, Let's Chat is running!
 
-### Or an easier way thru a 1-click ?
+### A one-click chat sounds really nice...
 
-... Yes! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 2 minutes later, a green button appears... ACCEDER: you have your Let's Chat!
-
+... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your Let's Chat!
 
 ## So watt?
 
@@ -190,14 +189,14 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
 
-The interesting directories are:
+### Links of Interest:
 
-- `/some/path`: FIXME
-
-Other resources you could be interested in:
-
-* [Ubuntu](https://help.ubuntu.com/)
-
+* [Let's Chat Github](https://github.com/sdelements/lets-chat)
+* [Let's Chat Wiki](https://github.com/sdelements/lets-chat/wiki)
+* [Let's Chat LDAP Plugin](https://github.com/sdelements/lets-chat-ldap)
+* [NPM common error discussion](http://stackoverflow.com/questions/16151018/npm-throws-error-without-sudo/24404451#24404451)
+* [NodeJS common error discussion](http://stackoverflow.com/questions/9704660/node-error-cannot-find-module-already-installed)
+* [Installing latest MongoDB on Ubuntu 14.04](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
 
 -----
 Have fun. Hack in peace.
