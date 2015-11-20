@@ -6,10 +6,13 @@
 
 Graylog is an open source log management platform capable of manipulating and presenting data from virtually any source. At it's core, Graylog consists of a 3-tier architecture:
 
-* The Graylog Web Interface is a powerful tool that allows anyone to manipulate the entirety of what Graylog has to offer through an intuitive and appealing web application. Furthermore, the dashboard and widget mechanism makes creating strong visual &&&&&&& a breeze.
+* The Graylog Web Interface is a powerful tool that allows anyone to manipulate the entirety of what Graylog has to offer through an intuitive and appealing web application.
+* At the heart of Graylog is it's own strong software. Graylog Server interacts with all other components using REST APIs so that each component of the system can be scaled without comprimising the integrity of the system as a whole.
+* Real-time search results when you want them and how you want them: Graylog is only able to provide this thanks to the tried and tested power of Elasticsearch. The Elasticsearch nodes behind the scenes give Graylog the speed that makes it a real pleasure to use.
 
+Boasting this impressive architecture as well as a vast library of plugins, Graylog stands as a strong and versatile log management solution.
 
-Graylog stands as a strong and versatile log management solution.
+By following this guide you will deploy a compressed but fully functional version of Graylog: Graylog Web and Server as well as Elasticsearch all deployed on one instance. This is a great way to discover the potential of Graylog and explore it's versatile web UI without expending many resources.
 
 ## Preparations
 
