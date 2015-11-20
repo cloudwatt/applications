@@ -31,7 +31,7 @@ All stack parameters, of course, are yours to tweak at your fancy.
 
 ### By the way...
 
-If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console). 
+If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console).
 
 ## What will you find in the repository
 
@@ -68,10 +68,42 @@ Within the heat template, you can also adjust (and set the default for) the inst
 By default, the stack network and subnet are generated for the stack, in which the Let's Chat server sits alone. This behavior can be changed within the `.heat.yml` as well, if need be, although doing so may be cause for security concerns.
 
 ~~~ yaml
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Lets Chat stack
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
     default: my-keypair-name                <-- Indicate your keypair here
+
+  flavor_name:
     default: s1.cw.small-1                  <-- Indicate your instance type here
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
         [...]
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
 [...]
+
 ~~~
 
 <a name="startup" />

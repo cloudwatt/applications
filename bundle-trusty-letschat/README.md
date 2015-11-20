@@ -70,10 +70,40 @@ Par défaut, le réseau et sous-réseau de la stack sont générés pour la stac
 
 
 ~~~ yaml
+heat_template_version: 2013-05-23
 
-  default: my-keypair-name                <-- Indicate your keypair here
+
+description: All-in-one Lets Chat stack
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+    default: my-keypair-name                <-- Indicate your keypair here
+
+  flavor_name:
     default: s1.cw.small-1                  <-- Indicate your instance type here
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
         [...]
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
 [...]
 
 ~~~
@@ -133,7 +163,7 @@ Le script `start-stack.sh` execute les requettes des API OpenStack nécessaires 
 
 ### Une Ligne de commande semble aussi amical qu'un management à la militaire
 
-Heureusement pour vous alors, la totalité de la configuration de Let's Chat peut être faite en utilisant uniquement l'interface web. 
+Heureusement pour vous alors, la totalité de la configuration de Let's Chat peut être faite en utilisant uniquement l'interface web.
 
 Pour créer votre stack Let's Chat depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
