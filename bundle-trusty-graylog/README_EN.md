@@ -194,8 +194,15 @@ Graylog takes inputs from a plethora of ports and protocols, I recommend you tak
 You also now have an SSH access point on your virtual machine through the floating-IP and your private key pair (default user name `cloud`). Be warned, the default browser connection to Graylog is not encrypted (HTTP): if you are using your Graylog instance to store sensitive data, you may want to connect with an SSH tunnel instead.
 
 ~~~ bash
-$ ssh «floating-IP» -l cloud -i /path/to/your/.ssh/keypair.pem
+user@home$ cd applications/bundle-trusty-graylog/
+user@home$ ./stack-get-url.sh TICKERTAPE
+TICKERTAPE  http://70.60.637.17:9000/
+user@home$ ssh 70.60.637.17 -l cloud -i /path/to/your/.ssh/keypair.pem -L 5000:localhost:9000
+[...]
+cloud@graylog-server$ █
 ~~~
+
+By doing the above, I could then access my Graylog server from http://localhost:5000/ in my browser. ^^
 
 #### The interesting directories are:
 
