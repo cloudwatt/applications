@@ -202,7 +202,19 @@ user@home$ ssh 70.60.637.17 -l cloud -i /path/to/your/.ssh/keypair.pem -L 5000:l
 cloud@graylog-server$ █
 ~~~
 
-By doing the above, I could then access my Graylog server from http://localhost:5000/ in my browser. ^^
+By doing the above, I could then access my Graylog server from http://localhost:5000/ on my browser. ^^
+
+## This VS Production
+
+This bundle deploys the minimum Graylog setup for use in smaller, non-critical, or test setups. None of the components are redundant but it is resource-light and quick to launch.
+
+![Minimum setup](http://docs.graylog.org/en/1.3/_images/simple_setup.png)
+
+Bigger production environments have several graylog-server nodes behind a load balancer that share the processing load. The load balancer can ping the graylog-server nodes via REST/HTTP to check if they are alive and take dead nodes out of the cluster.
+
+![Bigger production setup](http://docs.graylog.org/en/1.3/_images/extended_setup.png)
+
+This setup is much heftier but carries a number of advantages, not least among them being fluid horizontal scaling. This allows Graylog to expand and shrink to meet the current workload. If you are interested in such an environment, check out the link *Graylog architectural considerations* below.
 
 #### The interesting directories are:
 
@@ -214,6 +226,7 @@ By doing the above, I could then access my Graylog server from http://localhost:
 
 * [Graylog Homepage](https://www.graylog.org/)
 * [Graylog - Getting Started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in)
+* [Graylog architectural considerations](http://docs.graylog.org/en/1.3/pages/architecture.html)
 * [Elasticsearch Homepage](https://www.elastic.co/products/elasticsearch)
 * [Installing MongoDB on Ubuntu](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
 
