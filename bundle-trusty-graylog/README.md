@@ -36,7 +36,7 @@ Ceci devrait être une routine à présent:
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturés à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnés à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
 
@@ -49,7 +49,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-graylog/`
 
 * `bundle-trusty-graylog.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
-* `stack-start.sh`: Stack launching script, which simplifies the parameters and secures the admin password creation.
+* `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
@@ -72,14 +72,15 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-In the `.heat.yml` files (heat templates), you will find a section named `parameters` near the top. The mandatory parameters are the `keypair_name` and the `password` for the Graylog *admin* user.
+Dans le fichier `.heat.yml` (le template HEAT), vous trouverez au début une section nommée `parameters`. Les paramètres obligatoires sont la `keypair_name` et le `mot de passe` de l'utilisateur *admin* de Graylog.
 
-You can set the `keypair_name`'s `default` value to save yourself time, as shown below.
-Remember that key pairs are created [from the console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab), and only keys created this way can be used.
+Le champs `keypair_name` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 
-The `password` field provides the password for Graylog's default *admin* user. You will need it upon initial login, but you can always create other users later. You can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
+Le champs `password` doit contenir le mot de passe que vous souhaitez pour l'utilisateur *admin*. Vous en aurez besoin pour votre premier login mais vous pourez créer d'autres utilisateurs une fois dans l'appli Graylog. 
 
-Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Graylog est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
+Vous pouvez aussi mofifier la taille de l'instance par default en jouant avec le paramètre `flavor`.
+
+Par défaut, le réseau et sous-réseau de la stack sont générés par la stack, dans lequel le serveur Graylog est seul installé. Ce comportement peut être modifié si necessaire dans le fichier `.heat.yml`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
