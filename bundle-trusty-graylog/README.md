@@ -70,7 +70,7 @@ $ [whatever mind-blowing stuff you have planned...]
 
 Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
-### Adjust the parameters
+### Ajuster les paramètres
 
 In the `.heat.yml` files (heat templates), you will find a section named `parameters` near the top. The mandatory parameters are the `keypair_name` and the `password` for the Graylog *admin* user.
 
@@ -79,7 +79,7 @@ Remember that key pairs are created [from the console](https://console.cloudwatt
 
 The `password` field provides the password for Graylog's default *admin* user. You will need it upon initial login, but you can always create other users later. You can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
 
-By default, the stack network and subnet are generated for the stack, in which the Graylog server sits alone. This behavior can be changed within the `.heat.yml` as well, if needed.
+Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Graylog est seul installé. Ce comportement peut être modifié si necessaire dans fichier` .heat.yml`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -93,7 +93,7 @@ parameters:
     label: SSH Keypair
     description: Keypair to inject in instance
     type: string
-    default: my-keypair-name                <-- Indicate your key pair name here
+    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
 
   password:
     label: Password
@@ -130,9 +130,9 @@ resources:
 
 <a name="startup" />
 
-### Stack up with a terminal
+### Démarrer la stack
 
-In a shell, run the script `stack-start.sh`:
+Dans un shell, lancer le script `stack-start.sh`:
 
 ~~~ bash
 $ ./stack-start.sh TICKERTAPE «my-keypair-name»
@@ -146,7 +146,7 @@ Creating stack...
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
-Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+Au bout de **5 minutes**, la stack sera totalement opérationnelle. (Vous pouvez utiliser la commande `watch` pour voir le statut en temps réel).
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -157,45 +157,50 @@ $ watch -n 1 heat stack-list
 +--------------------------------------+------------+-----------------+----------------------+
 ~~~
 
-### Stack URL with a terminal
+### Profitez - Stack URL with a terminal
 
-Once all of this done, you can run the `stack-get-url.sh` script.
+Une fois tout ceci fait, vous pouvez lancer le script 'stack-get-url.sh'.
 
 ~~~ bash
 $ ./stack-get-url.sh TICKERTAPE
 TICKERTAPE  http://70.60.637.17:9000/
 ~~~
 
-As shown above, it will parse the assigned floating-IP of your stack into a URL link, with the right port included. You can then click or paste this into your browser of choice and bask in the glory of a fresh Graylog instance.
+Comme indiqué ci-dessus, il va analyser les IP flottantes attribuées à votre stack dans un lien URL.
+Vous pouvez alors cliquer ou le coller dans un navigateur de votre choix, et profitez de votre nouvelle instance Graylog.
 
 ![Graylog Home](img/graylog_home.png)
 
 <a name="console" />
 
-### Please console me
+## C’est bien tout ça, mais...
 
-There there, it's okay... Graylog stacks can be spawned from our console as well!
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-To create our Graylog stack from the console:
+Et bien si ! En utilisant la console, vous pouvez déployer votre Graylog :
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-graylog](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-graylog) repository
-2.	Click on the file named `bundle-trusty-graylog.heat.yml`
-3.	Click on RAW, a web page will appear containing purely the template
-4.	Save the page to your PC. You can use the default name proposed by your browser (just remove the .txt if needed)
-5.  Go to the [Stacks](https://console.cloudwatt.com/project/stacks/) section of the console
-6.	Click on **Launch stack**, then **Template file** and select the file you just saved to your PC, and finally click on **NEXT**
-7.	Name your stack in the **Stack name** field
-8.	Enter the name of your keypair in the **SSH Keypair** field
-9.	Enter the password for the default *admin* user
-10.	Choose your instance size using the **Instance Type** dropdown and click on **LAUNCH**
+1.	Allez sur le Github Cloudwatt dans le dépôt [applications/bundle-trusty-graylog](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-graylog)
+2.	Cliquez sur le fichier nommé `bundle-trusty-graylog.heat.yml`
+3.	Cliquez sur RAW, une page web apparait avec les détails du template
+4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par votre navigateur (il faudrait juste enlever le .txt)
+5.  Allez dans la section «[Stacks](https://console.cloudwatt.com/project/stacks/)»  de la console
+6.	Cliquez sur «Launch stack», puis «Template file» et sélectioner le fichier que vous venez d'enregistr sur votre PC, et pour finir cliquez sur «NEXT»
+7.	Donnez un nom à votre stack dans le champ «Stack name»
+8.	Entrez le nom de votre keypair dans le champ «SSH Keypair»
+9.	Entrez le mot de passe que vous avez choisit pour l'utilisateur par defaut *admin*
+10.	Choisissez la taille de votre instance dans le menu déroulant « Type d'instance » et cliquez sur «LANCER»
 
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
+La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
 
-Remember that the Graylog UI is on port 9000, not the default port 80!
+Souvenez vous que l'UI de Graylog se trouve sur le port 9000, pas sur le 80 !
+
+Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Graylog !
 
 ## So watt?
 
-The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack. The default user is *admin* with the password you set during stack creation. An easy way to [get started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) is to have your Graylog server log itself!
+Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord. 
+
+The default user is *admin* with the password you set during stack creation. An easy way to [get started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) is to have your Graylog server log itself!
 
 ![Graylog Inputs](img/graylog_inputs.png)
 
@@ -228,13 +233,13 @@ This bundle deploys the minimum Graylog setup for use in smaller, non-critical, 
 
 Bigger production environments are much heftier but carry a number of advantages, not least among them being fluid horizontal scaling. This allows Graylog to expand and shrink to meet the current workload. If you are interested in such an environment, check out the link *Graylog architectural considerations* below.
 
-#### The interesting directories are:
+#### Les dossiers importants sont:
 
 - `/etc/graylog/server/server.conf`: Graylog server configuration
 - `/etc/graylog/web/web.conf`: Graylog web UI configuration
 - `/etc/elasticsearch/elasticsearch.yml`: Elasticsearch configuration
 
-#### Other resources you could be interested in:
+#### Autres ressources qui pourraient vous être utiles :
 
 * [Graylog Homepage](https://www.graylog.org/)
 * [Graylog - Getting Started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in)
