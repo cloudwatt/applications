@@ -74,7 +74,7 @@ resources:
     properties:
       config: |
         #!/bin/bash
-        openssl req -new -nodes -x509 -subj "/C=FR/ST=IDF/L=Paris/O=Cloudwatt/CN=GitLab" \
+        openssl req -new -nodes -x509 -subj "/C=FR/ST=IDF/L=Paris/O=Cloudwatt/CN=LetsChat" \
           -days 3650 \
           -keyout /etc/lets-chat/ssl/lets-chat.key \
           -out /etc/lets-chat/ssl/lets-chat.crt \
