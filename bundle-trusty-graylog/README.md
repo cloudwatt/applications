@@ -184,10 +184,10 @@ Et bien si ! En utilisant la console, vous pouvez déployer votre Graylog :
 3.	Cliquez sur RAW, une page web apparait avec les détails du template
 4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par votre navigateur (il faudrait juste enlever le .txt)
 5.  Allez dans la section «[Stacks](https://console.cloudwatt.com/project/stacks/)»  de la console
-6.	Cliquez sur «Launch stack», puis «Template file» et sélectioner le fichier que vous venez d'enregistr sur votre PC, et pour finir cliquez sur «NEXT»
+6.	Cliquez sur «Launch stack», puis «Template file» et sélectionner le fichier que vous venez d'enregistrer sur votre PC, et pour finir cliquez sur «NEXT»
 7.	Donnez un nom à votre stack dans le champ «Stack name»
 8.	Entrez le nom de votre keypair dans le champ «SSH Keypair»
-9.	Entrez le mot de passe que vous avez choisit pour l'utilisateur par defaut *admin*
+9.	Entrez le mot de passe que vous avez choisi pour l'utilisateur par defaut *admin*
 10.	Choisissez la taille de votre instance dans le menu déroulant « Type d'instance » et cliquez sur «LANCER»
 
 La stack va se créer automatiquement (vous pourrez voir la progression en cliquant sur son nom). Quand tous les modules passeront au vert, la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour retrouver l’IP flottante qui a été générée, ou rafraichir la page en cours pour avoir le lien.
