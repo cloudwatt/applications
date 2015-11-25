@@ -12,7 +12,7 @@ Graylog est une plateforme open source de gestion de logs capable de manipuler e
 * Au cœur de Graylog est son propre logiciel forte. Le Graylog serveur interagit avec tous les autres composants à l'aide d'interfaces API REST de sorte que chaque composant du système peut être adapté sans pour autant compromettre l'intégrité du système dans son ensemble.
 * Des résultats de recherche en temps réel quand vous les voulez et comment vous les voulez: Graylog est en mesure de vous fournir ceci grâce à la puissance éprouvée d'ElasticSearch. Les nœuds ElasticSearch donnent à Graylog la vitesse qui en fait un vrai plaisir à utiliser.
 
-Bénéficiant de cette architecture impressionnante ainsi que d'une vaste bibliothèque de plugins, Graylog se placee comme une solution solide et polyvalente de gestion des logs.
+Bénéficiant de cette architecture impressionnante ainsi que d'une vaste bibliothèque de plugins, Graylog se place comme une solution solide et polyvalente de gestion des logs.
 
 En suivant ce tutoriel, vous allez déployer une version tout-en-un mais entièrement fonctionnelle de Graylog: L'UI web de Graylog, le serveur ainsi que ElasticSearch sont tous déployés sur une seule instance. Ceci est une excellente façon de découvrir le potentiel de Graylog et d'explorer son interface Web polyvalente sans dépenser beaucoup de ressources.
 
@@ -200,11 +200,11 @@ Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Graylog 
 
 Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord. 
 
-The default user is *admin* with the password you set during stack creation. An easy way to [get started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) is to have your Graylog server log itself!
+L'utilisateur par défaut est *admin* avec le mot de passe que vous avez défini lors de la création de la stack. Un moyen facile de [commencer](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) est d'avoir les logs de votre serveur Graylog lui-même !
 
 ![Graylog Inputs](img/graylog_inputs.png)
 
-Graylog takes inputs from a plethora of ports and protocols, I recommend you take the time to document yourselves on the possibilities. Just remember that all input and output ports must be explicitly set in the stack's [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab). To add an input, click on **MANAGE RULES** for your stack's security group and then, once on the page *MANAGE SECURITY GROUP RULES*, click **+ ADD RULE**. If logs don't make it to your graylog instance, check the [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) first!
+Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous recommande de prendre le temps de vous documenter sur les possibilités. Rappelez-vous que tous les ports d'entrée et de sortie doivent être définies explicitement dans le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) de la stack. Pour ajouter une entrée, cliquez sur **Gérer les règles** pour le groupe de sécurité de votre stack, ensuite sur l'onglet **Gérer les règles de groupe de sécurité**, puis cliquez sur **Ajouter une règle**. Si les logs ne remontent pas à votre instance Graylog, vérifiez le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) d'abord !
 
 ![Graylog Sources](img/graylog_sources.png)
 
