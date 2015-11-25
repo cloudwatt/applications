@@ -204,15 +204,15 @@ L'utilisateur par défaut est *admin* avec le mot de passe que vous avez défini
 
 ![Graylog Inputs](img/graylog_inputs.png)
 
-Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous recommande de prendre le temps de vous documenter sur les possibilités. Rappelez-vous que tous les ports d'entrée et de sortie doivent être définies explicitement dans le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) de la stack. Pour ajouter une entrée, cliquez sur **GERER LES REGLES** pour le groupe de sécurité de votre stack, ensuite sur la page *GESTION GROUPES DE SÉCURITÉ*, puis cliquez sur **AJOUTER UNE REGLE**. Si les logs ne remontent pas à votre instance Graylog, vérifiez le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) d'abord !
+Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous recommande de prendre le temps de vous documenter sur ses possibilités. Rappelez-vous que tous les ports d'entrée et de sortie doivent être définies explicitement dans le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) de la stack. Pour ajouter une entrée, cliquez sur **GERER LES REGLES** pour le groupe de sécurité de votre stack, ensuite dans la page *GESTION GROUPES DE SÉCURITÉ* cliquez sur **AJOUTER UNE REGLE**. Si les logs ne remontent pas à votre instance Graylog, vérifiez le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) d'abord !
 
 ![Graylog Sources](img/graylog_sources.png)
 
-Once you are receiving logs from a variety of sources, dashboards will certainly become your favorite tool. Search results can be converted into widgets that update in real-time, and dashboards let you organize those widgets into information-rich panels that can give essential visibility on the state of your environment. Take the time to create a dashboard which displays the information you care about, and monitoring your VMs is sure to become a more pleasant experience.
+Une fois que vous recevez des logs depuis plusieurs sources, les dashboards vont certainement devenir votre outil préféré. Les résultats de recherche peuvent être convertis en des widgets qui sont mis à jour en temps réel et des dashboards vous permettent d'organiser ces widgets en panneaux d'information. Ainsi vous avez la visibilité des informations essentielles sur l'état de votre environnement. Prenez le temps de créer un dashboard qui affiche les informations que vous vous souciez, et le suivi de vos machines virtuelles va surement devenir une expérience plus agréable.
 
 ![Graylog Dashboard Example](img/graylog_dashboard.png)
 
-You also now have an SSH access point on your virtual machine through the floating-IP and your private key pair (default user name `cloud`). Be warned, the default browser connection to Graylog is not encrypted (HTTP): if you are using your Graylog instance to store sensitive data, you may want to connect with an SSH tunnel instead.
+Vous avez aussi maintenant un point d'accès SSH sur votre machine virtuelle à travers l'IP flottante et votre keypair privée (nom d'utilisateur par défaut `cloud`). Attention, la connexion par défaut du navigateur à l'UI de Graylog n'est pas chiffrée (HTTP): si vous utilisez votre instance Graylog pour stocker des données sensibles, vous voudrez peut-être vous connecter plutôt avec un tunnel SSH.
 
 ~~~ bash
 user@home$ cd applications/bundle-trusty-graylog/
@@ -223,15 +223,15 @@ user@home$ ssh 70.60.637.17 -l cloud -i /path/to/your/.ssh/keypair.pem -L 5000:l
 cloud@graylog-server$ █
 ~~~
 
-By doing the above, I could then access my Graylog server from http://localhost:5000/ on my browser. ^^
+En faisant ce qui précède, je peux accéder à mon serveur Graylog depuis http://localhost:5000/ dans mon navigateur.
 
 ## The State of Affairs
 
-This bundle deploys the minimum Graylog setup for use in smaller, non-critical, or test setups. None of the components are redundant but it is resource-light and quick to launch.
+Cet appli déploie la configuration minimale de Graylog pour une utilisation dans des cas de petites configurations non-critiques ou de test. Aucun des composants ne sont redondants donc cette stack est rapide à lancer et peu chère à utiliser.
 
 ![Minimum setup](http://docs.graylog.org/en/1.3/_images/simple_setup.png)
 
-Bigger production environments are much heftier but carry a number of advantages, not least among them being fluid horizontal scaling. This allows Graylog to expand and shrink to meet the current workload. If you are interested in such an environment, check out the link *Graylog architectural considerations* below.
+La configuration de Graylog est naturellement bien plus "généreuse" si vous visez un environnement de production plus grand, mais apporte un certain nombre d'avantages, l'un d'entre eux étant une scalabilité horizontale fluide. Cela permet à Graylog de grossir ou se réduire pour répondre à sa charge de travail à un instant t. Si vous êtes intéressé par un tel environnement, consultez le lien *Graylog server configuration* ci-dessous.
 
 #### Les dossiers importants sont:
 
