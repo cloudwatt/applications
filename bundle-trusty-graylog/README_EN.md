@@ -6,6 +6,8 @@
 
 Graylog is an open source log management platform capable of manipulating and presenting data from virtually any source. At it's core, Graylog consists of a 3-tier architecture:
 
+![Graylog Diagram](img/graylog_diagram.png)
+
 * The Graylog Web Interface is a powerful tool that allows anyone to manipulate the entirety of what Graylog has to offer through an intuitive and appealing web application.
 * At the heart of Graylog is it's own strong software. Graylog Server interacts with all other components using REST APIs so that each component of the system can be scaled without comprimising the integrity of the system as a whole.
 * Real-time search results when you want them and how you want them: Graylog is only able to provide this thanks to the tried and tested power of Elasticsearch. The Elasticsearch nodes behind the scenes give Graylog the speed that makes it a real pleasure to use.
@@ -162,6 +164,8 @@ TICKERTAPE  http://70.60.637.17:9000/
 
 As shown above, it will parse the assigned floating-IP of your stack into a URL link, with the right port included. You can then click or paste this into your browser of choice and bask in the glory of a fresh Graylog instance.
 
+![Graylog Home](img/graylog_home.png)
+
 <a name="console" />
 
 ### Please console me
@@ -178,7 +182,7 @@ To create our Graylog stack from the console:
 6.	Click on **Launch stack**, then **Template file** and select the file you just saved to your PC, and finally click on **NEXT**
 7.	Name your stack in the **Stack name** field
 8.	Enter the name of your keypair in the **SSH Keypair** field
-9.	Enter your new admin password
+9.	Enter the password for the default *admin* user
 10.	Choose your instance size using the **Instance Type** dropdown and click on **LAUNCH**
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
@@ -187,9 +191,17 @@ Remember that the Graylog UI is on port 9000, not the default port 80!
 
 ## So watt?
 
-The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack. An easy way to [get started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) is to have your Graylog server log itself!
+The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack. The default user is *admin* with the password you set during stack creation. An easy way to [get started](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) is to have your Graylog server log itself!
 
-Graylog takes inputs from a plethora of ports and protocols, I recommend you take the time to document yourselves on the possibilities. Just remember that all input and output ports must be explicitly set for the [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab). To add an input, click on **MANAGE RULES** for your stack's security group and then, once on the page *MANAGE SECURITY GROUP RULES*, click **+ ADD RULE**. If logs don't make it to your graylog instance, check the [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) first!
+![Graylog Inputs](img/graylog_inputs.png)
+
+Graylog takes inputs from a plethora of ports and protocols, I recommend you take the time to document yourselves on the possibilities. Just remember that all input and output ports must be explicitly set in the stack's [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab). To add an input, click on **MANAGE RULES** for your stack's security group and then, once on the page *MANAGE SECURITY GROUP RULES*, click **+ ADD RULE**. If logs don't make it to your graylog instance, check the [security group](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) first!
+
+![Graylog Sources](img/graylog_sources.png)
+
+Once you are receiving logs from a variety of sources, dashboards will certainly become your favorite tool. Search results can be converted into widgets that update in real-time, and dashboards let you organize those widgets into information-rich panels that can give essential visibility on the state of your environment. Take the time to create a dashboard which displays the information you care about, and monitoring your VMs is sure to become a more pleasant experience.
+
+![Graylog Dashboard Example](img/graylog_dashboard.png)
 
 You also now have an SSH access point on your virtual machine through the floating-IP and your private key pair (default user name `cloud`). Be warned, the default browser connection to Graylog is not encrypted (HTTP): if you are using your Graylog instance to store sensitive data, you may want to connect with an SSH tunnel instead.
 
