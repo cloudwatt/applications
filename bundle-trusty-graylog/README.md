@@ -204,7 +204,7 @@ L'utilisateur par défaut est *admin* avec le mot de passe que vous avez défini
 
 ![Graylog Inputs](img/graylog_inputs.png)
 
-Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous recommande de prendre le temps de vous documenter sur les possibilités. Rappelez-vous que tous les ports d'entrée et de sortie doivent être définies explicitement dans le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) de la stack. Pour ajouter une entrée, cliquez sur **Gérer les règles** pour le groupe de sécurité de votre stack, ensuite sur l'onglet **Gérer les règles de groupe de sécurité**, puis cliquez sur **Ajouter une règle**. Si les logs ne remontent pas à votre instance Graylog, vérifiez le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) d'abord !
+Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous recommande de prendre le temps de vous documenter sur les possibilités. Rappelez-vous que tous les ports d'entrée et de sortie doivent être définies explicitement dans le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) de la stack. Pour ajouter une entrée, cliquez sur **GERER LES REGLES** pour le groupe de sécurité de votre stack, ensuite sur la page *GESTION GROUPES DE SÉCURITÉ*, puis cliquez sur **AJOUTER UNE REGLE**. Si les logs ne remontent pas à votre instance Graylog, vérifiez le [groupe de sécurité](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__security_groups_tab) d'abord !
 
 ![Graylog Sources](img/graylog_sources.png)
 
