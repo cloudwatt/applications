@@ -209,7 +209,7 @@ Comme Graylog collecte les logs d'une pléthore de ports et protocoles, je vous 
 
 ![Graylog Sources](img/graylog_sources.png)
 
-Une fois que vous recevez des logs depuis plusieurs sources, les dashboards vont certainement devenir votre outil préféré. Les résultats de recherche peuvent être convertis en des widgets qui sont mis à jour en temps réel et des dashboards vous permettent d'organiser ces widgets en panneaux d'information. Ainsi vous avez la visibilité des informations essentielles sur l'état de votre environnement. Prenez le temps de créer un dashboard qui affiche les informations que vous vous souciez, et le suivi de vos machines virtuelles va surement devenir une expérience plus agréable.
+Une fois que vous recevez des logs depuis plusieurs sources, les dashboards vont certainement devenir votre outil préféré. Les résultats de recherche peuvent être convertis en des widgets qui sont mis à jour en temps réel et des dashboards vous permettent d'organiser ces widgets en panneaux d'information. Ainsi vous avez la visibilité des informations essentielles sur l'état de votre environnement. Prenez le temps de créer un dashboard qui affiche les informations dont vous vous souciez, et le suivi de vos machines virtuelles va surement devenir une expérience plus agréable.
 
 ![Graylog Dashboard Example](img/graylog_dashboard.png)
 
@@ -232,7 +232,7 @@ Cet appli déploie la configuration minimale de Graylog pour une utilisation dan
 
 ![Minimum setup](http://docs.graylog.org/en/1.3/_images/simple_setup.png)
 
-La configuration de Graylog est naturellement bien plus "généreuse" si vous visez un environnement de production plus grand, mais apporte un certain nombre d'avantages, l'un d'entre eux étant une scalabilité horizontale fluide. Cela permet à Graylog de grossir ou se réduire pour répondre à sa charge de travail à un instant t. Si vous êtes intéressé par un tel environnement, consultez le lien *Graylog server configuration* ci-dessous.
+La configuration de Graylog est naturellement bien plus "généreuse" si vous visez un environnement de production plus grand, mais apporte un certain nombre d'avantages, l'un d'entre eux étant une scalabilité horizontale fluide. Cela permet à Graylog de grossir ou se réduire pour répondre à sa charge de travail à un instant t. Si vous êtes intéressé par un tel environnement, consultez le lien *Graylog architectural considerations* ci-dessous.
 
 #### Les dossiers importants sont:
 
