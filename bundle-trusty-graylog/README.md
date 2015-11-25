@@ -78,7 +78,7 @@ Le champs `keypair_name` doit contenir le nom d'une paire de clés valide dans v
 
 Le champs `password` doit contenir le mot de passe que vous souhaitez pour l'utilisateur *admin*. Vous en aurez besoin pour votre premier login mais vous pourez créer d'autres utilisateurs une fois dans l'appli Graylog. 
 
-Vous pouvez aussi mofifier la taille de l'instance par default en jouant avec le paramètre `flavor`.
+Vous pouvez aussi modifier la taille de l'instance par default en jouant avec le paramètre `flavor`.
 
 Par défaut, le réseau et sous-réseau de la stack sont générés par la stack, dans lequel le serveur Graylog est seul installé. Ce comportement peut être modifié si necessaire dans le fichier `.heat.yml`.
 
