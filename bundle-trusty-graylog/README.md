@@ -2,8 +2,6 @@
 
 ## Episode 14: Graylog
 
-**Projet - Image actuellement non disponible...**
-
 Graylog est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Graylog se compose d'une architecture 3-tier:
 
 ![Graylog Diagram](img/graylog_diagram.png)
@@ -18,7 +16,7 @@ En suivant ce tutoriel, vous allez déployer une version tout-en-un mais entièr
 
 ## Préparations
 
-### La version
+### Les versions
 
 * Graylog (graylog-server/graylog-web) 1.2.2-1
 * Elasticsearch (elasticsearch) 1.7.3
@@ -36,13 +34,13 @@ Ceci devrait être une routine à présent:
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs ](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
 
 ### Au fait...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version "Je lance avec la console" en cliquant sur [ce lien](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
 ## Tour du propriétaire
 
@@ -65,7 +63,6 @@ Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe l
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-$ [whatever mind-blowing stuff you have planned...]
 ~~~
 
 Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
@@ -76,7 +73,7 @@ Dans le fichier `.heat.yml` (le template HEAT), vous trouverez au début une sec
 
 Le champs `keypair_name` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 
-Le champs `password` doit contenir le mot de passe que vous souhaitez pour l'utilisateur *admin*. Vous en aurez besoin pour votre premier login mais vous pourez créer d'autres utilisateurs une fois dans l'appli Graylog. 
+Le champs `password` doit contenir le mot de passe que vous souhaitez pour l'utilisateur *admin*. Vous en aurez besoin pour votre premier login mais vous pourez créer d'autres utilisateurs une fois dans l'appli Graylog.
 
 Vous pouvez aussi modifier la taille de l'instance par default en jouant avec le paramètre `flavor`.
 
@@ -160,7 +157,7 @@ $ watch -n 1 heat stack-list
 
 ### Profitez - Stack URL with a terminal
 
-Une fois tout ceci fait, vous pouvez lancer le script 'stack-get-url.sh'.
+Une fois tout ceci fait, vous pouvez lancer le script `stack-get-url.sh`.
 
 ~~~ bash
 $ ./stack-get-url.sh TICKERTAPE
@@ -199,7 +196,7 @@ Si vous avez atteint ce point, alors vous y êtes arrivé ! Profitez de Graylog 
 
 ## So watt?
 
-Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord. 
+Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord.
 
 L'utilisateur par défaut est *admin* avec le mot de passe que vous avez défini lors de la création de la stack. Un moyen facile de [commencer](http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in) est d'avoir les logs de votre serveur Graylog lui-même !
 

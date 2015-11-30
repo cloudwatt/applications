@@ -2,8 +2,6 @@
 
 ## Episode 14: Graylog
 
-**Draft - Image not yet available...**
-
 Graylog is an open source log management platform capable of manipulating and presenting data from virtually any source. At it's core, Graylog consists of a 3-tier architecture:
 
 ![Graylog Diagram](img/graylog_diagram.png)
