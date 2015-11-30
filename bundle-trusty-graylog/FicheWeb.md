@@ -27,7 +27,7 @@ solutions-list:
  - text: "Big data"
 prix: "Gratuit pour l'application + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-quatorze-ldap.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-quatorze-graylog.html
 install-url:
 comingsoon: false
 ---
