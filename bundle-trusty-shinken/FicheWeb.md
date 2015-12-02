@@ -11,7 +11,7 @@ siteofficiel: http://www.shinken-monitoring.org/
 sitesupport: http://shinken.readthedocs.org/en/latest/
 composants:
  - logo: ""
-   version: "Debian Jessie 8.2"
+   version: "Ubuntu 14.04.2"
  - logo: ""
    version: "Shinken 2.4.2"
  - logo: ""
