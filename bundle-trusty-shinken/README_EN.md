@@ -6,11 +6,11 @@
 
 Shinken is an application for system and network monitoring.
 It monitors specified hosts and services, alerting when systems
-go bad and when they get better. This is free software licensed under the GNU AGPL.
+go bad and when they get better. This is a free software licensed under the GNU AGPL.
 Shinken is fully compatible with Nagios software.
 
-The deployment base chosen for this bundle is an instance Debian Jessie. Shinken the server,
-his web interface and database are deployed in a single instance.
+The deployment base chosen for this bundle is an Ubuntu trusty instance.The server Shinken,
+its web interface and its database are deployed in a single instance.
 
 ## Preparations
 
