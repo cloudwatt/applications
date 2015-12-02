@@ -9,7 +9,7 @@ Elle surveille les hôtes et services spécifiés, alertant lorsque les système
 vont mals et quand ils vont mieux. C'est un logiciel libre sous licence GNU AGPL.
 Shinken est complètement compatible avec le logiciel Nagios.
 
-La base de déploiement choisie pour ce bundle est une instance Debian Jessie. Le serveur Shinken,
+La base de déploiement choisie pour ce bundle est une instance Ubuntu trusty. Le serveur Shinken,
 son interface web, et sa base de données sont déployés dans une instance unique.
 
 ### Les versions
