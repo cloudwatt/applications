@@ -16,7 +16,7 @@ his web interface and database are deployed in a single instance.
 
 ### The version
 
-* Debian Jessie   8.2
+* Ubuntu Trusty   14.04.2
 * Shinken         2.4.2
 * SQlitedb        3.8.2
 
