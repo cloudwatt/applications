@@ -14,7 +14,7 @@ son interface web, et sa base de données sont déployés dans une instance uniq
 
 ### Les versions
 
-* Debian Jessie 8.2
+* Ubuntu Trusty 14.04.2
 * Shinken 2.4.2
 * SQlitedb 3.8.2
 
