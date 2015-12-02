@@ -1,0 +1,91 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Shinken stack
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n1.cw.highcpu-2
+        - n1.cw.highcpu-4
+        - n1.cw.highcpu-8
+        - n1.cw.standard-1
+        - n1.cw.standard-2
+        - n1.cw.standard-4
+        - n1.cw.standard-8
+        - n1.cw.standard-12
+        - n1.cw.standard-16
+        - n1.cw.highmem-2
+        - n1.cw.highmem-4
+        - n1.cw.highmem-8
+        - n1.cw.highmem-12
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.7.0/24
+      allocation_pools:
+        - { start: 10.0.7.100, end: 10.0.7.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 7767, port_range_max: 7767 }
+        - { direction: ingress, protocol: UDP, port_range_min: 161, port_range_max: 161 }
+        - { direction: ingress, protocol: UDP, port_range_min: 123, port_range_max: 123 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 87c86c7f-9f25-4bd8-83f3-a2356d32d02c
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+
+outputs:
+  floating_ip_url:
+    description: Shinken URL
+    value:
+      str_replace:
+        template: http://$floating_ip:7767/
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
