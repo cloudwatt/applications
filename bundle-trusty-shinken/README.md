@@ -6,7 +6,7 @@
 
 Shinken est une application permettant la surveillance système et réseau.
 Elle surveille les hôtes et services spécifiés, alertant lorsque les systèmes
-vont mal et quand ils vont mieux. C'est un logiciel libre sous licence GNU AGPL.
+vont mals et quand ils vont mieux. C'est un logiciel libre sous licence GNU AGPL.
 Shinken est complètement compatible avec le logiciel Nagios.
 
 La base de déploiement choisie pour ce bundle est une instance Debian Jessie. Le serveur Shinken,
@@ -22,7 +22,7 @@ son interface web, et sa base de données sont déployés dans une instance uniq
 
 * un accès internet
 * un shell Linux
-* un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
@@ -108,7 +108,7 @@ $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 ```
 
-Puis attendez 5 minutes que le déploiement soit complet.
+Puis attendez **5 minutes** que le déploiement soit complet.
 
 
 ```
@@ -148,7 +148,7 @@ A ce niveau, vous pouvez vous connecter sur votre instance de serveur Shinken av
 
 ![Interface connection shinken](https://mescompetencespro.files.wordpress.com/2012/12/authentification-shinken.png)
 
-Une fois que l'authentication est faite, cliquez sur l'onglet 'ALL' pour voir les différentes métriques monitorées par shinken.
+Une fois que l'authentication est faite, cliquez sur l'onglet 'ALL' pour voir les différentes métriques monitorées par Shinken.
 
 ![Bigger production setup](http://performance.izzop.com/sites/default/files/SHINKEN/image_01_WEBUI.png)
 
@@ -158,7 +158,7 @@ Vous pouvez enrichir votre `Dashboard` avec des widgets :
 
 Bref, vous pouvez visualiser les métriques monitorées par shinken-server.
 
-### Pour monitorer plus de  machines
+### Pour monitorer plus de machines
 
 Il faut s'assurer que les machines à monitorer :
 
@@ -282,7 +282,7 @@ Pour rappel, voici les ports par défaut où répondent les rôles Shinken :
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
