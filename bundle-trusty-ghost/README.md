@@ -19,7 +19,7 @@ Ce sont les mêmes que pour les épisodes précédents :
 
 * un accès internet
 * un shell Linux
-* un [compte Cloudwatt](https://www.cloudwatt.com/authentification), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
