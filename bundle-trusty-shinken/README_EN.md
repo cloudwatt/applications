@@ -118,7 +118,7 @@ Creating stack...
 +--------------------------------------+------------+--------------------+------------------------------+
 ~~~
 
-Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+Within **5 minutes** the stack will be fully operational. (Use watch to see the status in real-time)
 
 ~~~ bash
 $ watch -n 1 heat stack-list
@@ -287,7 +287,7 @@ Remember that the differents ports where Shinken-server listening:
 
 ## So watt?
 
-This tutorial aims to improve your startup. At this stage you are master on board.
+This tutorial aims to improve your startup. At this stage **you** are master on board.
 You have an entry point to your virtual machine via SSH floating IP exposed and your private key (`cloud` user by default).
 You can start to live your monitoring taking hold of your server.
 
