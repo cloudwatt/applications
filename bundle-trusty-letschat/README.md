@@ -19,7 +19,7 @@ Ceci devrait maintenant être de la routine :
 
 * Un accès Internet
 * Un shell Linux
-* Un [compte Cloudwatt](https://www.cloudwatt.com/authentification) avec [une paire de clé existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec [une paire de clé existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 * Les outils Openstack [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications) (si la création de votre stack se fait depuis un shell)
 
