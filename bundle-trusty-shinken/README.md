@@ -127,7 +127,7 @@ $ heat resource-list EXP_STACK
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Debian Jessie, pré-provisionnée avec la stack shinken, webui, sqlitedb
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack shinken, webui, sqlitedb
 * l'exposer sur Internet via une IP flottante
 
 ### Enjoy
