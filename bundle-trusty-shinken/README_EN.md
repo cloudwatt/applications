@@ -255,6 +255,7 @@ For now, our monitoring server and client are configured. We need to access the 
 
 <a name="console" />
 
+## That's fine but...
 
 ### Please console me
 
@@ -284,6 +285,10 @@ Remember that the differents ports where Shinken-server listening:
             Reactionner : 7769
             Scheduler : 7768
             Poller : 7771
+
+### Or an easier way thru a 1-click ?
+
+... Yes! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOYER" and follow the simple steps... 5 minutes later, a green button appears... ACCEDER: you have your Shinken!
 
 ## So watt?
 
