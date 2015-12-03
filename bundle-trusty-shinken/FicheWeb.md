@@ -1,6 +1,6 @@
 layout: applications-fiche
 pictonic: true
-title: "SHINKEN"
+title: "Shinken"
 url: shinken.html
 date: 2015-12-01 00:00:00
 date-creation: "03 décembre 2015"
