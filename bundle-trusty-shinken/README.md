@@ -255,7 +255,9 @@ Le playbook en question va faire toutes les opérations d'installation et de con
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+## C’est bien tout ça, mais...
+
+### Mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur shinken :
 
@@ -279,6 +281,10 @@ Pour rappel, voici les ports par défaut où répondent les rôles Shinken :
     Reactionner : 7769
     Scheduler : 7768
     Poller : 7771
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Shinken !
 
 ## So watt ?
 
