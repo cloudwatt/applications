@@ -12,7 +12,7 @@ parameters:
 
   password:
     label: Password
-    description: Graylog root user password
+    description: Graylog admin password
     type: string
     hidden: true
     constraints:
