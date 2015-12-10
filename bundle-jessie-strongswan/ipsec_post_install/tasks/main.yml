@@ -1,0 +1,24 @@
+---
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+- name: configuration files uploaded (templates)
+  template:
+    src="{{ item.file }}"
+    dest="{{ item.path }}"
+    owner=root
+    group=root
+    mode=0644
+  with_items:
+    - { file: "etc_ipsec.conf.j2",    path: "/etc/ipsec.conf"    }
+    - { file: "etc_ipsec.secrets.j2", path: "/etc/ipsec.secrets" }
+
+- name: old-school enabling ipsec service
+  shell: systemctl daemon-reload && /usr/sbin/update-rc.d ipsec defaults && /usr/sbin/update-rc.d ipsec enable
+
+- name: ipsec is up and ready
+  service:
+    name=ipsec
+    state=restarted

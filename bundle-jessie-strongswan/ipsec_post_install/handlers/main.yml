@@ -1,0 +1,15 @@
+---
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+- name: restart ipsec
+  service:
+    name=ipsec
+    state=restarted
+    enabled=true
+  register: result
+  until: result|success
+  retries: 2
+  delay: 5
