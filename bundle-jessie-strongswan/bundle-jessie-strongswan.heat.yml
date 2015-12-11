@@ -1,0 +1,164 @@
+#
+##
+### written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+description: Strongswan server with routed subnet (one end of IPSEC tunnel with PSK)
+
+parameters:
+  keypair_name:
+    description: Keypair for IPSEC server access
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n1.cw.highmem-2
+    description: Flavor of the IPSEC server
+    type: string
+    label: Openstack Flavor
+    constraints:
+      - allowed_values:
+          - n1.cw.highmem-2
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+  local_cidr:
+    description: /24 cidr of local subnet
+    type: string
+
+  partner_cidr:
+    description: /24 cidr of target subnet (other end of the tunnel)
+    type: string
+
+  preshared_key:
+    description: Pre Shared key for IPSEC tunnel establishment
+    type: string
+    hidden: true
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: { get_param: local_cidr }
+      host_routes:
+        - destination: { get_param: partner_cidr }
+          nexthop: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: local_cidr} ] }
+        - destination: 0.0.0.0/0
+          nexthop: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: local_cidr} ] }
+      allocation_pools:
+        - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: local_cidr} ] }
+          end: { "Fn::Replace": [ {'.0/24': '.249'}, {get_param: local_cidr} ] }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  server_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: network }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: local_cidr} ] }
+          subnet_id: { get_resource: subnet }
+      security_groups: [{ get_resource: security_group }]
+
+  keeper_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: floating_ip_injection_and_route_finetuning }
+
+  floating_ip_injection_and_route_finetuning:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+
+            route del -net $site_b$
+
+            echo "---" > /root/ipsec_vars.yml
+            echo "psk: $psk$" >> /root/ipsec_vars.yml
+            echo "floating_ip: $floating_ip$" >> /root/ipsec_vars.yml
+            echo "tunnel_cidr: $partner_cidr$" >> /root/ipsec_vars.yml
+            echo "local_cidr: $local_cidr$" >> /root/ipsec_vars.yml
+            chmod 600 /root/ipsec_vars.yml
+
+            mkdir /etc/ansible
+            echo "[local]" >> /etc/ansible/hosts
+            echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+
+            git clone https://github.com/cloudwatt/applications.git /root/cw-applications
+
+            cat >> /root/.bashrc << EOF
+            function ipsec_post_install {
+
+              PLAYBOOK_PATH="/root/cw-applications/bundle-jessie-strongswan/post_install.yml"
+
+              ansible-playbook \$PLAYBOOK_PATH              \\
+                               -e tunnel_partner_ip=\$1    \\
+                               -e @/root/ipsec_vars.yml
+            }
+            EOF
+
+          params:
+            $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+            $partner_cidr$: { get_param: partner_cidr }
+            $local_cidr$: { get_param: local_cidr }
+            $psk$: { get_param: preshared_key }
+
+  keeper_server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: a9cbc299-7c1c-452d-9da3-53b9e4f3816e
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: server_port }
+      user_data_format: RAW
+      user_data:
+        get_resource: floating_ip_injection_and_route_finetuning
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: keeper_server }
+
+outputs:
+  floating_ip:
+    description: Keeper public IP address
+    value: { get_attr: [floating_ip, floating_ip_address] }
