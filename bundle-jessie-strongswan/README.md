@@ -59,7 +59,7 @@ La stack que nous vous fournissons ici nécessite plusieurs paramètres pour êt
 permettre de vous connecter
 * `local_cidr` : Le CIDR du sous-réseau privé qui sera déployé par la stack (ex: 192.168.47.0/24).
 Ce doit être un réseau de [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP).
-* `partner_cidr` : Le CIDR du sous-réseau privé qui existe à l'autre bout du tunnet IPSec (ex: 192.168.58.0/24).
+* `partner_cidr` : Le CIDR du sous-réseau privé qui existe à l'autre bout du tunnel IPSec (ex: 192.168.58.0/24).
 Ce doit être un réseau de [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP).
 * `preshared_key` : La chaîne de caractère secrète partagée par les deux extrémités du tunnel IPSec.
 Ce secret sera injecté dans le serveur qui va être démarré par la stack mais n'est pas stocké
