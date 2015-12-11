@@ -55,7 +55,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 La stack que nous vous fournissons ici nécessite plusieurs paramètres pour être exploitée:
 
-* `keypair_name` : Le nom de la paire de clé qui sera injecté dans le serveur pour votre
+* `keypair_name` : Le nom de la paire de clé qui sera injectée dans le serveur pour votre
 permettre de vous connecter
 * `local_cidr` : Le CIDR du sous-réseau privé qui sera déployé par la stack (ex: 192.168.47.0/24).
 Ce doit être un réseau de [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP).
@@ -113,7 +113,7 @@ $ heat resource-list BATMAN
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Debian, pré-provisionnée avec Strongswan et un partie de la configuration.
+* démarrer une instance basée sur Debian, pré-provisionnée avec Strongswan et une partie de la configuration.
 * l'exposer sur Internet via une IP flottante
 
 ### La lumière au bout du tunnel
@@ -130,7 +130,7 @@ ipsec_post_install $ADRESSE_IP_PUBLIQUE_DE_L_AUTRE_BOUT_DU_TUNNEL
 ```
 
 Bien sûr cela suppose que l'autre extrémité soit un serveur déjà paramétré avec le secret partagé,
-connaissant le CIDR de votre zone privé et qu'il soit en écoute.
+connaissant le CIDR de votre zone privée et qu'il soit en écoute.
 
 Une fois remplies toutes ces conditions:
 
@@ -141,7 +141,7 @@ Une fois remplies toutes ces conditions:
 ### Envie de jouer ?
 
 Si vous ne disposez pas d'un partenaire de tunnel, rien ne vous empêche de jouer avec Strongswan en démarrant une deuxième
-stack (que nous pourrions appeler ROBIN par exemple) en inversant les valeurs de local_cidr et partner_cidr et de faire la post-installation de chacune des stacks avec la valeur de l'IP flottante attribué à l'autre.
+stack (que nous pourrions appeler ROBIN par exemple) en inversant les valeurs de local_cidr et partner_cidr et de faire la post-installation de chacune des stacks avec la valeur de l'IP flottante attribuée à l'autre.
 
 * démarrer une stack BATMAN comme décrit plus haut
 * récupérer son IP flottante
@@ -158,18 +158,18 @@ Vous aurez ainsi 2 silos réseau totalement isolés, qui peuvent néanmoins comm
 
 ### Mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur shinken :
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur Strongswan :
 
 1.	Télécharger directement [le fichier de stack](https://raw.githubusercontent.com/cloudwatt/applications/master/bundle-jessie-strongswan/bundle-jessie-strongswan.heat.yml).
 2.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez le reste des paramètres dans le formulaire qui vous est proposé.
-9.  Effectuez les opération de post-configuration comme décrit plus haut (vous ne couperez pas à un accès SSH pour cette fois).
+3.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+4.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+5.	Entrez le reste des paramètres dans le formulaire qui vous est proposé.
+6.  Effectuez les opérations de post-configuration comme décrit plus haut (vous ne couperez pas à un accès SSH pour cette fois).
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Strongswan !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 5 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Strongswan ! Il vous restera à effectuer les opérations de post-configuration comme décrit plus haut (vous ne couperez pas à un accès SSH pour cette fois)
 
 ## So watt ?
 
