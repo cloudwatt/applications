@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, Episode 16: Minecraft
+# 5 Minutes Stacks, Episode 17: Minecraft
 
-## Episode 16: Minecraft
+## Episode 17: Minecraft
 
 ![Minecraft Logo](img/minecraft.png)
 
