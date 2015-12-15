@@ -6,9 +6,9 @@
 
 ![Strongswan logo](img/strongswan.png)
 
-StrongSwan is an implementation of IPSec protocol under the GPL license. He was born by a fork of the FreeS/WAN project. The project was launched in 2005 with the goal of building a stable platform IPSec with X.509 extension.
+StrongSwan is an implementation of IPSec protocol under the GPL license. It was born by a fork of the FreeS/WAN project. The project was launched in 2005 with the goal of building a stable IPSec platform with X.509 extension.
 
-What we will see in this episode will allow you to set up an IPSec tunnel with a minium of steps in order to have a secure and authenticated tunnel to an external area to the Cloudwatt platform.
+What we will see in this episode will allow you to set up an IPSec tunnel with a minimum of steps in order to get a secure and authenticated tunnel to an external area of the Cloudwatt platform.
 
 ## Preparations
 
@@ -108,11 +108,6 @@ $ heat resource-list BATMAN
 | floating_ip_link                           | 977f03c4-3a0f-4ead-a588-99c97673b703-84.39.41.55                                    | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-12-11T13:04:24Z |
 +--------------------------------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+```
 ```
-
-The `start-stack.sh` script is taking care of running the API necessary requests to:
-
-* start a Debian based instance, pre-provisionned with Strongswan and a part of the configuration.
-* Attach an exposed floating-IP
 
 ### The light at the end of the tunnel
 
