@@ -1,10 +1,12 @@
 # 5 Minutes Stacks, Episode 16: Xonotic
 
-## Episode 16: Xonotic
+## Episode 16: Xonotic, the free and fast arena shooter
 
 **Draft - Image not yet available...**
 
-Xonotic is
+Xonotic is an addictive, arena-style first person shooter with crisp movement and a wide array of weapons. It combines intuitive mechanics with in-your-face action to elevate your heart rate. Xonotic is and will always be free-to-play. It is available under the copyleft-style GPLv2 license.
+
+The game has clients for Windows, Linux, and Mac OS, adapting to any system to provide an excellent play experience. This bundle deploys your personal Xonotic server in minutes, public or private, so that you can start playing with your friends in minutes.
 
 ## Preparations
 
