@@ -60,28 +60,24 @@ Only then can the Openstack command-line tools interact with your Cloudwatt user
 
 ### Adjust the parameters
 
-La stack que nous vous fournissons ici nécessite plusieurs paramètres pour être exploitée:
+The stack that we are proposing requires some input parameters to be used:
 
-* `keypair_name` : Le nom de la paire de clé qui sera injectée dans le serveur pour votre
-permettre de vous connecter
-* `local_cidr` : Le CIDR du sous-réseau privé qui sera déployé par la stack (ex: 192.168.47.0/24).
-Ce doit être un réseau de [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP).
-* `partner_cidr` : Le CIDR du sous-réseau privé qui existe à l'autre bout du tunnel IPSec (ex: 192.168.58.0/24).
-Ce doit être un réseau de [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP).
-* `preshared_key` : La chaîne de caractère secrète partagée par les deux extrémités du tunnel IPSec.
-Ce secret sera injecté dans le serveur qui va être démarré par la stack mais n'est pas stocké
-dans la plate-forme Cloudwatt.
+* `keypair_name` : The keypair name that will be injected into the server to allow your connection
+* `local_cidr` : The CIDR of the private subnetwork which will be deployed by the stack (ex: 192.168.47.0/24). This should be a [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP) network.
+* `partner_cidr` : The CIDR of the private subnetwork which exist at the other side of the IPSec tunnel (ex: 192.168.58.0/24). This should be a [classe C](https://fr.wikipedia.org/wiki/Classe_d'adresse_IP) network.
+* `preshared_key` : The secret string character that is shared between the 2 sides of the IPsec tunnel. This secret will be injected into the server that will be started by the stack but is not stored on the Cloudwatt plateform.
 
 ### Start-up
 
-Pour l'exemple nous prendrons les valeurs :
+For this exemple, we will use these parameter values:
 
 * `keypair_name` : "my_key.pem"
 * `local_cidr` : "192.168.47.0/24"
 * `partner_cidr` : "10.0.240.0/24"
 * `preshared_key` : "pr3ttyh4rd4nd0ngs3cr3tstr1ngsharedw1thmyb|_|ddy"
 
-Pour passer les paramètres à notre stack, il vous faut utiliser l'option `-P` du client heat :
+Use the `-P` option of the heat client to pass the parameters into our stack:
+
 ~~~
 $ heat stack-create BATMAN -f bundle-jessie-strongswan.heat.yml \
   -Pkeypair_name="my_key.pem"       \
@@ -117,28 +113,30 @@ $ heat resource-list BATMAN
 +--------------------------------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+```
 ```
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+The `start-stack.sh` script is taking care of running the API necessary requests to:
 
-* démarrer une instance basée sur Debian, pré-provisionnée avec Strongswan et une partie de la configuration.
-* l'exposer sur Internet via une IP flottante
+* start a Debian based instance, pre-provisionned with Strongswan and a part of the configuration.
+* Attach an exposed floating-IP
 
-### La lumière au bout du tunnel
+### The light at the end of the tunnel
+
+To complete the installation, you should *have in hand the public IP adress of the other side of the tunnel*.
+Considering 
 
 Pour finaliser l'installation, il faut *vous munir de l'adresse IP publique de l'autre extrémité du tunnel*.
-A supposer que ce serveur cible soit correctement configuré et n'attende plus que votre partie, la procédure se cantonne à:
+Assuming that the target server is configured correctly and wait only for your inputs, the procedure is confined to:
 
-* vous connecter en SSH sur votre serveur
-* passer en root via `sudo -i`
-* lancer la commande:
+* connect in SHH to your server
+* move to root via `sudo -i`
+* run the command:
 
 ```
-ipsec_post_install $ADRESSE_IP_PUBLIQUE_DE_L_AUTRE_BOUT_DU_TUNNEL
+ipsec_post_install $ADDRESS_IP_PUBLIC_OF_THE_OTHER_SIDE_OF-THE_TUNNEL
 ```
 
-Bien sûr cela suppose que l'autre extrémité soit un serveur déjà paramétré avec le secret partagé,
-connaissant le CIDR de votre zone privée et qu'il soit en écoute.
+Of course, this assumes that the other extremity is a server already parametered with the shared secret, knows the CIDR of your private zone and is on-line.
 
-Une fois remplies toutes ces conditions:
+Once all these conditions fulfilled:
 
 * le serveur de la stack, qui héberge Strongswan, peut contacter toutes les machines du sous-réseau de l'autre côté du tunnel.
 * Tout serveur démarré dans le sous-réseau de votre stack pourra contacter toutes les machines du sous-réseau de l'autre côté du tunnel.
