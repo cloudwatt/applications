@@ -27,4 +27,5 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-seize-strongswan.html
 install-url:
 comingsoon: false
+type: application
 ---
