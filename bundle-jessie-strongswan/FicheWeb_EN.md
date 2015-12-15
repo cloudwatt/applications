@@ -20,4 +20,5 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-sixteen-strongswan.html
 install-url:
 comingsoon: false
+type: application
 ---
