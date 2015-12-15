@@ -18,6 +18,10 @@ composants:
 solutions: Strongswan est utile pour toutes solutions Cloudwatt :"
 solutions-list: 
  - text: "Développement et test"
+ - text: "Sites et applications à fort trafic"
+ - text: "Hébergement d'applications métiers"
+ - text: "Hybridation"
+ - text: "Big data"
 prix: "Gratuit pour l'application + consommation à l'usage"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-seize-strongswan.html
