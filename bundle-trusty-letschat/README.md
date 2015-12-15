@@ -73,7 +73,7 @@ Assurez-vous d'enregistrer la clé publique, sinon vous ne serez pas en mesure d
 
 Il est également possible dans les templates heat d'ajuster et définir les valeurs par défaut pour le type d'instance.
 
-Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Dokiwiki est seul installé. Ce comportement peut être modifié si necessaire dans le template heat.
+Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Let's Chat est seul installé. Ce comportement peut être modifié si necessaire dans le template heat.
 
 
 ~~~ yaml

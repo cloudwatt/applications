@@ -94,7 +94,7 @@ Assurez-vous d'enregistrer la clé publique, sinon vous ne serez pas en mesure d
 
 Il est également possible dans les templates heat d'ajuster (et définir les valeurs par défaut pour ) le type d'instance, la taille du volume, et le type de volume en jouant avec le ` flavor_name`, le` volume_size` et le 'volume_type` selon les paramètres.
 
-Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Dokiwiki est seul installé. Ce comportement peut être modifié si necessaire dans le template heat.
+Par défaut, le réseau et sous-réseau de la stack sont générés pour la stack, dans lequel le serveur Dokuwiki est seul installé. Ce comportement peut être modifié si necessaire dans le template heat.
 
 
 ~~~ yaml
