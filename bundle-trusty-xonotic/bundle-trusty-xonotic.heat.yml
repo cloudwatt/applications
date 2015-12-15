@@ -1,0 +1,148 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Xonotic stack
+
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+
+  flavor_name:
+    default: s1.cw.small-1
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n1.cw.highcpu-2
+        - n1.cw.highcpu-4
+        - n1.cw.highcpu-8
+        - n1.cw.standard-1
+        - n1.cw.standard-2
+        - n1.cw.standard-4
+        - n1.cw.standard-8
+        - n1.cw.standard-12
+        - n1.cw.standard-16
+        - n1.cw.highmem-2
+        - n1.cw.highmem-4
+        - n1.cw.highmem-8
+        - n1.cw.highmem-12
+
+  server_hostname:
+    default: Xonotic Server
+    label: Xonotic Server Hostname
+    description: Server name for public server list
+    type: string
+
+  is_shown:
+    default: 1
+    label: Xonotic Server is Public
+    description: Server is included on the public server list
+    type: string
+    constraints:
+      - allowed_values:
+        - 0
+        - 1
+
+  server_port:
+    default: 26000
+    label: Xonotic Server Port
+    description: Server port for player connections
+    type: number
+    constraints:
+      - range: { min: 1025, max: 65534 }
+        description: Must be a valid free port (1025 - 65534)
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: ingress }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+        - { direction: egress }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  server_settings:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+            sudo sed -i "s/SERVER_NAME/$server_hostname$/g" /opt/xonotic/.xonotic/data/server.cfg
+            sudo sed -i "s/\/\/port 26000/port $server_port$/g" /opt/xonotic/.xonotic/data/server.cfg
+            sudo sed -i "s/\/\/sv_public 1/sv_public $is_shown$/g" /opt/xonotic/.xonotic/data/server.cfg
+            cd /opt/xonotic
+            sudo pkill xonotic-linux64
+            sleep 25
+            sudo pkill xonotic-linux64
+          params:
+            $server_hostname$: { get_param: server_hostname }
+            $server_port$:     { get_param: server_port }
+            $is_shown$:        { get_param: is_shown }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 29f8c90d-6e28-4d26-91de-2b6b549e2eb0
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_settings
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: IP address of the Xonotic server
+    value: { get_attr: [floating_ip, floating_ip_address] }
+
+outputs:
+  floating_ip_url:
+    description: Xonotic Server IP Address
+    value:
+      str_replace:
+        template: floating_ip:server_port
+        params:
+          floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          floating_ip: { get_param: server_port }
