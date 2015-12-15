@@ -33,7 +33,7 @@ Vous pouvez ajuster les parametres de la stack à votre goût.
 
 ### Au fait...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console ouo en 1-clic"](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console ou en 1-clic"](#console)...
 
 
 ## Tour du propriétaire
@@ -69,7 +69,7 @@ Dans le fichier `.heat.yml` (le template HEAT), vous trouverez au début une sec
 
 Le champs `keypair_name` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur ('default' pour ne pas perdre de temps).
 
-Remember that key pairs are created [from the console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab), and only keys created this way can be used.
+Souvenez vous que les paires de clés sont créées [depuis la console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab).
 
 The `admin_username` field provides the username for Minecraft's default *op* user. You will need it to set other players as *op* and use administrative commands. You can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
 
