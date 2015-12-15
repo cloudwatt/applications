@@ -4,9 +4,13 @@
 
 ![Minecraft Logo](img/minecraft.png)
 
-Minecraft is a game about breaking and placing blocks. Originally a sandbox video game created by Swedish programmer Notch, Minecraft is now developed and published by Mojang. Integrating exploration, resource gathering, crafting, and combat into a rewarding experience, Minecraft stays fresh through hours of play. Multiplayer provides yet another layer of depth as players band together to create vast structures beyond your imagination.
+Minecraft est un jeu de destruction et de construction de blocs. A l'origine c'est un jeu vidéo créé par le programmeur suédois Notch. Minecraft est maintenant développé et édité par Mojang. 
 
-With this bundle anyone can easily deploy their own Minecraft server, easily accessible from the Minecraft launcher for play with friends or strangers.
+Integrating exploration, resource gathering, crafting, and combat into a rewarding experience, Minecraft stays fresh through hours of play. 
+
+Le mode multijoueur fournit encore une autre couche de profondeur ou les joueurs se regroupent pour créer de vastes structures au delà de votre imagination .
+
+Avec cette application, tout le monde peut facilement déployer son propre serveur Minecraft, facilement accessible depuis le lanceur Minecraft pour jouer avec des amis ou des inconnus.
 
 ## Préparations
 
@@ -190,8 +194,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 ## So watt ?
 
 Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord.
-
-The default game mode is survival, but the admin can change that. Go to multiplayer and enjoy yourself!
+Le mode par défaut du jeu est "survival" mais l'administrateur peut changer ça. Passez en mode mode multi-joueur et amusez-vous !
 
 ## The State of Affairs
 
