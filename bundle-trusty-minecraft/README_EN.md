@@ -4,6 +4,8 @@
 
 **Draft - Image not yet available...**
 
+![Minecraft Logo](img/minecraft.png)
+
 Minecraft is a game about breaking and placing blocks. Originally a sandbox video game created by Swedish programmer Notch, Minecraft is now developed and published by Mojang. Integrating exploration, resource gathering, crafting, and combat into a rewarding experience, Minecraft stays fresh through hours of play. Multiplayer provides yet another layer of depth as players band together to create vast structures beyond your imagination.
 
 With this bundle anyone can easily deploy their own Minecraft server, easily accessible from the Minecraft launcher for play with friends or strangers.
@@ -37,6 +39,8 @@ Once you have cloned the github repository, you will find in the `bundle-trusty-
 * `bundle-trusty-minecraft.heat.yml`: Heat orchestration template. It will be use to deploy the necessary infrastructure.
 * `stack-start.sh`: Stack launching script, which simplifies the parameters and secures the admin password creation.
 * `minecraft-server-address.sh`: Returns the floating-IP in a URL, which can also be found in the stack output.
+
+![Animals](img/animals.png)
 
 ## Start-up
 
@@ -148,6 +152,8 @@ GOLDDIGGER  70.60.637.17
 
 As shown above, it will display the assigned address of your minecraft server. You can then click or paste this into Minecraft and bask in the glory of a fresh Minecraft server.
 
+![Minecraft Relaxing](img/resting.jpg)
+
 <a name="console" />
 
 ### Please console me
@@ -169,6 +175,8 @@ To create our Minecraft stack from the console:
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
 
+![Kingdoms](img/kingdom.jpg)
+
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack. The default game mode is survival, but the admin can change that. Go to multiplayer and enjoy yourself!
@@ -186,6 +194,8 @@ This bundle deploys a stable Minecraft setup for use in fun, non-critical setups
 * [Minecraft Homepage](https://minecraft.net/)
 * [Minecraft Wiki](http://minecraft.gamepedia.com/Minecraft_Wiki)
 * [Minecraft Commands](http://minecraft.gamepedia.com/Commands)
+
+![Castle](img/castle.jpg)
 
 -----
 Have fun. Hack in peace.
