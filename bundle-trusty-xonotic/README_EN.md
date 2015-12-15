@@ -4,15 +4,19 @@
 
 **Draft - Image not yet available...**
 
+![Xonotic Logo](img/xonotic-logo.png)
+
 Xonotic is an addictive, arena-style first person shooter with crisp movement and a wide array of weapons. It combines intuitive mechanics with in-your-face action to elevate your heart rate. Xonotic is and will always be free-to-play. It is available under the copyleft-style GPLv2 license.
 
 The game has clients for Windows, Linux, and Mac OS, adapting to any system to provide an excellent play experience. This bundle deploys your personal Xonotic server in minutes, public or private, so that you can start playing with your friends in minutes.
+
+![Battle Screenshot](img/battle.jpg)
 
 ## Preparations
 
 ### The version
 
-* Xonotic (minecraft_server.1.8.9.jar) 1.8.9
+* Xonotic v0.8.1
 
 ### The prerequisites to deploy this stack
 
@@ -167,6 +171,8 @@ PLASMABURN  70.60.637.17
 
 As shown above, it will ouput the assigned floating-IP. You can then paste this into Xonotic and immediately get fragging!
 
+![Weapon Fire](img/weapon-fire.jpg)
+
 <a name="console" />
 
 ### Please console me
@@ -192,19 +198,30 @@ The stack will be automatically generated (you can see its progress by clicking 
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack. The default game mode is deathmatch, but the admin can change that with SSH. Go to multiplayer and enjoy yourself!
 
+Modify the server settings by connecting with SSH and heading to the file `/opt/xonotic/.xonotic/data/server.cfg`. Edit the contents to your liking and then run the command
+
+~~~ bash
+$ sudo initctl restart xonotic
+~~~
+
+to reload the configuration. Try some capture the flag, or add some bots!
+
 ## The State of Affairs
 
 This bundle deploys a stable Xonotic setup that is resource-light and quick to launch, but can be very fast and even support dozens of players on a high-cpu instance.
 
 #### The interesting directories are:
 
-- `/opt/minecraft`: Xonotic server configuration
+- `/opt/xonotic`: Xonotic home directory
+- `/opt/xonotic/.xonotic/data/server.cfg`: Xonotic server configuration
 
 #### Resources you could be interested in:
 
-* [Xonotic Homepage](https://minecraft.net/)
-* [Xonotic Wiki](http://minecraft.gamepedia.com/Xonotic_Wiki)
-* [Xonotic Commands](http://minecraft.gamepedia.com/Commands)
+* [Xonotic Homepage](http://www.xonotic.org/)
+* [Xonotic Wiki](https://gitlab.com/xonotic/xonotic/wikis/home)
+* [Xonotic Official Game Download](http://dl.xonotic.org/xonotic-0.8.1.zip)
+
+![Game Menu](img/game-menu.jpg)
 
 -----
 Have fun. Hack in peace.
