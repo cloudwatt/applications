@@ -2,8 +2,6 @@
 
 ## Episode 16: Minecraft
 
-**Draft - Image not yet available...**
-
 ![Minecraft Logo](img/minecraft.png)
 
 Minecraft is a game about breaking and placing blocks. Originally a sandbox video game created by Swedish programmer Notch, Minecraft is now developed and published by Mojang. Integrating exploration, resource gathering, crafting, and combat into a rewarding experience, Minecraft stays fresh through hours of play. Multiplayer provides yet another layer of depth as players band together to create vast structures beyond your imagination.
