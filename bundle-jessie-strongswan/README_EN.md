@@ -6,13 +6,9 @@
 
 ![Strongswan logo](img/strongswan.png)
 
-StrongSwan est une implémentation du protocole IPSec placé sous licence GPL. Il est né par
-un fork du projet FreeS/WAN. Le projet a été lancé en 2005 avec pour but de construire
-une plate-forme IPSec stable doté d'extension X.509.
+StrongSwan is an implementation of IPSec protocol under the GPL license. He was born by a fork of the FreeS/WAN project. The project was launched in 2005 with the goal of building a stable platform IPSec with X.509 extension.
 
-Ce que nous allons voir dans cet épisode vous permettra de mettre en place un tunnel
-IPSec en un minium d'étapes, afin de disposer d'un canal sécurisé et authentifié vers une
-zone externe à la plate-forme Cloudwatt.
+What we will see in this episode will allow you to set up an IPSec tunnel with a minium of steps in order to have a secure and authenticated tunnel to an external area to the Cloudwatt platform.
 
 ## Preparations
 
@@ -121,10 +117,7 @@ The `start-stack.sh` script is taking care of running the API necessary requests
 ### The light at the end of the tunnel
 
 To complete the installation, you should *have in hand the public IP adress of the other side of the tunnel*.
-Considering 
-
-Pour finaliser l'installation, il faut *vous munir de l'adresse IP publique de l'autre extrémité du tunnel*.
-Assuming that the target server is configured correctly and wait only for your inputs, the procedure is confined to:
+Considering that the target server is configured correctly and wait only for your inputs, the procedure is confined to:
 
 * connect in SHH to your server
 * move to root via `sudo -i`
@@ -138,14 +131,12 @@ Of course, this assumes that the other extremity is a server already parametered
 
 Once all these conditions fulfilled:
 
-* le serveur de la stack, qui héberge Strongswan, peut contacter toutes les machines du sous-réseau de l'autre côté du tunnel.
-* Tout serveur démarré dans le sous-réseau de votre stack pourra contacter toutes les machines du sous-réseau de l'autre côté du tunnel.
-
+* the server of the stack, which hosts Strongswan, can contact all the machines of the subnet on the other side of the tunnel.
+* whatever server started in the subnet of our stack can contact whatever machines of the subnet on the other side of the tunnel.
 
 ### Ready to play?
 
-Si vous ne disposez pas d'un partenaire de tunnel, rien ne vous empêche de jouer avec Strongswan en démarrant une deuxième
-stack (que nous pourrions appeler ROBIN par exemple) en inversant les valeurs de local_cidr et partner_cidr et de faire la post-installation de chacune des stacks avec la valeur de l'IP flottante attribuée à l'autre.
+If you do not have a partner to test the tunnel, nothing prevents you to play with Strongswan by starting a second stack (which we could call ROBIN example) by reversing the values of local_cidr and partner_cidr and make the post-installation of each of the stacks with the value of the floating IP assigned to the other one.
 
 * Start a BATMAN stack as described above
 * Get its floating IP
@@ -173,7 +164,7 @@ Lucky for you then, all of the setup for Strongswan can be accomplished using on
 
 ### Or an easier way thru a 1-click?
 
-... Yes! Go to the [Apps page](https://www.cloudwatt.com/en/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOY" and follow the simple steps... 5 minutes later, a green button appears... ACCESS: you have nearly your Strongswan! (no escape this time, you will need to access thru SSH)
+... Yes! Go to the [Apps page](https://www.cloudwatt.com/en/applications/index.html) on the Cloudwatt website, choose the apps, press "DEPLOY" and follow the simple steps... 5 minutes later, a green button appears... ACCESS: you have nearly your Strongswan! (but, no escape this time, you will need to access thru SSH)
 
 ## So watt?
 
