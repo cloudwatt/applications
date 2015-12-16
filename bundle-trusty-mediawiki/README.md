@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, épisode 16 : Mediawiki #
 
-## Episode 16 : Mediawiki
+## Episode 18 : Mediawiki
 
 MediaWiki est un moteur de wiki pour le Web. Il est utilisé par l’ensemble des projets de la Wikimedia Foundation, ainsi que par l’ensemble des wikis hébergés chez Wikia et par de nombreux autres wikis. Conçu pour répondre aux besoins de Wikipédia, ce moteur est depuis 2008 également utilisé par des entreprises comme solution de gestion des connaissances et comme système de gestion de contenu.
 MediaWiki est écrit en PHP, et peut aussi bien fonctionner avec une base de données MySQL que PostgreSQL. C'est un logiciel libre distribué selon les termes de la GPL.
