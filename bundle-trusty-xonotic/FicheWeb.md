@@ -23,4 +23,5 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-dixhuit-xonotic.html
 install-url:
 comingsoon: false
+type: application
 ---
