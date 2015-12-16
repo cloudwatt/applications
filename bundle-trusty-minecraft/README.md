@@ -4,9 +4,7 @@
 
 ![Minecraft Logo](img/minecraft.png)
 
-Minecraft est un jeu de destruction et de construction de blocs. A l'origine c'est un jeu vidéo créé par le programmeur suédois Notch. Minecraft est maintenant développé et édité par Mojang.
-
-Intégration de l'exploration, la collecte des ressources, l'artisanat, et le combat dans une expérience enrichissante, Minecraft restent frais pendant des heures de jeu.
+Minecraft est un jeu de destruction et de construction de blocs. A l'origine c'est un jeu vidéo créé par le programmeur suédois Notch. Minecraft est maintenant développé et édité par Mojang. Intégration de l'exploration, la collecte des ressources, l'artisanat et le combat dans une expérience enrichissante, Minecraft reste passionant pendant des heures de jeu.
 
 Le mode multijoueur fournit encore une autre couche de profondeur ou les joueurs se regroupent pour créer de vastes structures au delà de votre imagination.
 
