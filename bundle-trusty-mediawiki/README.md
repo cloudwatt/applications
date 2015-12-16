@@ -16,12 +16,13 @@ MediaWiki inclut de nombreuses fonctionnalités pour les sites à vocation colla
  - Mysql  5.7
 
 ### Les pré-requis pour déployer cette stack
+Ceci devrait être une routine à présent:
 
-- un accès internet
-- un shell Linux
-- un compte Cloudwatt, avec une paire de clés existante
-- les outils OpenStack CLI
-- un clone local du dépôt git Cloudwatt applications
+* Un accès internet
+* Un shell linux
+* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
 Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
