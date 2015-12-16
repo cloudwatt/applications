@@ -156,7 +156,7 @@ $ ./minecraft-server-address.sh GOLDDIGGER
 GOLDDIGGER  70.60.637.17
 ~~~
 
-Comme indiqué ci-dessus, il va analyser l'IP flottante attribuée à votre server minecraft dans l'output. Vous pouvez alors le coller dans Minecraft Multiplayer et profitez de votre nouveau Minecraft server.
+Comme indiqué ci-dessus, il va analyser l'IP flottante attribuée à votre server Minecraft dans l'output. Vous pouvez alors le coller dans Minecraft Multiplayer et profitez de votre nouveau serveur Minecraft.
 
 ![Minecraft Relaxing](img/resting.jpg)
 
