@@ -6,7 +6,7 @@ url: minecraft.html
 date: 2015-12-16 00:00:00
 date-creation: "16 Décembre 2015"
 date-maj: "16 Décembre 2015"
-description: ""
+description: "Minecraft est un jeu de destruction et de construction de blocs. Avec cette application, tout le monde peut facilement déployer son propre serveur Minecraft, facilement accessible depuis le lanceur Minecraft pour jouer avec des amis ou des inconnus."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-minecraft
 siteofficiel: https://minecraft.net/
 sitesupport: http://minecraft.gamepedia.com/Minecraft_Wiki
