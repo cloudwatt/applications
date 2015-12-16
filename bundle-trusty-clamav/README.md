@@ -1,6 +1,8 @@
-# 5 Minutes Stacks, épisode 19 : Clamav #
+# 5 Minutes Stacks, épisode 21 : Clamav #
 
-## Episode 19 : CLAMAV
+## Episode 21 : CLAMAV
+
+![logoclamav](http://www.clamav.net/assets/clamav-trademark.png)
 
 Clam AntiVirus (ClamAv) est un antivirus GPL pour UNIX. La principale qualité de cet antivirus est qu'il permet de balayer les courriels reçus et envoyés avec un logiciel de messagerie classique. Le paquet que nous allons installer inclut un démon multi-tâches flexible et configurable, un antivirus en ligne de commande et un utilitaire pour une mise à jour automatique des définitions de virus via Internet. Le programme est basé sur une librairie distribuée avec le paquet Clam AntiVirus, que vous pouvez utiliser pour créer votre propre logiciel.
 Le plus important est que la base de données des virus soit mise à jour.
@@ -143,6 +145,9 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack clamav,
 * l'exposer sur Internet via une IP flottante.
+
+![ClamVersatile](http://www.clamav.net/assets/Ill-03.png)
+
 
 ### Enjoy
 
