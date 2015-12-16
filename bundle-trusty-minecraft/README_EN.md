@@ -148,7 +148,7 @@ $ ./minecraft-server-address.sh GOLDDIGGER
 GOLDDIGGER  70.60.637.17
 ~~~
 
-As shown above, it will display the assigned address of your minecraft server. You can then click or paste this into Minecraft and bask in the glory of a fresh Minecraft server.
+As shown above, it will display the assigned address of your minecraft server. You can then paste this into Minecraft and bask in the glory of a fresh Minecraft server.
 
 ![Minecraft Relaxing](img/resting.jpg)
 

@@ -4,11 +4,11 @@
 
 ![Minecraft Logo](img/minecraft.png)
 
-Minecraft est un jeu de destruction et de construction de blocs. A l'origine c'est un jeu vidéo créé par le programmeur suédois Notch. Minecraft est maintenant développé et édité par Mojang. 
+Minecraft est un jeu de destruction et de construction de blocs. A l'origine c'est un jeu vidéo créé par le programmeur suédois Notch. Minecraft est maintenant développé et édité par Mojang.
 
-Integrating exploration, resource gathering, crafting, and combat into a rewarding experience, Minecraft stays fresh through hours of play. 
+Intégration de l'exploration, la collecte des ressources, l'artisanat, et le combat dans une expérience enrichissante, Minecraft restent frais pendant des heures de jeu.
 
-Le mode multijoueur fournit encore une autre couche de profondeur ou les joueurs se regroupent pour créer de vastes structures au delà de votre imagination .
+Le mode multijoueur fournit encore une autre couche de profondeur ou les joueurs se regroupent pour créer de vastes structures au delà de votre imagination.
 
 Avec cette application, tout le monde peut facilement déployer son propre serveur Minecraft, facilement accessible depuis le lanceur Minecraft pour jouer avec des amis ou des inconnus.
 
@@ -151,14 +151,14 @@ $ watch -n 1 heat stack-list
 
 ### Stack URL with a terminal
 
-Une fois ceci fait, vous pouvez lancer le scfript `minecraft-server-address.sh`.
+Une fois ceci fait, vous pouvez lancer le script `minecraft-server-address.sh`.
 
 ~~~ bash
 $ ./minecraft-server-address.sh GOLDDIGGER
 GOLDDIGGER  70.60.637.17
 ~~~
 
-As shown above, it will display the assigned address of your minecraft server. You can then click or paste this into Minecraft and bask in the glory of a fresh Minecraft server.
+Comme indiqué ci-dessus, il va analyser l'IP flottante attribuée à votre server minecraft dans l'output. Vous pouvez alors le coller dans Minecraft Multiplayer et profitez de votre nouveau Minecraft server.
 
 ![Minecraft Relaxing](img/resting.jpg)
 
@@ -198,7 +198,7 @@ Le mode par défaut du jeu est "survival" mais l'administrateur peut changer ça
 
 ## The State of Affairs
 
-This bundle deploys a stable Minecraft setup for use in fun, non-critical setups. None of the components are redundant but it is resource-light and quick to launch.
+Cet appli déploie une configuration stable de Minecraft pour utilisation non-critiques. Aucun des composants ne sont redondants donc cette stack est rapide à lancer et peu chère à utiliser.
 
 #### Les dossiers importants sont:
 
