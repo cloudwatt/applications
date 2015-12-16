@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, Episode 16: Xonotic
+# 5 Minutes Stacks, Episode 18: Xonotic
 
-## Episode 16: Xonotic, the free and fast arena shooter
+## Episode 18: Xonotic, the free and fast arena shooter
 
 ![Xonotic Logo](img/xonotic-logo.png)
 
