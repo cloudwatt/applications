@@ -2,7 +2,7 @@
 
 ## Episode 19 : CLAMAV
 
-Clam AntiVirus (ClamAv) est un antivirus GPL pour UNIX. La principale qualité de cet antivirus est qu'il permet de balayer les courriels reçus et envoyés avec un logiciel de messagerie classique. Le paquet que nous allons installer inclut un démon multi-tâches flexible et configurable, un antivirus en ligne de commande et un utilitaire pour une mise à jour automatique des définitions de virus via Internet. Le programme est basé sur une librarie distribuée avec le paquet Clam AntiVirus, que vous pouvez utiliser pour créer votre propre logiciel.
+Clam AntiVirus (ClamAv) est un antivirus GPL pour UNIX. La principale qualité de cet antivirus est qu'il permet de balayer les courriels reçus et envoyés avec un logiciel de messagerie classique. Le paquet que nous allons installer inclut un démon multi-tâches flexible et configurable, un antivirus en ligne de commande et un utilitaire pour une mise à jour automatique des définitions de virus via Internet. Le programme est basé sur une librairie distribuée avec le paquet Clam AntiVirus, que vous pouvez utiliser pour créer votre propre logiciel.
 Le plus important est que la base de données des virus soit mise à jour.
 ## Preparations
 
