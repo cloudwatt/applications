@@ -17,7 +17,7 @@ composants:
    version: "Minecraft 1.8.9"
 prix: "FREE for software + Cloudwatt usage fees"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-seventeen-strongswan.html
+blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-seventeen-minecraft.html
 install-url:
 comingsoon: false
 type: application
