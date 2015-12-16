@@ -2,8 +2,6 @@
 
 ## Episode 16: Xonotic, the free and fast arena shooter
 
-**Draft - Image not yet available...**
-
 ![Xonotic Logo](img/xonotic-logo.png)
 
 Xonotic is an addictive, arena-style first person shooter with crisp movement and a wide array of weapons. It combines intuitive mechanics with in-your-face action to elevate your heart rate. Xonotic is and will always be free-to-play. It is available under the copyleft-style GPLv2 license.
