@@ -65,12 +65,13 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-In the `.heat.yml` files (heat templates), you will find a section named `parameters` near the top. The mandatory parameters are the `keypair_name` and the server fields for the Xonotic settings.
+Dans le fichier `.heat.yml` (template heat) vous trouverez en haut une section `parameters`. Les paramètres obligatoires à ajuster sont celui nommé `keypair_name` et les paramètres pour la mise en place du server Xonotic.
 
-You can set the `keypair_name`'s `default` value to save yourself time, as shown below.
-Remember that key pairs are created [from the console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab), and only keys created this way can be used.
+Le champs `keypair_name` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur (`default` pour ne pas perdre de temps). Souvenez vous que les paires de clés sont créées [depuis la console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab).
 
-The server fields provide some settings for the Xonotic server. You can change the server settings later with SSH. You can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
+The paramètres `server_settings` demandentles paramètres pour la mise en place du server Xonotic. Vous pourrez en changer plus tard par SSH.
+
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -172,7 +173,7 @@ $ ./stack-get-ip.sh PLASMABURN
 PLASMABURN  70.60.637.17
 ~~~
 
-As shown above, it will ouput the assigned floating-IP. You can then paste this into Xonotic and immediately get fragging!
+Comme indiqué ci-dessus, cela fournira l'adresse IP flottante. Vous pourrez alors la copier dans Xonotic et commencer à fragguer immédiatement !
 
 ![Weapon Fire](img/weapon-fire.jpg)
 
@@ -183,7 +184,6 @@ As shown above, it will ouput the assigned floating-IP. You can then paste this 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer votre Xonotic :
-
 
 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/bundle-trusty-xonotic](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-xonotic) repository
 2.	Cliquez sur le fichier nommé `bundle-trusty-xonotic.heat.yml`
@@ -209,7 +209,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vous** êtes maître(sse) à bord.
 
-The default game mode is deathmatch, but the admin can change that with SSH. Go to multiplayer and enjoy yourself!
+Le mode par défaut du jeu est deathmatch, mais votre administrateur peut le changer par SSH. Passez en mode multi-user et amusez-vous !
 
 Modify the server settings by connecting with SSH and heading to the file `/opt/xonotic/.xonotic/data/server.cfg`. Edit the contents to your liking and then run the command
 
@@ -217,7 +217,7 @@ Modify the server settings by connecting with SSH and heading to the file `/opt/
 $ sudo initctl restart xonotic
 ~~~
 
-to reload the configuration. Try some capture the flag, or add some bots!
+pour recharger votre configuration. Essayez de capturer un drapeau et ajouter des bots !
 
 ## The State of Affairs
 
