@@ -171,7 +171,7 @@ To create our Minecraft stack from the console:
 9.	Enter the password for the default *admin* user
 10.	Choose your instance size using the **Instance Type** dropdown and click on **LAUNCH**
 
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. 
 
 ![Kingdoms](img/kingdom.jpg)
 
