@@ -1,15 +1,14 @@
 # 5 Minutes Stacks, épisode 18 : Clamav #
 
-## Episode 17 : CLAMAV
+## Episode 19 : CLAMAV
 
-Clam AntiVirus (ClamAv) est un antivirus GPL pour UNIX. La principale qualité de cet antivirus est qu'il permet de balayer les courriels reçus et envoyés avec un logiciel de messagerie classique. Le paquet que nous allons installer inclut un démon multi-tâches flexible et configurable, un antivirus en ligne de commande et un utilitaire pour une mise à jour automatique des définitions de virus via Internet. Le programme est basé sur une bibliothèque distribuée avec le paquet Clam AntiVirus, que vous pouvez utiliser pour créer votre propre logiciel.
+Clam AntiVirus (ClamAv) est un antivirus GPL pour UNIX. La principale qualité de cet antivirus est qu'il permet de balayer les courriels reçus et envoyés avec un logiciel de messagerie classique. Le paquet que nous allons installer inclut un démon multi-tâches flexible et configurable, un antivirus en ligne de commande et un utilitaire pour une mise à jour automatique des définitions de virus via Internet. Le programme est basé sur une librarie distribuée avec le paquet Clam AntiVirus, que vous pouvez utiliser pour créer votre propre logiciel.
 Le plus important est que la base de données des virus soit mise à jour.
 ## Preparations
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
  - Clamav 0.99.0
- - Mysql-python 0.7.6-2
 
 ### Les pré-requis pour déployer cette stack
 
@@ -136,7 +135,7 @@ $ heat resource-list EXP_STACK
 | network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
 | subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP` | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 ```
 
