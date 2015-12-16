@@ -2,13 +2,11 @@
 
 ## Episode 18: Xonotic, the free and fast arena shooter
 
-**Draft - Image not yet available...**
-
 ![Xonotic Logo](img/xonotic-logo.png)
 
-Xonotic is an addictive, arena-style first person shooter with crisp movement and a wide array of weapons. It combines intuitive mechanics with in-your-face action to elevate your heart rate. Xonotic is and will always be free-to-play. It is available under the copyleft-style GPLv2 license.
+Xonotic est une arène first person shooter addictif avec un mouvement vif et un large éventail d'armes. Il combine des mécanique intuitives avec l'action in-your-face pour élever votre rythme cardiaque. Xonotic est et sera toujours libre-to-play. Il est disponible sous licence GPLv2.
 
-The game has clients for Windows, Linux, and Mac OS, adapting to any system to provide an excellent play experience. This bundle deploys your personal Xonotic server in minutes, public or private, so that you can start playing with your friends in minutes.
+Le jeu a des clients pour Windows, Linux et Mac OS, adaptant a n'importe quel système pour fournir une excellente expérience de jeu. Ce bundle déploie votre serveur Xonotic personnelle en quelques minutes, public ou privé, de sorte que vous pouvez commencer à jouer avec vos amis en quelques minutes.
 
 ![Battle Screenshot](img/battle.jpg)
 
@@ -211,7 +209,7 @@ Le but de ce tutoriel est d'accélerer votre démarrage. Dès à présent, **vou
 
 Le mode par défaut du jeu est deathmatch, mais votre administrateur peut le changer par SSH. Passez en mode multi-user et amusez-vous !
 
-Modify the server settings by connecting with SSH and heading to the file `/opt/xonotic/.xonotic/data/server.cfg`. Edit the contents to your liking and then run the command
+Modifier les paramètres du serveur en se connectant avec SSH et se dirigeant vers le fichier `/opt/xonotic/.xonotic/data/server.cfg`. Modifier le contenu à votre goût et puis exécutez la commande
 
 ~~~ bash
 $ sudo initctl restart xonotic
@@ -221,7 +219,7 @@ pour recharger votre configuration. Essayez de capturer un drapeau et ajouter de
 
 ## The State of Affairs
 
-This bundle deploys a stable Xonotic setup that is resource-light and quick to launch, but can be very fast and even support dozens of players on a high-cpu instance.
+Cet appli déploie une configuration stable de Xonotic setup qui est rapide à lancer et peu chère à utiliser, mais peut être très rapide et même soutenir des dizaines de joueurs sur des instances high-cpu.
 
 #### Les dossiers importants sont:
 
