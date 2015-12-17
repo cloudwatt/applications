@@ -117,19 +117,19 @@ Dans un shell, lancer le script `stack-start.sh`:
 
 Exemple :
 
-```
+~~~bash
 $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
 | ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
-```
+~~~
 
 Puis attendez **5 minutes** que le déploiement soit complet.
 
 
-```
+~~~bash
 $ heat resource-list EXP_STACK
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
@@ -141,7 +141,7 @@ $ heat resource-list EXP_STACK
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
 | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
-```
+~~~
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
@@ -182,6 +182,11 @@ afin que le service apache reprenne l'ensemble des paramètres
 faites un refresh sur l'url http://floatingIP/mediawiki
 
 Mediawiki est maintenant configuré vous pouvez commencer à écrire vos articles,
+
+#### Autres sources pouvant vous intéresser:
+
+* [Mediawiki Homepage](https://www.mediawiki.org/wiki/MediaWiki/fr)
+* [Mediawiki Documentation](https://www.mediawiki.org/wiki/Documentation/fr)
 
 -----
 Have fun. Hack in peace.
