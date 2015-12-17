@@ -13,7 +13,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  - MediaWiki 1.26.0
  - Mysql  5.7
 
- ### The prerequisites to deploy this stack
+### The prerequisites to deploy this stack
 
  * an internet acces
  * a Linux shell
@@ -21,15 +21,15 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
- ### Size of the instance
+### Size of the instance
 
  Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
- ### By the way...
+### By the way...
 
  If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console)
 
- ## What will you find in the repository
+## What will you find in the repository
 
  Once you have cloned the github, you will find in the `bundle-trusty-mediawiki/` repository:
 
@@ -38,9 +38,9 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  * `stack-get-url.sh`: Flotting IP recovery script.
 
 
- ## Start-up
+## Start-up
 
- ### Initialize the environment
+### Initialize the environment
 
  Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
  If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell accesses towards the Cloudwatt APIs.
@@ -55,7 +55,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
 
  Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
- ### Adjust the parameters
+### Adjust the parameters
 
  With the `bundle-trusty-mediawiki.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
@@ -114,7 +114,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
- ### Enjoy
+### Enjoy
 
 Once all this makes you can connect via a Web browser on your mediawiki server to begin to parametrize him
 
