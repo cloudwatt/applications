@@ -1,3 +1,4 @@
+---
 layout: applications-fiche
 pictonic: true
 title: "Zabbix"
