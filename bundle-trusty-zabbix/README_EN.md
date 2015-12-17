@@ -4,7 +4,7 @@
 
 ![Minimum setup](http://blog.stack.systems/wp-content/uploads/2015/01/5-passos-instalacao-zabbix-2-4-guia-definitivo.png)
 
-Zabbix is free software to monitor the status of various network services, servers and other network equipment; and producing dynamic graphics resource consumption. Zabbix uses MySQL, PostgreSQL or Oracle to store data. According to the importance of the number of machines and data to monitor, the choice of the DBMS greatly affects performance. Its web interface is written in PHP. 
+Zabbix is free software to monitor the status of various network services, servers and other network equipment; and producing dynamic graphics resource consumption. Zabbix uses MySQL, PostgreSQL or Oracle to store data. According to the importance of the number of machines and data to monitor, the choice of the DBMS greatly affects performance. Its web interface is written in PHP.
 
 Zabbix-server in a network is as follows:
 
@@ -64,13 +64,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-In the `.heat.yml` files (heat templates), you will find a section named `parameters` near the top. The mandatory parameters are the `keypair_name` and the `password` for the zabbix *admin* user.
-
-You can set the `keypair_name`'s `default` value to save yourself time, as shown below.
-Remember that key pairs are created [from the console](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab), and only keys created this way can be used.
-
-The `password` field provides thttp://wiki.monitoring-fr.org/zabbix/zabbix-work
-By default, the stack network and subnet are generated for the stack, in which the Zabbix server sits alone. This behavior can be changed within the `.heat.yml` as well, if needed.
+With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 
@@ -104,29 +98,35 @@ parameters:
 
 ### Stack up with a terminal
 
-In a shell, go in the `bundle-trusty-zabbix/` directory and run the script `stack-start.sh`:
+In a shell, go in the directory and run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~ bash
 $ ./stack-start.sh `name_of_my_stack`
 
-Creating stack...
-+--------------------------------------+------------+--------------------+-----------------------------+
-| id                                   | stack_name         | stack_status       | creation_time        |
-+--------------------------------------+------------+--------------------+------------------------------+
-| xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | `name_of_my_stack` | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
-+--------------------------------------+------------+--------------------+------------------------------+
+Exemple :
+
+$ ./stack-start.sh EXP_STACK
++--------------------------------------+-----------------+--------------------+----------------------+
+| id                                   | stack_name      | stack_status       | creation_time        |
++--------------------------------------+-----------------+--------------------+----------------------+
+| ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
++--------------------------------------+-----------------+--------------------+----------------------+
+
 ~~~
 
-Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+Within 5 minutes the stack will be fully operational.
 
-~~~ bash
-$ watch -n 1 heat stack-list
-+--------------------------------------+------------+-----------------+------------------------------+
-| id                                   | stack_name         | stack_status    | creation_time        |
-+--------------------------------------+------------+-----------------+------------------------------+
-| xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | `name_of_my_stack` | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
-+--------------------------------------+------------+-----------------+------------------------------+
-~~~
+$ heat resource-list EXP_STACK
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 
 ### Stack URL with a terminal
 
@@ -143,7 +143,7 @@ For now, our monitoring server and client are configured. We need to access the 
 * login : admin
 * password : zabbix
 
-Remember to change the default password immediately after your authentication.
+**Remember to change the default password immediately after your authentication.**
 
 ![Interface connection zabbix](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-07-300x253.png)
 
@@ -152,20 +152,20 @@ Once authentication is complete you will have access to Zabbix-server.
 ![Bigger production setup](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-08-300x276.png)
 
 
-Good !!!
+
 <a name="console" />
 
 ### For monitoring more machines
 
   It must be ensured that the machines to be monitored:
-  
 
-* are visible on the network from the Zabbix-server
+
+* are visible on the Zabbix-server network's
 * Have a functional zabbix agent
 * accept incoming TCP and UDP communications on the 10050 port, listening port of Zabbix agents by default.      
 
 
-### Example of monitoring a server Ghost
+### Example of server Ghost monitoring
 
 Let's see an example of integration of a server instance with the Ghost blog engine.
 
@@ -177,7 +177,7 @@ Let's see an example of integration of a server instance with the Ghost blog eng
   * Rules UDP , Entry, Port 10050
   * Rules TCP , Entry, Port 10050
 
-This will allow the Zabbix server to connect to retrieve the metric of the machine. We must now create the network between our visibility and our stack stack Zabbix Ghost, through the creation of a Neutron router:
+This will allow the Zabbix server to connect to retrieve the metric of the machine. We must now create the network between our visibility and our stack Zabbix Ghost, through the creation of a Neutron router:
 
 
   1. Get the subnet ID of the stack Ghost:
@@ -223,9 +223,11 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
 
     ```
 
-  A few minutes later, the Zabbix server and the Ghost server will contact each other directly. To provide an "executable documentation" the integration of a Ubuntu server, we will use Ansible for the future.
+  A few minutes later, the Zabbix and the Ghost servers's will contact each other directly.
 
-  5. Make sure you can log:
+  At the moment, it is necessary to make some configuration on the server to monitor. To facilitate you the handling, we prepared you a playbook Ansible which is going to automate these tasks.
+
+  5. Make sure you can logon:
       * SSH
       * user `cloud`
       * Ghost server
@@ -233,40 +235,41 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
 
   6. Since the Zabbix-server, add the connection information in the inventory `/etc/ansible/hosts` :
 
-  ```         
+  ~~~bash         
   [...]
 
   [slaves]
   xx.xx.xx.xx ansible_ssh_user=cloud ansible_ssh_private_key_file=/home/cloud/.ssh/id_rsa_ghost_server.pem
 
   [...]
-  ```
+  ~~~
 
   7. Start the playbook `slave-monitoring_zabbix.yml` as Zabbix root on the server:
-  ```
+  ~~~
   # ansible-playbook /root/slave-monitoring_zabbix.yml
-  ```
+  ~~~
 
-This playbook  will do all the installation and setup on the Ghost server to integrate monitoring Zabbix.
+This playbook  will do all the installation and setup on the Ghost server to integrate monitoring on Zabbix server.
 
 Now, our monitoring server and client are configured. We need to access the Zabbix Web UI using the IP address of our server http://X.X.X.X
 
 For your host (server Ghost here), can be monitoring by the Zabbix server, you must do the following operations:
 
-  *   Click on Configuration Menu
-  *   Click on Hosts submenu
-  *   Click on Create Host button at right side
+  *   Click on `Configuration Menu`
+  *   Click on `Hosts submenu`
+  *   Click on `Create Host` button at right side
 
+Inform the various fields by indicating the name of the host to monitor and its IP address
 
   ![Ajouter un host zabbix ](https://www.zabbix.com/documentation/2.2/_media/manual/quickstart/new_host.png?cache=)
 
-  Now fill the following details of remote host and go to Templates tab.
+In template tab:
 
-  *   Click on add link (chose for exemple **template OS linux**) 
+  *   Click on add `link` (chose for exemple **template OS linux**)
   *   Select desired Template : Please select carefully, Because it will enabled all checks for the host
-  *   Click on save button
+  *   Click on `save` button
 
-  ![Lier un template ] (https://watilearnd2day.files.wordpress.com/2015/08/zabbix-configuration9.jpg?w=606&h=410) 
+  ![Lier un template ](https://watilearnd2day.files.wordpress.com/2015/08/zabbix-configuration9.jpg?w=606&h=410)
 
 
   Congratulation! You can view the metric of your zabbix agents monitor by Zabbix-server.
@@ -279,13 +282,13 @@ For your host (server Ghost here), can be monitoring by the Zabbix server, you m
 
 ### Please console me
 
-There there, it's okay... Zabbix stacks can be spawned from our console as well!
+There it's okay... Zabbix stacks can be spawned from our console as well!
 
 To create our Zabbix stack from the console:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-zabbix](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-zabbix) repository
 2.	Click on the file named `bundle-trusty-Zabbix.heat.yml`
-3.	Click on RAW, a web page will appear containing purely the template
+3.	Click on RAW, a web page will appear containing the script
 4.	Save the page to your PC. You can use the default name proposed by your browser (just remove the .txt if needed)
 5.  Go to the [Stacks](https://console.cloudwatt.com/project/stacks/) section of the console
 6.	Click on **Launch stack**, then **Template file** and select the file you just saved to your PC, and finally click
@@ -315,4 +318,3 @@ You can start to live your monitoring taking hold of your server.
 
 * [Zabbix-monitoring Homepage](http://www.zabbix.com/)
 * [Zabbix documentation](https://www.zabbix.com/documentation/2.2/start)
-

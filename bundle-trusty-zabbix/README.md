@@ -91,24 +91,24 @@ parameters:
 
 Dans un shell, placez vous dans votre dossier cloné et lancez le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
-~~~
+~~~ bash
 ./stack-start.sh nom_de_votre_stack
 ~~~
 Exemple :
 
-```
+~~~ bash
 $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
 | ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
-```
+~~~
 
 Puis attendez 5 minutes que le déploiement soit complet.
 
 
-```
+~~~ bash
 $ heat resource-list EXP_STACK
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
@@ -120,7 +120,7 @@ $ heat resource-list EXP_STACK
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
 | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
-```
+~~~
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
@@ -133,10 +133,10 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va 
 
 Exemple:
 
-```
+~~~ bash
 $ ./stack-get-url.sh EXP_STACK
 EXP_STACK `floating IP `
-```
+~~~
 
 A ce niveau, vous pouvez vous connecter sur votre instance de serveur Zabbix avec un navigateur web en pointant sur votre floating IP, sur le port 80 (http://xx.xx.xx.xx). Pour s'authentifier sur l'interface web :
 
@@ -147,7 +147,7 @@ A ce niveau, vous pouvez vous connecter sur votre instance de serveur Zabbix ave
 
 ![Interface connection zabbix](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-07-300x253.png)
 
-Une fois que l'authentification est faite, vous avez accès à l'interface graphique de Zabbix-server. 
+Une fois que l'authentification est faite, vous avez accès à l'interface graphique de Zabbix-server.
 
 ![Bigger production setup](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-08-300x276.png)
 
@@ -173,23 +173,23 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
 
   1. Récupérez l'identifiant de sous-réseau de la stack Ghost :
 
-  ```
+  ~~~ bash
   $ heat resource-list $NOM_DE_STACK_GHOST | grep subnet
 
   | subnet           | bd69c3f5-ddc8-4fe4-8cbe-19ecea0fdf2c              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ```
+  ~~~
 
   2. Récupérez l'identifiant de sous-réseau de la stack Zabbix :
 
-  ```
+  ~~~ bash
   $ heat resource-list $NOM_DE_STACK_Zabbix | grep subnet
 
   | subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ```
+  ~~~
 
-  3. Créez un router tout neuf :
+  3. Créez un nouveau routeur :
 
-    ```
+    ~~~ bash
     $ neutron router-create Zabbix_GHOST
 
     Created a new router:
@@ -199,61 +199,68 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
     | admin_state_up        | True                                 |
     | external_gateway_info |                                      |
     | id                    | babdd078-c0c6-4280-88f5-0f77951a5933 |
-    | name                  | Zabbix_GHOST                        |
+    | name                  | Zabbix_GHOST                         |
     | status                | ACTIVE                               |
     | tenant_id             | 8acb072da1b14c61b9dced19a6be3355     |
     +-----------------------+--------------------------------------+
-    ```
+    ~~~
 
   4. Ajoutez au routeur une interface sur le sous-réseau de la stack Ghost et une sur le sous-réseau de la stack Zabbix :
 
-    ```
+    ~~~ bash
     $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $Zabbix_SUBNET_ID
 
     $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $GHOST_SUBNET_ID
 
-    ```
+    ~~~
 
 Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
 
 A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
 
   5. Assurez vous de pouvoir vous connecter :
-  * en SSH
-  * en utilisateur `cloud`
-  * sur le serveur Ghost
-  * depuis le serveur Zabbix
+
+
+    * En SSH
+    * Avec l'utilisateur `cloud`
+    * Sur le serveur Ghost
+    * Depuis le serveur Zabbix
+
 
   6. Sur le serveur Zabbix, ajoutez les informations de connexion dans l'inventaire `/etc/ansible/hosts` :
 
-  ```         
+  ~~~bash         
   [...]
 
   [slaves]
   xx.xx.xx.xx ansible_ssh_user=cloud ansible_ssh_private_key_file=/home/cloud/.ssh/id_rsa_ghost_server.pem
 
   [...]
-  ```
+  ~~~
 
   7. En root sur le serveur Zabbix, lancez le playbook `slave-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
-  
-  ```
-  # ansible-playbook /root/slave-monitoring_zabbix.yml
-  ```
 
-Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost qu'il puisse être monitoré par le serveur Zabbix. Pour démarrer le monitoring, il vous faut faire les opérations suivantes :
+  ~~~
+  # ansible-playbook /root/slave-monitoring_zabbix.yml
+  ~~~
+
+Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
+
+Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X
+
+Pour démarrer le monitoring, il vous faut faire les opérations suivantes :
 
  * Se connecter à l'interface web de Zabbix-server
  * Cliquer sur le menu `Configuration`
  * Cliquer sur le sous menu `Hosts`
- * Cliquer sur le bouton  en haut à droite `Create Hosts. 
- 
+ * Cliquer sur le bouton  en haut à droite `Create Hosts.
+
  Renseigner les differents champs en indiquant le nom du host à monitorer et son adresse IP  
 
  ![Ajouter un host zabbix ](https://www.zabbix.com/documentation/2.2/_media/manual/quickstart/new_host.png?cache=)
 
  Dans l'onglet template :
- 
+
  *  Commencez à remplir le champ **Link new templates** pour obtenir des suggestions des templates de monitoring disponibles (pour notre cas **template OS linux** ira très bien)
  *  Cliquer sur `add`
  *  Cliquer sur `save`
@@ -288,7 +295,9 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maî
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
-Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur votre serveur. Les points d'entrée utiles :
+Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur votre serveur.
+
+###Les points d'entrée utiles :
 
 * `/etc/default/zabbix-server`: le répertoire contenant le fichier de configuation zabbix-server
 * `/etc/zabbix/zabbix_server.conf`: le répertoire contenant le fichier de configuration permettant à Zabbix-server de se connecter à la base de données
