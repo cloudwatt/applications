@@ -216,7 +216,7 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
 
 Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
 
-Il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
+A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
 
   5. Assurez vous de pouvoir vous connecter :
   * en SSH
