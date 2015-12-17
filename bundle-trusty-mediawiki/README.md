@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 19 : Mediawiki #
+# 5 Minutes Stacks, épisode 20 : Mediawiki #
 
-## Episode 19 : Mediawiki
+## Episode 20 : Mediawiki
 
 ![mediawikilogo](https://upload.wikimedia.org/wikipedia/commons/0/01/MediaWiki-smaller-logo.png)
 

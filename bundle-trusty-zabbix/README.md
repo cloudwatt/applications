@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 18 : Zabbix #
+# 5 Minutes Stacks, épisode 19 : Zabbix #
 
-## Episode 18 : Zabbix-server
+## Episode 19 : Zabbix-server
 
 ![Minimum setup](http://blog.stack.systems/wp-content/uploads/2015/01/5-passos-instalacao-zabbix-2-4-guia-definitivo.png)
 
