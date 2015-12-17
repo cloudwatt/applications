@@ -6,7 +6,7 @@ url: zabbix.html
 date: 2015-12-17 00:00:00
 date-creation: "December 17, 2015"
 date-maj: "December 17, 2015"
-description: ""
+description: "Zabbix is free software to monitor the status of various network services, servers and other network equipment; and producing dynamic graphics resource consumption."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-zabbix
 siteofficiel: http://www.zabbix.com/
 sitesupport: https://www.zabbix.com/documentation/2.2/start
