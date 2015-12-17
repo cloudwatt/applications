@@ -102,8 +102,9 @@ In a shell, go in the directory and run the script `stack-start.sh` with the nam
 
 ~~~ bash
 $ ./stack-start.sh `name_of_my_stack`
-
+~~~
 Exemple :
+~~~ bash
 
 $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
@@ -116,6 +117,7 @@ $ ./stack-start.sh EXP_STACK
 
 Within 5 minutes the stack will be fully operational.
 
+~~~ bash
 $ heat resource-list EXP_STACK
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
@@ -127,6 +129,7 @@ $ heat resource-list EXP_STACK
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
 | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
+~~~
 
 ### Stack URL with a terminal
 
@@ -182,23 +185,25 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
 
   1. Get the subnet ID of the stack Ghost:
 
-  ```
+  ~~~ bash
+
   $ heat resource-list $NOM_DE_STACK_GHOST | grep subnet
 
   | subnet           | bd69c3f5-ddc8-4fe4-8cbe-19ecea0fdf2c              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ```
+  ~~~
 
   2. Get the subnet ID of the stack Zabbix:
 
-  ```
+  ~~~ bash
+
   $ heat resource-list $NOM_DE_STACK_Zabbix | grep subnet
 
   | subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ```
+  ~~~
 
   3. Create a new router :
 
-    ```
+    ~~~bash
     $ neutron router-create Zabbix_GHOST
 
     Created a new router:
@@ -212,16 +217,16 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
     | status                | ACTIVE                               |
     | tenant_id             | 8acb072da1b14c61b9dced19a6be3355     |
     +-----------------------+--------------------------------------+
-    ```
+    ~~~
 
   4. Add to a router interface, the subnet of the Ghost stack and  the subnet of the stack Zabbix:
 
-    ```
+    ~~~bash
     $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $Zabbix_SUBNET_ID
 
     $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $GHOST_SUBNET_ID
 
-    ```
+    ~~~
 
   A few minutes later, the Zabbix and the Ghost servers's will contact each other directly.
 
@@ -245,8 +250,8 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
   ~~~
 
   7. Start the playbook `slave-monitoring_zabbix.yml` as Zabbix root on the server:
-  ~~~
-  # ansible-playbook /root/slave-monitoring_zabbix.yml
+  ~~~bash
+   ansible-playbook /root/slave-monitoring_zabbix.yml
   ~~~
 
 This playbook  will do all the installation and setup on the Ghost server to integrate monitoring on Zabbix server.
