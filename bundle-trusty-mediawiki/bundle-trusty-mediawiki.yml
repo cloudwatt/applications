@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: All-in-one WordPress stack
+description: All-in-one mediawiki stack
 
 
 parameters:
@@ -22,13 +22,25 @@ parameters:
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - s1.cw.small-1
-          - n1.cw.standard-1
+          - n1.cw.highcpu-2
+          - n1.cw.highcpu-4
+          - n1.cw.highcpu-8
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-16
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
 
 
 resources:
@@ -95,6 +107,10 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip:
-    description: IP address of the deployed compute instance
-    value: { get_attr: [floating_ip, floating_ip_address] }
+  floating_ip_url:
+    description: Mediawiki URL
+    value:
+      str_replace:
+        template: https://$floating_ip$/
+        params:
+          $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
