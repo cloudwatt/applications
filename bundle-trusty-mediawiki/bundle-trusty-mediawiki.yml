@@ -22,9 +22,12 @@ parameters:
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
           - n1.cw.highcpu-2
           - n1.cw.highcpu-4
           - n1.cw.highcpu-8
+          - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
@@ -34,13 +37,6 @@ parameters:
           - n1.cw.highmem-4
           - n1.cw.highmem-8
           - n1.cw.highmem-12
-          - n2.cw.highmem-2
-          - n2.cw.highmem-4
-          - n2.cw.highmem-8
-          - n2.cw.highmem-16
-          - n2.cw.standard-4
-          - n2.cw.standard-8
-          - n2.cw.standard-16
 
 
 resources:
