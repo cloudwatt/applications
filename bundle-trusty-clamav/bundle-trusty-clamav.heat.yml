@@ -82,7 +82,10 @@ resources:
         - { get_resource: security_group }
 
 outputs:
-  floating_ip:
-    description: IP address of the deployed compute instance
-    value: { get_attr: [floating_ip, floating_ip_address] }
-
+  floating_ip_url:
+    description: clamav URL
+    value:
+      str_replace:
+        template: https://$floating_ip$/
+        params:
+          $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
