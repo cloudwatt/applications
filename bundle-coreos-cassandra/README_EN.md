@@ -19,7 +19,7 @@ Apache Cassandra is a distributed NoSQL database management system. Initially de
 
 ### The prerequisites to deploy this stack
 
- * an internet acces
+ * an internet access
  * a Linux shell
  * a [Cloudwatt account](https://www.cloudwatt.com/cockpit/#/create-contact), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
  * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
