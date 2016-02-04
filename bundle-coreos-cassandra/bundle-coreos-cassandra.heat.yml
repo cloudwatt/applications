@@ -1,0 +1,363 @@
+heat_template_version: 2013-05-23
+
+description: Cassandra 3 nodes cluster with Docker on CoreOS
+
+parameter_groups:
+- label: Cassandra
+  parameters:
+    - keypair_name
+    - flavor_name
+
+parameters:
+  keypair_name:
+    type: string
+    description: Name of keypair to assign to CoreOS instances
+    label: SSH Keypair
+
+  flavor_name:
+    type: string
+    description: Flavor to use for the server
+    default : n1.cw.standard-2
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values: 
+        - n1.cw.highcpu-2   
+        - n1.cw.highcpu-4   
+        - n1.cw.highcpu-8   
+        - n1.cw.standard-1  
+        - n1.cw.standard-2  
+        - n1.cw.standard-4  
+        - n1.cw.standard-8  
+        - n1.cw.standard-12 
+        - n1.cw.standard-16 
+        - n1.cw.highmem-2   
+        - n1.cw.highmem-4   
+        - n1.cw.highmem-8   
+        - n1.cw.highmem-12  
+        - n2.cw.highdisk-8  
+        - n2.cw.highdisk-16 
+        - n2.cw.highmem-2   
+        - n2.cw.highmem-4   
+        - n2.cw.highmem-8   
+        - n2.cw.highmem-16  
+        - n2.cw.standard-1  
+        - n2.cw.standard-2  
+        - n2.cw.standard-4  
+        - n2.cw.standard-8  
+        - n2.cw.standard-16
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.1.0/24
+      dns_nameservers: [8.8.8.8, 8.8.4.4]
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.254 }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: UDP, port_range_min: 8285, port_range_max: 8285, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 2379, port_range_max: 2379, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 2380, port_range_max: 2380, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 4001, port_range_max: 4001, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 7000, port_range_max: 7001, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 7199, port_range_max: 7199, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 9042, port_range_max: 9042, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: TCP, port_range_min: 9160, port_range_max: 9160, remote_ip_prefix: 10.0.1.0/24 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip1:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  port1:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      security_groups: 
+        - { get_resource: security_group }
+
+  server1:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 9c7f1a89-f6b9-4b8f-857d-a8fad50276e4
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: port1 }
+      user_data_format: RAW  
+      user_data:
+        str_replace:
+          template: |
+            #cloud-config
+            
+            coreos:
+              etcd2:
+                # generate a new token for each unique cluster from https://discovery.etcd.io/new:
+                # multi-region deployments, multi-cloud deployments, and Droplets without
+                # private networking need to use $public_ipv4:
+                advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                # listen on the official ports 2379, 2380 and one legacy port 4001:
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+                initial-cluster: server1=http://$server1:2380,server2=http://$server2:2380,server3=http://$server3:2380
+                name: server1
+              fleet:
+                public-ip: $private_ipv4   # used for fleetctl ssh command
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: fleet.service
+                  command: start
+                                    
+                - name: cassandra.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Cassandra Cluster
+                    Requires=docker.service
+                    After=docker.service
+                    Requires=etcd2.service
+                    After=etcd2.service
+
+                    [Service]
+                    Type=oneshot
+                    TimeoutStartSec=0
+                    RemainAfterExit=true
+                    ExecStartPre=-/usr/bin/docker kill cassandra
+                    ExecStartPre=-/usr/bin/docker pull cassandra
+                    ExecStartPre=-/usr/bin/docker start cassandra
+                    ExecStartPre=-/usr/bin/docker run --restart=on-failure -d --name cassandra -v /var/lib/cassandra:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=$private_ipv4 -e CASSANDRA_START_RPC=true -p 7000:7000 -p 7001:7001 -p 7199:7199 -p 9042:9042 -p 9160:9160 -e CASSANDRA_SEEDS=$server1 cassandra:3.1.1
+                    ExecStart=/usr/bin/true
+                    ExecStop=/usr/bin/docker stop cassandra
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+          params:
+            $private_ipv4: { get_attr: [ port1, fixed_ips, 0, ip_address ] }
+            $server1: { get_attr: [ port1, fixed_ips, 0, ip_address ] }
+            $server2: { get_attr: [ port2, fixed_ips, 0, ip_address ] }
+            $server3: { get_attr: [ port3, fixed_ips, 0, ip_address ] }
+
+  floating_ip_link1:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip1 }
+      server_id: { get_resource: server1 }
+
+
+  floating_ip2:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  port2:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      security_groups: 
+        - { get_resource: security_group }
+
+  server2:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 9c7f1a89-f6b9-4b8f-857d-a8fad50276e4
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: port2 }
+      user_data_format: RAW  
+      user_data:
+        str_replace:
+          template: |
+            #cloud-config
+            
+            coreos:
+              etcd2:
+                # generate a new token for each unique cluster from https://discovery.etcd.io/new:
+                # multi-region deployments, multi-cloud deployments, and Droplets without
+                # private networking need to use $public_ipv4:
+                advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                # listen on the official ports 2379, 2380 and one legacy port 4001:
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+                initial-cluster: server1=http://$server1:2380,server2=http://$server2:2380,server3=http://$server3:2380
+                name: server2
+              fleet:
+                public-ip: $private_ipv4   # used for fleetctl ssh command
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: fleet.service
+                  command: start
+             
+                - name: cassandra.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Cassandra Cluster
+                    Requires=docker.service
+                    After=docker.service
+                    Requires=etcd2.service
+                    After=etcd2.service
+
+                    [Service]
+                    Type=oneshot
+                    TimeoutStartSec=0
+                    RemainAfterExit=true
+                    ExecStartPre=-/usr/bin/docker kill cassandra
+                    ExecStartPre=-/usr/bin/docker pull cassandra
+                    ExecStartPre=-/usr/bin/docker start cassandra
+                    ExecStartPre=-/usr/bin/docker run --restart=on-failure -d --name cassandra -v /var/lib/cassandra:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=$private_ipv4 -e CASSANDRA_START_RPC=true -p 7000:7000 -p 7001:7001 -p 7199:7199 -p 9042:9042 -p 9160:9160 -e CASSANDRA_SEEDS=$server1 cassandra:3.1.1
+                    ExecStart=/usr/bin/true
+                    ExecStop=/usr/bin/docker stop cassandra
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+          params:
+            $private_ipv4: { get_attr: [ port2, fixed_ips, 0, ip_address ] }
+            $server1: { get_attr: [ port1, fixed_ips, 0, ip_address ] }
+            $server2: { get_attr: [ port2, fixed_ips, 0, ip_address ] }
+            $server3: { get_attr: [ port3, fixed_ips, 0, ip_address ] }
+
+  floating_ip_link2:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip2 }
+      server_id: { get_resource: server2 }
+
+
+  floating_ip3:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  port3:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      security_groups: 
+        - { get_resource: security_group }
+
+  server3:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 9c7f1a89-f6b9-4b8f-857d-a8fad50276e4
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: port3 }
+      user_data_format: RAW  
+      user_data:
+        str_replace:
+          template: |
+            #cloud-config
+            
+            coreos:
+              etcd2:
+                # generate a new token for each unique cluster from https://discovery.etcd.io/new:
+                # multi-region deployments, multi-cloud deployments, and Droplets without
+                # private networking need to use $public_ipv4:
+                advertise-client-urls: http://$private_ipv4:2379,http://$private_ipv4:4001
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                # listen on the official ports 2379, 2380 and one legacy port 4001:
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+                initial-cluster: server1=http://$server1:2380,server2=http://$server2:2380,server3=http://$server3:2380
+                name: server3
+              fleet:
+                public-ip: $private_ipv4   # used for fleetctl ssh command
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: fleet.service
+                  command: start
+                                    
+                - name: cassandra.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Cassandra Cluster
+                    Requires=docker.service
+                    After=docker.service
+                    Requires=etcd2.service
+                    After=etcd2.service
+
+                    [Service]
+                    Type=oneshot
+                    TimeoutStartSec=0
+                    RemainAfterExit=true
+                    ExecStartPre=-/usr/bin/docker kill cassandra
+                    ExecStartPre=-/usr/bin/docker pull cassandra
+                    ExecStartPre=-/usr/bin/docker start cassandra
+                    ExecStartPre=-/usr/bin/docker run --restart=on-failure -d --name cassandra -v /var/lib/cassandra:/var/lib/cassandra -e CASSANDRA_BROADCAST_ADDRESS=$private_ipv4 -e CASSANDRA_START_RPC=true -p 7000:7000 -p 7001:7001 -p 7199:7199 -p 9042:9042 -p 9160:9160 -e CASSANDRA_SEEDS=$server1 cassandra:3.1.1
+                    ExecStart=/usr/bin/true
+                    ExecStop=/usr/bin/docker stop cassandra
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+          params:
+            $private_ipv4: { get_attr: [ port3, fixed_ips, 0, ip_address ] }
+            $server1: { get_attr: [ port1, fixed_ips, 0, ip_address ] }
+            $server2: { get_attr: [ port2, fixed_ips, 0, ip_address ] }
+            $server3: { get_attr: [ port3, fixed_ips, 0, ip_address ] }
+
+  floating_ip_link3:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip3 }
+      server_id: { get_resource: server3 }
+
+outputs:
+  server1_private_ip:
+    description: server1 private IP address 
+    value: { get_attr: [ server1, first_address ] }
+  server1_public_ip:
+    description: server1 public IP address
+    value: { get_attr: [ floating_ip1, floating_ip_address ] }
+  server2_private_ip:
+    description: server2 private IP address 
+    value: { get_attr: [ server2, first_address ] }
+  server2_public_ip:
+    description: server2 public IP address
+    value: { get_attr: [ floating_ip2, floating_ip_address ] }
+  server3_private_ip:
+    description: server3 private IP address 
+    value: { get_attr: [ server3, first_address ] }
+  server3_public_ip:
+    description: server3 public IP address
+    value: { get_attr: [ floating_ip3, floating_ip_address ] }
+
