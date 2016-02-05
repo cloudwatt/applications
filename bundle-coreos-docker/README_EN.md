@@ -27,13 +27,9 @@
 
 ### Size of the instance
 
- By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+ By default, the stack deploys on an instance of type "Standard 2" (n2.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
 
  Stack parameters, of course, are yours to tweak at your fancy.
-
-### By the way...
-
- If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console)
 
 ## What will you find in the repository
 
@@ -89,23 +85,19 @@ parameters:
   flavor_name:
     type: string
     description: Flavor to use for the server
-    default: n1.cw.standard-2
+    default : n2.cw.standard-2
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - n1.cw.highcpu-2
-        - n1.cw.highcpu-4
-        - n1.cw.highcpu-8
-        - n1.cw.standard-1
-        - n1.cw.standard-2
-        - n1.cw.standard-4
-        - n1.cw.standard-8
-        - n1.cw.standard-12
-        - n1.cw.standard-16
-        - n1.cw.highmem-2
-        - n1.cw.highmem-4
-        - n1.cw.highmem-8
-        - n1.cw.highmem-12
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
 
 resources:
   network:

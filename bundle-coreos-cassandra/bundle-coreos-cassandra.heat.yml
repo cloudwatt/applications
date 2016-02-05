@@ -21,8 +21,6 @@ parameters:
     label: Instance Type (Flavor)
     constraints:
       - allowed_values: 
-        - n2.cw.highdisk-8  
-        - n2.cw.highdisk-16 
         - n2.cw.highmem-2   
         - n2.cw.highmem-4   
         - n2.cw.highmem-8   
