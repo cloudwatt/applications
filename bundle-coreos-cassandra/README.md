@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, épisode 22 : Cassandra #
 
-## Episode xx : Cassandra
+## Episode 22 : Cassandra
 
 ![cassandralogo](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Cassandra_logo.svg/langfr-96px-Cassandra_logo.svg.png)
 
