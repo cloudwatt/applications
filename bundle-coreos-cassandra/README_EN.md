@@ -27,11 +27,7 @@ Apache Cassandra is a distributed NoSQL database management system. Initially de
 
 ### Size of the instance
 
- Per default, the script is proposing a deployement on an instance type "Standard 2" (n1.cw.standard-2).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
-
-### By the way...
-
- If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console)
+ Per default, the script is proposing a deployement on an instance type "Standard 2" (n2.cw.standard-2).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ## What will you find in the repository
 
@@ -76,11 +72,19 @@ parameters:
   flavor_name:
     type: string
     description: Flavor to use for the server
-    default: n1.cw.standard-2
+    default : n2.cw.standard-2
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        [...]
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
 
 resources:
   network:

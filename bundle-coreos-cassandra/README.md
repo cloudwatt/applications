@@ -27,14 +27,10 @@ Ceci devrait être une routine à présent:
 * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "Standard" (n1.cw.standard-2). Il
+Par défaut, le script propose un déploiement sur une instance de type "Standard" (n2.cw.standard-2). Il
 existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les paramètres de la stack à votre goût.
-
-### Au fait...
-
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
 ## Tour du propriétaire
 
@@ -82,11 +78,19 @@ parameters:
   flavor_name:
     type: string
     description: Flavor to use for the server
-    default : n1.cw.standard-2
+    default : n2.cw.standard-2
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        [...]
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
 
 resources:
   network:

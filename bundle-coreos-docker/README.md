@@ -30,11 +30,7 @@
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement de 3 instances de type " Standard 2 " (n1.cw.standard-2) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sûr, vous pouvez ajuster les paramètres de la stack et en particulier sa taille par défaut.
-
-### Au fait...
-
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
+Par défaut, le script propose un déploiement de 3 instances de type " Standard 2 " (n2.cw.standard-2) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sûr, vous pouvez ajuster les paramètres de la stack et en particulier sa taille par défaut.
 
 ## Tour du propriétaire
 
@@ -87,23 +83,19 @@ parameters:
   flavor_name:
     type: string
     description: Flavor to use for the server
-    default : n1.cw.standard-2
+    default : n2.cw.standard-2
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - n1.cw.highcpu-2
-        - n1.cw.highcpu-4
-        - n1.cw.highcpu-8
-        - n1.cw.standard-1
-        - n1.cw.standard-2
-        - n1.cw.standard-4
-        - n1.cw.standard-8
-        - n1.cw.standard-12
-        - n1.cw.standard-16
-        - n1.cw.highmem-2
-        - n1.cw.highmem-4
-        - n1.cw.highmem-8
-        - n1.cw.highmem-12
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
 
 resources:
   network:
