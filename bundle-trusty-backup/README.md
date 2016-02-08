@@ -4,7 +4,7 @@
 
 ![logoduplicity](http://3.bp.blogspot.com/-XGwKwPUH8wM/UPKzagbzUmI/AAAAAAAABoI/XQf7Of5FXts/s1600/blog-domenech-org-ubuntu-deja-dup-amazon-web-services-s3-logo.png)
 
-L'utilitaire duplicity est un outil en ligne de commande permettant d'effectuer des sauvegardes incrémentielles de fichiers et dossiers.
+L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et dossiers.
 
 Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant – les protocoles distants pris en charge sont FTP, SSH/SCP, Rsync, WebDAV/WebDAVs et Amazon S3. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
 
@@ -155,7 +155,7 @@ $ heat resource-list EXP_STACK
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur DUPLICITY:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-backup
 2.	Cliquez sur le fichier nommé bundle-trusty-backup.heat.yml
@@ -168,7 +168,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
 9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
 C’est (déjà) FINI !
 
@@ -230,7 +230,8 @@ Vous pouvez commencer a élaborer votre plan de sauvegarde voici les points d'en
 * `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de duplicityDroplet
 
 * voici quelques sites d'informations afin d'aller plus loin :
-    - http://http://duplicity.nongnu.org/
+
+    - http://duplicity.nongnu.org/
     - https://doc.ubuntu-fr.org/duplicity
     - https://help.ubuntu.com/community/DuplicityBackupHowto
 
