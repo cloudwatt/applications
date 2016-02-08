@@ -156,7 +156,7 @@ Puis attendez **5 minutes** que le déploiement soit complet.
 
 ![Backuplogo](http://www.nordic-vikings.net/wp-content/uploads/2013/06/linuxbackup.jpg)
 
-  ### Enjoy
+### Enjoy
 
   Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
 
