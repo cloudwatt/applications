@@ -1,7 +1,5 @@
 # 5 Minutes Stacks, épisode 23 : Duplicity #
 
-**WIP - WORK IN PROGRESS - IMAGE NON DISPONIBLE**
-
 ## Episode 23 : Duplicity
 
 ![logoduplicity](http://3.bp.blogspot.com/-XGwKwPUH8wM/UPKzagbzUmI/AAAAAAAABoI/XQf7Of5FXts/s1600/blog-domenech-org-ubuntu-deja-dup-amazon-web-services-s3-logo.png)
@@ -12,7 +10,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
- - Clamav 0.7.06
+ - Duplicity 0.7.06
 
 ### Les pré-requis pour déployer cette stack
 
