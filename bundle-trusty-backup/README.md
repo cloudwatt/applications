@@ -151,7 +151,7 @@ Puis attendez **5 minutes** que le déploiement soit complet.
 
   Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-  * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack clamav,
+  * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack backup,
   * l'exposer sur Internet via une IP flottante.
 
 ![Backuplogo](http://www.nordic-vikings.net/wp-content/uploads/2013/06/linuxbackup.jpg)
