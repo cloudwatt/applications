@@ -118,10 +118,9 @@ parameters:
         ### Démarrer la stack
 
         Dans un shell, lancer le script `stack-start.sh`:
-
-        ~~~
+~~~
         ./stack-start.sh nom_de_votre_stack
-        ~~~
+~~~
 
         Exemple :
 
@@ -132,12 +131,12 @@ parameters:
         +--------------------------------------+-----------------+--------------------+----------------------+
         | ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
         +--------------------------------------+-----------------+--------------------+----------------------+
-        ~~~
+~~~
 
         Puis attendez **5 minutes** que le déploiement soit complet.
 
 
-        ~~~bash
+~~~
         $ heat resource-list EXP_STACK
         +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
         | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
