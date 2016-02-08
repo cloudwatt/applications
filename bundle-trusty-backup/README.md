@@ -14,7 +14,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
  - Ubuntu Trusty 14.04.2
  - Clamav 0.7.06
 
- ### Les pré-requis pour déployer cette stack
+### Les pré-requis pour déployer cette stack
 
  Ceci devrait être une routine à présent:
 
@@ -24,7 +24,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
  * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
- ### Taille de l'instance
+### Taille de l'instance
  Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
  existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins.
  Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel
@@ -32,7 +32,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
  Vous pouvez ajuster les parametres de la stack à votre goût.
 
- ### Au fait...
+### Au fait...
 
  Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
@@ -44,9 +44,8 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
  * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
  * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
- ## Démarrage
-
- ### Initialiser l'environnement
+## Démarrage
+### Initialiser l'environnement
 
  Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
  Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
@@ -62,7 +61,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
  Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
- ### Ajuster les paramètres
+### Ajuster les paramètres
  Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoire sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backup.
  C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
