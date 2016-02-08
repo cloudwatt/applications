@@ -86,19 +86,16 @@ parameters:
       - allowed_values:
         - t1.cw.tiny
         - s1.cw.small-1
-        - n1.cw.highcpu-2
-        - n1.cw.highcpu-4
-        - n1.cw.highcpu-8
-        - n1.cw.standard-1
-        - n1.cw.standard-2
-        - n1.cw.standard-4
-        - n1.cw.standard-8
-        - n1.cw.standard-12
-        - n1.cw.standard-16
-        - n1.cw.highmem-2
-        - n1.cw.highmem-4
-        - n1.cw.highmem-8
-        - n1.cw.highmem-12
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-12
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-12
 
   passcode:
     label: GnuPG Encryption Key Passcode
@@ -156,6 +153,29 @@ Puis attendez **5 minutes** que le déploiement soit complet.
 
 ![Backuplogo](http://www.nordic-vikings.net/wp-content/uploads/2013/06/linuxbackup.jpg)
 
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
+
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-backup
+2.	Cliquez sur le fichier nommé bundle-trusty-backup.heat.yml
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+
+C’est (déjà) FINI !
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre duplicity !
+
 ### Enjoy
 
   Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
@@ -199,3 +219,20 @@ Pour plus de sécurité vous pouvez/devez exportez vos backup sur une autre mach
 ~~~
 rsync -rvP --partial-dir=/my/local/tmpbackup --ignore-existing --stats -h server:/var/backups/duplicity/ /my/local/backup/
 ~~~
+## So watt ?
+
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+
+Vous pouvez commencer a élaborer votre plan de sauvegarde voici les points d'entrée utiles:
+
+* `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de duplicityDroplet
+
+* voici quelques sites d'informations afin d'aller plus loin :
+    - http://http://duplicity.nongnu.org/
+    - https://doc.ubuntu-fr.org/duplicity
+    - https://help.ubuntu.com/community/DuplicityBackupHowto
+
+-----
+Have fun. Hack in peace.
