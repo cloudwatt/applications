@@ -147,7 +147,7 @@ Puis attendez **5 minutes** que le déploiement soit complet.
         | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
         | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
         +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
-        ~~~
+~~~
 
   Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
