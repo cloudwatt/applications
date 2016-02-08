@@ -113,18 +113,17 @@ parameters:
 
 ~~~
 
-        <a name="startup" />
 
-        ### Démarrer la stack
+### Démarrer la stack
 
-        Dans un shell, lancer le script `stack-start.sh`:
+Dans un shell, lancer le script `stack-start.sh`:
 ~~~
         ./stack-start.sh nom_de_votre_stack
 ~~~
 
-        Exemple :
+Exemple :
 
-        ~~~bash
+~~~bash
         $ ./stack-start.sh EXP_STACK
         +--------------------------------------+-----------------+--------------------+----------------------+
         | id                                   | stack_name      | stack_status       | creation_time        |
@@ -133,7 +132,7 @@ parameters:
         +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
-        Puis attendez **5 minutes** que le déploiement soit complet.
+Puis attendez **5 minutes** que le déploiement soit complet.
 
 
 ~~~
