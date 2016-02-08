@@ -115,35 +115,35 @@ parameters:
 
 Dans un shell, lancer le script `stack-start.sh`:
 ~~~
-        ./stack-start.sh nom_de_votre_stack
+./stack-start.sh nom_de_votre_stack
 ~~~
 
 Exemple :
 
 ~~~bash
-        $ ./stack-start.sh EXP_STACK
-        +--------------------------------------+-----------------+--------------------+----------------------+
-        | id                                   | stack_name      | stack_status       | creation_time        |
-        +--------------------------------------+-----------------+--------------------+----------------------+
-        | ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
-        +--------------------------------------+-----------------+--------------------+----------------------+
+$ ./stack-start.sh EXP_STACK
++--------------------------------------+-----------------+--------------------+----------------------+
+| id                                   | stack_name      | stack_status       | creation_time        |
++--------------------------------------+-----------------+--------------------+----------------------+
+| ee873a3a-a306-4127-8647-4bc80469cec4 | EXP_STACK       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
++--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
 Puis attendez **5 minutes** que le déploiement soit complet.
 
 
 ~~~
-        $ heat resource-list EXP_STACK
-        +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-        | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-        +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-        | floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-        | security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-        | network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-        | subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-        | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-        | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-        +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
+$ heat resource-list EXP_STACK
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
 ~~~
 
   Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
