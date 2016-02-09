@@ -155,10 +155,10 @@ $ heat resource-list EXP_STACK
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur DUPLICITY:
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur duplicity:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-backup
-2.	Cliquez sur le fichier nommé bundle-trusty-backup.heat.yml
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup)
+2.	Cliquez sur le fichier nommé `bundle-trusty-backup.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
@@ -178,21 +178,21 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Enjoy
 
-  Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
+Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
 
-  Vous etes maintenant en possession d'un serveur de backup,
-  Celui ci est capable de générer des sauvegarde chiffrer et de les copier ou bon vous semble, duplicity est capable de faire des sauvegarde full et incrémentale.
-  Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegarde incrémentales depuis la dernière full pour être réstaurées,
+Vous etes maintenant en possession d'un serveur de backup,
+Celui ci est capable de générer des sauvegarde chiffrer et de les copier ou bon vous semble, duplicity est capable de faire des sauvegarde full et incrémentale.
+Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegarde incrémentales depuis la dernière full pour être réstaurées,
 
-  un conseil faites une full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
+un conseil faites une full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
-  Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`.
+Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`.
 
-  Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vous sauvegarde pour que vous n'ayez plus à vous en occuper.
+Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vous sauvegarde pour que vous n'ayez plus à vous en occuper.
 
-  La génération de sauvegardes à la fois incrémentales et chiffrées, y compris pour les bases de données, font de duplicity une solution de backup idéale pour l’auto-hébergement.
+La génération de sauvegardes à la fois incrémentales et chiffrées, y compris pour les bases de données, font de duplicity une solution de backup idéale pour l’auto-hébergement.
 
-  Lancer la commande de backup (local):
+Lancer la commande de backup (local):
 
 ~~~
 duplicity /your_directory file:///var/backups/duplicity/ --include-globbing-filelist filelist.txt --exclude '**'
@@ -227,7 +227,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 Vous pouvez commencer a élaborer votre plan de sauvegarde voici les points d'entrée utiles:
 
-* `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de duplicityDroplet
+* `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de duplicity
 
 * voici quelques sites d'informations afin d'aller plus loin :
 

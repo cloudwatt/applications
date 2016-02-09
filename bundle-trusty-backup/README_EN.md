@@ -68,7 +68,7 @@ With the `bundle-trusty-backup.heat.yml` file, you will find at the top a sectio
 heat_template_version: 2016-02-09
 
 
-description: Basic all-in-one DUPLICITY stack
+description: Basic all-in-one backup stack
 
 
 parameters:
@@ -136,9 +136,9 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 ### All of this is fine, but you do not have a way to create the stack from the console?
 
-We do indeed! Using the console, you can deploy a GitLab server:
+We do indeed! Using the console, you can deploy a duplicity server:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-gitlab) repository
+1.	Go the Cloudwatt Github in the [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup) repository
 2.	Click on the file named `bundle-trusty-duplicity.heat.yml` (or `bundle-trusty-duplicity.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
@@ -146,11 +146,12 @@ We do indeed! Using the console, you can deploy a GitLab server:
 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
 7.	Name your stack in the « Stack name » field
 8.	Enter the name of your keypair in the « SSH Keypair » field
-9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+9.  Write a passphrase that will be used for encrypting backups
+10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy GitLab!
+If you've reached this point, you're already done! Go enjoy Duplicity!
 
 ### A one-click chat sounds really nice...
 
@@ -212,3 +213,6 @@ You can start developing your backup plan, here are useful entry points:
     - http://duplicity.nongnu.org/
     - http://www.linuxuser.co.uk/tutorials/create-secure-remote-backups-using-duplicity-tutorial
     - https://www.digitalocean.com/community/tutorials/how-to-use-duplicity-with-gpg-to-securely-automate-backups-on-ubuntu
+    
+    -----
+    Have fun. Hack in peace.
