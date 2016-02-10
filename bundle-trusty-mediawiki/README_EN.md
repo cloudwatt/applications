@@ -99,7 +99,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | MEDIAWIKI | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DUPLICITY | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -110,7 +110,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | MEDIAWIKI | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DUPLICITY | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
