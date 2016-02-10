@@ -4,13 +4,12 @@
 
 ![logoclamav](http://www.clamav.net/assets/clamav-trademark.png)
 
-Clam AntiVirus (ClamAv) is a GPL antivirus for UNIX. His first quality that he can scan the mail in live time with any mail client. This package include a daemon multi task flexible and configurable, he is in command line and he can update his virus definition online automatically. This program is based on a library distributed with the package Clam AntiVrus, that you can use to create your own package. The most important in Clam that his database is updated everyday.
+Clam AntiVirus (ClamAv) is a open source antivirus for UNIX. Capable of scanning mail for any client in real-time, ClamAv provides a first line of defense against spam and viruses. The deployment we offer you today is highly flexible: easily manipulated from the command line and automatically updating its virus database daily. This program is based on a library distributed with the package Clam AntiVrus, which you could even use to create your own antivirus package.
 
 ## Preparations
 
 ### The Versions
 
-- Ubuntu Trusty 14.04.2
 - Clamav 0.99.0
 
 ### The prerequisites to deploy this Stacks
@@ -32,7 +31,7 @@ All stack parameters, of course, are yours to tweak at your fancy.
 
 ### By the way...
 
-If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console).
+If you do not like terminal, stacks can still be [generated directly from the console](#console).
 
 ## What will you find in the repository
 
@@ -57,8 +56,6 @@ Source the downloaded file in your shell and enter your password when prompted t
 In the `.heat.yml` file (the heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. You should set the `default` value to a valid keypair with regards to your Cloudwatt user account, as this is how you connect to your stack remotely. A keypair can be generated from the `Key Pairs` tab under `Access & Security` on the console. Make sure to save the public key, otherwise you will not be able to connect to your machine by SSH.
 
 Within the heat template, you can also adjust (and set the default for) the instance type by playing with the `flavor` parameter accordingly.
-
-
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -106,11 +103,6 @@ resources:
 In a shell, go in the directory and run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~ bash
-$ ./stack-start.sh `name_of_my_stack`
-~~~
-Exemple :
-~~~ bash
-
 $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
@@ -136,23 +128,23 @@ $ heat resource-list EXP_STACK
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 ~~~
 
-The script `start-stack.sh ` takes care with issuing the necessary appeals on the API Cloudwatt for:
+The script `start-stack.sh` takes care of issuing the necessary calls to the Cloudwatt API for:
 
-* Start an authority based on Ubuntu trusty, pre-funded with the stack clamav,
-* Expose it on the Internet via a floating IP.
+* Start an Ubuntu Trusty based instance, pre-equipped with ClamAV
+* Exposes it on the Internet via a floating IP
 
 ![ClamVersatile](http://www.clamav.net/assets/Ill-03.png)
 
 ### Enjoy
 
-Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your computer,
+Once all this is complete, you can connect to your server with SSH.
 
-By default we placed the fileclamav.sh script in `/etc/cron.daily/` so that clamav make his updates daily, it is up to you to modify it. To make a test of update you can make the following command:
+By default we placed the `fileclamav.sh` script in `/etc/cron.daily/` so that ClamAV can update daily, it is up to you to modify it. To do a test update you can enter the following command:
 
 ~~~bash
-sudo /etc/cron.daily/fileclamav.#!/bin/sh
+sudo /etc/cron.daily/fileclamav.sh
 ~~~
 
-You can do run a scan on your system this command `clamscan`
+You can do run a scan on your system with the command `clamscan`.
 
-You can find in [this page](https://help.ubuntu.com/community/ClamAV) some scripts and in the command [her](http://www.clamav.net/downloads).
+[On this page](https://help.ubuntu.com/community/ClamAV) you will find useful ClamAV scripts, as well as on [the ClamAV downloads page]((http://www.clamav.net/downloads)).

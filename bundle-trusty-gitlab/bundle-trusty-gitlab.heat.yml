@@ -11,25 +11,22 @@ parameters:
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n2.cw.standard-1
     label: Type instance - Instance Type (Flavor)
     description: Type instance a deployer - Flavor to use for the deployed instance
     type: string
     constraints:
       - allowed_values:
-          - n1.cw.highcpu-2
-          - n1.cw.highcpu-4
-          - n1.cw.highcpu-8
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
-          - n1.cw.highmem-2
-          - n1.cw.highmem-4
-          - n1.cw.highmem-8
-          - n1.cw.highmem-12
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-12
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-12
 
   volume_size:
     default: 10
