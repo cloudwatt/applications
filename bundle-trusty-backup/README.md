@@ -186,27 +186,41 @@ Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble de
 
 un conseil faites une full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
-Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`.
+Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity` vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
+Si vous souhaitez faire du backup à distance vous devez copier ou crée votre clé ssh sur le serveur duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera a renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
+
+A titre d'informations lorsque vous sauvegarder pour la première fois un répertoire duplicity vas effectuer une sauvegarde Full et ensuite des sauvegarde incrémentales, si vous voulez faire une full a chaque fois cela est possible avec la commande `duplicity full`.
 
 Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vous sauvegarde pour que vous n'ayez plus à vous en occuper.
 
 La génération de sauvegardes à la fois incrémentales et chiffrées, y compris pour les bases de données, font de duplicity une solution de backup idéale pour l’auto-hébergement.
 
-Lancer la commande de backup (local):
+Lancer la commande de backup (local) avec une liste de fichiers:
 
 ~~~
 duplicity /your_directory file:///var/backups/duplicity/ --include-globbing-filelist filelist.txt --exclude '**'
 ~~~
-Lancer la commande de backup sur un serveur distant:
+Lancer la commande de backup sur un serveur distant sans keypair:
+
 ~~~
 duplicity --encrypt-key key_from_GPG --exclude files_to_exclude --include files_to_include path_to_back_up sftp://root@backupHost//remotebackup/duplicityDroplet
 ~~~
 
-Lancer la commande de restaure :
+Lancer un backup full du serveur et l'envoyer serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
+~~~
+PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@floating_ip//directory --ssh-option="-oIdentityFile=keypair_path"
+~~~
+
+Lancer la commande de restauration d'un fichier local sans Encryption:
 
 ~~~
 duplicity restore file:///var/backups/duplicity/ /any/directory/
 ~~~  
+
+Lancer la commande de restauration avec d'un fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
+~~~
+PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/jukey.pem" /your_restore_directory
+~~~
 
 Vous pouvez sauvegarder une base de donnée en exportant la base puis en sauvegardant le .sql:
 
@@ -214,11 +228,6 @@ Vous pouvez sauvegarder une base de donnée en exportant la base puis en sauvega
 mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 ~~~
 
-Pour plus de sécurité vous pouvez/devez exportez vos backup sur une autre machine avec la commande rcync:
-
-~~~
-rsync -rvP --partial-dir=/my/local/tmpbackup --ignore-existing --stats -h server:/var/backups/duplicity/ /my/local/backup/
-~~~
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
