@@ -217,7 +217,7 @@ Lancer la commande de restauration d'un fichier local sans Encryption:
 duplicity restore file:///var/backups/duplicity/ /any/directory/
 ~~~  
 
-Lancer la commande de restauration avec d'un fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
+Lancer la commande de restauration d'un fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
 ~~~
 PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/jukey.pem" /your_restore_directory
 ~~~
