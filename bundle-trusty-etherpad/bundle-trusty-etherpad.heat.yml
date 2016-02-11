@@ -11,7 +11,7 @@ parameters:
     type: string
 
   flavor_name:
-    default: n2.cw.standard-1
+    default: n2.cw.standard-2
     description: Type instance a deployer - Flavor to use for the deployed instance
     type: string
     label: Type instance - Instance Type (Flavor)
@@ -23,7 +23,6 @@ parameters:
           - n2.cw.standard-2
           - n2.cw.standard-4
           - n2.cw.standard-8
-          - n2.cw.standard-12
           - n2.cw.standard-16
           - n2.cw.highmem-2
           - n2.cw.highmem-4
