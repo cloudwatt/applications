@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 20 : CozyCloud #
+# 5 Minutes Stacks, épisode 24 : CozyCloud #
 
-## Episode 20 : CozyCloud
+## Episode 24 : CozyCloud
 
 ![CozyCloudlogo](http://blog.jingleweb.fr/wp-content/uploads/2015/03/bighappycloud.png)
 
