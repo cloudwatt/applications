@@ -6,7 +6,7 @@
 
 Cozycloud est votre serveur de cloud personnel libre. A la différence des autres serveurs cloud personnels auto-hébergeables, Cozy met l'accent sur les applications et la collaboration de ses applications autour de vos données personnelles. Cozy est une solution de PaaS (Platform as a Service) personnel qui vous permet de déployer des applications web personnelles en un clic. Il ne s'agit pas là de simples greffons mais d'applications web riches. Vous pouvez choisir parmi les applications Cozy existantes (Notes, Todos, Agenda, Contacts, Photos…), adapter une application Node.js existante ou commencer votre propre application web « from-scratch »(documentation et tutoriaux disponibles).
 
-Une particularité de Cozy est la centralisation du stockage des différentes applications dans une base de données commune avec des données typées et un contrôle des accès par type de donnée. De cette manière les différentes applications travaillent avec la même source de données (contacts, mails, notes…). Cozycloud est pour le moment centré sur Node.js mais le support d'applications Python et Ruby est prévu. De plus cozy est développer en **France** par des développeur **Français**.  
+Une particularité de Cozy est la centralisation du stockage des différentes applications dans une base de données commune avec des données typées et un contrôle des accès par type de donnée. De cette manière les différentes applications travaillent avec la même source de données (contacts, mails, notes…). Cozycloud est pour le moment centré sur Node.js mais le support d'applications Python et Ruby est prévu. De plus cozy est développé en **France** par des développeur **Français**.  
 
 ## Preparations
 
