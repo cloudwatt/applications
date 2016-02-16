@@ -143,7 +143,7 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre duplicity !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre cozy !
 
 ### Enjoy
 
@@ -153,7 +153,7 @@ Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez
 
 Un certificat SSL est automatiquement généré via Let's encrypt et celui est renouvellé via un job CRON tous les 90 jours,
 
-Vous pouvez à présent télécharger l'application android cozy et faire un synchronisation de vos données avec votre cozy, celui ci etant hébergé en france dans un environnement maitrisé vous pouvez faire une totale confiance dans cette application.
+Vous pouvez à présent télécharger l'application android cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en france dans un environnement maitrisé vous pouvez faire une totale confiance dans cette application.
 
 ![prezcozy](http://korben.info/wp-content/uploads/2015/06/cozy_screenshot1.png)
 
