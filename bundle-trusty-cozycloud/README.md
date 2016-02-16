@@ -124,7 +124,7 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur duplicity:
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur cozycloud:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup)
 2.	Cliquez sur le fichier nommé `bundle-trusty-cozycloud.heat.yml`
