@@ -228,6 +228,14 @@ Vous pouvez sauvegarder une base de donnée en exportant la base puis en sauvega
 mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 ~~~
 
+Afin de faciliter la gestion des sauvegardes, je vous propose de les centraliser sur le serveur duplicity afin de pouvoir créer des jobs sauvegardant des groupes de serveur via la commande suivante :
+
+~~~
+ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
+~~~
+Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre de pouvoir demonter le volume afin de le sauvegarder et d'en monter en autre et/ou pourquoi pas l'attacher à un autre serveur duplicity.
+
+
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.

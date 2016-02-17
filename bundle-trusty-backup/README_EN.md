@@ -202,13 +202,20 @@ duplicity restore file:///var/backups/duplicity/ /any/directory/
 ~~~  
 Start the restore command on remote server with keypair, passphrase and ecrypt-key:
 ~~~
-PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/jukey.pem" /your_restore_directory
+PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
 ~~~
 
 You can backup your database with sql export in .sql
 ~~~
 mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 ~~~
+
+To facilitate the backup's management , I propose to centralize jobs in duplicity server  for backing up server groups using the following command :
+~~~
+ssh cloud@iPremoteserver -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
+~~~
+
+As you can notice a volume is mounted in the ext4 `/mnt/vdb/` , it will allow you to dismount the volume to save it and mount it in a another server.
 
 ## So watt?
 
