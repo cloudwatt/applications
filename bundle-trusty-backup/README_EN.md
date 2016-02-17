@@ -143,7 +143,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a duplicity server:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup) repository
+1.	Go the Cloudwatt Github in the [applications/bundle-trusty-backup](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup) repository
 2.	Click on the file named `bundle-trusty-duplicity.heat.yml` (or `bundle-trusty-duplicity.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)

@@ -149,13 +149,13 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
 
-Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-`. Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
+Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-` (exemple: ip-10-11-12-13.rev.cloudwatt.com). Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
 
-Un certificat SSL est automatiquement généré via Let's encrypt et celui est renouvellé via un job CRON tous les 90 jours,
+Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours,
 
 Vous pouvez à présent télécharger l'application android cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en france dans un environnement maitrisé vous pouvez faire une totale confiance dans cette application.
 
-![prezcozy](http://korben.info/wp-content/uploads/2015/06/cozy_screenshot1.png)
+![prezcozy](http://www.usine-digitale.fr/mediatheque/2/3/2/000337232_homePageUne/cozy-cloud.jpg)
 
 Sur le bureau de votre cozy vous y trouverez un bouton `Store` qui sera votre marketplace, vous pouvez y installer un serveur de mail ou encore un ghost. La liste se rempli de jour en jour, de plus les contributions via des dépot git sont possible, la communauté cozy s'agrandi à vu d'oeil.
 
@@ -165,9 +165,9 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maî
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
-Vous avez accès à l'interface web en https via l'adresse indiquée dans le fichier `/etc/ansible/cozy-vars.yml`.
+* Vous avez accès à l'interface web en https via l'adresse indiquée dans le fichier `/etc/ansible/cozy-vars.yml`.
 
-Voici quelques sites d'informations avant d'aller plus loin :
+* Voici quelques sites d'informations avant d'aller plus loin :
 
   - https://cozy.io/fr/    
   - http://blog.jingleweb.fr/2015/03/pourquoi-je-passe-a-my-cozy-cloud/  
