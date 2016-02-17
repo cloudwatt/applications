@@ -119,7 +119,7 @@ $ watch heat resource-list Cozycloud
   +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
 ~~~
 
-he `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
+The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
 * Starts an Ubuntu Trusty Tahr based instance
 * Expose it on the Internet via a floating IP.
