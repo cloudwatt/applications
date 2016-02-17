@@ -219,7 +219,7 @@ duplicity restore file:///var/backups/duplicity/ /any/directory/
 
 Lancer la commande de restauration d'un fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
 ~~~
-PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/jukey.pem" /your_restore_directory
+PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
 ~~~
 
 Vous pouvez sauvegarder une base de donnée en exportant la base puis en sauvegardant le .sql:
