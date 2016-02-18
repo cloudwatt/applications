@@ -4,9 +4,9 @@
 
 ![Backuplogo](http://www.micro-dill.fr/wp-content/uploads/2015/07/backup.jpg)
 
-L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et dossiers.
+L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et de dossiers.
 
-Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant – les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
+Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
@@ -181,19 +181,19 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
 
 Vous etes maintenant en possession d'un serveur de backup,
-Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentales signifie qu'il va ajouter la différence de fichier par rapport à la dernière sauvegarde effectuée).
+Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentales signifie que seules les parties modifiées des fichiers sont prises en considération depuis la précédente sauvegarde).
 Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegardes incrémentales depuis la dernière full pour être réstaurées,
 
-Un conseil utile faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
+**Un conseil utile:** Faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
 Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`. Vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
-Si vous souhaitez faire du backup à distance vous devez copier ou crée votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera a renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
+Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera à renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
 
 A titre d'information lorsque vous sauvegardez pour la première fois un répertoire, Duplicity va effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales, si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
 
 La génération de sauvegarde à la fois incrémentales et chiffrées, y compris pour les bases de données, font de Duplicity une solution de backup idéale pour l’auto-hébergement.
 
-**Voici quelques exemples:**
+**Voici quelques exemples simple d'utilisation:**
 
 Pour effectuer un backup (local) avec une liste de fichier spécifique:
 
@@ -206,23 +206,23 @@ Pour effectuer un backup sur un serveur distant:
 duplicity --encrypt-key key_from_GPG --exclude files_to_exclude --include files_to_include path_to_back_up sftp://root@backupHost//remotebackup/duplicityDroplet
 ~~~
 
-Pour effectuer un backup full du serveur et l'envoyer serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
+Pour effectuer un backup full du serveur et l'envoyer sur un serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
 ~~~
 PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@floating_ip//directory --ssh-option="-oIdentityFile=keypair_path"
 ~~~
 
-Pour effectuer une restauration d'un fichier local sans Encryption:
+Pour effectuer une restauration de fichier local sans Encryption:
 
 ~~~
 duplicity restore file:///var/backups/duplicity/ /any/directory/
 ~~~  
 
-Pour effectuer une restauration d'un fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
+Pour effectuer une restauration de fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
 ~~~
 PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
 ~~~
 
-Vous pouvez sauvegarder une base de donnée en exportant la base puis en sauvegardant le .sql:
+Vous pouvez aussi sauvegarder une base de donnée en exportant la base puis en sauvegardant le .sql:
 
 ~~~
 mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
@@ -234,14 +234,14 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 **Automatisons maintenant les sauvegardes :**
 
-Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vos sauvegardes pour que vous n'ayez plus à vous en occuper.
+Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de **scheduler** vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
 Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity dans le but de dissocier le server de vos sauvegardes pour plus de sécurité et de fléxibilité :
 
 ~~~
 ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
-Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre de pouvoir demonter le volume afin de le sauvegarder et d'en monter un autre et/ou pourquoi pas l'attacher à un autre serveur duplicity.
+Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre de pouvoir demonter le volume afin d'en monter un autre et/ou pourquoi pas l'attacher à un autre serveur duplicity.
 
 
 ## So watt ?
