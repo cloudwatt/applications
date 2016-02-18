@@ -182,14 +182,14 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste,
 
-Vous etes maintenant en possession d'un serveur de backup,
+Vous etes maintenant en possession d'un serveur de backup.
 Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentale signifie que seules les parties modifiées des fichiers sont prises en considération depuis la précédente sauvegarde).
-Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegardes incrémentales depuis la dernière full pour être réstaurées,
+Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegardes incrémentales depuis la dernière full pour être réstaurées.
 
 **Un conseil utile:** Faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
 Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`. Vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
-Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera à renseigner en utilisant l'option `--ssh-option ` de la commande `duplicity`.
+Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant. Le chemin de votre clé sera à renseigner en utilisant l'option `--ssh-option ` de la commande `duplicity`.
 
 A titre d'information lorsque vous sauvegardez pour la première fois un répertoire, Duplicity va effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales, si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
 
