@@ -178,10 +178,10 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Enjoy
 
-Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
+Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste,
 
 Vous etes maintenant en possession d'un serveur de backup,
-Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentales signifie que seules les parties modifiées des fichiers sont prises en considération depuis la précédente sauvegarde).
+Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentale signifie que seules les parties modifiées des fichiers sont prises en considération depuis la précédente sauvegarde).
 Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegardes incrémentales depuis la dernière full pour être réstaurées,
 
 **Un conseil utile:** Faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
