@@ -151,13 +151,13 @@ Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en u
 
 Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-` (exemple: ip-10-11-12-13.rev.cloudwatt.com). Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
 
-Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours,
+Un certificat SSL est automatiquement généré via **Let's encrypt** et celui-ci est renouvellé via un job CRON tous les 90 jours,
 
-Vous pouvez à présent télécharger l'application android cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en france dans un environnement maitrisé vous pouvez faire une totale confiance dans cette application.
+Vous pouvez à présent télécharger l'application *android* cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans cette application.
 
 ![prezcozy](http://www.usine-digitale.fr/mediatheque/2/3/2/000337232_homePageUne/cozy-cloud.jpg)
 
-Sur le bureau de votre cozy vous y trouverez un bouton `Store` qui sera votre marketplace, vous pouvez y installer un serveur de mail ou encore un ghost. La liste se rempli de jour en jour, de plus les contributions via des dépot git sont possible, la communauté cozy s'agrandi à vu d'oeil.
+Sur le bureau de votre cozy vous y trouverez un bouton `Store` qui sera votre marketplace, vous pouvez y installer un serveur de mail ou encore un ghost. La liste se rempli de jour en jour, de plus les contributions via des dépot git sont possible. La communauté cozy s'agrandi à vu d'oeil.
 
 ## So watt ?
 
