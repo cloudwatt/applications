@@ -23,7 +23,6 @@ parameters:
           - n2.cw.standard-2
           - n2.cw.standard-4
           - n2.cw.standard-8
-          - n2.cw.standard-12
           - n2.cw.standard-16
           - n2.cw.highmem-2
           - n2.cw.highmem-4
