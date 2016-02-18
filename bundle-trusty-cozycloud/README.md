@@ -117,7 +117,7 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack backup,
+   * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack cozycloud,
    * l'exposer sur Internet via une IP flottante.
 
 ![cozycloudlogo](http://www.woinux.fr/wp-content/uploads/2013/10/cozy-banner.jpg)
