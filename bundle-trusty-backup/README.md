@@ -6,7 +6,7 @@
 
 L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et dossiers.
 
-Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant – les protocoles distants pris en charge sont FTP, SSH/SCP, Rsync, WebDAV/WebDAVs et Amazon S3. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
+Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant – les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
@@ -34,7 +34,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
  Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
- ## Tour du propriétaire
+## Tour du propriétaire
 
  Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-backup/`
 
@@ -60,7 +60,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 
 ### Ajuster les paramètres
- Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoire sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backup.
+ Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups.
  C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
  ~~~yaml
@@ -181,37 +181,40 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
 
 Vous etes maintenant en possession d'un serveur de backup,
-Celui ci est capable de générer des sauvegarde chiffrer et de les copier ou bon vous semble, duplicity est capable de faire des sauvegarde full et incrémentale.
-Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble des sauvegarde incrémentales depuis la dernière full pour être réstaurées,
+Celui ci est capable de générer des sauvegardes chiffrées et de les copier ou bon vous semble, duplicity est capable de faire des sauvegardes full et incrémentales (incrémentales signifie qu'il va ajouter la différence de fichier par rapport a la dernière sauvegarde effectuée).
+Attention si vous faites de l'incrémentale Duplicity a besoin de l'ensemble des sauvegardes incrémentales depuis la dernière full pour être réstaurées,
 
-un conseil faites une full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
+Un conseil utile faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
-Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity` vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
-Si vous souhaitez faire du backup à distance vous devez copier ou crée votre clé ssh sur le serveur duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera a renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
+Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`. Vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
+Si vous souhaitez faire du backup à distance vous devez copier ou crée votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera a renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
 
-A titre d'informations lorsque vous sauvegarder pour la première fois un répertoire duplicity vas effectuer une sauvegarde Full et ensuite des sauvegarde incrémentales, si vous voulez faire une full a chaque fois cela est possible avec la commande `duplicity full`.
+A titre d'information lorsque vous sauvegardez pour la première fois un répertoire duplicity vas effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales, si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
 
-Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vous sauvegarde pour que vous n'ayez plus à vous en occuper.
+*Automatiser les sauvegardes:*
+Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de scheduler vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
-La génération de sauvegardes à la fois incrémentales et chiffrées, y compris pour les bases de données, font de duplicity une solution de backup idéale pour l’auto-hébergement.
+La génération de sauvegarde à la fois incrémentales et chiffrées, y compris pour les bases de données, font de Duplicity une solution de backup idéale pour l’auto-hébergement.
 
-Lancer la commande de backup (local) avec une liste de fichiers:
+**Voici quelques exemples:**
+
+Pour effectuer un backup (local) avec une liste de fichier spécifique:
 
 ~~~
 duplicity /your_directory file:///var/backups/duplicity/ --include-globbing-filelist filelist.txt --exclude '**'
 ~~~
-Lancer la commande de backup sur un serveur distant sans keypair:
+Pour effectuer un backup sur un serveur distant:
 
 ~~~
 duplicity --encrypt-key key_from_GPG --exclude files_to_exclude --include files_to_include path_to_back_up sftp://root@backupHost//remotebackup/duplicityDroplet
 ~~~
 
-Lancer un backup full du serveur et l'envoyer serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
+Pour effectuer un backup full du serveur et l'envoyer serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
 ~~~
 PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@floating_ip//directory --ssh-option="-oIdentityFile=keypair_path"
 ~~~
 
-Lancer la commande de restauration d'un fichier local sans Encryption:
+Pour effectuer une restauration d'un fichier local sans Encryption:
 
 ~~~
 duplicity restore file:///var/backups/duplicity/ /any/directory/
