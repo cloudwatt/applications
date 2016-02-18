@@ -238,7 +238,7 @@ Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défa
 
 Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de **sécurité** et de **fléxibilité**. Le volume est monté en ext4 dans le répertoire `/mnt/vdb/`, il va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
 
-La commande suivante permet de sauvegarder un serveur depuis votre serveur Duplicity :
+La commande suivante permet de sauvegarder un serveur depuis votre serveur Duplicity et de stocker la sauvegarde sur le volume attaché au serveur:
 ~~~
 ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
