@@ -219,9 +219,9 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 To automate the backup you can use CRON installed by default on the server. it's going to allow you to **schedule** your backup.
 
-To help manage backups , I propose to centralize on a **volume** attached to the server Duplicity.This one is mounted on the creation of the stack . I did it for separate the server of your backups for more **security** and **flexibility**. The volume is mounted in the `ext4/mnt/vdb/` it will allow you to have a completely independent backup set of your server Duplicity.
+To help manage backups , I propose to centralize on a **volume** attached to the server Duplicity.This one is mounted on the start of the stack . I did it for separate the server of your backups for more **security** and **flexibility**. The volume is mounted in the `ext4/mnt/vdb/` it will allow you to have a completely independent backup set of your server Duplicity.
 
-The following command backup a server in your infrastructure from your Duplicity server and storing the backup on the volume attach with Duplicity:
+This following command, backup a server in your infrastructure from your Duplicity server and storing the backup on the volume attach with Duplicity:
 ~~~
 ssh cloud@iPremoteserver -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
@@ -232,7 +232,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
 
-You can start developing your backup plan, here are useful entry points:
+You can start developing your backup plan. Here are useful entry points:
 
 * `/etc/duplicity` : all key and passphrase needed to operate duplicity
 
