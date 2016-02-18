@@ -174,7 +174,7 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre duplicity !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Duplicity !
 
 ### Enjoy
 
@@ -187,7 +187,7 @@ Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble de
 **Un conseil utile:** Faites une sauvegarde full par semaine et ensuite une incrémentale par jour afin d'avoir un jeu de sauvegarde propre.
 
 Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`. Vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
-Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera à renseigner dans l'option `--ssh-option ` de la commande `duplicity`.
+Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant, le chemin de votre clé sera à renseigner en utilisant l'option `--ssh-option ` de la commande `duplicity`.
 
 A titre d'information lorsque vous sauvegardez pour la première fois un répertoire, Duplicity va effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales, si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
 
@@ -236,12 +236,12 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de **scheduler** vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
-Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity dans le but de dissocier le server de vos sauvegardes pour plus de sécurité et de fléxibilité :
+Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est attaché et monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de sécurité et de fléxibilité :
 
 ~~~
 ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
-Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre de pouvoir demonter le volume afin d'en monter un autre et/ou pourquoi pas l'attacher à un autre serveur duplicity.
+Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
 
 
 ## So watt ?
