@@ -2,7 +2,7 @@
 
 ## Episode 23 : Duplicity
 
-<p style="text-align:center";>![Backuplogo](http://www.micro-dill.fr/wp-content/uploads/2015/07/backup.jpg)</p>
+<p style="text-align:center";>![Backuplogo](http://www.micro-dill.fr/wp-content/uploads/2015/07/backup.jpg)
 
 L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et de dossiers.
 
