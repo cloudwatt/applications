@@ -6,13 +6,13 @@
 
 Cozycloud est votre serveur de cloud personnel libre. A la différence des autres serveurs cloud personnels auto-hébergeables, Cozy met l'accent sur les applications et la collaboration de ses applications autour de vos données personnelles. Cozy est une solution de PaaS (Platform as a Service) personnel qui vous permet de déployer des applications web personnelles en un clic. Il ne s'agit pas là de simples greffons mais d'applications web riches. Vous pouvez choisir parmi les applications Cozy existantes (Notes, Todos, Agenda, Contacts, Photos…), adapter une application Node.js existante ou commencer votre propre application web « from-scratch »(documentation et tutoriaux disponibles).
 
-Une particularité de Cozy est la centralisation du stockage des différentes applications dans une base de données commune avec des données typées et un contrôle des accès par type de donnée. De cette manière les différentes applications travaillent avec la même source de données (contacts, mails, notes…). Cozycloud est pour le moment centré sur Node.js mais le support d'applications Python et Ruby est prévu. De plus cozy est développé en **France** par des développeur **Français**.  
+Une particularité de Cozy est la centralisation du stockage des différentes applications dans une base de données commune avec des données typées et un contrôle des accès par type de donnée. De cette manière les différentes applications travaillent avec la même source de données (contacts, mails, notes…). Cozycloud est pour le moment centré sur Node.js mais le support d'applications Python et Ruby est prévu. De plus cozy est développé en **France** par des développeurs **Français**.  
 
 ## Preparations
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
- - Cozy 2.0
+ - Cozycloud 2.0
 
 ### Les pré-requis pour déployer cette stack
  Ceci devrait être une routine à présent:
@@ -24,7 +24,7 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
- Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
+ Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il
  existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
  Vous pouvez ajuster les parametres de la stack à votre goût.
@@ -38,7 +38,7 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
  Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-cozycloud/`
 
  * `bundle-trusty-cozycloud.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
- * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+ * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
  * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
@@ -80,7 +80,7 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
      type: string
 
    flavor_name:
-     default: s1.cw.small-1
+     default: n2.cw.standard-1
      description: Flavor to use for the deployed instance
      type: string
      label: Instance Type (Flavor)
@@ -147,17 +147,17 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Enjoy
 
-Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste,
+Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-` (exemple: ip-10-11-12-13.rev.cloudwatt.com). Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
+Vous etes maintenant en possession de votre propre serveur de cloud. Vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-` (exemple: ip-10-11-12-13.rev.cloudwatt.com). Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
 
-Un certificat SSL est automatiquement généré via **Let's encrypt** et celui-ci est renouvellé via un job CRON tous les 90 jours,
+Un certificat SSL est automatiquement généré via **Let's encrypt** et celui-ci est renouvellé via un job CRON tous les 90 jours.
 
-Vous pouvez à présent télécharger l'application *android* cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
+Vous pouvez à présent télécharger l'application *android* cozy et faire une synchronisation de vos données avec votre cozy, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
 
 ![prezcozy](http://www.usine-digitale.fr/mediatheque/2/3/2/000337232_homePageUne/cozy-cloud.jpg)
 
-Sur le bureau de votre cozy vous y trouverez un bouton `Store` qui sera votre marketplace, vous pouvez y installer un serveur de mail ou encore un ghost. La liste se rempli de jour en jour, de plus les contributions via des dépot git sont possible. La communauté cozy s'agrandi à vu d'oeil.
+Sur le bureau de votre cozycloud vous y trouverez un bouton `Store` qui sera votre marketplace, vous pouvez y installer un serveur de mail ou encore un ghost. La liste se remplit de jour en jour, de plus les contributions via des dépots git sont possibles. La communauté cozy s'agrandit à vu d'oeil.
 
 ## So watt ?
 
