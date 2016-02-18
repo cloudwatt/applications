@@ -6,7 +6,7 @@
 
 L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et de dossiers.
 
-Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
+Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque Duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
