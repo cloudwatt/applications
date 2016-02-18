@@ -151,7 +151,7 @@ $ heat resource-list EXP_STACK
   * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack backup,
   * l'exposer sur Internet via une IP flottante.
 
-![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
+
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
@@ -175,6 +175,8 @@ C’est (déjà) FINI !
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Duplicity !
+
+![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
 
 ### Enjoy
 
