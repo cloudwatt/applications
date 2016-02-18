@@ -236,13 +236,12 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de **scheduler** vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
-Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est attaché et monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de sécurité et de fléxibilité :
+Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de **sécurité** et de **fléxibilité**. Le volume est monté en ext4 dans le répertoire `/mnt/vdb/`, il va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
 
+La commande suivante permet de sauvegarder un serveur depuis votre serveur Duplicity :
 ~~~
 ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
-Comme vous pouvez le remarquer un volume est monté en ext4 dans le répertoire `/mnt/vdb/`, celui-ci va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
-
 
 ## So watt ?
 
