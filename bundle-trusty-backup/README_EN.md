@@ -137,8 +137,6 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 * Starts an Ubuntu Trusty Tahr based instance
 * Expose it on the Internet via a floating IP.
 
-![Backuplogo](http://www.nordic-vikings.net/wp-content/uploads/2013/06/linuxbackup.jpg)
-
 ### All of this is fine, but you do not have a way to create the stack from the console?
 
 We do indeed! Using the console, you can deploy a duplicity server:
