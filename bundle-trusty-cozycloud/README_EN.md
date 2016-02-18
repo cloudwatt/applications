@@ -158,7 +158,7 @@ You are now in possession of your own cloud server , you can enter via the URL `
 
 An SSL certificate is automatically generated via Let's encrypt and it is renewed via a CRON job every 90 days,
 
-You can now download the android application and sync your data with your cozy, this one being hosted in France in a safe environment, you can completely trust on this application.
+You can now download the android application and sync your data with your cozy, this one being hosted in France in a safe environment, you can completely trust on this product.
 
 ![prezcozy](http://www.usine-digitale.fr/mediatheque/2/3/2/000337232_homePageUne/cozy-cloud.jpg)
 

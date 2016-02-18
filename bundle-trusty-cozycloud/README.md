@@ -147,13 +147,13 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Enjoy
 
-Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargé sur votre poste,
+Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste,
 
 Vous etes maintenant en possession de votre propre serveur de cloud, vous pouvez y acceder via l'url `https://ip-floatingip.rev.cloudwatt.com` en replacant les `.` de votre floating IP par des `-` (exemple: ip-10-11-12-13.rev.cloudwatt.com). Votre url complète sera présente dans le fichier `/etc/ansible/cozy-vars.yml`.
 
 Un certificat SSL est automatiquement généré via **Let's encrypt** et celui-ci est renouvellé via un job CRON tous les 90 jours,
 
-Vous pouvez à présent télécharger l'application *android* cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans cette application.
+Vous pouvez à présent télécharger l'application *android* cozy et faire une synchronisation de vos données avec votre cozy, celui ci etant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
 
 ![prezcozy](http://www.usine-digitale.fr/mediatheque/2/3/2/000337232_homePageUne/cozy-cloud.jpg)
 
