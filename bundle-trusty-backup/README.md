@@ -249,9 +249,9 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maî
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
-Vous pouvez commencer a élaborer votre plan de sauvegarde voici les points d'entrée utiles:
+Vous pouvez commencer à élaborer votre plan de sauvegarde. Voici les points d'entrée utiles:
 
-* `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de duplicity
+* `/etc/duplicity` : ensemble des clés & passphrase nécessaire au fonctionnement de Duplicity
 
 * voici quelques sites d'informations afin d'aller plus loin :
 
