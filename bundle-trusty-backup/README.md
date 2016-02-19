@@ -246,7 +246,7 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de **scheduler** vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
-**Une chose à garder en tête:** Lorsque qu'un service tourne sur le serveur à sauvegarder un lock est positionné sur les fichiers utilisés par celui-ci. Si vous voulez effectuer un sauvegarde **FULL**, il faudra arreter l'ensemble des services du serveur afin que Duplicity ait accès à l'ensemble des fichiers.
+**Une chose à garder en tête:** Lorsque qu'un service tourne sur le serveur à sauvegarder, un lock est positionné sur les fichiers utilisés par celui-ci. Si vous voulez effectuer un sauvegarde **FULL**, il faudra arreter l'ensemble des services du serveur afin que Duplicity ait accès à l'ensemble des fichiers.
 
 Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de **sécurité** et de **fléxibilité**. Le volume est monté en ext4 dans le répertoire `/mnt/vdb/`, il va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
 
