@@ -95,6 +95,16 @@ parameters:
           - n2.cw.highmem-8
           - n2.cw.highmem-12
 
+
+   volume_size:
+      default: 10                                       <------ Indicate Volume Size
+      label: Backup Volume Size
+      description: Size of Volume for DevKit Storage (Gigabytes)
+      type: number
+      constraints:
+        - range: { min: 10, max: 10000 }
+          description: Volume must be at least 10 gigabytes               
+
 [...]
 ~~~
 

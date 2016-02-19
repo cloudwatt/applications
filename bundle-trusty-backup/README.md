@@ -104,6 +104,15 @@ parameters:
     constraints:
       - length: { min: 4, max: 24 }
         description: Password must be between 6 and 24 characters
+
+  volume_size:
+    default: 10                                       <------ Mettre la taille du volume souhaité
+    label: Backup Volume Size
+    description: Size of Volume for DevKit Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 10, max: 10000 }
+         description: Volume must be at least 10 gigabytes      
 [...]
 
 
@@ -190,7 +199,7 @@ Attention si vous faites de l'incrémentale Duplicity à besoin de l'ensemble de
 Par défaut l'ensemble des codes et passphrase générés par l'application sont stockés dans `/etc/duplicity`. Vous trouverez un fichier `dup_vars.sh` contenant l'ensemble des informations utiles pour réaliser l'ensemble des exemples présenté ci-dessous.
 Si vous souhaitez faire du backup à distance vous devez copier ou créer votre clé ssh sur le serveur Duplicity afin qu'il puisse s'authentifier sur le serveur distant. Le chemin de votre clé sera à renseigner en utilisant l'option `--ssh-option ` de la commande `duplicity`.
 
-A titre d'information lorsque vous sauvegardez pour la première fois un répertoire, Duplicity va effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales, si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
+A titre d'information lorsque vous sauvegardez pour la première fois un répertoire, Duplicity va effectuer une sauvegarde Full et ensuite des sauvegardes incrémentales. Duplicity va regarder la signature du fichier à restaurer, si la signature correspond à une sauvegarde existante, Duplicity va lancer une sauvegarde incrémentale. Si vous voulez faire une full à chaque fois cela est possible avec la commande `duplicity full`.
 
 La génération de sauvegarde à la fois incrémentales et chiffrées, y compris pour les bases de données, font de Duplicity une solution de backup idéale pour l’auto-hébergement.
 
@@ -223,7 +232,7 @@ Pour effectuer une restauration de fichier distant avec une clé ssh (keypair), 
 PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
 ~~~
 
-Vous pouvez aussi sauvegarder une base de donnée en exportant la base puis en sauvegardant le .sql:
+Vous pouvez aussi sauvegarder une base de donnée en exportant la base puis en sauvegardant le fichier exporté:
 
 ~~~
 mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
@@ -237,12 +246,17 @@ mysql -uroot -ppassword --skip-comments -ql my_database > my_database.sql
 
 Afin d'automatiser les sauvegardes vous pouvez utiliser CRON installé par défaut sur le serveur. Celui-ci va vous permettre de **scheduler** vos sauvegardes pour que vous n'ayez plus à vous en occuper.
 
+**Une chose à garder en tête:** Lorsque qu'un service tourne sur le serveur à sauvegarder un lock est positionné sur les fichiers utilisés par celui-ci. Si vous voulez effectuer un sauvegarde **FULL**, il faudra arreter l'ensemble des services du serveur afin que Duplicity ait accès à l'ensemble des fichiers.
+
 Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser sur un **volume** attaché au serveur Duplicity. Celui ci est monté à la création de la stack. je l'ai fait  dans le but de dissocier le server de vos sauvegardes pour plus de **sécurité** et de **fléxibilité**. Le volume est monté en ext4 dans le répertoire `/mnt/vdb/`, il va vous permettre d'avoir un jeu de sauvegarde complétement indépendant de votre serveur Duplicity.
 
 La commande suivante permet de sauvegarder un serveur de votre infrastructure depuis votre serveur de sauvegarde Duplicity et de stocker la sauvegarde sur le volume attaché a Duplicity:
 ~~~
 ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
+Une passphrase vous sera demandée, celle ci est à trouver dans `/etc/duplicity/dup_vars.sh`.
+
+**Dernière info:** Lors d'une restauration, afin que le système puisse écrire l'ensemble des informations, il est préférable de l'exécuter en tant qu'utilisateur `root`.
 
 ## So watt ?
 
