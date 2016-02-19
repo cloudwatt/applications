@@ -60,7 +60,7 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 
 ### Ajuster les paramètres
- Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups.
+ Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups. De plus vous pouvez indiquer la taille du volume qui sera attaché à votre stack via le paramètre `volume_size`.
  C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
  ~~~yaml
