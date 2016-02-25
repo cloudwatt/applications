@@ -37,9 +37,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-backup/` repository:
+ Once you have cloned the github, you will find in the `bundle-trusty-duplicity/` repository:
 
- * `bundle-trusty-backup.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `bundle-trusty-duplicity.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
  * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -62,13 +62,13 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-backup.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameters to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.The `passcode`  will allow you to encrypt your backups. You can also indicate the `volume_size` who will attach on your stack. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-trusty-duplicity.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameters to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.The `passcode`  will allow you to encrypt your backups. You can also indicate the `volume_size` who will attach on your stack. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2016-02-09
 
 
-description: Basic all-in-one backup stack
+description: Basic all-in-one Duplicity stack
 
 
 parameters:
@@ -150,7 +150,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a duplicity server:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-backup](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup) repository
+1.	Go the Cloudwatt Github in the [applications/bundle-trusty-dupliciy](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-duplicity) repository
 2.	Click on the file named `bundle-trusty-duplicity.heat.yml` (or `bundle-trusty-duplicity.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)

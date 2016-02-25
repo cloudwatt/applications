@@ -36,9 +36,9 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 ## Tour du propriétaire
 
- Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-backup/`
+ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-duplicity/`
 
- * `bundle-trusty-backup.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+ * `bundle-trusty-duplicity.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
  * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
  * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
@@ -60,14 +60,14 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 
 ### Ajuster les paramètres
- Dans le fichier `bundle-trusty-backup.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups. De plus vous pouvez indiquer la taille du volume qui sera attaché à votre stack via le paramètre `volume_size`.
+ Dans le fichier `bundle-trusty-duplicity.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups. De plus vous pouvez indiquer la taille du volume qui sera attaché à votre stack via le paramètre `volume_size`.
  C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
  ~~~yaml
  heat_template_version: 2013-05-23
 
 
-description: All-in-one Backup stack
+description: All-in-one duplicity stack
 
 
 parameters:
@@ -156,7 +156,7 @@ $ heat resource-list EXP_STACK
 
   Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-  * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack backup,
+  * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Duplicity,
   * l'exposer sur Internet via une IP flottante.
 
 
@@ -166,7 +166,7 @@ $ heat resource-list EXP_STACK
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur duplicity:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup)
-2.	Cliquez sur le fichier nommé `bundle-trusty-backup.heat.yml`
+2.	Cliquez sur le fichier nommé `bundle-trusty-duplicity.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
