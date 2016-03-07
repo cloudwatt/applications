@@ -171,6 +171,46 @@ If you've reached this point, you're already done! Go enjoy Duplicity!
 
 ![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
 
+### Network visibility
+Network visibility must now create between our stack Duplicity and the rest of the machines in your tenant. During the creation of a stack Duplicity, a router was created for attach different networks, here's how:
+
+1. In first time, you must know the id of the router in Duplicity stack. This is possible via the following command:
+~~~
+heat resource-list $DUPLICITY_STACK_NAME
+~~~
+~~~bash
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name      | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| network            | a29ce347-969a-4ba9-8da6-c909f1b249b7                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-03-07T09:00:00Z |
+| volume             | c04798dd-dc12-4456-a92d-91ce9871c3a5                                                | OS::Cinder::Volume              | CREATE_COMPLETE | 2016-03-07T09:00:00Z |
+| floating_ip        | f65cebbf-a7b5-47b4-b2cd-a7a212288263                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| router             | dd25c093-0076-4664-8713-0c3488ea78d9                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| security_group     | cf5b2af8-1455-4c16-972e-4b5f96a56f4c                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| server_init        | f4cf30ab-02d8-4896-8796-537369c6d787                                                | OS::Heat::SoftwareConfig        | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| subnet             | 4b39f6ac-44ec-4482-9732-28449db8856b                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-03-07T09:00:04Z |
+| backup_interface   | `dd25c093-0076-4664-8713-0c3488ea78d9`:subnet_id=4b39f6ac-44ec-4482-9732-28449db8856b | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2016-03-07T09:00:07Z |
+| server             | 115a1f0b-f537-418d-a7c5-f6c6c5d65b60                                                | OS::Nova::Server                | CREATE_COMPLETE | 2016-03-07T09:00:08Z |
+| volume_attachement | c04798dd-dc12-4456-a92d-91ce9871c3a5                                                | OS::Cinder::VolumeAttachment    | CREATE_COMPLETE | 2016-03-07T09:00:38Z |
+| floating_ip_link   | f65cebbf-a7b5-47b4-b2cd-a7a212288263-84.39.34.17                                    | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-07T09:00:39Z |
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+~~~
+
+2. Let us find the ID of the subnet router to add Duplicity:
+
+~~~bash
+
+$ heat resource-list $NAME_STACK | grep subnet
+
+| subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
+~~~
+
+
+3. Now make the connection between the router Duplicity IS and the network subnet ID to be added:
+~~~bash
+$ neutron router-interface-add $DUPLICITY_ROUTER_ID $STACK_SUBNET_ID
+~~~
+
 ### Enjoy
 
 Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
@@ -203,7 +243,7 @@ duplicity --encrypt-key key_from_GPG --exclude files_to_exclude --include files_
 ~~~
 To make backup and copy in a remote server with keypair & passphrase & encrypt-key:
 ~~~
-PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@floating_ip//directory --ssh-option="-oIdentityFile=keypair_path"
+PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@DuplicityPrivateIP//directory --ssh-option="-oIdentityFile=keypair_path"
 ~~~
 
 To make restore  without Encryption:

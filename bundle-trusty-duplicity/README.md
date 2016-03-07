@@ -186,6 +186,47 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
 
+### Visibilité Réseau
+Il faut maintenant créer la visibilité réseau entre notre stack Duplicity et le reste des machines de notre tenant. Lors de la création de la stack Duplicity, un routeur à été crée afin que vous puissiez y attacher différent réseau de votre tenant, voici comment faire:
+
+1. Dans un premier temps il faut connaitre l'id du routeur de la stack Duplicity. Cela est possible via la commande suivante:
+
+~~~
+heat resource-list $Nom_de_la_stack_duplicity
+~~~
+~~~bash
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name      | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| network            | a29ce347-969a-4ba9-8da6-c909f1b249b7                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-03-07T09:00:00Z |
+| volume             | c04798dd-dc12-4456-a92d-91ce9871c3a5                                                | OS::Cinder::Volume              | CREATE_COMPLETE | 2016-03-07T09:00:00Z |
+| floating_ip        | f65cebbf-a7b5-47b4-b2cd-a7a212288263                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| router             | dd25c093-0076-4664-8713-0c3488ea78d9                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| security_group     | cf5b2af8-1455-4c16-972e-4b5f96a56f4c                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| server_init        | f4cf30ab-02d8-4896-8796-537369c6d787                                                | OS::Heat::SoftwareConfig        | CREATE_COMPLETE | 2016-03-07T09:00:01Z |
+| subnet             | 4b39f6ac-44ec-4482-9732-28449db8856b                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-03-07T09:00:04Z |
+| backup_interface   | `dd25c093-0076-4664-8713-0c3488ea78d9`:subnet_id=4b39f6ac-44ec-4482-9732-28449db8856b | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2016-03-07T09:00:07Z |
+| server             | 115a1f0b-f537-418d-a7c5-f6c6c5d65b60                                                | OS::Nova::Server                | CREATE_COMPLETE | 2016-03-07T09:00:08Z |
+| volume_attachement | c04798dd-dc12-4456-a92d-91ce9871c3a5                                                | OS::Cinder::VolumeAttachment    | CREATE_COMPLETE | 2016-03-07T09:00:38Z |
+| floating_ip_link   | f65cebbf-a7b5-47b4-b2cd-a7a212288263-84.39.34.17                                    | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-07T09:00:39Z |
++--------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+~~~
+
+2. Trouvons l'ID du subnet à ajouter au router Duplicity:
+
+~~~bash
+
+$ heat resource-list $NOM_DE_STACK_A_AJOUTER | grep subnet
+
+| subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
+~~~
+
+3. A présent faites la liaison entre l'id du routeur Duplicity et l'id du subnet du réseau à ajouter:
+
+~~~bash
+$ neutron router-interface-add $DUPLICITY_ROUTER_ID $STACK_SUBNET_ID
+~~~
+
 ### Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste,
@@ -218,7 +259,7 @@ duplicity --encrypt-key key_from_GPG --exclude files_to_exclude --include files_
 
 Pour effectuer un backup full du serveur et l'envoyer sur un serveur distant avec une clé ssh (keypair), une passphrase et une 'encrypt-key' tout en exluant /proc &  /sys & /tmp:
 ~~~
-PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@floating_ip//directory --ssh-option="-oIdentityFile=keypair_path"
+PASSPHRASE="yourpassphrase" duplicity --encrypt-key your_encrypt_key --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@DuplicityPrivateIP//directory --ssh-option="-oIdentityFile=keypair_path"
 ~~~
 
 Pour effectuer une restauration de fichier local sans Encryption:
@@ -229,7 +270,7 @@ duplicity restore file:///var/backups/duplicity/ /any/directory/
 
 Pour effectuer une restauration de fichier distant avec une clé ssh (keypair), une passphrase et une encrypt-key:
 ~~~
-PASSPHRASE="yourpassphrase" duplicity sftp://cloud@floating_ip//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
+PASSPHRASE="yourpassphrase" duplicity sftp://cloud@DuplicityPrivateIP//your_sauvegarde_directory --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem" /your_restore_directory
 ~~~
 
 Vous pouvez aussi sauvegarder une base de donnée en exportant la base puis en sauvegardant le fichier exporté:
@@ -252,7 +293,7 @@ Pour faciliter la gestion des sauvegardes, je vous propose de les centraliser su
 
 La commande suivante permet de sauvegarder un serveur de votre infrastructure depuis votre serveur de sauvegarde Duplicity et de stocker la sauvegarde sur le volume attaché a Duplicity:
 ~~~
-ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@IPduplicity//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
+ssh cloud@iPserverdistant -i ~/.ssh/yourkeypair.pem "duplicity  --exclude /proc --exclude /sys --exclude /tmp / sftp://cloud@DuplicityPrivateIP//mnt/vdb/ --ssh-option="-oIdentityFile=/home/cloud/.ssh/yourkeypair.pem""
 ~~~
 Une passphrase vous sera demandée, celle ci est à trouver dans `/etc/duplicity/dup_vars.sh`.
 
