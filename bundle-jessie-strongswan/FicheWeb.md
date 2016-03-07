@@ -15,7 +15,7 @@ composants:
    version: "Debian Jessie"
  - logo: ""
    version: "Strongswan 5.2.1"
-solutions: Strongswan est utile pour toutes solutions Cloudwatt :"
+solutions: Strongswan est utile pour toutes solutions Cloudwatt :
 solutions-list: 
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
