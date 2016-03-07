@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 24 : CozyCloud #
+# 5 Minutes Stacks, episode 24 : CozyCloud #
 
 ## Episode 24 : CozyCloud
 
