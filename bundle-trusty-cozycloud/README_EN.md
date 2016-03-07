@@ -175,4 +175,5 @@ You now have an SSH access point on your virtual machine through the floating-IP
 * Here are some news sites to learn more:
 
 - https://cozy.io/en/    
+- https://forum.cozy.io/
 - https://blog.cozycloud.cc/

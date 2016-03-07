@@ -170,6 +170,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * Voici quelques sites d'informations avant d'aller plus loin :
 
   - https://cozy.io/fr/    
+  - https://forum.cozy.io/
   - http://blog.jingleweb.fr/2015/03/pourquoi-je-passe-a-my-cozy-cloud/  
   - http://korben.info/my-cozy-cloud-degaine-sa-version-2-0.html/
 
