@@ -15,7 +15,7 @@ composants:
    version: "Ubuntu Trusty 14.04.2"
  - logo: ""
    version: "Duplicity 0.7.06"
-solutions: Duplicity est particulièrement utile pour les solutions Cloudwatt suivantes :"
+solutions: Duplicity est particulièrement utile pour les solutions Cloudwatt suivantes :
 solutions-list: 
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
