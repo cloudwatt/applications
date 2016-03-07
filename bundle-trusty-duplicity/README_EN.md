@@ -25,7 +25,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
 Duplicity stacks follow in the footsteps of our previous volume-using stacks, making good use of Cinder Volume Storage to ensure the protection of your data and allowing you to pay only for the space you use. Volume size is fully adjustable, and the Duplicity stack can support tens to tens of hundreds of gigabytes worth of project space.
 
@@ -146,9 +146,11 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 * Starts an Ubuntu Trusty Tahr based instance
 * Expose it on the Internet via a floating IP.
 
+<a name="console" />
+
 ### All of this is fine, but you do not have a way to create the stack from the console?
 
-We do indeed! Using the console, you can deploy a duplicity server:
+We do indeed! Using the console, you can deploy a Duplicity server:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-dupliciy](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-duplicity) repository
 2.	Click on the file named `bundle-trusty-duplicity.heat.yml` (or `bundle-trusty-duplicity.restore.heat.yml` to [restore from backup](#backup))
