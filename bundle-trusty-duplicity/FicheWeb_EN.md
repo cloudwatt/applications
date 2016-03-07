@@ -17,8 +17,7 @@ composants:
    version: "Duplicity 0.7.06"
 prix: "FREE for software + Cloudwatt usage fees"
 logo: 
-blogpost-url: 
-http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-twenty-three-duplicity.html
+blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-twenty-three-duplicity.html
 install-url: 
 comingsoon: true
 type: application
