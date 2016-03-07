@@ -122,7 +122,9 @@ $ heat resource-list EXP_STACK
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+## C’est bien tout ça, mais... 
+
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur Cozycloud:
 
@@ -145,7 +147,7 @@ C’est (déjà) FINI !
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre cozy !
 
-### Enjoy
+## Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
