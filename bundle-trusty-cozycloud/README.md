@@ -15,8 +15,8 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
  - Cozycloud 2.0
 
 ### Les pré-requis pour déployer cette stack
- Ceci devrait être une routine à présent:
 
+Ceci devrait être une routine à présent:
  * Un accès internet
  * Un shell linux
  * Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
@@ -24,31 +24,30 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
- Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il
- existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
  Vous pouvez ajuster les parametres de la stack à votre goût.
 
 ### Au fait...
 
- Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
 ## Tour du propriétaire
 
- Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-cozycloud/`
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-cozycloud/`
 
- * `bundle-trusty-cozycloud.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
- * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
- * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
+* `bundle-trusty-cozycloud.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
 
 ### Initialiser l'environnement
 
- Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
- Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
- Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
+Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
 
  ~~~ bash
  $ source COMPUTE-[...]-openrc.sh
@@ -56,24 +55,23 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
 
  ~~~
 
- Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
+Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
 ### Ajuster les paramètres
 
- Dans le fichier `bundle-trusty-cozycloud.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
- est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
- C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+Dans le fichier `bundle-trusty-cozycloud.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
- ~~~ yaml
- heat_template_version: 2013-05-23
-
-
- description: All-in-one CozyCloud stack
+~~~ yaml
+heat_template_version: 2013-05-23
 
 
- parameters:
-   keypair_name:
+description: All-in-one CozyCloud stack
+
+
+parameters:
+  keypair_name:
      default: my-keypair-name                   <-- Rajoutez cette ligne avec le nom de votre paire de clés
      description: Keypair to inject in instance
      label: SSH Keypair
@@ -88,21 +86,21 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
  ~~~
 ### Démarrer la stack
 
- Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
- ~~~ bash
+~~~ bash
  $ ./stack-start.sh CozyCloud
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
  | ed4ac18a-4415-467e-928c-1bef193e4f38 | Cozycloud  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
  +--------------------------------------+------------+--------------------+----------------------+
- ~~~
+~~~
 
- Enfin, attendez **5 minutes** que le déploiement soit complet.
+Enfin, attendez **5 minutes** que le déploiement soit complet.
 
  ~~~
- $ heat resource-list EXP_STACK
+$ heat resource-list EXP_STACK
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -122,9 +120,13 @@ Une particularité de Cozy est la centralisation du stockage des différentes ap
 
 ![cozycloudlogo](http://www.woinux.fr/wp-content/uploads/2013/10/cozy-banner.jpg)
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+<a name="console" />
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur cozycloud:
+## C’est bien tout ça, mais... 
+
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur Cozycloud:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-cozycloud](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-cozycloud)
 2.	Cliquez sur le fichier nommé `bundle-trusty-cozycloud.heat.yml`
@@ -145,7 +147,7 @@ C’est (déjà) FINI !
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre cozy !
 
-### Enjoy
+## Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 

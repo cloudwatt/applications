@@ -1,11 +1,11 @@
-# 5 Minutes Stacks, épisode 24 : CozyCloud #
+# 5 Minutes Stacks, episode 24 : CozyCloud #
 
 ## Episode 24 : CozyCloud
 
 ![CozyCloudlogo](http://blog.jingleweb.fr/wp-content/uploads/2015/03/bighappycloud.png)
 
 
-Cozycloud your free personal cloud server. Unlike other personal cloud , Cozy focuses on applications and collaboration applications around your personal data. Cozy is a solution of PaaS (Platform as a Service) staff that allows you to deploy personal web applications in one click . This is rich web applications. You can choose from existing Cozy applications (Notes , Todos , Calendar, Contacts , Photos ... ) , adapting an existing Node.js application or start your own web application " from-scratch " ( documentation and tutorials available).
+Cozycloud your free personal cloud server. Unlike other personal cloud , Cozy focuses on applications and collaboration applications around your personal data. Cozy is a solution of PaaS (Platform as a Service) staff that allows you to deploy personal web applications in one click . This is rich web applications. You can choose from existing Cozy applications (Notes, Todos, Calendar, Contacts, Photos ... ) , adapting an existing Node.js application or start your own web application " from-scratch " (documentation and tutorials available).
 
 A feature of Cozy is the centralization of storage for different applications in a common database with typed data and control of access by data type. In this way the different applications work with the same source data (contacts, mails, notes ... ). Cozycloud is currently focused on Node.js but support for Python and Ruby applications is expected. More cozy developed in **France** by **French developers**.
 
@@ -26,7 +26,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
 CozyCloud stacks follow in the footsteps of our previous volume-using stacks, making good use of Cinder Volume Storage to ensure the protection of your data and allowing you to pay only for the space you use. Volume size is fully adjustable, and the Cozycloud stack can support tens to tens of hundreds of gigabytes worth of project space.
 
@@ -126,12 +126,16 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 ![cozycloudlogo](http://www.woinux.fr/wp-content/uploads/2013/10/cozy-banner.jpg)
 
-### All of this is fine, but you do not have a way to create the stack from the console?
+<a name="console" />
 
-We do indeed! Using the console, you can deploy a cozycloud server:
+## All of this is fine, but... 
+
+### You do not have a way to create the stack from the console?
+
+We do indeed! Using the console, you can deploy a Cozycloud server:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-cozycloud](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-cozycloud) repository
-2.	Click on the file named `bbundle-trusty-cozycloud.heat.yml` (or `bbundle-trusty-cozycloud.restore.heat.yml` to [restore from backup](#backup))
+2.	Click on the file named `bundle-trusty-cozycloud.heat.yml` (or `bundle-trusty-cozycloud.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
@@ -149,7 +153,7 @@ If you've reached this point, you're already done! Go enjoy Duplicity!
 
 ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your cozycloud server!
 
-### Enjoy
+## Enjoy
 
 Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 

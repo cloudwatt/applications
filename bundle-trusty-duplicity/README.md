@@ -4,9 +4,9 @@
 
 ![Backuplogo](img/logobackup.jpg)
 
-L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentielles de fichiers et de dossiers.
+L'utilitaire duplicity est un outil en **ligne de commande** permettant d'effectuer des sauvegardes incrémentales de fichiers et de dossiers.
 
-Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque Duplicity repose sur librsync, les sauvegardes incrémentielles sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
+Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces archives sont alors envoyées dans un répertoire de sauvegarde local ou distant les protocoles distants pris en charge sont entre autre FTP, SSH/SCP, Rsync, WebDAV/WebDAVs. Puisque Duplicity repose sur librsync, les sauvegardes incrémentales sont économes en espace de stockage : seules les parties modifiées des fichiers sont prises en considération.
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
@@ -23,44 +23,42 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
- Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
- existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins.
- Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel
- (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins.
+Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
- Vous pouvez ajuster les parametres de la stack à votre goût.
+Vous pouvez ajuster les parametres de la stack à votre goût.
 
 ### Au fait...
 
- Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
 ## Tour du propriétaire
 
- Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-duplicity/`
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-duplicity/`
 
- * `bundle-trusty-duplicity.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
- * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
- * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
+* `bundle-trusty-duplicity.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
 ### Initialiser l'environnement
 
- Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
- Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
- Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
+Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
 
- ~~~ bash
- $ source COMPUTE-[...]-openrc.sh
- Please enter your OpenStack Password:
+~~~ bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
 
- ~~~
+~~~
 
- Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
+Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
 ### Ajuster les paramètres
- Dans le fichier `bundle-trusty-duplicity.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups. De plus vous pouvez indiquer la taille du volume qui sera attaché à votre stack via le paramètre `volume_size`.
+Dans le fichier `bundle-trusty-duplicity.heat.yml` vous trouverez en haut une section `parameters`. Les seuls paramètres obligatoires sont celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et celui du `passcode` qui va permettre de chiffrer vos backups. De plus vous pouvez indiquer la taille du volume qui sera attaché à votre stack via le paramètre `volume_size`.
  C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
  ~~~yaml
@@ -68,7 +66,6 @@ Il effectue la sauvegarde en créant des archives TAR chiffrées avec GnuPG. Ces
 
 
 description: All-in-one duplicity stack
-
 
 parameters:
   keypair_name:
@@ -154,16 +151,18 @@ $ heat resource-list EXP_STACK
   +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
 ~~~
 
-  Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-  * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Duplicity,
-  * l'exposer sur Internet via une IP flottante.
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Duplicity,
+* l'exposer sur Internet via une IP flottante.
 
+<a name="console" />
 
+## C’est bien tout ça, mais...
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur duplicity:
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur Duplicity:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-duplicity](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-backup)
 2.	Cliquez sur le fichier nommé `bundle-trusty-duplicity.heat.yml`
@@ -187,6 +186,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 ![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
 
 ### Visibilité Réseau
+
 Il faut maintenant créer la visibilité réseau entre notre stack Duplicity et le reste des machines de notre tenant. Lors de la création de la stack Duplicity, un routeur à été crée afin que vous puissiez y attacher différent réseau de votre tenant, voici comment faire:
 
 1. Dans un premier temps il faut connaitre l'id du routeur de la stack Duplicity. Cela est possible via la commande suivante:
@@ -244,9 +244,9 @@ A titre d'information lorsque vous sauvegardez pour la première fois un répert
 
 La génération de sauvegarde à la fois incrémentales et chiffrées, y compris pour les bases de données, font de Duplicity une solution de backup idéale pour l’auto-hébergement.
 
-**Voici quelques exemples simple d'utilisation:**
+### Voici quelques exemples simple d'utilisation :
 
-Pour effectuer un backup (local) avec une liste de fichier spécifique:
+**Pour effectuer un backup (local) avec une liste de fichier spécifique:**
 
 ~~~
 duplicity /your_directory file:///var/backups/duplicity/ --include-globbing-filelist filelist.txt --exclude '**'

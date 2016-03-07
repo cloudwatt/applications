@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 19 : Zabbix #
+# 5 Minutes Stacks, episode 19 : Zabbix #
 
 ## Episode 19 : Zabbix-server
 
@@ -32,7 +32,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
 Stack parameters, of course, are yours to tweak at your fancy.
 
@@ -281,9 +281,7 @@ In template tab:
 
  ![Visualiser les métriques ](http://glpi.objetdirect.com/wp-content/uploads/2014/01/zabbix_webgraph.png)
 
-
 <a name="console" />
-
 
 ### Please console me
 
