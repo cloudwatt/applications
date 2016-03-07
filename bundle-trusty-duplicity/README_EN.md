@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 23 : Duplicity #
+# 5 Minutes Stacks, episode 23 : Duplicity #
 
 ## Episode 23 : Duplicity
 
