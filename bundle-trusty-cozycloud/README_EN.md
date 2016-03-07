@@ -126,12 +126,14 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 ![cozycloudlogo](http://www.woinux.fr/wp-content/uploads/2013/10/cozy-banner.jpg)
 
+<a name="console" />
+
 ### All of this is fine, but you do not have a way to create the stack from the console?
 
-We do indeed! Using the console, you can deploy a cozycloud server:
+We do indeed! Using the console, you can deploy a Cozycloud server:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-cozycloud](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-cozycloud) repository
-2.	Click on the file named `bbundle-trusty-cozycloud.heat.yml` (or `bbundle-trusty-cozycloud.restore.heat.yml` to [restore from backup](#backup))
+2.	Click on the file named `bundle-trusty-cozycloud.heat.yml` (or `bundle-trusty-cozycloud.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
