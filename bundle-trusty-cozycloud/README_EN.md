@@ -128,7 +128,9 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 <a name="console" />
 
-### All of this is fine, but you do not have a way to create the stack from the console?
+## All of this is fine, but... 
+
+### You do not have a way to create the stack from the console?
 
 We do indeed! Using the console, you can deploy a Cozycloud server:
 
@@ -151,7 +153,7 @@ If you've reached this point, you're already done! Go enjoy Duplicity!
 
 ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your cozycloud server!
 
-### Enjoy
+## Enjoy
 
 Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
