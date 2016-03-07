@@ -158,7 +158,9 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 <a name="console" />
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+## C’est bien tout ça, mais...
+
+### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur Duplicity:
 
@@ -184,6 +186,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 ![logosvgcloud](http://www.cachem.fr/wp-content/uploads/2015/09/nuage-backup1.jpg)
 
 ### Visibilité Réseau
+
 Il faut maintenant créer la visibilité réseau entre notre stack Duplicity et le reste des machines de notre tenant. Lors de la création de la stack Duplicity, un routeur à été crée afin que vous puissiez y attacher différent réseau de votre tenant, voici comment faire:
 
 1. Dans un premier temps il faut connaitre l'id du routeur de la stack Duplicity. Cela est possible via la commande suivante:
