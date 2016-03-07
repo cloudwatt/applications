@@ -21,14 +21,14 @@ parameters:
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - n2.cw.highmem-2   
-        - n2.cw.highmem-4   
-        - n2.cw.highmem-8   
-        - n2.cw.highmem-16  
-        - n2.cw.standard-1  
-        - n2.cw.standard-2  
-        - n2.cw.standard-4  
-        - n2.cw.standard-8  
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
         - n2.cw.standard-16
 
 resources:
@@ -126,6 +126,14 @@ resources:
                         [Service]
                         ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
                   command: start
+                - name: docker.service
+                  drop-ins:
+                    - name: 40-flannel.conf
+                      content: |
+                        [Unit]
+                        Requires=flanneld.service
+                        After=flanneld.service
+                  command: start
 
           params:
             $private_ipv4: { get_attr: [ port1, fixed_ips, 0, ip_address ] }
@@ -192,6 +200,14 @@ resources:
                         [Service]
                         ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
                   command: start
+                - name: docker.service
+                  drop-ins:
+                    - name: 40-flannel.conf
+                      content: |
+                        [Unit]
+                        Requires=flanneld.service
+                        After=flanneld.service
+                  command: start
 
           params:
             $private_ipv4: { get_attr: [ port2, fixed_ips, 0, ip_address ] }
@@ -257,6 +273,14 @@ resources:
                       content: |
                         [Service]
                         ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{ "Network": "10.1.0.0/16" }'
+                  command: start
+                - name: docker.service
+                  drop-ins:
+                    - name: 40-flannel.conf
+                      content: |
+                        [Unit]
+                        Requires=flanneld.service
+                        After=flanneld.service
                   command: start
 
           params:
