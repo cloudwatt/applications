@@ -1,0 +1,187 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Backup stack
+
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+
+  flavor_name:
+    default: n2.cw.standard-1
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-12
+
+  volume_size:
+    default: 10
+    label: Backup Volume Size
+    description: Size of Volume for DevKit Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 10, max: 10000 }
+        description: Volume must be at least 10 gigabytes
+
+  volume_type:
+    default: standard
+    label: Backup Volume Type
+    description: Performance flavor of the linked Volume for DevKit Storage
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
+
+
+
+  passcode:
+    label: GnuPG Encryption Key Passcode
+    description: Passcode for GnuPG Keys used to encrypt and sign all data backups
+    type: string
+    hidden: true
+    constraints:
+      - length: { min: 4, max: 24 }
+        description: Password must be between 6 and 24 characters
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.72.72.0/24
+      allocation_pools:
+        - { start: 10.72.72.100, end: 10.72.72.199 }
+
+  router:
+    type: OS::Neutron::Router
+
+  backup_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 389, port_range_max: 389 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: { get_param: volume_size }
+      volume_type: { get_param: volume_type }
+      metadata:
+        fs_type: ext4
+
+  volume_attachement:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
+      volume_id: { get_resource: volume }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+  server_init:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+            echo "Generating keys"
+            sed -i "s/%PASSCODE%/$PASSCODE$/g" /etc/duplicity/key_sign.batch
+            sed -i "s/%PASSCODE%/$PASSCODE$/g" /etc/duplicity/key_encrypt.batch
+            sudo gpg --batch --gen-key /etc/duplicity/key_sign.batch
+            sudo gpg --batch --gen-key /etc/duplicity/key_encrypt.batch
+            echo "Injecting passcodes and keys into duplicity scripts"
+            sudo echo """\
+            # GnuPG PASSPHRASE
+            export PASSPHRASE="$PASSCODE$"
+            export SIGN_PASSPHRASE="$PASSCODE$"
+            # GnuPG Keys
+            export SIGN_KEY=`   gpg --list-keys | egrep "^sub" | cut -d"/" -f2 | cut -d" " -f1 | head -n 1`
+            export ENCRYPT_KEY=`gpg --list-keys | egrep "^sub" | cut -d"/" -f2 | cut -d" " -f1 | tail -n 1`
+            """ > /etc/duplicity/dup_vars.sh
+            bash /etc/duplicity/volume_mnt.sh
+            chown cloud /mnt/vdb && chgrp cloud /mnt/vdb
+          params:
+            $PASSCODE$: { get_param: passcode }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 96074b1e-8de0-4f0d-b805-d0114b3f9234
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_init
+
+outputs:
+  floating_ip:
+    description: Backup Server Floating-IP
+    value:
+      str_replace:
+        template: $FLOATING_IP$
+        params:
+          $FLOATING_IP$: { get_attr: [floating_ip, floating_ip_address] }
+
+  router-interface-ip:
+    description: |
+      Backup's router-interface IP script
+    value:
+      str_replace:
+        template: |
+          neutron router-port-list $ROUTER$ | grep $SUBNET$ | cut -d"\"" -f8
+        params:
+          $ROUTER$: { get_attr: [router, name] }
+          $SUBNET$: { get_resource: subnet }
+
+  ip_route_set:
+    description: |
+      'IP route to other subnet' command
+    value: |
+      sudo ip route add <subnet-cidr> via <router-interface-ip>
