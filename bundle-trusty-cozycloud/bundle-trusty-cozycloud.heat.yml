@@ -98,6 +98,10 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip:
-    description: IP address of the deployed compute instance
-    value: { get_attr: [floating_ip, floating_ip_address] }
+  floating_ip_url:
+    description: Cozycloud URL
+    value:
+      str_replace:
+      template: ip-{ "Fn::Replace": [ {'.': '-'}, {get_attr: [floating_ip, floating_ip_address] }.rev.cloudwatt.com
+      params:
+        $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
