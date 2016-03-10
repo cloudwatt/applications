@@ -90,6 +90,7 @@ resources:
 
           params:
             $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
+            $fqdn: {"Fn::Replace": [ {'.': '-'}, $floating_ip$]}
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -102,9 +103,9 @@ outputs:
     description: Cozycloud URL
     value:
       str_replace:
-      template: ip-{ "Fn::Replace": [ {'.': '-'}, $floating_ip]}.rev.cloudwatt.com
-      params:
-        $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+        template: https://ip-$public_dns.rev.cloudwatt.com/
+        params:
+          $public_dns: {"Fn::Replace": [ {'.': '-'}, get_attr: [floating_ip, floating_ip_address]]}
 
 
 
