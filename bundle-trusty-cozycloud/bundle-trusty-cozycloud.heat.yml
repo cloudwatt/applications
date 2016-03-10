@@ -102,6 +102,9 @@ outputs:
     description: Cozycloud URL
     value:
       str_replace:
-      template: ip-{ "Fn::Replace": [ {'.': '-'}, $floating_ip.rev.cloudwatt.com
+      template: ip-{ "Fn::Replace": [ {'.': '-'}, $floating_ip]}.rev.cloudwatt.com
       params:
         $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+
+
+
