@@ -122,7 +122,7 @@ $ heat resource-list EXP_STACK
 
 <a name="console" />
 
-## C’est bien tout ça, mais... 
+## C’est bien tout ça, mais...
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 

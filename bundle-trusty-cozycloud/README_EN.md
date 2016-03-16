@@ -128,7 +128,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 <a name="console" />
 
-## All of this is fine, but... 
+## All of this is fine, but...
 
 ### You do not have a way to create the stack from the console?
 
@@ -147,7 +147,7 @@ We do indeed! Using the console, you can deploy a Cozycloud server:
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy Duplicity!
+If you've reached this point, you're already done! Go enjoy Cozycloud!
 
 ### A one-click chat sounds really nice...
 
@@ -174,7 +174,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
 
-* You have access to the web interface en https via the address specified in this file `/etc/ansible/cozy-vars.yml`.
+* You have access to the web interface with https via the address specified in this file `/etc/ansible/cozy-vars.yml`.
 
 * Here are some news sites to learn more:
 
