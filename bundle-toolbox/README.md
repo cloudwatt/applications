@@ -199,7 +199,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois connecté en VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager."yourdomain"/*
+Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager."yourdomain"/*
 
 #### Présentation de l'interface :
 
