@@ -108,10 +108,6 @@ parameters:
     label: OpenStack Auth URL
     type: string
 
-  domain:
-    description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
-    label: Cloud DNS
-    type: string
 
   flavor_name:
     default: n2.cw.standard-4
@@ -199,7 +195,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager."yourdomain"/*
+Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*.
 
 #### Présentation de l'interface :
 
@@ -217,13 +213,24 @@ L'ensemble de conteneurs présent peuvent être paramétrer grace au bouton **Se
 
 Un menu est présent en haut en gauche de la page, celui-ci permet de vous déplacer dans les différentes section de la toolbox à savoir, les **apps**, les **instances** et les **tasks**.
 
-![menu](img/menu.png)
+![menu](img/Menu.png))
 
 Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
 
 ![tasks](img/tasks.png)
 
 il vous ait possible d'annuler une taches en attente en cas d'erreur en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
+
+#### Ajouter des instances à ma Toolbox :
+
+Afin d'ajouter des instances à la toolbox 2 choses sont à penser :
+
+  * Attacher votre instance au routeur de la toolbox via la commande suivante :
+
+ ~~~bash
+ ~~~
+
+
 
 
 
