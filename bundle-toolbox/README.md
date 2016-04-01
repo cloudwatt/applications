@@ -242,7 +242,7 @@ Voici la procedure:
 
 Aller dans le menu **instance** et cliquer le bouton en bas a droite ![bouton](img/plus.png).
 
-Vous devez avoir 2 commandes, un **Curl** et un **Wget** séléctionner *celle de votre choix* et copier là sur l'instance à instrumentaliser.
+Vous devez avoir 2 commandes, un **Curl** et un **Wget** séléctionnez *celle de votre choix* et copier là sur l'instance à instrumentaliser.
 
 ![addinstance](img/addinstance.png)
 
