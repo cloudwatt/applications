@@ -4,11 +4,11 @@
 
 
 
-La toolbox est une  stack différente de tout ce qu'on a pu faire jusqu'à présent, celle-ci à pour but de vous apporter un ensemble d'outils afin d'unifier, d'armoniser et monitorer votre/vos tenant(s).En effet celle ci renferme un lot d'application qui a pour voccation de vous aider dans la gestion de vos instances.
+La toolbox est une  stack différente de tout ce qu'on a pu faire jusqu'à présent. Celle-ci à pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s).En effet celle ci renferme un lot d'applications qui a pour vocation de vous aider dans la gestion de vos instances.
 
-Cette toolbox à entièrement été développer par Cloudwatt. L'interface utilisateur est faite en réact, celle-ci repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instance via des playbooks Ansible.
+Cette toolbox à entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
 
-Afin de sécuriser au maximum cette toolbox aucun port n'est exposer sur internet mis à part le port 22 afin de pouvoir récupérer un fichier de configuration Openvpn. Cette méthode est expliquée plus bas dans l'article.
+Afin de sécuriser au maximum cette toolbox aucun port n'est exposé sur internet mis à part le port 22 afin de pouvoir récupérer un fichier de configuration Openvpn. Cette méthode est expliquée plus bas dans l'article.
 
 ## Preparations
 
@@ -117,12 +117,12 @@ parameters:
     constraints:
       - allowed_values:
           - s1.cw.small-1
-          - n1.cw.standard-1
-          - n1.cw.standard-2
+          - n2.cw.standard-1
+          - n2.cw.standard-2
           - n2.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
+          - n2.cw.standard-8
+          - n2.cw.standard-12
+          - n2.cw.standard-16
 
  ~~~
 ### Démarrer la stack
@@ -259,5 +259,4 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
 * Voici quelques sites d'informations avant d'aller plus loin :
-- https://www.pfsense.org/
-- https://forum.pfsense.org
+- 
