@@ -213,7 +213,7 @@ L'ensemble de conteneurs présent peuvent être paramétrer grace au bouton **Se
 
 Un menu est présent en haut en gauche de la page, celui-ci permet de vous déplacer dans les différentes section de la toolbox à savoir, les **apps**, les **instances** et les **tasks**.
 
-![menu](img/Menu.png))
+![menu](img/Menu.png)
 
 Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
 
@@ -228,9 +228,23 @@ Afin d'ajouter des instances à la toolbox 2 choses sont à penser :
   * Attacher votre instance au routeur de la toolbox via la commande suivante :
 
  ~~~bash
+ $ neutron router-interface-add $Toolbox_ROUTER_ID $Instance_subnet_ID
  ~~~
 
+Vous retrouverez l'ensemble des informations en inspectant les ressources de la stack via la commande heat suivante :
 
+~~~bash
+$ heat resource-list $stack_name
+~~~
+
+Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à la toolbox afin de l'instrumentaliser.
+Voici la procedure:
+
+Aller dans le menu **instance** et cliquer le bouton en bas a droite ![bouton](img/plus.png).
+
+Vous devez avoir 2 commandes, un **Curl** et un **Wget** séléctionner *celle de votre choix* et copier là sur l'instance à instrumentaliser.
+
+![addinstance](img/addinstance.png)
 
 
 
