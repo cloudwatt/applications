@@ -219,12 +219,19 @@ L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **
  Comme vous pouvez le constater, nous les avons séparés en différentes section.
  ![params](img/params.png)
 
+Dans la section **Infos** vous allez retrouver une présentation de l'application avec quelques liens utile sur l'application concerné.
+
+![appresume](img/appresume.png)
+
 
 Dans la section **Environnements** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
 ![paramsenv](img/paramenv.png)
 
 Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des diffèrentes applications.
 ![paramapp](img/paramapp.png)
+
+Afin d'identifier les applications lancées nous avons mis en place un code couleur. Une application démarrée sera entourée d'un halo vert.
+![appstart](img/appstart.png)
 
 #### Ajouter des instances à ma Toolbox :
 
@@ -247,7 +254,7 @@ $ heat resource-list $stack_name
 
 Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à la toolbox afin de l'instrumentaliser.
 
-*Lancer le script d'attachement*
+*Lancer le script d'attachement :*
 
 Aller dans le menu **instance** et cliquer le bouton ![bouton](img/plus.png) en bas a droite.
 
@@ -257,7 +264,7 @@ Vous devez avoir 2 commandes, un **Curl** et un **Wget** sélectionnez *celle de
 
 Une fois le script appliqué sur l'instance choisie celle-ci doit apparaitre dans le menu **instance** de votre toolbox.
 
-![instance](img/instance.png)
+![appdisable](img/appdisable.png)
 
 Comme vous pouvez le voir, l'ensemble des logos des applications de la toolbox sont grisés.
 
@@ -267,7 +274,7 @@ Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez i
 
 Une fois l'application installer le logo de l'application passe en couleur, ce qui vous permet d'avoir un suivi des applications installées sur vos instances.
 
-![instance](img/instance.png)
+![appenable](img/appenable.png)
 
 il vous ait possible d'annuler une taches en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
@@ -277,14 +284,75 @@ Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voi
 
 Toujours de le but de vous aider au maximum nous avons intégré 2 liens dans le menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
 
+## Entrée dans la matière
+
+Dans cette section je vais vous présenter les différentes applications de cette Toolbox.
+
+* **Aptly** : C'est un gestionnaire de paquet *APT*. Il permet de faire un mirroir d'un repository exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un seveur Nginx.
+Pour aller plus loin voici quelque liens utiles:
+    * https://www.aptly.info/
+    * http://korben.info/aptly-loutil-ultime-pour-gerer-vos-depots-debian.html/
+
+
+* **ClamAV** : Celui-ci est enfait un serveur Ngnix. Un script **CRON** va s'excuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
+Pour aller plus loin voici quelque liens utiles:
+  * https://www.clamav.net/documents/private-local-mirrors
+  * https://github.com/vrtadmin/clamav-faq/blob/master/mirrors/MirrorHowto.md
+
+
+* **Graylog**: Graylog est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officielement par les équipes Graylog.
+  * L'interface graphique web de Graylog est un outil puissant qui permet à quiconque de manipuler la totalité de ce que Graylog a à offrir grâce à cette application Web intuitive et attrayante.
+  * Le cœur de Graylog est son moteur. Le serveur Graylog interagit avec tous les autres composants à l'aide d'interfaces API REST de sorte que chaque composant du système peut être adapté sans pour autant compromettre l'intégrité du système dans son ensemble.
+  * Des résultats de recherche en temps réel quand vous les voulez et comment vous les voulez: Graylog est en mesure de vous fournir ceci grâce à la puissance éprouvée d'ElasticSearch. Les nœuds ElasticSearch donnent à Graylog la vitesse qui en fait un vrai plaisir à utiliser.
+
+  Bénéficiant de cette architecture impressionnante ainsi que d'une vaste bibliothèque de plugins, Graylog se place comme une solution solide et polyvalente de gestion des logs.
+
+  Pour aller plus loin voici quelque liens utiles:
+  * https://www.graylog.org/
+  * http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in
+  * http://docs.graylog.org/en/1.3/pages/architecture.html
+  * https://www.elastic.co/products/elasticsearch
+  * https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+
+
+* **Nexus**: Nexus est une application pouvant exopser n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un repertoir YUM à l'ensemble de vos instances.
+
+  Pour aller plus loin voici quelque liens utiles:
+  * https://books.sonatype.com/nexus-book/reference/index.html
+  * https://books.sonatype.com/nexus-book/reference/yum-configuration.html
+
+
+* **Ntp**: Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être à la même heure.
+
+  Pour aller plus loin voici quelque liens utiles:
+  * http://www.pool.ntp.org/fr/
+
+
+* **Rundeck**: L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possiblité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
+
+  Pour aller plus loin voici quelque liens utiles:
+  * http://rundeck.org/
+  * http://blog.admin-linux.org/administration/rundeck-ordonnanceur-centralise-opensource-vient-de-sortir-sa-v2-0
+  * http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-vingt-trois-duplicity.html
+
+
+* **Zabbix**: Zabbix est un logiciel libre permettant de surveiller l'état de divers services réseau, serveurs et autres matériels réseau; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
+
+    Pour aller plus loin voici quelque liens utiles:
+  * http://www.zabbix.com/
+  * https://www.zabbix.com/documentation/3.0/start
+
+
 
 ## So watt  ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-* Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
+* Récupérer le fichier de configuration openvpn sur l'instance de la toolbox.
+
+* Une fois connecté en VPN à la toolbox, vous avez acces à l'interface web via l'url http://manager.
 
 * Voici quelques sites d'informations avant d'aller plus loin :
--
+  -
