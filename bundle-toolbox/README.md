@@ -353,5 +353,5 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Une fois connecté en VPN à la toolbox, vous avez acces à l'interface web via l'url http://manager.
 
-* Voici quelques sites d'informations avant d'aller plus loin :
+Voici quelques sites d'informations avant d'aller plus loin :
   -
