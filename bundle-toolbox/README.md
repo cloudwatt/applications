@@ -219,7 +219,7 @@ L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **
  Comme vous pouvez le constater, nous les avons séparés en différentes section.
  ![params](img/params.png)
 
-Dans la section **Infos** vous allez retrouver une présentation de l'application avec quelques liens utile sur l'application concerné.
+Dans la section **Infos** vous allez retrouver une présentation de l'application avec quelques liens utile sur l'application concernée.
 
 ![appresume](img/appresume.png)
 
