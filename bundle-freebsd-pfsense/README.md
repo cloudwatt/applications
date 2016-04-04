@@ -6,7 +6,7 @@
 
 pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schemà d'architecture.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
 
 ![pfsense_schema](img/pfsense.png)
 
