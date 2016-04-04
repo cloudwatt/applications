@@ -181,7 +181,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer la Toolbox:
 9.  Donner l'ensemble des informations du compte pouvant accéder à votre tenant,
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Ne vous reste plus qu'à récupérer le fichier de configuration **open vpn** `cloud.ovpn`.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Ne vous reste plus qu'à récupérer le fichier de configuration **Openvpn** `cloud.ovpn`.
 
 ```bash
 scp -i ~/.ssh/your_keypair core@FloatingIP:cloud.ovpn .
