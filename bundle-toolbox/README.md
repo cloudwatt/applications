@@ -288,19 +288,18 @@ Toujours de le but de vous aider au maximum nous avons intégré 2 liens dans le
 
 Dans cette section je vais vous présenter les différentes applications de cette Toolbox.
 
-* **Aptly** : C'est un gestionnaire de paquet *APT*. Il permet de faire un mirroir d'un repository exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un seveur Nginx.
-Pour aller plus loin voici quelque liens utiles:
+* **Aptly** : C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un serveur Nginx. Pour aller plus loin voici quelque liens utiles:
     * https://www.aptly.info/
     * http://korben.info/aptly-loutil-ultime-pour-gerer-vos-depots-debian.html/
 
 
-* **ClamAV** : Celui-ci est enfait un serveur Ngnix. Un script **CRON** va s'excuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
+* **ClamAV** : Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
 Pour aller plus loin voici quelque liens utiles:
   * https://www.clamav.net/documents/private-local-mirrors
   * https://github.com/vrtadmin/clamav-faq/blob/master/mirrors/MirrorHowto.md
 
 
-* **Graylog**: Graylog est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officielement par les équipes Graylog.
+* **Graylog**: C'est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officiellement par les équipes Graylog.
   * L'interface graphique web de Graylog est un outil puissant qui permet à quiconque de manipuler la totalité de ce que Graylog a à offrir grâce à cette application Web intuitive et attrayante.
   * Le cœur de Graylog est son moteur. Le serveur Graylog interagit avec tous les autres composants à l'aide d'interfaces API REST de sorte que chaque composant du système peut être adapté sans pour autant compromettre l'intégrité du système dans son ensemble.
   * Des résultats de recherche en temps réel quand vous les voulez et comment vous les voulez: Graylog est en mesure de vous fournir ceci grâce à la puissance éprouvée d'ElasticSearch. Les nœuds ElasticSearch donnent à Graylog la vitesse qui en fait un vrai plaisir à utiliser.
@@ -315,7 +314,7 @@ Pour aller plus loin voici quelque liens utiles:
   * https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
 
-* **Nexus**: Nexus est une application pouvant exopser n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un repertoir YUM à l'ensemble de vos instances.
+* **Nexus**: Nexus est une application pouvant exposer n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un répertoire YUM à l'ensemble de vos instances.
 
   Pour aller plus loin voici quelque liens utiles:
   * https://books.sonatype.com/nexus-book/reference/index.html
@@ -328,7 +327,7 @@ Pour aller plus loin voici quelque liens utiles:
   * http://www.pool.ntp.org/fr/
 
 
-* **Rundeck**: L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possiblité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
+* **Rundeck**: L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
 
   Pour aller plus loin voici quelque liens utiles:
   * http://rundeck.org/
