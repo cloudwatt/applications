@@ -197,22 +197,13 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*. L'accès a l'interface et aux différentes applications se fait via des nom **DNS**. En effet un conterneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interface web des applications en cliquant sur **Go**![Go](img/go.png) ou via une requête URL (ex : http://zabbix/).
+Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*. L'accès a l'interface et aux différentes applications se fait via des nom **DNS**. En effet un conterneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interface web des applications en cliquant sur **Go** ou via une requête URL (ex : http://zabbix/).
 
 #### Présentation de l'interface :
 
 Voici l'accueil de la toolbox, chaque vignette représente une application prête à être lancée. Afin d'être le plus scalable et flexible possible, l'ensemble des applications de cette toolbox sont des conteneurs (Docker).
 
 ![accueil](img/accueil.png)
-
-L'ensemble de conteneurs présent peuvent être paramétrer grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
-
-
- Comme vous pouvez le constater, nous avons séparé en différentes section les paramètres.
- ![params](img/params.png)
-
-
-vous pouvez inscrire ici l'ensemble des paramètres qui serviront à configurer le conteneur à son lancement.
 
 Un menu est présent en haut en gauche de la page, il permet de vous déplacer dans les différentes séctions de la toolbox, je vais vous les détailler par la suite.
 
@@ -222,13 +213,29 @@ Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
 
 ![tasks](img/tasks.png)
 
-il vous ait possible d'annuler une taches en attente en cas d'erreur en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
+L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
+
+
+ Comme vous pouvez le constater, nous les avons séparés en différentes section.
+ ![params](img/params.png)
+
+
+Dans la section **Environnement** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
+![paramsenv](img/paramenv.png)
+
+Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des diffèrentes applications.
+![paramapp](img/paramapp.png)
+
+il vous ait possible d'annuler une taches en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
 #### Ajouter des instances à ma Toolbox :
 
 Afin d'ajouter des instances à la toolbox 2 choses sont à penser :
 
-  * Attacher votre instance au routeur de la toolbox via la commande suivante :
+  * Attacher votre instance au routeur de la toolbox
+  * Lancer le script d'attachement
+
+*Attacher son instance au routeur de l'instance:*
 
  ~~~bash
  $ neutron router-interface-add $Toolbox_ROUTER_ID $Instance_subnet_ID
@@ -241,7 +248,8 @@ $ heat resource-list $stack_name
 ~~~
 
 Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à la toolbox afin de l'instrumentaliser.
-Voici la procedure:
+
+*Lancer le script d'attachement*
 
 Aller dans le menu **instance** et cliquer le bouton ![bouton](img/plus.png) en bas a droite.
 
@@ -255,7 +263,7 @@ Une fois le script appliqué sur l'instance choisie celle-ci doit apparaitre dan
 
 Comme vous pouvez le voir, l'ensemble des logos des applications de la toolbox sont grisés.
 
-Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de pouvoir configurer et installer automatiquement les agents des différentes applications.
+Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de pouvoir installer et configurer automatiquement les agents des différentes applications.
 
 Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
 
