@@ -4,13 +4,17 @@
 
 ![pfsenselogo](http://actuto.azurewebsites.net/wp-content/uploads/2014/10/pfsense-logo.png)
 
-pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques. Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
+pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
+
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schemà d'architecture.
+
+![pfsense_schema](img/pfsense.png)
 
 ## Preparations
 
 ### Les versions
   - Pfsense 2.2.6
-
+  - Ubuntu Trusty 14.04
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
@@ -34,9 +38,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-freebsd-pfsense/`
 
 * `bundle-freebsd-pfsense.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
-* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
+* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
 ## Démarrage
 
@@ -86,7 +90,7 @@ parameters:
 Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~ bash
-$ ./stack-start.sh Pfsense
+$ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
@@ -98,31 +102,42 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
 ~~~bash
 $ heat resource-list Pfsense
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
+| resource_name            | physical_resource_id                                                      | resource_type                      | resource_status | updated_time         |
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
+| admin_floating_ip        | 2c97b35b-5beb-4aec-b1d4-845161d956ef                                      | OS::Neutron::FloatingIP            | CREATE_COMPLETE | 2016-03-18T13:39:39Z |
+| admin_sg                 | f29f1bee-ddba-4647-b172-84b4a06cfab1                                      | OS::Neutron::SecurityGroup         | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| network                  | af9e4d4c-d6ff-481a-be4e-9c454c4a4b1f                                      | OS::Neutron::Net                   | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| privatenet               | d24b9ce1-c405-414c-bc82-adcb710bcd47                                      | OS::Neutron::Net                   | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| fw_sg                    | 995c7cfc-4801-4faf-8c92-dacf601ad243                                      | OS::Neutron::SecurityGroup         | CREATE_COMPLETE | 2016-03-18T13:39:42Z |
+| fw_floating_ip           | abb864b2-ca78-444a-a142-6223f1083264                                      | OS::Neutron::FloatingIP            | CREATE_COMPLETE | 2016-03-18T13:39:43Z |
+| fw_postboot              | 3d4b341c-89b2-4405-9073-1438952c1166                                      | OS::Heat::SoftwareConfig           | CREATE_COMPLETE | 2016-03-18T13:39:43Z |
+| fw_init                  | 09e2052d-474c-4879-8d90-109f94e98676                                      | OS::Heat::MultipartMime            | CREATE_COMPLETE | 2016-03-18T13:39:44Z |
+| subnet_private           | 467c9629-4456-4f39-9b02-fa240910ac46                                      | OS::Neutron::Subnet                | CREATE_COMPLETE | 2016-03-18T13:39:44Z |
+| admin_postboot           | 7b670a20-3259-4071-895c-44a37e4ea94d                                      | OS::Heat::SoftwareConfig           | CREATE_COMPLETE | 2016-03-18T13:39:46Z |
+| subnet_public            | bed623b8-57d2-47fd-8da7-414ae30afb8d                                      | OS::Neutron::Subnet                | CREATE_COMPLETE | 2016-03-18T13:39:47Z |
+| admin_init               | bb6de5bc-79d8-4108-a19b-1e36c705ed8d                                      | OS::Heat::MultipartMime            | CREATE_COMPLETE | 2016-03-18T13:39:49Z |
+| fw_private_port          | 738ec53e-2f35-4cf0-a34e-8311ab5b387e                                      | OS::Neutron::Port                  | CREATE_COMPLETE | 2016-03-18T13:39:50Z |
+| fw_public_port           | 2642a85e-1f92-4398-b136-8db010dabdb8                                      | OS::Neutron::Port                  | CREATE_COMPLETE | 2016-03-18T13:39:50Z |
+| firewall                 | 94c3797e-760a-4d65-8bb4-b5ed50866b43                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:51Z |
+| admingw                  | 88aeceff-e7b8-4ada-a92e-d3dd7c5afcc2                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:53Z |
+| fw_floating_ass          | abb864b2-ca78-444a-a142-6223f1083264:2642a85e-1f92-4398-b136-8db010dabdb8 | OS::Neutron::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-18T13:39:54Z |
+| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`flotting_ip_admin`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
+
 ~~~
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense,
-* l'exposer sur Internet via une IP flottante.
-
-![pfsense](img/cloud-security.jpg)
+* Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
+* `flotting_ip_admin` est la flotting Ip de la machine Admin.  
 
 ## C’est bien tout ça, mais...
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Cozycloud:
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur pfsense:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-cozycloud](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-cozycloud)
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-freebsd-pfsense](https://github.com/cloudwatt/applications/tree/master/bundle-freebsd-pfsense)
 2.	Cliquez sur le fichier nommé `bundle-freebsd-pfsense.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
@@ -142,10 +157,56 @@ C’est (déjà) FINI !
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre pfsense !
 
 ## Enjoy
+Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN et vous avez aussi une machine ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense.
+Vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04) en tapant la commande suivante sur le terminal
+
+~~~bash
+$ lynx http://private_ip_pfsense
+~~~
+
+![lynx](img/lynx.png)
+
+pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
+
+![lynx1](img/lynx2.png)
+
+
+Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez aussi utiliser une machine windows,
+sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
+
+1) Tapez la commande suivante dans la machine Admin(ubuntu)
+
+~~~bash
+$ sudo ssh private_ip_pfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+~~~
+
+dans ce cas il faut utliser votre clé privée.
+
+ou
+
+~~~bash
+$ sudo ssh private_ip_pfsene -l root -L 80:localhost:80
+~~~
+
+le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
+
+2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
+
+~~~bash
+$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+~~~
+
+3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
+
+avec **username:admin** et **password:pfsense**.
+
+![pfsense1](img/pfsense1.png)
+
+Maintenant vous pouvez configurer votre firewall:
+
+![pfsense2](img/pfsense2.png)
 
 ------
-
-
 ## So watt  ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
@@ -154,6 +215,9 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
-* Voici quelques sites d'informations avant d'aller plus loin :
+### Voici quelques sites d'informations avant d'aller plus loin :
 - https://www.pfsense.org/
 - https://forum.pfsense.org
+
+----
+Have fun. Hack in peace.

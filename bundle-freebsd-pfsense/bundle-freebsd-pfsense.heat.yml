@@ -1,0 +1,223 @@
+heat_template_version: 2013-05-23
+
+description: Pfsense
+
+parameters:
+  keypair_name:
+    description: Keypair for IPSEC server access
+    label: SSH Keypair
+    type: string
+
+  flavor_name_fw:
+    default: n2.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Flavor for Pfsense
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+  flavor_name_admin:
+      default: t1.cw.tiny
+      description: Flavor to use for the deployed instance
+      type: string
+      label: Flavor for Admin
+      constraints:
+        - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-16
+
+  public_net_cidr:
+    description: /24 cidr of public network
+    type: string
+
+
+  private_net_cidr:
+    description: /24 cidr of private network
+    type: string
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet_public:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: { get_param: public_net_cidr }
+      allocation_pools:
+        - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: public_net_cidr} ] }
+          end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: public_net_cidr} ] }
+
+  privatenet:
+    type: OS::Neutron::Net
+
+  subnet_private:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: privatenet }
+      ip_version: 4
+      cidr: { get_param: private_net_cidr }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+      allocation_pools:
+        - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
+          end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
+
+  admin_sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+
+
+  fw_sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+
+
+  fw_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  admin_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  fw_postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+         str_replace:
+           template: |
+               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$
+
+           params:
+               $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
+               $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
+               $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
+
+
+
+  fw_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+        - config: { get_resource: fw_postboot  }
+
+  admin_postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+
+            ip route add default via $route$
+            apt-get install -y lynx
+
+          params:
+            $route$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: public_net_cidr} ] }
+            $floating_ip$: { get_attr: [admin_floating_ip, floating_ip_address] }
+            $public_net_cidr$: { get_param: public_net_cidr }
+
+  admin_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+        - config: { get_resource: admin_postboot  }
+
+  fw_public_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: network }
+      security_groups: [{ get_resource: fw_sg }]
+
+  fw_private_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_resource: subnet_private }
+      security_groups: [{ get_resource: fw_sg }]
+
+  firewall:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 719e29c1-96c0-46e9-991b-e8bbd49fdd5c
+      flavor: { get_param: flavor_name_fw }
+      networks:
+        - port: { get_resource: fw_public_port }
+        - port: { get_resource: fw_private_port }
+      user_data_format: RAW
+      user_data:
+        get_resource: fw_postboot
+
+  admingw:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: e9dc1515-47cc-4d52-8f54-48577ab5b216
+      flavor: { get_param: flavor_name_admin }
+      networks:
+        - { network: { get_resource: privatenet } }
+      security_groups:
+        - { get_resource: admin_sg }
+      user_data_format: RAW
+      user_data:
+        get_resource: admin_init
+
+  admingw_internet_surface:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: admin_floating_ip }
+      server_id: { get_resource: admingw}
+
+  fw_floating_ass:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: fw_floating_ip }
+      port_id: { get_resource: fw_public_port }
+
+outputs:
+  admin_floating_ip:
+    description: IP address of the deployed compute instance
+    value: { get_attr: [admin_floating_ip, floating_ip_address] }
