@@ -4,11 +4,12 @@
 
 
 
-La toolbox est une  stack différente de tout ce qu'on a pu faire jusqu'à présent. Celle-ci à pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s).En effet celle ci renferme un lot d'applications qui a pour vocation de vous aider dans la gestion de vos instances.
+La toolbox est une stack différente de tout ce qu'on a pu faire jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s).En effet celle-ci renferme un lot d'applications qui a pour vocation de vous aider dans la gestion de vos instances.
 
-Cette toolbox à entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
+Cette toolbox a entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
 
 Afin de sécuriser au maximum cette toolbox aucun port n'est exposé sur internet mis à part le port 22 afin de pouvoir récupérer un fichier de configuration Openvpn. Cette méthode est expliquée plus bas dans l'article.
+
 
 ## Preparations
 
@@ -33,12 +34,12 @@ Ceci devrait être une routine à présent:
  * Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
  * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
- * Un client Openvpn
+ * Un client [Openvpn](https://openvpn.net/)
 
 ### Taille de l'instance
 Par défaut, le script propose un déploiement sur une instance de type "standard-4" (n2.cw.standard-4). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-Vous pouvez ajuster les parametres de la stack à votre goût.
+Vous pouvez ajuster les paramètres de la stack à votre goût.
 
 ### Au fait...
 
@@ -71,7 +72,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 Dans le fichier `bundle-toolbox.heat.yml` vous trouverez en haut une section `parameters`. Cette stack à besoin de l'ensemble de vos informations utilisateur afin de pouvoir interagir avec l'ensemble de vos instances qui seront connecté au *routeur* de cette Toolbox.
 
-**Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits réstrinct. Un compte avec les droits de lecture suffit (TENANT_SHOW).
+**Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits restreint. Un compte avec les droits de lecture suffit (TENANT_SHOW).
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème nous vous conseillons d'utiliser une instance de type "standard-4".
 
 ~~~ yaml
@@ -160,7 +161,8 @@ $ heat resource-list Toolbox
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * démarrer une instance basée sur coreos,
-* déployer le conteneur Openvpn
+* lancer le conteneur **toolbox**
+* lancer le conteneur **SkyDNS**
 
 ## C’est bien tout ça, mais...
 
@@ -176,7 +178,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer la Toolbox:
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.  Donner l'ensemble des informations du compte pouvant acceder à votre tenant,
+9.  Donner l'ensemble des informations du compte pouvant accéder à votre tenant,
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Ne vous reste plus qu'à récupérer le fichier de configuration **open vpn** `cloud.ovpn`.
@@ -185,7 +187,7 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 scp -i ~/.ssh/your_keypair core@FloatingIP:cloud.ovpn .
 ```
 Si celui-ci n'est pas disponible, attendez **2 minutes** que l'ensemble de la stack soit disponible.
-Une fois cette opération réalisée ajoutez le fichier de configuration à votre client openvpn et connectez vous à votre toolbox.
+Une fois cette opération réalisée ajoutez le fichier de configuration à votre client openvpn et connectez-vous à votre toolbox.
 
 C’est (déjà) FINI !
 
@@ -195,25 +197,26 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*.
+Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*. L'accès a l'interface et aux différentes applications se fait via des nom **DNS**. En effet un conterneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interface web des applications en cliquant sur **Go**![Go](img/go.png) ou via une requête URL (ex : http://zabbix/).
 
 #### Présentation de l'interface :
 
-Voici l'accueil de la toolbox, chaque vignette représente un conteneur pret à être lancé.
+Voici l'accueil de la toolbox, chaque vignette représente une application prête à être lancée. Afin d'être le plus scalable et flexible possible, l'ensemble des applications de cette toolbox sont des conteneurs (Docker).
 
 ![accueil](img/accueil.png)
 
-L'ensemble de conteneurs présent peuvent être paramétrer grace au bouton **Settings** présent sur chaque vignette, prenons comme exemple le conteneur Zabbix.
-
-![zabbix](img/zabbix.png)
-
- Comme vous pouvez le constater vous pouvez inscrire ici l'ensemble des paramètres qui serviront à configurer le conteneur à son lancement.
+L'ensemble de conteneurs présent peuvent être paramétrer grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
 
 
+ Comme vous pouvez le constater, nous avons séparé en différentes section les paramètres.
+ ![params](img/params.png)
 
-Un menu est présent en haut en gauche de la page, celui-ci permet de vous déplacer dans les différentes section de la toolbox à savoir, les **apps**, les **instances** et les **tasks**.
 
-![menu](img/Menu.png)
+vous pouvez inscrire ici l'ensemble des paramètres qui serviront à configurer le conteneur à son lancement.
+
+Un menu est présent en haut en gauche de la page, il permet de vous déplacer dans les différentes séctions de la toolbox, je vais vous les détailler par la suite.
+
+![menu](img/menu.png)
 
 Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
 
@@ -240,14 +243,31 @@ $ heat resource-list $stack_name
 Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à la toolbox afin de l'instrumentaliser.
 Voici la procedure:
 
-Aller dans le menu **instance** et cliquer le bouton en bas a droite ![bouton](img/plus.png).
+Aller dans le menu **instance** et cliquer le bouton ![bouton](img/plus.png) en bas a droite.
 
-Vous devez avoir 2 commandes, un **Curl** et un **Wget** séléctionnez *celle de votre choix* et copier là sur l'instance à instrumentaliser.
+Vous devez avoir 2 commandes, un **Curl** et un **Wget** sélectionnez *celle de votre choix* et copier là sur l'instance à instrumentaliser.
 
 ![addinstance](img/addinstance.png)
 
+Une fois le script appliqué sur l'instance choisie celle-ci doit apparaitre dans le menu **instance** de votre toolbox.
 
+![instance](img/instance.png)
 
+Comme vous pouvez le voir, l'ensemble des logos des applications de la toolbox sont grisés.
+
+Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de pouvoir configurer et installer automatiquement les agents des différentes applications.
+
+Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
+
+Une fois l'application installer le logo de l'application passe en couleur, ce qui vous permet d'avoir un suivi des applications installées sur vos instances.
+
+![instance](img/instance.png)
+
+Tien en parlant de suivi, nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances.
+
+![audit](img/audit.png)
+
+Toujours de la but de vous aider au maximum nous avons intégré 2 liens dans la menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
 
 
 ## So watt  ?
@@ -259,4 +279,4 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
 * Voici quelques sites d'informations avant d'aller plus loin :
-- 
+-
