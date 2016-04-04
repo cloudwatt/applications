@@ -6,7 +6,7 @@
 
 pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schemà d'architecture.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
 
 ![pfsense_schema](img/pfsense.png)
 
@@ -15,6 +15,7 @@ Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la de
 ### Les versions
   - Pfsense 2.2.6
   - Ubuntu Trusty 14.04
+
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
@@ -94,7 +95,7 @@ $ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
-| ed4ac18a-4415-467e-928c-1bef193e4f38 | Pfsense  | CREATE_IN_PROGRESS | 2016-03-16T08:29:45Z |
+| ed4ac18a-4415-467e-928c-1bef193e4f38 | Pfsense    | CREATE_IN_PROGRESS | 2016-03-16T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
@@ -130,6 +131,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 * Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
 * `flotting_ip_admin` est la flotting Ip de la machine Admin.  
+
+<a name="console" />
 
 ## C’est bien tout ça, mais...
 
@@ -207,7 +210,7 @@ Maintenant vous pouvez configurer votre firewall:
 ![pfsense2](img/pfsense2.png)
 
 ------
-## So watt  ?
+## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
@@ -215,7 +218,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
-### Voici quelques sites d'informations avant d'aller plus loin :
+### Voici quelques sites d'informations pour aller plus loin
+
 - https://www.pfsense.org/
 - https://forum.pfsense.org
 
