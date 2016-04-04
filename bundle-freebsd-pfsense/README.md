@@ -15,6 +15,7 @@ Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la de
 ### Les versions
   - Pfsense 2.2.6
   - Ubuntu Trusty 14.04
+
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
