@@ -1,9 +1,9 @@
-# 5 Minutes Stacks, épisode 26 : Toolbox #
+# 5 Minutes Stacks, épisode 26 : Toolbox Beta #
 
-## Episode 26 : Toolbox
+## Episode 26 : Toolbox Beta
 
 
-La toolbox est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s). En effet celle-ci renferme un lot d'applications valiées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances.
+La toolbox (version Beta) est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin **d'unifier, d'harmoniser et monitorer votre tenant**. En effet celle-ci renferme un lot d'applications valiées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances.
 
 Cette toolbox a entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
 
@@ -162,6 +162,7 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 * lancer le conteneur **toolbox**
 * lancer le conteneur **SkyDNS**
 
+
 <a name="console" />
 
 ## C’est bien tout ça, mais...
@@ -197,23 +198,23 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url *http://manager*. L'accès a l'interface et aux différentes applications se fait via des nom **DNS**. En effet un conterneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interface web des applications en cliquant sur **Go** ou via une requête URL (ex : http://zabbix/).
+Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url **http://manager**. L'accès a l'interface et aux différentes applications se fait via des noms **DNS**. En effet un conteneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interfaces web des applications en cliquant sur **Go** ou via une requête URL (par exemple : http://zabbix/).
 
 #### Présentation de l'interface :
 
-Voici l'accueil de la toolbox, chaque vignette représente une application prête à être lancée. Afin d'être le plus scalable et flexible possible, l'ensemble des applications de cette toolbox sont des conteneurs (Docker).
+Voici l'accueil de la toolbox, chaque vignette représentant une application prête à être lancée. Afin d'être le plus scalable et flexible possible, l'ensemble des applications de cette toolbox sont des conteneurs (Docker).
 
 ![accueil](img/accueil.png)
 
-Un menu est présent en haut en gauche de la page, il permet de vous déplacer dans les différentes séctions de la toolbox, je vais vous les détailler par la suite.
+Un menu est présent en haut en gauche de la page, il permet de vous déplacer dans les différentes sections de la toolbox, nous allons vous les détailler par la suite.
 
 ![menu](img/menu.png)
 
-Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
+Les **tasks** permettent un suivi des actions effectuées sur la toolbox. Elles sont indiquées en temps relatif.
 
 ![tasks](img/tasks.png)
 
-L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
+L'ensemble des conteneurs présents peuvent être paramétrés grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
 
 
 Comme vous pouvez le constater, nous les avons séparés en différentes sections.
@@ -272,32 +273,32 @@ Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de po
 
 Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
 
-Une fois l'application installé, le logo de l'application passe en couleur, ce qui vous permet d'avoir un suivi des applications installées sur vos instances.
+Une fois l'application installée, le logo de l'application passe en couleur, ce qui vous d'un simple coup d'oeil les applications installées sur vos instances.
 
 ![appenable](img/appenable.png)
 
 Il vous est possible d'annuler une tache en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
-Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances.
+Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx).
 
 ![audit](img/audit.png)
 
-Toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
+Toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox : **My Instances** et **My Account**. Ils servent respectivement à accéder à vos instances via la console Horizon Cloudwatt et à accéder la gestion de votre compte via l'interface Cockpit.
 
 ## Les applications
 
-Dans cette section je vais vous présenter les différentes applications de cette Toolbox.
+Dans cette section nous allons vous présenter les différentes applications de cette Toolbox.
 
 ### Aptly
-C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un serveur Nginx. 
+C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui, elles, n'ont pas forcement accès à internet via un serveur Nginx. 
 
 Pour aller plus loin voici quelques liens utiles:
-    * https://www.aptly.info/
-    * http://korben.info/aptly-loutil-ultime-pour-gerer-vos-depots-debian.html/
+  * https://www.aptly.info/
+  * http://korben.info/aptly-loutil-ultime-pour-gerer-vos-depots-debian.html/
 
 
 ### ClamAV
-Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
+Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribués par ClamAV et ensuite le paquet récupéré sera exposé à vos instances via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
 
 Pour aller plus loin voici quelques liens utiles:
   * https://www.clamav.net/documents/private-local-mirrors
@@ -329,14 +330,14 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### Ntp
-Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être à la même heure.
+Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être synchroniser à la même heure.
 
 Pour aller plus loin voici quelques liens utiles:
   * http://www.pool.ntp.org/fr/
 
 
 ### Rundeck
-L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
+L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity (prochaine version de la toolbox).
 
 Pour aller plus loin voici quelques liens utiles:
   * http://rundeck.org/
@@ -352,7 +353,6 @@ Pour aller plus loin voici quelques liens utiles:
   * https://www.zabbix.com/documentation/3.0/start
 
 
-
 ## So watt  ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
@@ -360,7 +360,18 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maî
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
 * Récupérer le fichier de configuration openvpn sur l'instance de la toolbox.
-* Une fois connecté en VPN à la toolbox, vous avez acces à l'interface web via l'url http://manager.
+* Une fois connecté en VPN à la toolbox, vous avez acces à l'interface web via l'url **http://manager**.
 
-Voici quelques sites d'informations avant d'aller plus loin :
-  -
+
+## Et la suite ?
+
+Cet article permet de vous familiariser avec cette première version de la toolbox. Elle est mise à la disposition de tous les utilisateurs en mode Beta et donc **pour le moment gratuitement**.
+L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorations sur une base mensuelle. Dans notre roadmap, nous prévoyons entre autre :
+* une version francaise
+* l'ajout de la fonction backup
+* une version HA
+* un menu additionnel pour contacter les équipes support Cloudwatt
+
+
+-----
+Have fun. Hack in peace.
