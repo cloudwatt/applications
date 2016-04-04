@@ -3,8 +3,7 @@
 ## Episode 26 : Toolbox
 
 
-
-La toolbox est une stack différente de tout ce qu'on a pu faire jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s).En effet celle-ci renferme un lot d'applications qui a pour vocation de vous aider dans la gestion de vos instances.
+La toolbox est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin d'unifier, d'harmoniser et monitorer votre/vos tenant(s). En effet celle-ci renferme un lot d'applications valiées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances.
 
 Cette toolbox a entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
 
@@ -72,8 +71,8 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 Dans le fichier `bundle-toolbox.heat.yml` vous trouverez en haut une section `parameters`. Cette stack à besoin de l'ensemble de vos informations utilisateur afin de pouvoir interagir avec l'ensemble de vos instances qui seront connecté au *routeur* de cette Toolbox.
 
-**Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits restreint. Un compte avec les droits de lecture suffit (TENANT_SHOW).
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème nous vous conseillons d'utiliser une instance de type "standard-4".
+**Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits restreints. Un compte avec les droits de lecture suffit (TENANT_SHOW).
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème de performence, nous vous conseillons d'utiliser une instance de type "standard-4".
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -122,7 +121,6 @@ parameters:
           - n2.cw.standard-2
           - n2.cw.standard-4
           - n2.cw.standard-8
-          - n2.cw.standard-12
           - n2.cw.standard-16
 
  ~~~
@@ -163,6 +161,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 * démarrer une instance basée sur coreos,
 * lancer le conteneur **toolbox**
 * lancer le conteneur **SkyDNS**
+
+<a name="console" />
 
 ## C’est bien tout ça, mais...
 
@@ -216,10 +216,10 @@ Les **tasks** servent à avoir un suivi des actions effectuées sur la toolbox.
 L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
 
 
- Comme vous pouvez le constater, nous les avons séparés en différentes section.
+Comme vous pouvez le constater, nous les avons séparés en différentes sections.
  ![params](img/params.png)
 
-Dans la section **Infos** vous allez retrouver une présentation de l'application avec quelques liens utile sur l'application concernée.
+Dans la section **Infos** vous allez retrouver une présentation de l'application avec quelques liens utiles sur l'application concernée.
 
 ![appresume](img/appresume.png)
 
@@ -227,7 +227,7 @@ Dans la section **Infos** vous allez retrouver une présentation de l'applicatio
 Dans la section **Environnements** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
 ![paramsenv](img/paramenv.png)
 
-Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des diffèrentes applications.
+Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des différentes applications.
 ![paramapp](img/paramapp.png)
 
 Afin d'identifier les applications lancées nous avons mis en place un code couleur. Une application démarrée sera entourée d'un halo vert.
@@ -235,7 +235,7 @@ Afin d'identifier les applications lancées nous avons mis en place un code coul
 
 #### Ajouter des instances à ma Toolbox :
 
-Afin d'ajouter des instances à la toolbox 2 choses sont à penser :
+Afin d'ajouter des instances à la toolbox, 2 choses sont à penser :
 
   * Attacher votre instance au routeur de la toolbox
   * Lancer le script d'attachement
@@ -272,41 +272,47 @@ Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de po
 
 Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
 
-Une fois l'application installer le logo de l'application passe en couleur, ce qui vous permet d'avoir un suivi des applications installées sur vos instances.
+Une fois l'application installé, le logo de l'application passe en couleur, ce qui vous permet d'avoir un suivi des applications installées sur vos instances.
 
 ![appenable](img/appenable.png)
 
-il vous ait possible d'annuler une taches en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
+Il vous est possible d'annuler une tache en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
 Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances.
 
 ![audit](img/audit.png)
 
-Toujours de le but de vous aider au maximum nous avons intégré 2 liens dans le menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
+Toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
 
-## Entrée dans la matière
+## Les applications
 
 Dans cette section je vais vous présenter les différentes applications de cette Toolbox.
 
-* **Aptly** : C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un serveur Nginx. Pour aller plus loin voici quelque liens utiles:
+### Aptly
+C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui elles n'ont pas forcement accès à internet via un serveur Nginx. 
+
+Pour aller plus loin voici quelques liens utiles:
     * https://www.aptly.info/
     * http://korben.info/aptly-loutil-ultime-pour-gerer-vos-depots-debian.html/
 
 
-* **ClamAV** : Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
-Pour aller plus loin voici quelque liens utiles:
+### ClamAV
+Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribué par ClamAV et ensuite le paquet récupéré sera exposé à vos instance via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
+
+Pour aller plus loin voici quelques liens utiles:
   * https://www.clamav.net/documents/private-local-mirrors
   * https://github.com/vrtadmin/clamav-faq/blob/master/mirrors/MirrorHowto.md
 
 
-* **Graylog**: C'est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officiellement par les équipes Graylog.
+### Graylog
+C'est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officiellement par les équipes Graylog.
   * L'interface graphique web de Graylog est un outil puissant qui permet à quiconque de manipuler la totalité de ce que Graylog a à offrir grâce à cette application Web intuitive et attrayante.
   * Le cœur de Graylog est son moteur. Le serveur Graylog interagit avec tous les autres composants à l'aide d'interfaces API REST de sorte que chaque composant du système peut être adapté sans pour autant compromettre l'intégrité du système dans son ensemble.
   * Des résultats de recherche en temps réel quand vous les voulez et comment vous les voulez: Graylog est en mesure de vous fournir ceci grâce à la puissance éprouvée d'ElasticSearch. Les nœuds ElasticSearch donnent à Graylog la vitesse qui en fait un vrai plaisir à utiliser.
 
-  Bénéficiant de cette architecture impressionnante ainsi que d'une vaste bibliothèque de plugins, Graylog se place comme une solution solide et polyvalente de gestion des logs.
+Bénéficiant de cette architecture impressionnante ainsi que d'une vaste bibliothèque de plugins, Graylog se place comme une solution solide et polyvalente de gestion des logs.
 
-  Pour aller plus loin voici quelque liens utiles:
+Pour aller plus loin voici quelques liens utiles:
   * https://www.graylog.org/
   * http://docs.graylog.org/en/1.2/pages/getting_started.html#get-messages-in
   * http://docs.graylog.org/en/1.3/pages/architecture.html
@@ -314,30 +320,34 @@ Pour aller plus loin voici quelque liens utiles:
   * https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
 
 
-* **Nexus**: Nexus est une application pouvant exposer n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un répertoire YUM à l'ensemble de vos instances.
+### Nexus
+Nexus est une application pouvant exposer n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un répertoire YUM à l'ensemble de vos instances.
 
-  Pour aller plus loin voici quelque liens utiles:
+Pour aller plus loin voici quelques liens utiles:
   * https://books.sonatype.com/nexus-book/reference/index.html
   * https://books.sonatype.com/nexus-book/reference/yum-configuration.html
 
 
-* **Ntp**: Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être à la même heure.
+### Ntp
+Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être à la même heure.
 
-  Pour aller plus loin voici quelque liens utiles:
+Pour aller plus loin voici quelques liens utiles:
   * http://www.pool.ntp.org/fr/
 
 
-* **Rundeck**: L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
+### Rundeck
+L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity.
 
-  Pour aller plus loin voici quelque liens utiles:
+Pour aller plus loin voici quelques liens utiles:
   * http://rundeck.org/
   * http://blog.admin-linux.org/administration/rundeck-ordonnanceur-centralise-opensource-vient-de-sortir-sa-v2-0
   * http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-vingt-trois-duplicity.html
 
 
-* **Zabbix**: Zabbix est un logiciel libre permettant de surveiller l'état de divers services réseau, serveurs et autres matériels réseau; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
+### Zabbix
+Zabbix est un logiciel libre permettant de surveiller l'état de divers services réseau, serveurs et autres matériels réseau; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
 
-    Pour aller plus loin voici quelque liens utiles:
+Pour aller plus loin voici quelques liens utiles:
   * http://www.zabbix.com/
   * https://www.zabbix.com/documentation/3.0/start
 
@@ -350,7 +360,6 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maî
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
 * Récupérer le fichier de configuration openvpn sur l'instance de la toolbox.
-
 * Une fois connecté en VPN à la toolbox, vous avez acces à l'interface web via l'url http://manager.
 
 Voici quelques sites d'informations avant d'aller plus loin :
