@@ -220,13 +220,11 @@ L'ensemble des conteneurs présent peuvent être paramétrés grace au bouton **
  ![params](img/params.png)
 
 
-Dans la section **Environnement** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
+Dans la section **Environnements** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
 ![paramsenv](img/paramenv.png)
 
 Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des diffèrentes applications.
 ![paramapp](img/paramapp.png)
-
-il vous ait possible d'annuler une taches en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
 #### Ajouter des instances à ma Toolbox :
 
@@ -271,11 +269,13 @@ Une fois l'application installer le logo de l'application passe en couleur, ce q
 
 ![instance](img/instance.png)
 
-Tien en parlant de suivi, nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances.
+il vous ait possible d'annuler une taches en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
+
+Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances.
 
 ![audit](img/audit.png)
 
-Toujours de la but de vous aider au maximum nous avons intégré 2 liens dans la menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
+Toujours de le but de vous aider au maximum nous avons intégré 2 liens dans le menu de la toolbox **My Instances** et **My Account**, ils servent respectivement à accéder à vos instances via la console cloudwatt et à accéder la gestion de votre compte via la console Cockpit.
 
 
 ## So watt  ?
