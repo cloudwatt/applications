@@ -210,7 +210,7 @@ Maintenant vous pouvez configurer votre firewall:
 ![pfsense2](img/pfsense2.png)
 
 ------
-## So watt  ?
+## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
