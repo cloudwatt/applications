@@ -72,13 +72,13 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 Dans le fichier `bundle-toolbox.heat.yml` vous trouverez en haut une section `parameters`. Cette stack à besoin de l'ensemble de vos informations utilisateur afin de pouvoir interagir avec l'ensemble de vos instances qui seront connecté au *routeur* de cette Toolbox.
 
 **Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits restreints. Un compte avec les droits de lecture suffit (TENANT_SHOW).
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème de performence, nous vous conseillons d'utiliser une instance de type "standard-4".
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème éventuel de performance, nous vous conseillons d'utiliser une instance de type "standard-4".
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
 
-description: CoreOS stack for Cloudwatt
+description: Toolbox stack for Cloudwatt
 
 
 parameters:
@@ -241,10 +241,11 @@ Afin d'identifier les applications lancées de celles qui ne le sont pas, nous a
 
 #### Ajouter des instances à ma Toolbox
 
-Afin d'ajouter des instances à la toolbox, 2 choses sont à penser :
+Afin d'ajouter des instances à la toolbox, 3 étapes :
 
   * Attacher votre instance au routeur de la toolbox
   * Lancer le script d'attachement
+  * Lancer les services souhaités
 
 **Attacher son instance au routeur de l'instance :**
 
@@ -274,22 +275,22 @@ Une fois le script appliqué sur l'instance choisie celle-ci doit apparaitre dan
 
 Comme vous pouvez le voir, l'ensemble des logos des applications de la toolbox sont grisés.
 
+**Lancer les services souhaitées sur l'instance :**
+
 Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de pouvoir installer et configurer automatiquement les agents des différentes applications.
 
 Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
-
 Une fois l'application installée, le logo de l'application passe en couleur, ce qui vous permet, d'un simple coup d'oeil, d'identifier les applications installées sur vos instances.
 
 ![appenable](img/appenable.png)
 
 Il vous est possible d'annuler une tache en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
-Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx) si vous souhaitez effectuer un post-processing.
-
-Enfin, toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox : **My Instances** et **My Account**. Ils servent respectivement à accéder à vos instances via la console Horizon Cloudwatt et à accéder à la gestion de votre compte via l'interface Cockpit.
-
+Nous avons aussi mis en place une section **audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx) si vous souhaitez effectuer un post-processing ou garder ces informations pour des raisons de sécurité.
 
 ![audit](img/audit.png)
+
+Enfin, toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox : **My Instances** et **My Account**. Ils servent respectivement à accéder à vos instances via la console Horizon Cloudwatt et à accéder à la gestion de votre compte via l'interface Cockpit.
 
 
 ## Les applications
@@ -372,7 +373,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 ## Et la suite ?
 
-Cet article permet de vous familiariser avec cette première version de la toolbox. Elle est mise à la disposition de tous les utilisateurs en mode Beta et donc pour le moment gratuitement.
+Cet article permet de vous familiariser avec cette première version de la toolbox. Elle est mise à la disposition de tous les utilisateurs Cloudwatt en mode Beta et donc pour le moment gratuitement.
+
 L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorations sur une base mensuelle. Dans notre roadmap, nous prévoyons entre autre :
 * une version francaise
 * l'ajout de la fonction backup
@@ -382,4 +384,5 @@ L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorati
 
 -----
 Have fun. Hack in peace.
+
 The CAT
