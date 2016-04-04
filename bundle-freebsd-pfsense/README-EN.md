@@ -4,7 +4,7 @@
 
 ![pfsenselogo](http://actuto.azurewebsites.net/wp-content/uploads/2014/10/pfsense-logo.png)
 
-pfSense is an open source firewall/router computer software distribution based on FreeBSD.It is installed on a physical computer or a virtual machine to make a dedicated firewall/router for a network and is noted for its reliability[6] and offering features often only found in expensive commercial firewalls.It can be configured and upgraded through a web-based interface, and requires no knowledge of the underlying FreeBSD system to manage.PfSense is commonly deployed as a perimeter firewall, router, wireless access point, DHCP server, DNS server, and as a VPN endpoint. pfSense supports installation of third-party packages like Snort or Squid through its Package Manager.It ensure the security perimeter.
+pfSense is an open source firewall/router computer software distribution based on FreeBSD. It is installed on a physical computer or a virtual machine to make a dedicated firewall/router for a network and is noted for its reliability and offering features often only found in expensive commercial firewalls. It can be configured and upgraded through a web-based interface, and requires no knowledge of the underlying FreeBSD system to manage. PfSense is commonly deployed as a perimeter firewall, router, wireless access point, DHCP server, DNS server, and as a VPN endpoint. PfSense supports installation of third-party packages like Snort or Squid through its Package Manager. It ensures the security perimeter.
 
 This stack will deploy two instances: one is Pfsense application, the second for Pfsense administration is based on Ubuntu. Here is the architecture diagram.
 
@@ -13,6 +13,7 @@ This stack will deploy two instances: one is Pfsense application, the second for
 ### The Versions
 - Pfsense 2.2.6
 - Ubuntu Trusty 14.04
+
 ### The prerequisites to deploy this stack
 
 These should be routine by now:
@@ -25,7 +26,7 @@ These should be routine by now:
 
 ## Size of the instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "standard-1" (n2.cw.standard-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
 Stack parameters, of course, are yours to tweak at your fancy.
 
@@ -96,7 +97,7 @@ $ ./stack-start.sh Pfsense
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
-| ee873a3a-a306-4127-8647-4bc80469cec4 | Pfsense       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+| ee873a3a-a306-4127-8647-4bc80469cec4 | Pfsense         | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
@@ -142,7 +143,7 @@ If you've reached this point, you're already done! Go enjoy Pfsense!
 
 ### A one-click chat sounds really nice...
 
-... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your pfsense server!
+... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your pfsense server!
 
 ## Enjoy
 In this example you have a pfsense server connects on both networks LAN and WAN, you have also an Ubuntu 14.04 connects to the same LAN of pfsense.You can manage your firewall from your admin machine (ubuntu).
