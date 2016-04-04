@@ -218,7 +218,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
-### Voici quelques sites d'informations avant d'aller plus loin :
+### Voici quelques sites d'informations pour aller plus loin
+
 - https://www.pfsense.org/
 - https://forum.pfsense.org
 
