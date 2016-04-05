@@ -3,9 +3,9 @@
 ## Episode 26 : Toolbox Beta
 
 
-La toolbox (version Beta) est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin **d'unifier, d'harmoniser et monitorer votre tenant**. En effet celle-ci renferme un lot d'applications valiées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances.
+La toolbox (version Beta) est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin **d'unifier, d'harmoniser et monitorer votre tenant**. En effet celle-ci renferme un lot d'applications variées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances.
 
-Cette toolbox a entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker. De plus depuis l'interface vous pouvez installer ou configurer l'ensemble des applications sur vos instances via des playbooks Ansible.
+Cette toolbox a entièrement été développée par l'équipe CAT (Cloudwatt Automation Team). L'interface utilisateur est faite en technologie react; elle repose sur une instance CoreOS et l'ensemble des applications se déploie via des conteneurs Docker sur une infrastructure Kubernetes. De plus vous pouvez installer ou configurer, depuis l'interface graphique, l'ensemble des applications sur vos instances via des playbooks Ansible.
 
 Afin de sécuriser au maximum cette toolbox aucun port n'est exposé sur internet mis à part le port 22 afin de pouvoir récupérer un fichier de configuration Openvpn. Cette méthode est expliquée plus bas dans l'article.
 
@@ -72,13 +72,13 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 Dans le fichier `bundle-toolbox.heat.yml` vous trouverez en haut une section `parameters`. Cette stack à besoin de l'ensemble de vos informations utilisateur afin de pouvoir interagir avec l'ensemble de vos instances qui seront connecté au *routeur* de cette Toolbox.
 
 **Un conseil** : Afin que la toolbox n'ait pas l'ensemble des droits sur votre tenant, vous pouvez lui créer un compte avec des droits restreints. Un compte avec les droits de lecture suffit (TENANT_SHOW).
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème de performence, nous vous conseillons d'utiliser une instance de type "standard-4".
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`. Afin de ne pas avoir de problème éventuel de performance, nous vous conseillons d'utiliser une instance de type "standard-4".
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
 
-description: CoreOS stack for Cloudwatt
+description: Toolbox stack for Cloudwatt
 
 
 parameters:
@@ -108,7 +108,6 @@ parameters:
     label: OpenStack Auth URL
     type: string
 
-
   flavor_name:
     default: n2.cw.standard-4
     description: Flavor to use for the deployed instance
@@ -124,9 +123,10 @@ parameters:
           - n2.cw.standard-16
 
  ~~~
+
 ### Démarrer la stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom de la stack que vous souhaitez lui attribuer :
 
 ~~~ bash
 $ ./stack-start.sh Toolbox
@@ -200,13 +200,19 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois connecté au VPN sur la stack vous avez maintenant accès à l'interface d'administration via l'url **http://manager**. L'accès a l'interface et aux différentes applications se fait via des noms **DNS**. En effet un conteneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms courts mis en place. Vous pourrez accéder aux différentes interfaces web des applications en cliquant sur **Go** ou via une requête URL (par exemple : http://zabbix/).
 
-#### Présentation de l'interface :
+#### Présentation de l'interface
 
 Voici l'accueil de la toolbox, chaque vignette représentant une application prête à être lancée. Afin d'être le plus scalable et flexible possible, l'ensemble des applications de cette toolbox sont des conteneurs (Docker).
 
 ![accueil](img/accueil.png)
 
 Un menu est présent en haut en gauche de la page, il permet de vous déplacer dans les différentes sections de la toolbox, nous allons vous les détailler par la suite.
+* Apps : liste des applications
+* Instances : liste des instances visibles de la toolbox
+* Tasks : ensemble des taches en cours ou terminées
+* Audit : liste des actions effectuées
+* My Instances > Console : accès à la console Horizon
+* My account > Cockpit : accès à mon compte
 
 ![menu](img/menu.png)
 
@@ -216,7 +222,6 @@ Les **tasks** permettent un suivi des actions effectuées sur la toolbox. Elles 
 
 L'ensemble des conteneurs présents peuvent être paramétrés grace au bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette.
 
-
 Comme vous pouvez le constater, nous les avons séparés en différentes sections.
  ![params](img/params.png)
 
@@ -225,23 +230,24 @@ Dans la section **Infos** vous allez retrouver une présentation de l'applicatio
 ![appresume](img/appresume.png)
 
 
-Dans la section **Environnements** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
+Dans la section **Environments** vous pouvez ici inscrire l'ensemble des paramètres qui serviront à configurer les variables d'environnement du conteneur à son lancement.
 ![paramsenv](img/paramenv.png)
 
-Dans la section **Paramètres** vous pouvez ici inscrire l'ensemble des paramètres de configuration des différentes applications.
+Dans la section **Parameters** vous pouvez ici inscrire l'ensemble des paramètres de configuration des différentes applications.
 ![paramapp](img/paramapp.png)
 
-Afin d'identifier les applications lancées nous avons mis en place un code couleur. Une application démarrée sera entourée d'un halo vert.
+Afin d'identifier les applications lancées de celles qui ne le sont pas, nous avons mis en place un code couleur. Une application démarrée sera entourée d'un halo vert.
 ![appstart](img/appstart.png)
 
-#### Ajouter des instances à ma Toolbox :
+#### Ajouter des instances à ma Toolbox
 
-Afin d'ajouter des instances à la toolbox, 2 choses sont à penser :
+Afin d'ajouter des instances à la toolbox, 3 étapes :
 
   * Attacher votre instance au routeur de la toolbox
   * Lancer le script d'attachement
+  * Lancer les services souhaités
 
-*Attacher son instance au routeur de l'instance:*
+**Attacher son instance au routeur de l'instance :**
 
  ~~~bash
  $ neutron router-interface-add $Toolbox_ROUTER_ID $Instance_subnet_ID
@@ -255,7 +261,7 @@ $ heat resource-list $stack_name
 
 Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à la toolbox afin de l'instrumentaliser.
 
-*Lancer le script d'attachement :*
+**Lancer le script d'attachement :**
 
 Aller dans le menu **instance** et cliquer le bouton ![bouton](img/plus.png) en bas a droite.
 
@@ -269,28 +275,30 @@ Une fois le script appliqué sur l'instance choisie celle-ci doit apparaitre dan
 
 Comme vous pouvez le voir, l'ensemble des logos des applications de la toolbox sont grisés.
 
+**Lancer les services souhaitées sur l'instance :**
+
 Afin de vous aider au maximum nous avons créé des playbooks Ansible afin de pouvoir installer et configurer automatiquement les agents des différentes applications.
 
 Pour cela il suffit de cliquer sur la ou les application(s) que vous souhaitez installer sur votre machine. Le playbook Ansible concerné va s'installer automatiquement.
-
-Une fois l'application installée, le logo de l'application passe en couleur, ce qui vous d'un simple coup d'oeil les applications installées sur vos instances.
+Une fois l'application installée, le logo de l'application passe en couleur, ce qui vous permet, d'un simple coup d'oeil, d'identifier les applications installées sur vos instances.
 
 ![appenable](img/appenable.png)
 
 Il vous est possible d'annuler une tache en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
-Nous avons aussi mis en place une section **d'audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx).
+Nous avons aussi mis en place une section **audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx) si vous souhaitez effectuer un post-processing ou garder ces informations pour des raisons de sécurité.
 
 ![audit](img/audit.png)
 
-Toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox : **My Instances** et **My Account**. Ils servent respectivement à accéder à vos instances via la console Horizon Cloudwatt et à accéder la gestion de votre compte via l'interface Cockpit.
+Enfin, toujours dans le but de vous aider au maximum, nous avons intégré 2 liens dans le menu de la toolbox : **My Instances** et **My Account**. Ils servent respectivement à accéder à vos instances via la console Horizon Cloudwatt et à accéder à la gestion de votre compte via l'interface Cockpit.
+
 
 ## Les applications
 
-Dans cette section nous allons vous présenter les différentes applications de cette Toolbox.
+Dans cette section, nous allons vous présenter les différentes applications de cette Toolbox.
 
 ### Aptly
-C'est un gestionnaire de paquet *APT*. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui, elles, n'ont pas forcement accès à internet via un serveur Nginx. 
+C'est un **gestionnaire de paquet APT**. Il permet de faire un miroir d'un répetoire APT exposé sur internet afin de pouvoir le distribuer à l'ensemble des machines de votre tenant qui, elles, n'ont pas forcement accès à internet via un serveur Nginx. 
 
 Pour aller plus loin voici quelques liens utiles:
   * https://www.aptly.info/
@@ -298,7 +306,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### ClamAV
-Celui-ci est un serveur Ngnix. Un script **CRON** va s'exécuter chaque jour afin d'aller chercher la dernière définition des virus distribués par ClamAV et ensuite le paquet récupéré sera exposé à vos instances via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient accès à internet.
+Cette application est un serveur Ngnix. Un script *CRON* va s'exécuter chaque jour afin d'aller chercher la dernière définition des **antivirus** distribués par ClamAV et ensuite le paquet récupéré sera exposé à vos instances via Ngnix. Ce qui vous permettra d'avoir des clients **ClamAV** à jour sans que vos instances n'aient forcément accès à internet.
 
 Pour aller plus loin voici quelques liens utiles:
   * https://www.clamav.net/documents/private-local-mirrors
@@ -306,7 +314,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### Graylog
-C'est une plateforme open source de gestion de logs capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officiellement par les équipes Graylog.
+C'est une plateforme open source de **gestion de logs** capable de manipuler et présenter les données à partir de pratiquement n'importe quelle source. Ce conteneur est celui proposer officiellement par les équipes Graylog.
   * L'interface graphique web de Graylog est un outil puissant qui permet à quiconque de manipuler la totalité de ce que Graylog a à offrir grâce à cette application Web intuitive et attrayante.
   * Le cœur de Graylog est son moteur. Le serveur Graylog interagit avec tous les autres composants à l'aide d'interfaces API REST de sorte que chaque composant du système peut être adapté sans pour autant compromettre l'intégrité du système dans son ensemble.
   * Des résultats de recherche en temps réel quand vous les voulez et comment vous les voulez: Graylog est en mesure de vous fournir ceci grâce à la puissance éprouvée d'ElasticSearch. Les nœuds ElasticSearch donnent à Graylog la vitesse qui en fait un vrai plaisir à utiliser.
@@ -322,7 +330,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### Nexus
-Nexus est une application pouvant exposer n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant exposer un répertoire YUM à l'ensemble de vos instances.
+Nexus est une application pouvant exposer n'importe quel type de répertoire via un serveur Ngnix. Ici notre volonté est de vous proposer une application pouvant **exposer un répertoire YUM** à l'ensemble de vos instances.
 
 Pour aller plus loin voici quelques liens utiles:
   * https://books.sonatype.com/nexus-book/reference/index.html
@@ -330,14 +338,14 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### Ntp
-Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être synchroniser à la même heure.
+Le conteneur NTP est ici utiliser afin que l'ensemble de vos instances n'ayant pas accès à internet puissent être synchroniser à la même heure et est accès à un **serveur de temps**.
 
 Pour aller plus loin voici quelques liens utiles:
   * http://www.pool.ntp.org/fr/
 
 
 ### Rundeck
-L'application Rundeck va vous permettre de programmer et d'organiser l'ensemble des jobs que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity (prochaine version de la toolbox).
+L'application Rundeck va vous permettre de **programmer et d'organiser l'ensemble des jobs** que vous voulez déployer régulièrement sur l'ensemble de votre tenant via son interface web. Dans notre cas nous avons voulu vous donner la possibilité de mettre en place un script vous permettant de sauvegarder vos serveurs comme nous l'avons vu dans le cadre du *bundle* Duplicity (prochaine version de la toolbox).
 
 Pour aller plus loin voici quelques liens utiles:
   * http://rundeck.org/
@@ -346,7 +354,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 
 ### Zabbix
-Zabbix est un logiciel libre permettant de surveiller l'état de divers services réseau, serveurs et autres matériels réseau; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
+Zabbix est un logiciel libre permettant de **surveiller l'état de divers services réseau, serveurs et autres matériels réseau**; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
 
 Pour aller plus loin voici quelques liens utiles:
   * http://www.zabbix.com/
@@ -355,7 +363,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 ## So watt  ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
@@ -365,7 +373,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 ## Et la suite ?
 
-Cet article permet de vous familiariser avec cette première version de la toolbox. Elle est mise à la disposition de tous les utilisateurs en mode Beta et donc **pour le moment gratuitement**.
+Cet article permet de vous familiariser avec cette première version de la toolbox. Elle est mise à la disposition de tous les utilisateurs Cloudwatt en mode Beta et donc pour le moment gratuitement.
+
 L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorations sur une base mensuelle. Dans notre roadmap, nous prévoyons entre autre :
 * une version francaise
 * l'ajout de la fonction backup
@@ -375,3 +384,5 @@ L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorati
 
 -----
 Have fun. Hack in peace.
+
+The CAT
