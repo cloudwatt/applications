@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 25 episode : Webmail Antispam #
+# 5 Minutes Stacks, 26 episode : Webmail Antispam #
 
-## Episode 20 : Webmail Antispam
+## Episode 26 : Webmail Antispam
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
