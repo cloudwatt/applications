@@ -6,7 +6,7 @@
 
 heat_template_version: 2013-05-23
 
-description: All-in-one Webmail stack
+description: All-in-one Webmail Antispam stack
 
 parameters:
   keypair_name:
