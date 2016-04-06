@@ -143,10 +143,6 @@ The stack will be automatically generated (you can see its progress by clicking 
 
 If you've reached this point, you're already done! Go enjoy Pfsense!
 
-### A one-click chat sounds really nice...
-
-... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your pfsense server!
-
 ## Enjoy
 In this example you have a pfsense server connects on both networks LAN and WAN, you have also an Ubuntu 14.04 connects to the same LAN of pfsense.You can manage your firewall from your admin machine (ubuntu).
 you can connect to your pfsense by typing on your terminal this command:

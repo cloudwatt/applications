@@ -1,11 +1,13 @@
-# 5 Minutes Stacks, 25 episode : Mail #
+# 5 Minutes Stacks, 26 episode : Webmail Antispam #
 
-## Episode 20 : Webmail
+## Episode 26 : Webmail Antispam
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
 An email server is a mail server software (email). It aims to transfer emails from one server to another. An user is never in direct contact with this server uses either a mail client or a webmail client, which is responsible to contact the server to send or receive messages.
 In this episode we used Rainloop as open source webmail that is developed in PHP and designed to be comprehensive and easy to use. It manages very well IMAP / SMTP protocols and has a modern interface (HTML5 / CSS3) very Ergonomic, it is rather pleasant. In terms of features, there are all those of a conventional mail client, plus a system of plugins.
+
+We will show you how to build your webmail stack and how to secure it, thanks to **ClamAV** and **SpamAssassin**.
 
 ## Preparations
 

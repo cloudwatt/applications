@@ -155,9 +155,6 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 
 C’est (déjà) FINI !
 
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
-
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre pfsense !
 
 ## Enjoy
 Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN et vous avez aussi une machine ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense.
