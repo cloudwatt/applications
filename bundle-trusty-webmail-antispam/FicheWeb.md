@@ -6,7 +6,7 @@ url: webmail.html
 date: 2016-04-06 00:00:00
 date-creation: "6 avril 2016"
 date-maj: "6 avril 2016"
-description: ""
+description: "Rainloop est un webmail opensource complet et simple d'utilisation. Il gère très bien les protocoles IMAP/SMTP et dispose d'une interface moderne (HTML5/CSS3) très érgonomique. Cette stack applicative lance ce webmail et le sécurise grâce à ClamAV et SpamAssassin, respectivement un antivirus et un antispam."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-trusty-webmail-antispam
 siteofficiel: http://www.clamav.net/
 sitesupport: 
