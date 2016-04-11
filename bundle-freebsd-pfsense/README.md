@@ -98,6 +98,8 @@ $ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 | ed4ac18a-4415-467e-928c-1bef193e4f38 | Pfsense    | CREATE_IN_PROGRESS | 2016-03-16T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
+* private_net : Adresse du réseau lan (ex: 192.168.0.0/24)
+* public_net : Adresse du réseau Wan (ex : 10.0.0.0/24)
 
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 

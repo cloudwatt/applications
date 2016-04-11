@@ -93,13 +93,18 @@ $ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 Exemple :
 
 ~~~bash
-$ ./stack-start.sh Pfsense
+$ ./stack-start.sh Pfsense your_keypair_name private_net public_net
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
 | ee873a3a-a306-4127-8647-4bc80469cec4 | Pfsense         | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
+
+* private_net : Lan network (ex: 192.168.0.0/24)
+* public_net : Wan network (ex : 10.0.0.0/24)
+
+
 Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
 ~~~bash
