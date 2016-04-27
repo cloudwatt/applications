@@ -26,6 +26,7 @@ parameters:
         - n2.cw.highmem-4
         - n2.cw.highmem-8
         - n2.cw.highmem-16
+
   flavor_name_admin:
       default: t1.cw.tiny
       description: Flavor to use for the deployed instance
