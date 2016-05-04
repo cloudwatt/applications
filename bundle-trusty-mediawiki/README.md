@@ -159,7 +159,7 @@ vous devez arriver sur cette page :
 
 ![imagesetup](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/image1.jpg)
 
-le login de votre base de donnée est 'mediawiki' et le mot de passe de votre base de donnée ce trouve dans le fichier /etc/mediawiki/password_db
+le login de votre base de donnée est 'mediawiki' et le mot de passe de votre base de donnée ce trouve dans le fichier /mediawiki/password_db
 
 ![confBDD](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/inst3.jpg)
 

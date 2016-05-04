@@ -124,7 +124,7 @@ You have to arrive on this page:
 
 ![imagesetup](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/image1.jpg)
 
-The login of your base is 'mediawiki' and the password are in /etc/mediawiki/pasword_db
+The login of your base is 'mediawiki' and the password are in /mediawiki/pasword_db
 
 ![confBDD](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/inst3.jpg)
 
