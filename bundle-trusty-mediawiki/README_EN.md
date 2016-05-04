@@ -99,7 +99,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DUPLICITY | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | MEDIAWIKI | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -110,7 +110,7 @@ MediaWiki is a free and open-source wiki application. It was originally develope
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DUPLICITY | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | MEDIAWIKI | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
@@ -133,7 +133,7 @@ When you the generated the file `LocalSettings.php` backup her,
 Now have to copy the `LocalSettings.php` it in the directory `/etc/mediawiki` to your server via the following command :
 
 ~~~bash
-$ scp /Telechargement/LocalSettings.php -oIdentityFile "directory ssh key" cloud@floattingIP:/etc/mediawiki/
+$ scp /Telechargement/LocalSettings.php -oIdentityFile "directory ssh key" cloud@floattingIP:/var/www/html/mediawiki/
 ~~~
 
 Once this operation made to launch the command

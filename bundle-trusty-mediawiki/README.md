@@ -12,7 +12,7 @@ MediaWiki inclut de nombreuses fonctionnalités pour les sites à vocation colla
 
 ### Les versions
  - Ubuntu Trusty 14.04.2
- - MediaWiki 1.26.0
+ - MediaWiki 1.26.2
  - Mysql  5.7
 
 ### Les pré-requis pour déployer cette stack
@@ -168,7 +168,7 @@ une fois le fichier `LocalSettings.php` généré sauvegardez le.
 Il faut maintenant le copier dans le répertoire `/etc/mediawiki` sur votre serveur via la commande suivante:
 
 ```
-$ scp /Telechargement/LocalSettings.php -oIdentityFile "chemin ssh key" cloud@floattingIP:/etc/mediawiki/
+$ scp /Telechargement/LocalSettings.php -oIdentityFile "chemin ssh key" cloud@floattingIP:/var/www/html/mediawiki/
 ```
 
 une fois cette opération effectuée lancer la commande
