@@ -167,7 +167,7 @@ You can install a GUI interface on your Admin machine or you can use also window
 1) Type the following command:
 
 ~~~bash
-$ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+$ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
 
 in this case you have to use your private key.
@@ -175,7 +175,7 @@ in this case you have to use your private key.
 or
 
 ~~~bash
-$ sudo ssh privateIpPfsene -l root -L 80:localhost:80
+$ sudo ssh privateIpPfsense -l root -L 80:localhost:80
 ~~~
 
 root's password is "pfsense". I advise you to change it.
