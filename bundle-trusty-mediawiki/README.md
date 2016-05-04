@@ -157,7 +157,7 @@ http://floatingIP/mediawiki
 
 vous devez arriver sur cette page :
 
-![imagesetup](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/image1.jpg)
+![imagesetup](https://kb.novaordis.com/images/3/33/MediaWikiUnconfigured.png)
 
 le login de votre base de donnée est 'mediawiki' et le mot de passe de votre base de donnée ce trouve dans le fichier /mediawiki/password_db
 

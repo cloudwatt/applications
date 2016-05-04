@@ -122,7 +122,7 @@ http://floatingIP/mediawiki
 
 You have to arrive on this page:
 
-![imagesetup](https://www.siteground.com/img/knox/tutorials/uploaded_images/images/mediawiki/new/image1.jpg)
+![imagesetup](https://kb.novaordis.com/images/3/33/MediaWikiUnconfigured.png)
 
 The login of your base is 'mediawiki' and the password are in /mediawiki/pasword_db
 
