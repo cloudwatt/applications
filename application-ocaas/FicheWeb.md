@@ -29,6 +29,6 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-vingt-sept-caasbeta.html
 install-url:
 comingsoon: true
-type: application
-categories: ["admin"]
+type: solution
+categories: ["dev&test"]
 ---
