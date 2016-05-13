@@ -7,7 +7,7 @@ This first version of MyCloudManager (Beta) is a different stack of everything t
 * Log management
 * Jobs Scheduler
 * Mirror ClamAV - Antivirus
-* Mirror yum and apt
+* Repository app manager
 * Time synchronization
 
 MyCloudManager has been completely developed by the CAT team ( Cloudwatt Automation Team).
@@ -354,16 +354,17 @@ You now have an SSH access point on your virtual machine through the floating-IP
 You can access the MyCloudManager administration interface via the URL **[MyCloudManager](http://manager.default.svc.mycloudmanager)**
 
 
-## And afterwards?
+## And then?
 
 This article will acquaint you with this first version of MyCloudManager. It is available to all users Cloudwatt in **Beta mode** and therefore currently free.
 
-
-The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a monthly basis. In our roadmap, we expect among others:
+The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
 * A French version
+* Several operation effectiveness enhancements
 * Add the backup function
 * HA Version
 * An additional menu to contact Cloudwatt supporting teams
+* Support of 2d region
 * many other things
 
 Suggestions for improvement ? Services that you would like ? do not hesitate to contact us [apps@cloudwatt.com](mailto:apps@cloudwatt.com)
