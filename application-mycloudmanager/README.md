@@ -1,5 +1,7 @@
 # Innovation Beta: MyCloudManager #
 
+## Work in Progress ## 
+
 Cette première version de MyCloudManager (version Beta) est une stack différente de tout ce que l'équipe a pu vous partager jusqu'à présent. Celle-ci a pour but de vous apporter un ensemble d'outils afin **d'unifier, d'harmoniser et monitorer votre tenant**. En effet celui-ci renferme un lot d'applications variées qui a pour vocation de vous aider dans la gestion au jour le jour de vos instances:
 * Monitoring et Supervision
 * Log management
