@@ -3,9 +3,9 @@ layout: applications-fiche
 pictonic: true
 title: "caas"
 url: caas.html
-date: 2016-05-17 00:00:00
-date-creation: "17 mai 2016"
-date-maj: "17 mai 2016"
+date: 2016-05-19 00:00:00
+date-creation: "19 mai 2016"
+date-maj: "19 mai 2016"
 description: "Container as a Service (CaaS) est un service Beta qui facilite la gestion du cycle de vie des environnements Docker. Il est agnostique des Docker  “Container Orchestrator Engines“ (COE) en fournissant dans un premier temps les orchestrateurs Kubernetes et Swarm. Il permet à vos équipes projets de déployer et utiliser la technologie Docker simplement pour vos développements, vos environnements de tests et d’intégration dans un contexte sécurisé et supervisé."
 github: https://github.com/cloudwatt/applications/new/master/application-ocaas
 siteofficiel: http://docs.openstack.org/developer/magnum/
