@@ -361,7 +361,6 @@ L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorati
 * une version HA,
 * un menu additionnel pour contacter les équipes support Cloudwatt,
 * la possibilité de la lancer sur notre deuxième région,
-* un gestionnaire de répository YUM et APT,
 * bien d'autres choses
 
 Des suggestions d'améliorations ? Des services que vous souhaiteriez voir ? N'hésitez pas à nous contacter [apps@cloudwatt.com](mailto:apps@cloudwatt.com)
