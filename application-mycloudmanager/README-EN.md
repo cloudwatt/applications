@@ -2,7 +2,7 @@
 
 ## Work in Progress
 
-This first version of MyCloudManager (Beta) is a different stack of everything the team was able to share with you so far.This aims to bring you a set of tools to **unify, harmonize and monitor your tenant**. In fact it contains a lot of different applications that aims to help you manage day by day of your instances:
+This first version of MyCloudManager (Beta) is a different stack of everything the team was able to share with you so far. It aims to bring you a set of tools to **unify, harmonize and monitor your tenant**. In fact it contains a lot of different applications that aims to help you manage day by day your instances :
 * Monitoring and Supervision
 * Log management
 * Jobs Scheduler
@@ -11,7 +11,7 @@ This first version of MyCloudManager (Beta) is a different stack of everything t
 * Time synchronization
 
 MyCloudManager has been completely developed by the CAT team ( Cloudwatt Automation Team).
-* it base on a CoreOS instance
+* it is based on a CoreOS instance
 * all applications are deployed via Docker containers on a Kubernetes infrastructure
 * The user interface is built in technology React
 * Also you can install or configure, from the GUI, all the applications on your instances via Ansible playbooks.
@@ -60,18 +60,18 @@ By default, the wizard deploys two instances of type "standard-4" (n2.cw.standar
 
 You must indicate the type [(standard ou performant)](https://www.cloudwatt.com/fr/produits/stockage-bloc/) and the size of the block volume that will be attached to your stack via the `volume_size` parameter.
 
-Finally , you can set a number of nodes to distribute the load. By default, MyCloudManager will be deployed on 1 instance *master* and 1 *slave* node. At maximum, MyCloudManager Beta deploy on one instance *master* and 3 *slave* node.
+Finally , you can set a number of nodes to distribute the load. By default, MyCloudManager will be deployed on 1 instance *master* and 1 *slave* node. At maximum, MyCloudManager Beta can be deployed on 1 instance *master* and 3 *slave* node.
 
-Press **LANCER**.
+Press **DEPLOY**.
 
-The **1-click** handles launch the necessary calls on Cloudwatt API :
+The **1-click** handles the launch of the necessary calls on Cloudwatt API :
 
 * Start an instance based on CoreOS,
 * Create and attach a block volume standard or performed as you want,
 * Start the **toolbox** container,
 * Start the **SkyDNS** container
 
-The stack is created automatically. You can see the progression clicking on its name which will take you to the Horizon console. When all modules become "green", the creation is finished.
+The stack is created automatically. You can see its progression by clicking on its name which will take you to the Horizon console. When all modules become "green", the creation is finished.
 
 Wait **5 minutes** that the entire stack is available.
 
@@ -127,7 +127,7 @@ After following this procedure you can now start the VPN connection.
 
 You can now access in the MyCloudManager administration interface via the URL **http://manager.default.svc.mycloudmanager** and begin to reap the benefit.
 
-It's (already) over !
+It's (already) done !
 
 
 ## Enjoy
@@ -151,7 +151,8 @@ A menu is present in the top left of the page, it can move through the different
 * Tasks : all ongoing or completed tasks
 * Audit: list of actions performed
 * My Instances> Console: access to the console Horizon
-* My account> Cockpit access to my account
+* My account> Cockpit ; access to the dashboard
+
 
 ![menu](img/menu.png)
 
@@ -184,7 +185,7 @@ We also implemented a **audit** section so you can see all actions performed on 
 ![audit](img/audit.png)
 
 
-Finally , we integrated two links in the MyCloudManager menu : **My Instances** and **My Account**. They are respectively used to access the Horizon Cloudwatt console and manage your account via the Cockpit interface.
+Finally , we integrated two navigation paths in the MyCloudManager menu : **My Instances** and **My Account**. They are respectively used to access the Cloudwatt Horizon console and to manage your account via the Cockpit interface.
 
 
 ### Add instances to MyCloudManager
@@ -287,7 +288,6 @@ To go further, here are some helpful links :
 
 
 ### Mirror Antivirus
-
 This application is a Ngnix server. A *CRON* script will run every day to pick up the latest **virus** definition distributed by *ClamAV*. The recovered packet will be exposed to your instances via Ngnix allowing you to have customers **ClamAV** update without your instances not necessarily have access to the internet.
 
 To go further, here are some helpful links :
@@ -342,7 +342,7 @@ Although it's architecture is based on Docker containers and orchestrator Kubern
 * Refresh the page MyCloudManager by refreshing your browser ( F5 )
 * If your toolbox is active , you are connected to the VPN, but you do not get access to the http://manager.default.svc.mycloudmanager try with http://10.0.1.254:30000. If this URL works is that the DNS has not been changed on your computer, you must then either disable your various Antivirus or firewall that could possibly block this connection. The DNS are located in 10.0.2.2.
 * Feel free to do a flushdns via the command ` ipconfig / flushdns` it will effectively flush the DNS cache.
-* If your new instances do not appear in MyCloudManager, check you if you have include the security group of your stack MyCloudManager in your instance. Be carrefull of networks aspects: your instance have to communicate with your MyCloudManager to be instrumentalised.
+* If your new instance does not appear in MyCloudManager, check you if you have includes the security group of your stack MyCloudManager in your instance. Be carrefull of networks aspects: your instance has to communicate with your MyCloudManager to be instrumentalised.
 
 
 ## So watt ?
@@ -356,7 +356,7 @@ You can access the MyCloudManager administration interface via the URL **[MyClou
 
 ## And then?
 
-This article will acquaint you with this first version of MyCloudManager. It is available to all users Cloudwatt in **Beta mode** and therefore currently free.
+This article will acquaint you with this first version of MyCloudManager. It is available to all Cloudwatt users in **Beta mode** and therefore currently free.
 
 The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
 * A French version
