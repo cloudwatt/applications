@@ -125,6 +125,7 @@ After following this procedure you can now start the VPN connection.
 
 -----
 
+
 You can now access in the MyCloudManager administration interface via the URL **http://manager.default.svc.mycloudmanager** and begin to reap the benefit.
 
 It's (already) done !
@@ -135,8 +136,7 @@ It's (already) done !
 Access to the interface and the various applications is via **DNS** names. Indeed a **SkyDNS** container is launched at startup allowing you to benefit all the names in place. You can access on the different web interfaces applications by clicking **Go** or via URL request (ex: http://zabbix.default.svc.mycloudmanager/).
 
 We have attached a block volume to your stack in order to save all **data** MyCloudManager.
-The volume is mounted on the master instance and all nodes in your MyCloudManager in the `/dev/vdb`.
-This allows our stack to be much more robust. The data being synchronized on all nodes, it allows applications to have access to their data regardless of the node where the latter are created.
+The volume is mounted on the master instance and all nodes in your MyCloudManager in the `/dev/vdb`. This allows our stack to be much more robust. The data being synchronized on all nodes, it allows applications to have access to their data regardless of the node where the  are created.
 
 
 #### Interface Overview
@@ -326,7 +326,6 @@ To go further, here are some helpful links :
 
 ### List of distributions supported by MyCloudManager
 
-* Ubuntu 16.04
 * Ubuntu 14.04
 * Debian Jessie
 * Debian Wheezy
@@ -341,10 +340,25 @@ Although it's architecture is based on Docker containers and orchestrator Kubern
 * Otherwise restart your VPN
 * Refresh the page MyCloudManager by refreshing your browser ( F5 )
 * If your toolbox is active , you are connected to the VPN, but you do not get access to the http://manager.default.svc.mycloudmanager try with http://10.0.1.254:30000. If this URL works is that the DNS has not been changed on your computer, you must then either disable your various Antivirus or firewall that could possibly block this connection. The DNS are located in 10.0.2.2.
+* If you are unable to launch applications when you click GO to DNS problems, try the address
+http://10.0.1.254:30000, then re-click GO. Your applications will launch with the fixed IP address (eg http://10.0.1.254:30601/ for Zaabix).
 * Feel free to do a flushdns via the command ` ipconfig / flushdns` it will effectively flush the DNS cache.
 * If your new instance does not appear in MyCloudManager, check you if you have includes the security group of your stack MyCloudManager in your instance. Be carrefull of networks aspects: your instance has to communicate with your MyCloudManager to be instrumentalised.
 * We have tested MyCloudManager with Chrome. Some ergonomic differences can appear with other web browsers.
 
+## Application configuration (by default)
+
+
+As explained before we left the possibility , via the button **Settings** ![settings](img/settings.png)on each thumbnail, enter all application settings to launch the container. However if you did not, don't worry, it's nothing, you can always change the logins and password inside the application.
+
+
+Login and password by default of MyCloudManager applications :
+* Zabbix - Login : **admin** - Password : **zabbix**
+* Graylog - Login : **admin** - Password : **admin**
+* Rundeck - Login : **admin** - Password: **admin**
+
+
+Other applications have no web interface, so no login/ password, except **Artifactory** which has no authentication.
 
 ## So watt ?
 
@@ -355,17 +369,18 @@ You now have an SSH access point on your virtual machine through the floating-IP
 You can access the MyCloudManager administration interface via the URL **[MyCloudManager](http://manager.default.svc.mycloudmanager)**
 
 
-## And then?
+## And after?
 
 This article will acquaint you with this first version of MyCloudManager. It is available to all Cloudwatt users in **Beta mode** and therefore currently free.
 
 The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
-* A French version
-* Several operation effectiveness enhancements
-* Add the backup function
-* HA Version
-* An additional menu to contact Cloudwatt supporting teams
-* Support of 2d region
+* instrumentalisation of Ubuntu 16.04 instance,
+* A French version,
+* Several operation effectiveness enhancements,
+* Add the backup function,
+* HA Version,
+* An additional menu to contact Cloudwatt supporting teams or command a cloud coaching prestation,
+* Support of second region
 * many other things
 
 Suggestions for improvement ? Services that you would like ? do not hesitate to contact us [apps@cloudwatt.com](mailto:apps@cloudwatt.com)
