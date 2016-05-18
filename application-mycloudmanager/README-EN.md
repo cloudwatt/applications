@@ -374,7 +374,7 @@ You can access the MyCloudManager administration interface via the URL **[MyClou
 This article will acquaint you with this first version of MyCloudManager. It is available to all Cloudwatt users in **Beta mode** and therefore currently free.
 
 The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
-* instrumentalisation of Ubuntu 16.04 instance,
+* instrumentalisation of Ubuntu 16.04 instance(Possible today but only with the CURL command),
 * A French version,
 * Several operation effectiveness enhancements,
 * Add the backup function,
