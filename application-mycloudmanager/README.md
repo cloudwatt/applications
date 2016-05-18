@@ -344,14 +344,14 @@ Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrate
 
 ## Configuration des applications (par defaut)
 
-Comme expliqué précédemment nous vous avons laissé la possibilité, via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatif au lancement du conteneur. Cependant si vous ne l'avez pas fait, pas de panique, ce n'est rien, vous pourrez toujours modifier le logins et mot de passe à l'interieur de l'application.
+Comme expliqué précédemment nous vous avons laissé la possibilité via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatifs au lancement du conteneur. Cependant si vous ne l'avez pas fait, pas de panique, ce n'est rien, vous pourrez toujours modifier les login et mot de passe à l'interieur de l'application.
 
-Login et mot de passe par defaut des applications MyCloudManager:
+Login et mot de passe par défaut des applications MyCloudManager:
 * Zabbix - Login : **admin** - Mot de passe : **zabbix**
 * Graylog - Login : **admin** - Mot de passe : **admin**
 * Rundeck - Login : **admin** - Mot de passe: **admin**
 
-Les autres applications n'ont pas d'interface web, donc pas de login/mot de passe, excépté **Artifactory** qui n'a pas d'authentification.
+Les autres applications n'ont pas d'interface web, donc pas de login/mot de passe, excepté **Artifactory** qui n'a pas d'authentification.
 
 ## So watt  ?
 
@@ -366,7 +366,7 @@ Vous pouvez accéder à l'interface d'administration de MyCloudManager via l'url
 Cet article permet de vous familiariser avec cette première version de MyCloudManager. Elle est mise à la disposition de tous les utilisateurs Cloudwatt en **mode Beta** et donc pour le moment gratuitement.
 
 L'intention de la CAT (Cloudwatt Automation Team) est de fournir des améliorations sur une base bimestrielle (tous les 2 mois). Dans notre roadmap, nous prévoyons entre autre :
-* l'instrumentalisation d'instances Ubuntu 16.04 (Possible aujourd'hui mais uniquement avec la commande CURL post-création),
+* l'instrumentalisation d'instances Ubuntu 16.04 (possible aujourd'hui mais uniquement avec la commande CURL post-création),
 * une version francaise,
 * ne plus avoir à resaisir ses identifiants,
 * l'ajout de la fonction backup,
