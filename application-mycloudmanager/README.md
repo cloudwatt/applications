@@ -15,7 +15,7 @@ MyCloudManager a entièrement été développé par l'équipe CAT - Cloudwatt Au
 * L'ensemble des applications se déploie via des conteneurs Docker sur une infrastructure Kubernetes
 * L'interface utilisateur est construite en technologie React
 * De plus vous pouvez installer ou configurer, depuis l'interface graphique, l'ensemble des applications sur vos instances via des playbooks Ansible
-* Afin de sécuriser au maximum votre MyCloudManager, aucun port n'est exposé sur internet mis à part le port 22 pour la management des instances de la stack ainsi que le port 1723 pour l'accès VPN PPTP.
+* Afin de sécuriser au maximum votre MyCloudManager, aucun port n'est exposé sur internet mis à part le port 22 pour le management des instances de la stack ainsi que le port 1723 pour l'accès VPN PPTP.
 
 ## Préparations
 
@@ -113,7 +113,7 @@ Après avoir suivi cette procédure vous pouvez maintenant lancer la connexion V
 ![configwin01](img/configwin10.png)
 
 
-* Entrez à présent les informations récupérées en sortie de la stack : dans un premier temps la FloatingIP, puis le login et ensuite le mot de passe fournis.
+* Entrez à présent les informations récupérées en sortie de la stack : dans un premier temps la *FloatingIP*, puis le *login* et ensuite le *mot de passe* fournis.
 
 ![configipwin10](img/configipwin10.png)
 ![configuserwin10](img/configuserwin10.png)
@@ -133,9 +133,9 @@ C’est (déjà) FINI !
 
 ## Enjoy
 
-L'accès à l'interface et aux différents services se fait via des noms **DNS**. En effet un conteneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms mis en place. Vous pourrez accéder aux différentes interfaces web des applications en cliquant sur **GO** ou via une requête URL (par exemple : http://zabbix.default.svc.mycloudmanager/).
+L'accès à l'interface et aux différents services se fait via des noms **DNS**. En effet un conteneur **SkyDNS** est lancé au démarrage ce qui vous permet de bénéficier de l'ensemble des noms DNS mis en place. Vous pourrez accéder aux différentes interfaces web des applications en cliquant sur **GO** ou via une requête URL (par exemple : http://zabbix.default.svc.mycloudmanager/).
 
-Nous avons attaché un volume bloc à votre stack afin de pouvoir sauvegarder l'ensemble des **data** des conteneurs de MyCloudManager. Le volume est monté sur l'instance master et l'ensemble de noeuds de votre MyCloudManager dans le répertoire `/dev/vdb`. Cela permet à notre stack d'être beaucoup plus robuste. Les données étant synchronisées sur l'ensemble des noeuds, cela permet aux applications d'avoir accès a leur données peut importe le noeud sur lequel celle-ci sont crées.
+Nous avons attaché un volume bloc à votre stack afin de pouvoir sauvegarder l'ensemble des **data** des conteneurs de MyCloudManager. Le volume est monté sur l'instance master et l'ensemble de noeuds de votre MyCloudManager dans le répertoire `/dev/vdb`. Cela rend notre stack d'être beaucoup plus robuste. Les données étant synchronisées sur l'ensemble des noeuds, cela permet aux applications d'avoir accès à leur données peut importe le noeud sur lequel celles-ci sont crées.
 
 ### Présentation de l'interface
 
@@ -180,7 +180,7 @@ Les **tasks** permettent un suivi des actions effectuées sur MyCloudManager. El
 
 Il vous est possible d'annuler une tache en attente en cas d'erreur dans le menu **tasks** en cliquant sur ![horloge](img/horloge.png) ce qui vous affichera ensuite ce logo ![poubelle](img/poubelle.png).
 
-Nous avons aussi mis en place une section **audit** afin que vous puissiez voir l'ensemble de actions effectuées sur chacune de vos instances et un export en Excel (.xlsx) si vous souhaitez effectuer un post-processing ou garder ces informations pour des raisons de sécurité via le bouton ![xlsx](img/xlsx.png).
+Nous avons aussi mis en place une section **audit** afin que vous puissiez voir l'ensemble des actions effectuées sur chacune de vos instances et un export en Excel (.xlsx) si vous souhaitez effectuer un post-processing ou garder ces informations pour des raisons de sécurité via le bouton ![xlsx](img/xlsx.png).
 
 ![audit](img/audit.png)
 
@@ -208,7 +208,7 @@ Vous retrouverez l'ensemble des informations en inspectant les ressources de la 
 $ heat resource-list $stack_name
 ~~~
 
-Un fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à MyCloudManager afin de l'instrumentaliser.
+Une fois ceci effectué vous êtes maintenant dans la capacité d'ajouter votre instance à MyCloudManager afin de l'instrumentaliser.
 
 
 #### 2. Lancer le script d'attachement
