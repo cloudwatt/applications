@@ -333,6 +333,17 @@ To go further, here are some helpful links :
 * CentOS 7.0
 * CentOS 6.7
 
+### Application configuration (by default)
+
+As explained before, we left the possibility via the button **Settings** ![settings](img/settings.png) on each thumbnail, enter all application settings to launch the container. However if you did not, don't worry, it's nothing, you can always change the login and password inside the application.
+
+Login and password by default of MyCloudManager applications :
+* Zabbix - Login : **admin** - Password : **zabbix**
+* Graylog - Login : **admin** - Password : **admin**
+* Rundeck - Login : **admin** - Password: **admin**
+
+Other applications have no web interface, so no login/ password, except **Artifactory** which has no authentication.
+
 ## Troubleshooting
 
 Although it's architecture is based on Docker containers and orchestrator Kubernetes it may MyCloudManager having trouble to instrumentalize instances. Some tracks :
@@ -346,21 +357,7 @@ http://10.0.1.254:30000, then re-click GO. Your applications will launch with th
 * If your new instance does not appear in MyCloudManager, check you if you have includes the security group of your stack MyCloudManager in your instance. Be carrefull of networks aspects: your instance has to communicate with your MyCloudManager to be instrumentalised.
 * We have tested MyCloudManager with Chrome. Some ergonomic differences can appear with other web browsers.
 
-## Application configuration (by default)
-
-
-As explained before we left the possibility , via the button **Settings** ![settings](img/settings.png)on each thumbnail, enter all application settings to launch the container. However if you did not, don't worry, it's nothing, you can always change the logins and password inside the application.
-
-
-Login and password by default of MyCloudManager applications :
-* Zabbix - Login : **admin** - Password : **zabbix**
-* Graylog - Login : **admin** - Password : **admin**
-* Rundeck - Login : **admin** - Password: **admin**
-
-
-Other applications have no web interface, so no login/ password, except **Artifactory** which has no authentication.
-
-## So watt ?
+## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
 
@@ -369,12 +366,12 @@ You now have an SSH access point on your virtual machine through the floating-IP
 You can access the MyCloudManager administration interface via the URL **[MyCloudManager](http://manager.default.svc.mycloudmanager)**
 
 
-## And after?
+## And after?
 
 This article will acquaint you with this first version of MyCloudManager. It is available to all Cloudwatt users in **Beta mode** and therefore currently free.
 
 The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
-* instrumentalisation of Ubuntu 16.04 instance(Possible today but only with the CURL command),
+* Instrumentalisation of Ubuntu 16.04 instance (possible today but only with the CURL command),
 * A French version,
 * Several operation effectiveness enhancements,
 * Add the backup function,
