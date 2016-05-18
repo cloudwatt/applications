@@ -45,8 +45,8 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### The 1-click
 
-MyCloudManager start with the **1-click** of **Cloudwatt** via the web page [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website.
-Choose MyCloudManager apps, press **DEPLOYER**.
+MyCloudManager start with the **1-click** of **Cloudwatt** via the web page [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website.
+Choose MyCloudManager apps, press **DEPLOY**.
 
 After entering your login / password to your account, launch the wizard appears:
 
@@ -58,7 +58,7 @@ You will find [her]((https://console.cloudwatt.com/project/access_and_security/a
 
 By default, the wizard deploys two instances of type "standard-4" (n2.cw.standard-4). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
-You must indicate the type [(standard ou performant)](https://www.cloudwatt.com/fr/produits/stockage-bloc/) and the size of the block volume that will be attached to your stack via the `volume_size` parameter.
+You must indicate the type [(standard ou performant)](https://www.cloudwatt.com/en/products.html) and the size of the block volume that will be attached to your stack via the `volume_size` parameter.
 
 Finally , you can set a number of nodes to distribute the load. By default, MyCloudManager will be deployed on 1 instance *master* and 1 *slave* node. At maximum, MyCloudManager Beta can be deployed on 1 instance *master* and 3 *slave* node.
 
