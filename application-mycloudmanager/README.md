@@ -330,6 +330,17 @@ Pour aller plus loin voici quelques liens utiles:
 * CentOS 7.0
 * CentOS 6.7
 
+### Configuration des applications (par defaut)
+
+Comme expliqué précédemment nous vous avons laissé la possibilité via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatifs au lancement du conteneur. Cependant si vous ne l'avez pas fait, pas de panique, ce n'est rien, vous pourrez toujours modifier les login et mot de passe à l'interieur de l'application.
+
+Login et mot de passe par défaut des applications MyCloudManager:
+* Zabbix - Login : **admin** - Mot de passe : **zabbix**
+* Graylog - Login : **admin** - Mot de passe : **admin**
+* Rundeck - Login : **admin** - Mot de passe: **admin**
+
+Les autres applications n'ont pas d'interface web, donc pas de login/mot de passe, excepté **Artifactory** qui n'a pas d'authentification.
+
 ## Troubleshooting
 
 Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrateur Kubernetes, il se peut que MyCloudManager rencontre des difficultés pour instrumentaliser des instances. Quelques pistes :
@@ -341,17 +352,6 @@ Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrate
 * N'hésitez pas à faire un flushDNS via la commande `ipconfig /flushdns` cela aura pour effet de vider le cache DNS.
 * Si vos nouvelles instances n'apparaissent pas dans MyCloudManager, vérifier pour vous avez bien inclut le security group de votre stack MyCloudManager dans votre instance. Attention aussi aux aspects réseaux: vos instances doivent pouvoir communiquer avec votre MyCloudManager pour être instrumentalisées.
 * Nous avons testé MyCloudManager avec le browser Chrome. Des différences ergonomiques peuvent apparaitre avec d'autres browsers.
-
-## Configuration des applications (par defaut)
-
-Comme expliqué précédemment nous vous avons laissé la possibilité via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatifs au lancement du conteneur. Cependant si vous ne l'avez pas fait, pas de panique, ce n'est rien, vous pourrez toujours modifier les login et mot de passe à l'interieur de l'application.
-
-Login et mot de passe par défaut des applications MyCloudManager:
-* Zabbix - Login : **admin** - Mot de passe : **zabbix**
-* Graylog - Login : **admin** - Mot de passe : **admin**
-* Rundeck - Login : **admin** - Mot de passe: **admin**
-
-Les autres applications n'ont pas d'interface web, donc pas de login/mot de passe, excepté **Artifactory** qui n'a pas d'authentification.
 
 ## So watt  ?
 
