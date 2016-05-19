@@ -335,7 +335,8 @@ To go further, here are some helpful links :
 
 ### Application configuration (by default)
 
-As explained before, we left the possibility via the button **Settings** ![settings](img/settings.png) on each thumbnail, enter all application settings to launch the container. However if you did not, don't worry, it's nothing, you can always change the login and password inside the application.
+As explained before, we left the possibility via the button **Settings** ![settings](img/settings.png) on each thumbnail, enter all application settings to launch the container.
+However, the login and password can't be changed everywhere, it will do inside the application once it started.
 
 Login and password by default of MyCloudManager applications :
 * Zabbix - Login : **admin** - Password : **zabbix**

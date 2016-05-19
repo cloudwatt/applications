@@ -332,7 +332,7 @@ Pour aller plus loin voici quelques liens utiles:
 
 ### Configuration des applications (par defaut)
 
-Comme expliqué précédemment nous vous avons laissé la possibilité via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatifs au lancement du conteneur. Cependant si vous ne l'avez pas fait, pas de panique, ce n'est rien, vous pourrez toujours modifier les login et mot de passe à l'interieur de l'application.
+Comme expliqué précédemment nous vous avons laissé la possibilité via le bouton **Settings** ![settings](img/settings.png) présent sur chaque vignette, de saisir l'ensemble des paramètres applicatifs au lancement du conteneur. Cependant le login et le mot de passe ne peuvent pas être changer partout, il faudra le faire à l'intérieur de l'application une fois celle-ci lancée.
 
 Login et mot de passe par défaut des applications MyCloudManager:
 * Zabbix - Login : **admin** - Mot de passe : **zabbix**
