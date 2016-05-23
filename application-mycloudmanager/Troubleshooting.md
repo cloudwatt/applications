@@ -17,6 +17,6 @@ Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrate
 ## Retirer la stack
 * Si vous souhaitez détruire la stack (pour la reconstruire pas exemple), assurez vous que vous n'avez plus d'instances qui se référent au security group ou au sous réseau de la stack à détruire.
 
- ## Bon à savoir
- * Nous avons testé MyCloudManager avec le browser Chrome. Des différences ergonomiques peuvent apparaitre avec d'autres browsers.
- * Nous avons testé avec les distributions standards fournies par Cloudwatt. Nous ne pouvons garantir le bon fonctionnement avec des images de distributions importées.
+## Bon à savoir
+* Nous avons testé MyCloudManager avec le browser Chrome. Des différences ergonomiques peuvent apparaitre avec d'autres browsers.
+* Nous avons testé avec les distributions standards fournies par Cloudwatt. Nous ne pouvons garantir le bon fonctionnement avec des images de distributions importées.
