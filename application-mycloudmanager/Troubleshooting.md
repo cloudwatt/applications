@@ -1,6 +1,8 @@
 ## MyCloudManager Troubleshooting
 
-Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrateur Kubernetes, il se peut que MyCloudManager rencontre des difficultés pour instrumentaliser des instances. Quelques pistes :
+Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrateur Kubernetes, il se peut que MyCloudManager rencontre des difficultés pour instrumentaliser des instances. 
+
+Quelques pistes :
 * Assurez vous que votre connexion VPN est active
 * Sinon redemarrez votre VPN
 * Actualisez la page MyCloudManager en rafraichissant votre browser (touche F5)
