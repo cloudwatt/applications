@@ -3,6 +3,7 @@
 Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrateur Kubernetes, il se peut que MyCloudManager rencontre des difficultés pour instrumentaliser des instances. Quelques pistes :
 
 ## Lancement de MyCloudManager
+* Quand la stack heat est terminée et toutes les resources "vertes", attendez VRAIMENT 5 minutes avant de créer votre connexion VPN
 * Assurez vous que votre connexion VPN est active
 * Sinon redemarrez votre VPN
 * Actualisez la page MyCloudManager en rafraichissant votre browser (touche F5)
