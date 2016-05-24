@@ -15,7 +15,7 @@ Bien que son architecture soit basée sur des conteneurs Docker et l'orchestrate
 * Si vos nouvelles instances n'apparaissent pas dans MyCloudManager, vérifier pour vous avez bien inclut le security group de votre stack MyCloudManager dans votre instance. Attention aussi aux aspects réseaux: vos instances doivent pouvoir communiquer avec votre MyCloudManager pour être instrumentalisées.
 
 ## Retirer la stack
-* Si vous souhaitez détruire la stack (pour la reconstruire pas exemple), assurez vous que vous n'avez plus d'instances qui se référent au security group ou au sous réseau de la stack à détruire.
+* Si vous souhaitez détruire la stack (pour la reconstruire par exemple), assurez vous que vous n'avez plus d'instances qui se référent au security group ou au sous réseau de la stack à détruire.
 
 ## Bon à savoir
 * Nous avons testé MyCloudManager avec le browser Chrome. Des différences ergonomiques peuvent apparaitre avec d'autres browsers.
