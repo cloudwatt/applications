@@ -4,6 +4,7 @@ Although it's architecture is based on Docker containers and orchestrator Kubern
 
 
 ## Launcing MyCloudManager
+* When your stack heat is completed and all the resources are "green", wait REALLY 5 minutes before you setup the VPN connection
 * Make sure your VPN connection is active
 * Otherwise restart your VPN
 * Refresh the page MyCloudManager by refreshing your browser ( F5 )
