@@ -15,7 +15,7 @@ http://10.0.1.254:30000, then re-click GO. Your applications will launch with th
 
 ## Attach Instances
 * If your new instance does not appear in MyCloudManager, check you if you have includes the security group of your stack MyCloudManager in your instance. Be carrefull of networks aspects: your instance has to communicate with your MyCloudManager to be instrumentalised.
-
+* for Ansible can install properly the playbooks, it is necessary that the **cloud** user is present on the machine. FYI, it is present on all the images provided by Cloudwatt.
 ## Removing the stack
 * If you want to remove the stack running MyCloudManager (for exemple to launch an other one), ensure that you do not have instances on which the security group and/or the subnet is mentionned
 
