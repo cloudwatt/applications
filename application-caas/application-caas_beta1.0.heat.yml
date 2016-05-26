@@ -1,6 +1,6 @@
 heat_template_version: 2014-10-16
 
-description: Heat stack to deploy OOCaaS system (OOCaaS_PrivateRegistry, OOCaaS_BuildServer, OOCaaS_Magnumn)
+description: Heat stack to deploy OOCaaS system (OOCaaS_PrivateRegistry, OOCaaS_BuildServer, OOCaaS_Magnum), CW/labs/caas_Beta 1.0  SP9.3
 # This stack was made in order tu be fully functional on Cloudwatt Region FR 1
 # Additional information can be found on : 
 
@@ -106,7 +106,7 @@ resources:
     depends_on: OOCaasNetwork_subnet
     properties:
       key_name: { get_param: keypair_name }
-      image: 43b1692b-3755-4a85-84e6-929d6fbec290
+      image: 6f8be268-6e5f-4083-b715-ea6fdd76f530
       flavor: { get_param: flavor_name }
       admin_user: cloud
       security_groups: [{get_resource: privateregistry_security_group}]
@@ -192,7 +192,7 @@ resources:
     depends_on: privateregistry
     properties:
       key_name: { get_param: keypair_name }
-      image: 69c55312-07fb-471a-b339-d85bae3e3406
+      image: a8dddde0-d303-4d06-bd08-8589b66db32d
       flavor: { get_param: flavor_name }
       admin_user: cloud
       security_groups: [{get_resource: magnum_security_group}]
