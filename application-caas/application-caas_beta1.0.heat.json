@@ -140,7 +140,7 @@
         "key_name": {
           "get_param": "keypair_name"
         },
-        "image": "43b1692b-3755-4a85-84e6-929d6fbec290",
+        "image": "6f8be268-6e5f-4083-b715-ea6fdd76f530",
         "flavor": {
           "get_param": "flavor_name"
         },
@@ -242,7 +242,7 @@
         "key_name": {
           "get_param": "keypair_name"
         },
-        "image": "69c55312-07fb-471a-b339-d85bae3e3406",
+        "image": "a8dddde0-d303-4d06-bd08-8589b66db32d",
         "flavor": {
           "get_param": "flavor_name"
         },
