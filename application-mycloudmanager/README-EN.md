@@ -319,7 +319,6 @@ To go further, here are some helpful links :
   - Graylog 1.3.4
   - Artifactory 4.7.5
   - Nginx 1.9.12
-  - Aptly  0.9.6
   - SkyDNS 2.5.3a
   - Etcd 2.0.3
 
