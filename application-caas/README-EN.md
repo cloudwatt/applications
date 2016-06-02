@@ -101,7 +101,8 @@ CaaS start with the 1-click of Cloudwatt via the web page [*Apps page*](https://
 
 As you may have noticed the 1-Click wizard asked to reenter your password Openstack.\
 By default, the wizard selects the flavor “m1.small”. A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need.\ Instances are charged by the minute and capped at their monthly price (you can find more details on the [*Pricing page*](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
-Please remember that you are providing your KeyPair that will be used in order to postConfigure the future three KVM instances: this will be your way to SSH on those instances for troubleshooting or granting your colleagues on them if required.
+Please remember that you are providing your KeyPair that will be used in order to postConfigure the future three KVM instances: this will be your way to SSH on those instances for troubleshooting or granting your colleagues on them if required.\
+**On CloudWatt IaaS please let empty the proxy attributes if you use the Internet exposure.**
 
 **Press DEPLOY**. The 1-click handles the launch of an Heat stack that triggers the allocation of three instances and the related OpenStack elements (cinder volumes, neutron internal private network…)
 
@@ -160,6 +161,8 @@ As a result, one cluster of each COE will be similar to the following screenshot
 -   Status is completed (meaning Heat stack deployment is OK and the COE related postConfiguration is OK too (*synchronization between the ‘Master’ and its ‘Nodes’*)
 -   A single master is allocated (*in the Beta version, no possibility to multi-instanciated this, even if Magnum is capable for; in the future version this High Availability feature will be added*)
 -   As your choice, one or mode ‘Nodes’ will be allocated. In the K8S(Kubernates, guys) naming those are ‘*Minions’.*
+-	if you choosen Kubernetes COE, please do not forget to open the *K8S Master* SecurityGroups's flow on TCP:8080 for you and your colleagues in order to access to K8S added services!
+
 ***=>You now have your context in order to deploy your dockerized micro services***
 
 ### Understanding the possibilities, depending on COEs: ‘Swarm is simple’ vs ‘Kubernetes is features rich’***
