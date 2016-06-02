@@ -85,7 +85,7 @@ Per instance, a Cinder volume is attached in order to keep thepersistent data.
 
 ### What will you find in the repository
 Once you have cloned the github from
-[*/cloudwatt/applications/application-caas*](https://github.com/cloudwatt/applications/tree/master/application-ocaas), you will find in the bundle-CaaS/ repository:
+[*/cloudwatt/applications/application-caas*](https://github.com/cloudwatt/applications/tree/master/application-caas), you will find:
 -   **application-caas_beta1.0.heat.yml**: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 -   **PetClinic\_sample.zip**: Java Spring example, to build and deploy a Tomcat-based Docker image and use a existing mySql Docker image
 -   **Tweet\_sample.zip**: Cloud Native application as a composite of existing Docker images
