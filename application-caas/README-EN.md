@@ -179,16 +179,16 @@ In CaaS user Interface, the Swarm-based bay is displayed with few information:
 -   You must dig into the nodes in order to discover which one is run which deploy container
 -   You must expose your container on the external world via OpenStack/Neutron network features (Load balancer and/or FloatingIp)
 -	/!\ You must adjust the security group on 'Swarm Nodes' in order to open the external flows
--   You can allocate an OpenStack/Cinder volume and give it to one container (as an example, the ‘*mySql’* database container in order to persist the data )
+-   You can allocate an OpenStack/Cinder volume and give it to one container (as an example, the ‘*mySql’* database container in order to persist the data)\
 ***=> In one work: Simple: YOU DO the job!***
 
 #### Kubernetes
 Google Kubernetes technology in this v1.2.2 version is feature rich and easy to use (*see the following chapter on how to deploy PetClinic sample with it, or the related video*).
-This COE provides a ‘Docker Compose compatible YML file to describe the Dockerized application. **Kubernetes drives the deployment of the containers PLUS the configuration of the OpenStack external context**: That’s (*plenty of*) it!
+This COE provides a K8S specific YML file to describe the Dockerized application. **Kubernetes drives the deployment of the containers PLUS the configuration of the OpenStack external context**: That’s (*plenty of*) it!
 
 ![](img/caas_K8SBayDisplay.png)
 
-Like Swarm, Kubernetes panel show the API url. But it provides plenty of additional features as soon as you open the flow onto this
+Like for Swarm, Kubernetes panel show the API url. But it provides plenty of additional features as soon as you open the flow onto this
 -   Kube UI, as a dashboard to manage the deployed container K8S PODs in the cluster
 -   Kube DNS, as a container service locator to identify the K8S services.
 -   Kube ELK technology, in order to keep track of the logs of the running containers
@@ -210,11 +210,11 @@ Please click on ‘DevOps integration: the content of the Dialog box corresponds
 
 /!\ As the creator of the CaaS infrastructure, your KeyPair was used to configure the CaaS_BuildServer machine: access via SSH is OK with the 'cloud' user and privateKey. \
 ***But if you want to allow your colleagues to use their own keyPair, you must grant them*** by\
-vi of the */home/cloud/.ssh/authorized_keys* and add the relevant ssh-rsa key(s) like\
+vi of the */home/cloud/.ssh/authorized_keys* file and add the relevant ssh-rsa key(s) like\
 *ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA0t°°°UqQ== rsa-key-20160218 *.
 
-### Configuring your Jenkins job and its Ansible cookbook
-See subset of **Jenkins setup in Annex1 at the end of the document**. …***create your new Jenkins job configure it with few technical params, but the Developers are used to this!***
+### Configuring your Jenkins job and its Ansible Playbook
+See subset of **Jenkins setup in Annex1 at the end of the document**. …***create your new Jenkins job and configure it with few technical params, but the Developers are used to this!***
 
 ![](img/caas_JenkinsAnsibleSetup.png)
 
@@ -228,18 +228,26 @@ Once you setup the Jenkins job, then launch it and follow the logs progress.
 
 ![](img/caas_JenkinsLaunch.png)
 
-As an example, CaaS is providing an example with the PetClinic ‘AllInOne’ Jenkins and related Ansible cookbook is driving:
+As an example, CaaS is providing a PetClinic ‘AllInOne’ Jenkins and related Ansible Playbook which drive:
 -   The build of the standard Java Spring application, producing a java War file to be onboarded inside a Tomcat web server.
 -   The build of the ‘PetClinic’ Docker image that will be based on a ‘latest’ tomcat Docker image from the Docker Hub on Internet plus some glue to deploy and configure the PetClinic War
 -   The tag then push of this image inside the CaaS private registry
--   And then the deployment of the application in a Swarm or Kubernetes Bay
+-   And then the [re]deployment of the application in a Swarm or Kubernetes Bay
 
-In the following screenshot, the Kubernetes COE is used:
+**In the following screenshot, the Kubernetes COE is used**:
 -   The first line corresponds to the BuildServer’s request to deploy the PetClinic application in the bay: Kubectl command.
 -   Then later, when the build is in success, the Kubernetes bay is giving back plenty of info on the features rich content of the bay (already shown in the CaaS ‘Bay’ panel)
 -   In blue: as a result the URL of the PetClinic service is given back (Developers know the URI of /petclinic )
 
 ![](img/caas_JenkinsK8SResult.png)
+
+
+**In the following screenshot, the Swarm COE is used**:
+![](img/CaaS_deployPetclinic_swarm1.png)
+-	the **docker_ps.stdout_lines describe for each of the containers which 'node' is hosting it (cf *CONTAINER_ID* corresponding to the ID of the KVM instance: '72cae6f6ffae' for the unique container using the 'PetClinic' image stored on the privateRegistry, exposed on tcp:8080 on internal network: '10.0.9.14')
+-	when diving into the OpenStack/compute/instances tab, we can find the external IP @ of the 'node' (cf '10.194.146.94').    for the 'mySql' container running on 'node' ID='b93d5a8c8716', it is accessed by the TomCat Petclinic container on the internal network on TCP 3306...
+
+![](img/CaaS_deployPetclinic_swarm1.png)
 
 ***=> Watch the videos: many more details inside them!!!***
 
@@ -255,15 +263,15 @@ In the DevOps integration dialog box, two attributes are configuring the use (or
 
 ![](img/caas_ActivateImageFactory.png)
 
-If DockerImageFactory is set to ‘0’, no use of it… See subset of **Docker image factory setup in Annex2 at the end of the document**.
+If *DockerImageFactory* parameter is set to ‘0’, no use of it… See subset of **Docker image factory setup in Annex2 at the end of the document**.
 
 ### How to use the auto-monitoring feature in CaaS with the embedded Zabbix?
 CaaS innovation contains an auto-monitoring feature, see ‘service monitoring’ tab.
 
 ![](img/caas_ServiceMonitoring.png)
 
-By design, every KVM instance deployed inside the customer’s tenant is discovered by the CaaS embedded Zabbix system and assigned to a monitoring template according to their role.
-The service monitoring page is classifying the instances into two groups: the ‘CaaS infra’ for the PrivateRegistry, BuildServer and Magnum… and the bays with one entry per bay with their Master and nodes…
+By design, every KVM instance deployed inside the customer’s tenant is discovered by the CaaS embedded Zabbix system and assigned to a monitoring template according to their role.\
+The service monitoring page is classifying the instances into two groups: the ‘CaaS infra’ for the PrivateRegistry, BuildServer and Magnum… and the bays with one entry per bay with their Master and nodes…\
 When clicking on the related ‘Zabbix link’ on one element, a new tab is open and displays the filtered monitoring element: Please login with ‘admin’ and pwd=&lt;**StackAutoGeneratedPassword**&gt;
 
 ![](img/caas_ZabbixDisplay.png)
@@ -285,18 +293,18 @@ Next document will detail some more info on
 This article will allow you to dive into the Dockerized world on CloudWatt. This beta service is currently free of charge for the Docker layer.
 Please do not hesitate to provide us with your feedback on the current services as well as your ideas for bugFixes, features enhancements or a ‘managed service’ by Orange Business services ^tm^.
 
-***=>Get in touch with [*apps@cloudwatt.com*](mailto:apps@cloudwatt.com)***
+***=>Get in touch with [*apps@cloudwatt.com*](mailto:apps@cloudwatt.com)  ou [*CaaSTeam*](mailto:david.alles@orange.com)***
 
 .
 .
 .
-# Annex 1: complete setup of Jenkins and related Ansible
+# Annex 1: complete setup of Jenkins and related Ansible Playbook
 ==>See [*devops-and-caas-integration*](https://www.dailymotion.com/video/x4b0brh_devops-and-caas-integration_tech) video
 
-- Add the [*Ansible Plugin*](https://wiki.jenkins-ci.org/display/JENKINS/Ansible+Plugin) to your Jenkins. (Nb : Read the Jenkins documentation : [*How to add a plugin*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-ajout-plugin))\
+- Add the [*Ansible Plugin*](https://wiki.jenkins-ci.org/display/JENKINS/Ansible+Plugin) to your Jenkins. (Read the Jenkins documentation : [*How to add a plugin*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-ajout-plugin))\
 ![](img/caas_AddAnsiblePlugin.png)
 
-- Add the custom tools : Ansible 1.9. (Nb: Read the Jenkins documentation : [*How to add a custom tools*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-custom-tools))\
+- Add the *custom tools* : Ansible 1.9. ( [*How to add a custom tools*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-custom-tools))\
 ![](img/caas_AddAnsibleCustomTools.png)
 
 - Create a new Job.
@@ -307,10 +315,10 @@ Please do not hesitate to provide us with your feedback on the current services 
 - Check the box 'Install custom tools' and select 'Ansible 1.9' as tool selection.\
 ![](img\caas_SelectAnsibleTool.png)
 
+- Point onto your Ansible playbook .
+
 - Add an post build step : 'Invoke Ansible Playbook' and use the exported parameters from your Bay.\
 ![](img/caas_InvokePetClinicAnsiblePlaybook.png)
-
-- Configure the step to execute your playbook ansible.
 
 - Add the keypair of the Build Server instance in order that Ansible can connect to it.\
 ![](img/caas_AddJenkinsCredentials.png)
@@ -321,7 +329,7 @@ Please do not hesitate to provide us with your feedback on the current services 
 
 # Annex 2: Using the Docker image factory framework
 ### Selecting the level of image validation
-In the DevOps integration dialog box, two attributes are configuring the use (or not) of the embedded Orange image factory framework 
+Two attributes of the Ansible Playbook are configuring the use (or not) of the embedded Orange image factory framework 
 
 ![](img/caas_DevOpsIntegration.png)
 
