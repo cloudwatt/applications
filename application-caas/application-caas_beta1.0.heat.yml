@@ -40,11 +40,10 @@ parameters:
   flavor_name:
     type: string
     description: Flavor to use for the OOCaaS Servers
-    default : s1.cw.small-1 
+    default : n1.cw.standard-1
     label: instance Type (Flavor)
     constraints:
       - allowed_values:
-        - s1.cw.small-1
         - n1.cw.standard-1 
         - n1.cw.standard-2
   private_volume_size:
