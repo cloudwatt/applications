@@ -1,331 +1,350 @@
 # Innovation Beta : Container aaS #
 
-## The promises
+## La promesse
 
-’Container as a Service’ (CaaS) is a Beta service that will deliver all the necessary material to execute **dockerized services** inside OpenStack KVM environment that provides flexibility thanks to the CloudWatt IaaS, security thanks to OpenStack virtualized network, and simplicity thanks to the content of this bundle. 
-Please follow the [*why-devops-with-dockerized-micro-services*](https://www.dailymotion.com/video/x4cinix_caas-teasing-why-devops-with-dockerized-micro-services_tech) video to understand the DevOps move!
+’Container as a Service’ (CaaS) est un service en mode Béta qui fournit l'ensemble des éléments logiciels nécessaires pour déployer des applications Dockerisées au sein d'un environnement OpenStack KVM. 
+Il bénéficie de la flexibilité grâce au IaaS de CloudWatt, la sécurité grâce à l'isolation des réseaux virtualisés dans OpenStack et la simplicité grâce au contenu de ce bundle. \
+Regardez le teasing dans la vidéo [*why-devops-with-dockerized-micro-services*](https://www.dailymotion.com/video/x4cinix_caas-teasing-why-devops-with-dockerized-micro-services_tech) pour comprendre ce changement vers le DevOps!
 
-***The promises are***
-- One-Click deploy & 5 minutes: you have your **Docker-based ContainerAAS** infrastructure.
-- One click & 3 minutes: you have your first Container cluster (*Magnum Bay*) fitted with Docker **Swarm** or Google **Kubernetes** **COE** (*Container Orchestration Engine*).
-- Few clicks: you integrate CaaS inside your existing **Jenkins chain** in order to execute **DevOps**
+***Les promesses sont***
+- One-Click deploy & 5 minutes: vous déployez votre infrastructure **Docker-based ContainerAAS**.
+- One click & 3 minutes: vous déployez votre premier cluster (*Magnum Bay*) à base de l'orchestrateur **COE** (*Container Orchestration Engine*) Docker **Swarm** ou Google **Kubernetes**.
+- Quelques clicks: vous intégrez CaaS au sein de votre environnement **Jenkins** afin d'exécuter des processus **DevOps**
 
 ![1-ClickDeploy](img/caas_1clickDeploy.png)
 
-CaaS is an easy-to-deploy bundle, available from the CloudWatt Application store.
-Three major components are delivered:
-- A KVM instance that provides a ‘Private Docker registry’ to store your future Docker images
-- A KVM instance that provides a preconfigured ‘Build server’ to build your future Docker images
-- A KVM instance that provides the CaaS Backend (available via API) and User Interface, available via HTTP.
+CaaS est un package simple à déployer, disponible dans *l'Application store* de CloudWatt.\
+Trois composants principaux seront installés:
+- Une instance KVM qui fournit une ‘Private Docker registry’ pour stocker vos futures images Docker.
+- Une instance KVM qui fournit un ‘Build server’ afin de générer vos images.
+- Une instance KVM qui fournit le *Backend* CaaS disponible en API et IHM.
 
-More info and tutos are available on [*https://www.cloudwatt.com/fr/labs/caas.html*](https://www.cloudwatt.com/fr/labs/caas.html).
-Videos of the service are available on [*https://www.dailymotion.com/Cloudwatt*](https://www.dailymotion.com/Cloudwatt).
+Plus d'informations et de tutos sur [*https://www.cloudwatt.com/fr/labs/caas.html*](https://www.cloudwatt.com/fr/labs/caas.html).
+Des vidéos sont disponibles sur [*https://www.dailymotion.com/Cloudwatt*](https://www.dailymotion.com/Cloudwatt).
 
-Thanks to this CaaS environment, you will benefit from the OpenStack/Magnum project that encapsulates the management of Docker containers clusters for Kubernetes or Docker Swarm ^tm^. 
-A ‘Cluster’ (’*Magnum **Bay***’) is a set of one ‘*Master*’ KVM instance that delivers the API and UI for the selected Docker COE (Container Orchestrator Engine) plus one or several ‘*Nodes*’ KVM instance(s) that host the customer containers.
+Grâce à cet environnement CaaS, vous bénéficiez du projet OpenStack/Magnum qui encapsule la gestion des *clusters* clusters for Kubernetes or Docker Swarm. 
+Un ‘Cluster’ (’*Magnum **Bay***’) est constitué d'une instance KVM ‘*Master*’ qui fournit les API & IHM pour le COE (Container Orchestrator Engine) Docker sélectionnée plus un ou plusieurs ‘*Nodes*’ en tant qu'instances KVM qui hébergerons vos containers Docker.
 
-If you select Kubernetes cluster as COE when creating a ‘*Magnum**Bay Model***’, some complementary tools will be available: 
-- an embedded Kubernetes Dashboard to track the running containers
-- an embedded ELK (ELastic Search / Kibana) logging system 
-- a ‘Collect’D / Graphana analytics service
+Si vous sélectionnez un cluster Kubernetes comme COE, quelques services complémentaires sont disponibles: 
+- Le dashboard Kubernetes standard, permettant de tracker vos containers en cours d'exécution.
+- Un système de Logging à base d'ELK (ELastic Search / Kibana).
+- Un système d'analytics ‘Collect’D / Graphana.
 
 
-## Simplified customer's DevOps journey
+## Parcours client DevOps simplifié
 ![DevOpsActivity](img/caas_DevOpsActivity.png)
 
-As ‘Customer Admin’, after the ‘One-Click’ deployment of the CaaS bundle in your existing OpenStack tenant, you will:
--   Allocate your first ‘BayModel’ and your ‘Bay’ :see ‘***1***’.
--   Then configure your DevOps tooling (see Jenkins with an example of Ansible ‘cookbook’ provided by CaaS): see ‘***2***’.
+En tant que ‘Customer Admin’, après avoir déployé en ‘One-Click’ l'infrastructure CaaS dans votre tenant existant, vous pourrez:
+-   Allouer votre premier ‘BayModel’ puis votre première ‘Bay’ :cf puce ‘***1***’.
+-   Puis configurer votre environnement DevOps (cf Jenkins avec l'exemple de 'playbook' Ansible fourni dans les exemples PetClinic ou Tweet): cf puce ‘***2***’.
 
-Then for every Dockerized application, the customer DevOps team will develop and deploy the application with CaaS according to various roles: see ‘2’:
--   As **customer senior developer**, you will define the descriptors of the dockerized application:
-	-   The classical POM.XML file used by Jenkins to build your application from the source code version controlled in Git.
-    -   The ‘*docker file*’ that list the content of your future Docker images
-    -   The *YML COE descriptor*, so that the selected Kubernetes or Swarm orchestrator will understand how to deploy or update your application inside a Bay
+Ensuite, pour chacune des applications à Dockeriser, l'équipe DevOps va générer puis déployer l'application avec CaaS suivant les rôles proposées ci-dessous: cf puce ‘2’:
+-   En tant que **customer senior developer== architecte**, vous mettez au point les descripteurs de l'application dockerisée:
+	-   Le fichier classique POM.XML utilisée par Jenkins pour compiler l'application à partir des sources versionnés dans GIT.
+    -   Le fichier ‘*docker file*’ qui décrit le contenu des futures images Docker
+    -   Le *descripteur COE YML*, permettant de définir comment le COE Swarm ou Kubernetes doit déployer ou mettre à jour votre application au sein d'une Bay.
 
--   As any **customer developer**, you will modify the source code of the application and run the ‘**All in one’ Jenkins job** that will execute the following steps for ‘non production-grade’ environment:
-    -   Build the application elements: in our ‘PetClinic’ example you will find a Java Spring application that will build a classic WAR file.
-    -   Build the Docker image(s): in our ‘PetClinic’ example, you will discover that we build a Docker image made of the ‘latest’ tomcat available on the Docker Git Hub and the ‘PetClinic’ War file and very few params
-    -   Deploy the application inside a Bay.
+-   En tant que **customer developer**, vous modifiez le code source de l'application puis exécutez le job ‘**All in one’ Jenkins** qui exécute en séquence les étapes suivantes pour un environnement de 'non Production':
+    -   Compilation des éléments applicatifs: dans notre exemple ‘PetClinic’ vous trouverez une application Java Spring qui construit un ficher WAR.
+    -   Génération de(s) image(s) Docker: dans l'exemple ‘PetClinic’ vous découvrirez que l'on construit une image 'PetClinic' à partir d'une image 'latest' Tomcat disponible sur le 'Docker Hub' sur Internet, de ce fichier WAR et de quelques paramètres. Cette image Docker référencera ensuite une image 'latest' mySql du 'Docker Hub'.
+    -   Déploiement de l'application Dockerisée au sein de la Bay.
 
--   As any **customer integrator**, you will optionally adapt the
-    Jenkins job in order to benefit from a partial job that will only
-    deploy an application using either the latest generated ‘PetClinic’
-    image or a previous one to test non regressions and new features
+-   En tant que **customer integrator**, vous créez optionnellement un job Jenkins partiel qui ne génère ni l'application ni les images Docker mais déploie une application dans un environnement de test afin que exécutiez des tests de non régression, de performances...
 
--   As any **customer OPerationS member**, you will optionally duplicate
-    the ‘All in one’ job in order to define your own process for
-    ‘production-grade’ environment and update the enterprise
-    ‘Change’ database.
+-   En tant que **customer OPerationS**, vous pouvez optionnellement dupliquer le job Jenkins ‘All in one’ afin de définir votre propre processus de mise en production(paramétrant par exemple la validation des images Docker) et la mise à jour du référenciel des 'changes' de l'entreprise.
 
-As any ***customer DevOps team member*** (and especially the OPS members) you will benefit from the Kubernetes add-ons (*Logging, metering and dashboarding*) and CaaS auto-monitoring (*with Zabbix-based monitoring for CaaS elements and optionally the customer’s containers*): see ‘***3***’.
+Tout membre de l'équipe ***DevOps*** (et particulièrement les OPS) pourra bénéficier des add-ons Kubernetes (*Logging, metering and dashboarding*) et de la fonction d'auto-monitoring de CaaS (*intégrant Zabbix comme moteur de monitoring pour les éléments d'infrastructure CaaS et optionnellement les containers des clients*): cf puce ‘***3***’.
 
-As ***customer team member***, you will benefit from the automatic Kubernetes features for auto-scale Up&Down of your containers (if detailed inside your application’s Kubernetes descriptor) as well as auto-repair ==‘*Slef-healing’*): see ‘***4***’.
+En tant que membre de l'équipe, vous bénéficierez de la fonction Kubernetes d'auto-scale Up&Down de vos containers (en fonction des critères de charge que vous aurez défini dans le descripteur K8S de votre application) ainsi que de l'auto-réparation via le 'self-healing : cf puce ‘***4***’.
 
 
-## Preparation
+## Préparation
 
-### The versions
+### Les versions
 -   Magnum 1.1
 -   Docker v1.10
 -   Kubernetes v1.2.2
 -   Swarm 1.1.3
 
-### The prerequisites to deploy this stack
+### Les prérequis au déploiement de la stack
 
-These should be routine by now:
--   Internet access
--   CloudWatt credentials and a valid KeyPair for the future KVM instances
--   The knowledge on how to use the CW AppStore: let’s one-click on ‘**deploy’**
+Les éléments habituels:
+-   Accès Internet
+-   credentials CloudWatt ainsi qu'une KeyPair valide pour allouer de nouvelles instances
+-   la compréhension de l'usage de l'AppStore de CW: le **'one-click deploy’**
 
-### Size of the instances
-The ‘One-Click’ bundle is packaged as an OpenStack Heat stack. By default, the Three CaaS instances will be allocated with the ‘m1.small’ flavor. We recommend you not to minor this flavor’s size.
-Per instance, a Cinder volume is attached in order to keep thepersistent data.
+### Taille des instances
+Le bundle ‘One-Click’ sous forme de stack Heat. Par défaut les trois instances qui seront créées sont paramétrées pour utiliser le  'Flavour' ‘m1.small’. Nous vous recommendons de ne pas minorer cette 'Flavour'.
+Pour chacune de ces 3 instances, un volume Cinder y sera attaché afin de stocker les données persistantes.
 
 
-### What will you find in the repository
-Once you have cloned the github from
-[*/cloudwatt/applications/application-caas*](https://github.com/cloudwatt/applications/tree/master/application-ocaas), you will find in the bundle-CaaS/ repository:
--   **application-caas_beta1.0.heat.yml**: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
--   **PetClinic\_sample.zip**: Java Spring example, to build and deploy a Tomcat-based Docker image and use a existing mySql Docker image
--   **Tweet\_sample.zip**: Cloud Native application as a composite of existing Docker images
--   **README.md** and **README-EN.md** (this current document)
--   **CaaS\_howToTroubleshoot.pdf:** future document.
+### Que trouverez vous dans le répertoire CaaS
+Une fois que vous aurez consulté ou cloné le repository GitHub de CloudWatt
+[*/cloudwatt/applications/application-caas*](https://github.com/cloudwatt/applications/tree/master/application-caas), vous trouverez:
+-   **application-caas_beta1.0.heat.yml**: le temple d'orchestration HEAT. Il permet de déployer l'infrastructure CaaS sans le '1-click' en mode CW/Console.
+-   **PetClinic\_sample.zip**: exemple Java Spring, qui build une image Docker à base du 'latest' Tomcat et pointe une image 'latest' Docker 'mySql'.
+-   **Tweet\_sample.zip**: une 'vraie' 'Cloud Native application en tant que composite d'images Docker existantes.
+-   **README.md** and **README-EN.md** (ce document)
+-   **CaaS\_howToTroubleshoot.pdf:** futur document.
 
-## Install CaaS in 1-click procedure:
-==>See [*one-click-caas-deployment*](https://www.dailymotion.com/video/x4cinqb_one-click-caas-deployment_tech) video
+## Procédure d'installation CaaS en mode '1-click':
+==>Regardez la vidéo [*one-click-caas-deployment*](https://www.dailymotion.com/video/x4cinqb_one-click-caas-deployment_tech) !
 
-CaaS start with the 1-click of Cloudwatt via the web page [*Apps page*](https://www.cloudwatt.com/fr/applications/) on the Cloudwatt website. Choose CaaS app, press DEPLOY. After entering your login / password to your account, the wizard appears:
+CaaS s'installe en mode '1-click' via la page web [*Apps page*](https://www.cloudwatt.com/fr/applications/application-caas). Choisissez 'CaaS', pressez DEPLOY. Après la saisie de vos login / password pour vous authentifier, le wizard apparaît:
 
 ![](img/caas_1clickDeploySetup.png)
 
-As you may have noticed the 1-Click wizard asked to reenter your password Openstack.\
-By default, the wizard selects the flavor “m1.small”. A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need.\ Instances are charged by the minute and capped at their monthly price (you can find more details on the [*Pricing page*](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
-Please remember that you are providing your KeyPair that will be used in order to postConfigure the future three KVM instances: this will be your way to SSH on those instances for troubleshooting or granting your colleagues on them if required.
+Par défaut le wizard sélection la flavor “m1.small” pour les instances à instancier. D'autres tailles d'instances sont disponibles,en lien avec leur facturation (voir [*Pricing page*](https://www.cloudwatt.com/en/pricing.html) ).
+N'oubliez pas de pointer sur votre KeyPair qui sera utilisée lors de la postConfiguration de CaaS pour définir votre connexion SSh (et vous permettre d'inviter vos collègues sur ces VMs si nécessaire)..\
+/!\ **Chez CloudWatt laissez les champs 'Proxy' vierges si vous utilisez l'exposition du service sur Internet**
 
-**Press DEPLOY**. The 1-click handles the launch of an Heat stack that triggers the allocation of three instances and the related OpenStack elements (cinder volumes, neutron internal private network…)
+**Press DEPLOY**. Le framework '1-click' se charge de lancer la stack Heat avec les paramètres adHoc. Cela entraîne la création de trois instances KVM et des éléments OpenStack associés(cinder volumes, neutron internal private network…)
 
-You can see its progression by clicking on its name which will take youto the Horizon console. When all modules become “green”, the creation is finished.
+Vous pouvez voir la progression de l'installation en cliquant sur le nom de la stack, ce qui vous amène dans la CWConsole sur l'onglet 'Stacks'. Quand la création est achevée en succès alors l'icone de la stack passe à 'vert'.
 
 ![](img/caas_1clickDeployResult.png)
 
-You can then find three URLs that are accessible via 3 floatingIps allocated by the 1-click:
--   ‘Magnum\_public\_ip’, which provides the access to the CaaS portal, Magnum\_UI-based.
--   ‘PrivateRegistry UI’, to be used with the appropriated certificate and related login/ Password see below.
--   ‘Zabbix UI’, to be used to access to the embedded self-monitoring tool with the related login/ Password see below.
+Vous pouvez alors trouver l'affichage de trois URLS accessibles via des floatingIPs allouées par le 1-click:
+-   ‘Magnum\_public\_ip’, qui vous mène au portail CaaS, en tant qu'extension du portail Magnum\_UI.
+-   ‘PrivateRegistry UI’, à utiliser une fois que le certificat auto-signé sera accepté en lien avec le compte auto-généré: voir plus bas.
+-   ‘Zabbix UI’, à utiliser pour accéder au service de monitoring en lien avec le compte auto-généré: voir plus bas.
 
-In the standard Horizon/orchestration console, you can dive inside the Stack outputs (you will retrieve the previous 3 URLs as well as the generated password that will be used during the end of CaaS setup).
-**… Keep in mind this stack’s auto-generated password!!!**
-
-
-![](img/caas_1clickDeployOutputs.png)
+Dans l'interface standard CWConsole, vous devrez visualiser les attributs 'outputs' de la stack afin de consulter en plus des ces URLS le ***password généré*** pendant l'installation, devant servir pour 3 fonctions.\
+**… Gardez bien en tête ce password généré  =&lt;**StackAutoGeneratedPassword**&gt;!!!**
 
 
-## Finish the CaaS setup:
-==>Second part of the [*one-click-caas-deployment*](https://www.dailymotion.com/video/x4cinqb_one-click-caas-deployment_tech) video*
+![](img/caas_1clickDeployOutputs.png)01
 
-As detailed in this, please follow the ‘*Getting started*’ procedure after the authentication of the new CaaS portal (*trick: this is your CloudWatt standard credentials as CaaS is federated with OpenStack/KeyStone authentication system*)
+
+## Terminez l'installation de CaaS:
+==>Deuxième partie de la vidéo [*one-click-caas-deployment*](https://www.dailymotion.com/video/x4cinqb_one-click-caas-deployment_tech) *
+
+Comme démontré dans cette vidéo, il faut suivre les explications de la page ‘*Getting started*’ après vous être authentifier sur le portail CaaS dédié (*astuce: grâce à votre compte habituel CloudWatt car le CaaS est fédéré avec l'annuaire OpenStack/KeyStone*)
 
 ![](img/caas_GettingStarted.png)
 
-Finishing the setup of the CaaS infrastructure is simple:
-1)  Access to the Magnum URL in order to login. Use your standard CW credentials as this new ‘Over the IaaS’ service is connected to CloudWatt authentication ‘Keystone’ service.
-2)  On the ‘*CaaS/Getting’* started page, please click on the ‘PrivateRegistry’s auto-signed certificate’ link in order to accept the auto-signed HTTPS certificate, then login on the related page with the following credentials: login=’*oocaas\_read*’, pwd=&lt;**StackAutoGeneratedPassword**&gt;
+Terminer l'installation de l'infrastructure CaaS est simple:
+1)  Connectez vous sur l'URL de CaaS\_UI==Magnum\_UI URL avec vos credentials CW habituels.
+2)  Au sein de la page par défaut ‘*CaaS/Getting’*, cliquez sur le lien ‘PrivateRegistry’s auto-signed certificate’ lpour accepter le certificat auto-signé généré par CaaS, puis connectez-vous avec le login=’*oocaas\_read*’, pwd=&lt;**StackAutoGeneratedPassword**&gt;
 
-***=>You have your CaaS infrastructure!***
+***=>Et voilà, vous avez votre CaaS infrastructure!***\
+/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra est 'cloud', avec votre clef privée!***
 
 
-## Creating your first Container clusters
+## Créez votre premier cluster de Container
 
-### Creating BayModel: 
-==>See [*managing-baymodels*](https://www.dailymotion.com/video/x4cinwm_caas-managing-baymodels_tech) video.\
-Once setup, this CaaS infrastructure allows you to allocate your first ‘BayModel’ to identify your Docker cluster’s template(s) with default parameters: just give a name and select either ‘Kubernetes’ or ‘Swarm’ COE.
+### Création de BayModel: 
+==>cf vidéo [*managing-baymodels*](https://www.dailymotion.com/video/x4cinwm_caas-managing-baymodels_tech) .\
+L'infrastructure CaaS vous permet de créer des ‘BayModel’ pour définir les templates de cluster Docker avec des paramètres par défault: saisissez simplement le nom du template et sélectionnez le COE ‘Kubernetes’ ou ‘Swarm’.
+Si vous être curieux, vous pourrez visualiser les paramètres *advanced*...
 
 ![](img/caas_CreateBayModel.png)
 
-### Creating your first Bay(s):
-==> See [*creating-and-updating-swarm-bay*](https://www.dailymotion.com/video/x4cisjo_caas-creating-and-updating-swarm-bay_tech) and [*creating-and-updating-k8s-bay*](https://www.dailymotion.com/video/x4b0bii_creating-and-updating-k8s-bay_tech) videos.\
-Once you have your BayModel(s), then simply create one or mode bays.
+### Création de la première Bay(s):
+==> Cf les vidéos[*creating-and-updating-swarm-bay*](https://www.dailymotion.com/video/x4cisjo_caas-creating-and-updating-swarm-bay_tech) et [*creating-and-updating-k8s-bay*](https://www.dailymotion.com/video/x4b0bii_creating-and-updating-k8s-bay_tech) .\
+Grâce à vos BayModel(s), il vous reste à déployer vos cluster Docker (c'est à dire les *Bays* pilotés par OpenStack/Magnum) en quelques clicks
 
 ![](img/caas_CreateBay.png)
 
--   This step will drive the launch of an OpenStack/Heat stack: please provide your password
--   Give a name to the bay, select the BayModel, select the number of ‘Nodes’ that are the KVM instances that will host your customer containers running your Dockerized application.
--   When ‘Create’, then a Heat Stack is launched. Please wait for the completion of the creation and review the resulting clusters.
+-   Ce wizard entraîne le lancement d'une stack Heat:vous devez donc rappeler votre password
+-   Nommez votre bay, selectionnez votre template de BayModel, selectionnez le nombre de ‘Nodes’ qui sont des instances KVM pour exécuter vos containers docker de vos applications.
+-   Suite à 'Create', la Stack Heat est lancée. Attendez la fin de création de ces 3 instances pour visualiser le panneau 'Bay' et l'affichage des attributs.
 
-As a result, one cluster of each COE will be similar to the following screenshot
+En résultat, un cluster pour chacun des COE sera similaire à la copie d'écran suivante\
+/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra est 'minion', avec votre clef privée!***
+
 
 ![](img/caas_Bays.png)
 
--   Status is completed (meaning Heat stack deployment is OK and the COE related postConfiguration is OK too (*synchronization between the ‘Master’ and its ‘Nodes’*)
--   A single master is allocated (*in the Beta version, no possibility to multi-instanciated this, even if Magnum is capable for; in the future version this High Availability feature will be added*)
--   As your choice, one or mode ‘Nodes’ will be allocated. In the K8S(Kubernates, guys) naming those are ‘*Minions’.*
-***=>You now have your context in order to deploy your dockerized micro services***
+-	Le statut est 'completed' (indiquant que la stack s'est correctement configurée OK et que la post-configuration de Bay est aussi en succès (*synchronisation entre le ‘Master’ et ses ‘Nodes’*):
+-   Un seul master est alloué (*dans cette version Beta, nous avons désactivé la possibilité de mettre en *haute disponibilité* les masters native dans Magnum; dans le futur cette fonction sera réactivée)
+-   Suivant votre choix, un ou plusieurs ‘Nodes’ sont alloués. Dans la terminologie K8S cela s'appelle des ‘*Minions’.*
+-	/!\Si vous avez choisi ***Kubernetes, n'oubliez pas d'ouvrir le security group *K8S Master* pour le flux TCP:8080*** pour vous et vos collègues afin d'accéder à l'API K8S et les services ajoutés!
 
-### Understanding the possibilities, depending on COEs: ‘Swarm is simple’ vs ‘Kubernetes is features rich’***
+***=>Et voilà, vous avez votre premier environnement Cluster Docker pour vos micro services***
+
+### Comprendre les possibilités, en fonction du COE sélectionné: ‘Swarm is simple’ vs ‘Kubernetes is features rich’***
 #### Swarm Bay
-Docker Swarm technology in this v1.1.3 version is simple and easy to use(*see the following chapter on how to deploy PetClinic sample with it, or the related video*).
-
-This COE provides a ‘Docker Compose compatible YML file to describe the Dockerized application. **Swarm drives the deployment of the containers**: That’s (*only*) it!
+La technologie Docker Swarm en version v1.1.3 est simple et facile à utiliser (*voir le chapitre sur 'how to deploy PetClinic sample' et la vidéo*).\
+Ce COE propose un descripteur compatible ‘Docker Compose' en format YML afin de décrire les applications dockerisées. **Swarm pilote le déploiement des containers**: C'est (*uniquement*) cela!
 
 ![](img/caas_SwarmBayDisplay.png)
 
-In CaaS user Interface, the Swarm-based bay is displayed with few information:
--   You have the API address of the Swarm API service (hosted on the ‘*Master’* instance).
--   You must dig into the nodes in order to discover which one is run which deploy container
--   You must expose your container on the external world via OpenStack/Neutron network features (Load balancer and/or FloatingIp)
--   You can allocate an OpenStack/Cinder volume and give it to one container (as an example, the ‘*mySql’* database container in order to persist the data )
-***=> In one work: Simple: YOU DO the job!***
+Dans l'IHM CaaS, l'affichage de la bay Swarm fournit les infos suivantes:
+-   L'adresse de l'API du service Swarm (porté par l'instance ‘*Master’*).
+-   Il vous faut rentrer dans chacun des 'Nodes' afin de découvrir celui qui porter le container qui vous intéresse. Voir le chapitre '*déploiement d'application avec Swarm*'
+-   Vous devez exposer votre application au monde externe via les fonctions OpenStack/Neutron (Load balancer et/ou FloatingIp)
+-	/!\ Vous devez aussi ajuster le SecurityGroup 'Swarm Nodes' afin de permettre ces fluxs externes
+-   Vous pouvez optionnellement créer un volume OpenStack/Cinder et l'affecter à votre application (Par exemple pour la base de données ‘*mySql’* afin de persister vos données)\
+***=> En un mot: Simple: c'est VOUS qui faites le Job!***
 
-#### Kubernetes
-Google Kubernetes technology in this v1.2.2 version is feature rich and easy to use (*see the following chapter on how to deploy PetClinic sample with it, or the related video*).
-This COE provides a ‘Docker Compose compatible YML file to describe the Dockerized application. **Kubernetes drives the deployment of the containers PLUS the configuration of the OpenStack external context**: That’s (*plenty of*) it!
+#### Kubernetes Bay
+La technologie Google Kubernetes dans cette version v1.2.2 est riche en fonctionnalités et facile d'usage. Voir le chapitre '*déploiement d'application avec Kubernetes*).\
+Ce COE fournit son descripteur YML spécifique pour decrire les éléments d'application et les fonctions du IaaS à associer. **Kubernetes pilote les déploiement des containers PLUS la configuration des éléments OpenStack réseau et stockage optionnel**: C'est (*tout*) cela!
 
 ![](img/caas_K8SBayDisplay.png)
 
-Like Swarm, Kubernetes panel show the API url. But it provides plenty of additional features as soon as you open the flow onto this
--   Kube UI, as a dashboard to manage the deployed container K8S PODs in the cluster
--   Kube DNS, as a container service locator to identify the K8S services.
--   Kube ELK technology, in order to kepp track of the logs of the running containers
--   Kube Collect’D & Graphana for stats on the containers
--   Kube configuration inside Magnum-based CaaS offer: K8S encapsulates to use of OpenStack APIs for Storage (see Cinder) and Network (see Neutron/LB and Neutron/FloatingIPs)
-***=> In one work: features rich: K8S DO the job for you!***
+Comme pour Swarm, le panneau de bay Kubernetes détaille l'UTL de l'API K8S. Mais il fournit plein d'autres fonctionnalités supplémentaires dès lors que vous avez ouvert le flux d'accès sur le SecurityGroup (*tcp 8080!*)
+-   Kube UI, en tant que dashboard pour gérer les *pods* de services K8S déployés dans le cluster.
+-   Kube DNS, en tant qu'annuaire des services K8S déployés.
+-   Kube ELK technology, afin de fournir un système de gestion externe des logs des containers.
+-   Kube Collect’D & Graphana pour les stats concernant ces containers
+-   Kube configuration, au sein de l'offre basée sur OpenStack/Magnum: K8S encapsule l'usage des APIs OpenStack pour les fonctions de stockage (cf Cinder) et réseau (cf Neutron/LB et Neutron/FloatingIPs).
+-	/!\ N'oubliez pas d'ajuster le SecurityGroup sur les 'Minions Nodes' pour ouvrir les flux des services non load-balancés. Dans l'implémentation actuelle OpenStack, il n'y a pas possibilité de gérer les securityGroups pour les loadBalancers.\
+***=> En un mot: riche fonctionnellement: K8S FAIT LE JOB pour vous!***
 
-## DevOps chain integration:
-==>See [*devops-and-caas-integration*](https://www.dailymotion.com/video/x4b0brh_devops-and-caas-integration_tech) video.
+## Intégration à la chaîne DevOps:
+==>cf vidéo [*devops-and-caas-integration*](https://www.dailymotion.com/video/x4b0brh_devops-and-caas-integration_tech) .
 
-### Retrieving the Bay’s parameters
-Every bay is providing a ‘*simple but magic*’ dialog Box:
+### Récupération des paramètres de la Bay
+Chaque Bay fournit une boîte de dialogue ‘*simple mais magique*’:
 
 ![](img/caas_DevOpsIntegration.png)
 
-Please click on ‘DevOps integration: the content of the Dialog box corresponds to **the parameters for your future Ansible PlayBook**!
+Cliquez sur le boutonn 'DevOps integration': Le contenu de cette boite de dialogue affiche les **paramètres de configuration de votre futur Playbook Ansible!**!
 
-### Configuring your Jenkins job and its Ansible cookbook
-See subset of **Jenkins setup in Annex1 at the end of the document**. …***create your new Jenkins job configure it with few technical params, but the Developers are used to this!***
+/!\ En tant que créateur de l'infrastructure CaaS, votre KeyPair a été utilisée pour configurer le serveur *CaaS_BuildServer*: accès via SSH avec l'utilisateur **'cloud'** et votre privateKey. \
+***Et si vous voulez autoriser vos collègues à s'y connecter avec leur keyPair, vous devez les y autoriser*** par\
+vi du fichier */home/cloud/.ssh/authorized_keys* et ajout des clefs ssh-rsa ressemblant à\
+*ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA0t°°°UqQ== rsa-key-20160218 *.
+
+### Configurez votre job Jenkins job et son Playbook
+Consulter l'ensemble de **l'Annexe 1 Jenkins setup** à la fin de ce document. …***créez votre job Jenkins job et configurez le avec quelques paramètres, mais vos développeurs ont l'habitude!***
 
 ![](img/caas_JenkinsAnsibleSetup.png)
 
-### Building and deploying your first PetClinic application:
-==>See [*deploying-petclinic-in-swarm-bay*](https://www.dailymotion.com/video/x4b0bmo_caas-deploying-petclinic-in-swarm-bay_tech) and [*deploying-petclinic-in-k8s-bay*](https://www.dailymotion.com/video/x4b0auc_caas-deploying-petclinic-in-k8s-bay_tech) videos.
+/!\***Attention aux credentials*** du job Jenkins, associés aux *authorized_keys* dans le CaaS_BuildServer, comme décrit plus haut!
 
-Once you setup the Jenkins job, then launch it and follow the logs progress.
+### Buildez et déployez votre application PetClinic:
+==>cf vidéo [*deploying-petclinic-in-swarm-bay*](https://www.dailymotion.com/video/x4b0bmo_caas-deploying-petclinic-in-swarm-bay_tech) et [*deploying-petclinic-in-k8s-bay*](https://www.dailymotion.com/video/x4b0auc_caas-deploying-petclinic-in-k8s-bay_tech) .
+
+Une fois que vous avez configuré votre Job Jenkins, et bien lancez-le et consultez ses logs.
 
 ![](img/caas_JenkinsLaunch.png)
 
-As an example, CaaS is providing an example with the PetClinic ‘AllInOne’ Jenkins and related Ansible cookbook is driving:
--   The build of the standard Java Spring application, producing a java War file to be onboarded inside a Tomcat web server.
--   The build of the ‘PetClinic’ Docker image that will be based on a ‘latest’ tomcat Docker image from the Docker Hub on Internet plus some glue to deploy and configure the PetClinic War
--   The tag then push of this image inside the CaaS private registry
--   And then the deployment of the application in a Swarm or Kubernetes Bay
+Dans cet exemple, le packaging CaaS fournit pour le job jenkins PetClinic un playbook ‘AllInOne’ Ansible qui enchaîne:
+-   La compilation de l'application standard Java Spring application, produisant un fichier java War à insérer au sein d'un server web Tomcat.
+-   Le build de l'image Docker ‘PetClinic’ basée sur une image ‘latest’ tomcat depuis le Docker Hub sur Internet plus quelques scripts pour déployer le War PetClinic.
+-   [optionnellement l'activation de la validation des images produites: voir **l'Annexe2: validation d'images Docker**]
+-	Le tag puis le push de cette image dans la PrivateRegistry.
+-   Et finalement le [re]déploiement de l'application dans la bay Swarm ou Kubernetes.
 
-In the following screenshot, the Kubernetes COE is used:
--   The first line corresponds to the BuildServer’s request to deploy the PetClinic application in the bay: Kubectl command.
--   Then later, when the build is in success, the Kubernetes bay is giving back plenty of info on the features rich content of the bay (already shown in the CaaS ‘Bay’ panel)
--   In blue: as a result the URL of the PetClinic service is given back (Developers know the URI of /petclinic )
+**Dans la copie d'écran suivante, le COE Kubernetes est utilisé**:
+-   La première ligne correspond à la requète faite par le BuildServer pour déployer l'application PetClinic: commande *Kubectl*.
+-   Ensuite, quand la commande est en succès, la Bay Kubernetes renvoie les informations concernant les multiples contenus additionnels (présentés bien sûr aussi dans le panneau ‘Bay’).
+-   En bleu: en résultat l'URL du service PetClinic is given back (Developers know the URI of /petclinic )
 
 ![](img/caas_JenkinsK8SResult.png)
 
-***=> Watch the videos: many more details inside them!!!***
 
-### How to use the Private registry?
-The CaaS UI is providing a ‘Docker dashboard’ integrated as an iFrame. In the Beta Release 1, only Read-only feature is available. Next release will provide Docker ‘Portus’ UI with Read-Write’ functions.\
+**Dans la copie d'écran suivante, le COE Swarm est utilisé**:
+![](img/CaaS_deployPetclinic_swarm1.png)
+-	les **docker_ps.stdout_lines décrivent pour chacun des containers quel est le 'node' le portant (cf *CONTAINER_ID* correspondant à l'ID de l'instance KVM: '72cae6f6ffae' pour l'unique container utilisant l'image 'PetClinic' stockée sur la privateRegistry, s'exposant sur le port tcp:8080 sur l'@IP interne '10.0.9.14')
+-	en consultant le panneau OpenStack/compute/instances, on retrouve l'@IP publique associée à ce 'node' (ici '10.194.146.94').    Concernant le container 'mySql' fonctionnant sur le 'node' d'ID='b93d5a8c8716', il est accédé par le container TomCat Petclinic sur le réseau interne sur le port TCP 3306...
+
+![](img/CaaS_deployPetclinic_swarm2.png)
+
+
+***=> Regardez les videos: Tous les détails y sont!!!***
+
+### Comment utiliser la Private registry?
+L'IHM CaaS intègre une IHM ‘Docker dashboard’ en tant qu'iFrame. Dans cette version Beta 1, des fonctions de visualisation sont dispobinles. La prochaine version à base d'IHM Docker ‘Portus’ permettra des fonctions de read/write et la gestion de nameSpaces et repositories.\
 
 ![](img/caas_PrivateRegistrPetClinic.png)
 
-Please browse the registry: as an example see the PetClinic Docker image with multiple versions (because plenty of Jenkins jobs which tag each time with the Job’s tag). Each version provides some infos.
+Browsez la registry: dans l'exemple de l'image Docker PetClinic vous verrez de multiple versions (en lien avec chacun des tags produits lors du lancement de vos jobs Jenkins).
 
-### How to use the Docker images factory?
-In the DevOps integration dialog box, two attributes are configuring the use (or not) of the embedded Orange image factory framework.
+### Coment utiliser la validation des images Docker?
+Dans la boite de dialogue 'DevOps integration', deux attributs controllent l'usage (ou non) de cette factory d'images.
 
 ![](img/caas_ActivateImageFactory.png)
 
-If DockerImageFactory is set to ‘0’, no use of it… See subset of **Docker image factory setup in Annex2 at the end of the document**.
+Si le paramètre *DockerImageFactory* est configuré à ‘0’, la validation est ignorée… Plus de détails dans l'Annexe2 à la fin du document**.
 
-### How to use the auto-monitoring feature in CaaS with the embedded Zabbix?
-CaaS innovation contains an auto-monitoring feature, see ‘service monitoring’ tab.
+### Comment utiliser la fonctionnalité d'auto-monitoringavec l'outil Zabbix intégré?
+Le service CaaS intègre une fonction d'auto-monitoring, cf l'onglet ‘service monitoring’.
 
 ![](img/caas_ServiceMonitoring.png)
 
-By design, every KVM instance deployed inside the customer’s tenant is discovered by the CaaS embedded Zabbix system and assigned to a monitoring template according to their role.
-The service monitoring page is classifying the instances into two groups: the ‘CaaS infra’ for the PrivateRegistry, BuildServer and Magnum… and the bays with one entry per bay with their Master and nodes…
-When clicking on the related ‘Zabbix link’ on one element, a new tab is open and displays the filtered monitoring element: Please login with ‘admin’ and pwd=&lt;**StackAutoGeneratedPassword**&gt;
+Par construction, chaque instance KVM déployée dans le tenant du client est découverte automatiquement et associée dans le service Zabbix à un profil de monitoring en fonction de son rôle.\
+Les instances sont classées en deux groupes: Celles de l'infrastructure ‘CaaS infra’ pour les PrivateRegistry, BuildServer et Magnum… et les 'bays' avec une entrée par bay regroupant le Master et ses nodes…\
+En cliquant sur le lien ‘Zabbix link’ d'un élément, un onglet complémentaire s'ouvre et affiche les informations de monitoring avec le filtre adhoc: Connectez-vous avec le login ‘admin’ et le password=&lt;**StackAutoGeneratedPassword**&gt;
 
 ![](img/caas_ZabbixDisplay.png)
 
-## And Watt else?
-Next document will detail some more info on
--   Understanding the CaaS infrastructure: see [*understanding-caas-infrastructure*](https://www.dailymotion.com/video/x4cio3y_understanding-caas-infrastructure_tech)     video
--   How to manage namespaces and repositories inside Docker PrivateRegistry?
--   How to fine tune the blacklists in the Docker image factory?
--   Operating the dockerized application with Kubernetes focus :
-    -   How to use Kube UI?
-    -   How to use Grafana?
-    -   How to use Kibana?
--   Operating the OOCaaS deliverables
-    -   How to troubleshoot the service?
-    -   How to use the embedded Zabbix to monitor your application?
+## Et Watt else?
+Un prochain document détaillera quelques infos complémentaires concernant:
+-   Comprendre l'infrastructure CaaS: cf vidéo [*understanding-caas-infrastructure*](https://www.dailymotion.com/video/x4cio3y_understanding-caas-infrastructure_tech) 
+-   Comment gérer les namespaces et repositories au sein du PrivateRegistry?
+-   Comment configurer les blacklists dans la factory d'images Docker?
+-   Comment gérer finement vos services applicatifs avec un focus sur Kubernetes:
+    -   Comment utiliser Kube UI?
+    -   Comment utiliser Grafana?
+    -   Comment utiliser Kibana?
+-   Comment opérer les livrables CaaS:
+    -   Comment troubleshooter?
+    -   Comment reconfigurer le serveur Zabbix pour monitorer vos micro-services d'application?
 
-## And the future?
-This article will allow you to dive into the Dockerized world on CloudWatt. This beta service is currently free of charge for the Docker layer.
+## Et notre futur?
+Cet article vous permet de plongerdans le monde de la Dockerisation dans CloudWatt. Ce service Beta est actuellement gratuit pour la couche Docker.
 Please do not hesitate to provide us with your feedback on the current services as well as your ideas for bugFixes, features enhancements or a ‘managed service’ by Orange Business services ^tm^.
 
-***=>Get in touch with [*apps@cloudwatt.com*](mailto:apps@cloudwatt.com)***
+***=>Get in touch with [*apps@cloudwatt.com*](mailto:apps@cloudwatt.com)  ou [*CaaSTeam*](mailto:david.alles@orange.com)***
 
 .
 .
 .
-# Annex 1: complete setup of Jenkins and related Ansible
-==>See [*devops-and-caas-integration*](https://www.dailymotion.com/video/x4b0brh_devops-and-caas-integration_tech) video
+# Annexe 1: Configuration complète de Jenkins et de son Playbook Ansible
+==>cf vidéo [*devops-and-caas-integration*](https://www.dailymotion.com/video/x4b0brh_devops-and-caas-integration_tech) 
 
-- Add the [*Ansible Plugin*](https://wiki.jenkins-ci.org/display/JENKINS/Ansible+Plugin) to your Jenkins. (Nb : Read the Jenkins documentation : [*How to add a plugin*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-ajout-plugin))\
+- Ajoutez le [*Plugin Ansible *](https://wiki.jenkins-ci.org/display/JENKINS/Ansible+Plugin) dans votre Jenkins. (lisez la doc standard de Jenkins: [*How to add a plugin*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-ajout-plugin))\
 ![](img/caas_AddAnsiblePlugin.png)
 
-- Add the custom tools : Ansible 1.9. (Nb: Read the Jenkins documentation : [*How to add a custom tools*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-custom-tools))\
+- Sélectionnez les *custom tools* : Ansible 1.9. ( [*How to add a custom tools*](http://faas.forge.orange-labs.fr/documentation/master/userguide/index.html#jenkins-custom-tools))\
 ![](img/caas_AddAnsibleCustomTools.png)
 
-- Create a new Job.
+- Créez un nouveau Job.
 
-- Configure the job to pull the source code of your application on the Git of your source control.\
+- Configurez ce job pour pointer sur le code source de votre application dans votre Git d'entreprise.\
 ![](img/caas_AddGitAccess.png)
 
-- Check the box 'Install custom tools' and select 'Ansible 1.9' as tool selection.\
+- Cochez la case 'Install custom tools' et selectionnez l'outil 'Ansible 1.9'.\
 ![](img\caas_SelectAnsibleTool.png)
 
-- Add an post build step : 'Invoke Ansible Playbook' and use the exported parameters from your Bay.\
+- Pointez sur votre playbook ansible.
+
+- Ajoutez une étape de post-configuration : 'Invoke Ansible Playbook' et utilisez les paramètres exportés de votre Bay.\
 ![](img/caas_InvokePetClinicAnsiblePlaybook.png)
 
-- Configure the step to execute your playbook ansible.
-
-- Add the keypair of the Build Server instance in order that Ansible can connect to it.\
+- /!\ n'oubliez-pas de déclarer votre keypair pour que Ansible accède au BuildServer.\
 ![](img/caas_AddJenkinsCredentials.png)
 
 .
 .
 .
 
-# Annex 2: Using the Docker image factory framework
-### Selecting the level of image validation
-In the DevOps integration dialog box, two attributes are configuring the use (or not) of the embedded Orange image factory framework 
+# Annexe 2: Utilisez le framework de validation des images Docker
+### Selectionnez le niveau de validation des images
+Dans les paramètres de configuration du Playbook Ansible, deux attributs are configuring the use (or not) of the embedded Orange image factory framework 
 
 ![](img/caas_DevOpsIntegration.png)
 
--   If ‘build\_server activate\_DockerImageFactory’ is set to ‘0’, then no image validation is made.\ As a consequence the build server is only building the docker images and pushing them on the Private Registry
--   If ‘build\_server activate\_DockerImageFactory’ is set to ‘1’, then the complementary attribute is use to define with ‘*validation blacklist’* is used:\
+-   Si ‘build\_server activate\_DockerImageFactory’ est configuré à ‘0’, alors aucune validation d'image.\ En consequence le build server ne fait que builder les images puis les pousser sur la Private Registry
+-   Si ‘build\_server activate\_DockerImageFactory’ est configuré à ‘1’, alors l'attribut complémentaire est utilisé afin de définir quelle ‘*validation blacklist’* doit être utilisée:\
     … ‘build\_server DockerImageFactory\_ProdReady =&lt;True|False&gt;’
 
-### Understanding the configuration of the blacklists
-On the CaaS\_BuildServer KVM instance, two files are provided with default Orange values for blacklists:
--   ‘Insecure level == **nonProduction** :’ The file can be modified in /home/cloud/imagefactory/run/**filch-insecure.json**
--   ‘**Production** level’ : The file can be modified in /home/cloud/imagefactory/run/**filch.json**
+### quelques détails sur ces blacklists
+Au sein de l'instance KVM CaaS\_BuildServer, deux fichiers sont fournis en standard par Orange:
+-   ‘Insecure level == **nonProduction** :’ ce fichier se situe ici: /home/cloud/imagefactory/run/**filch-insecure.json**
+-   ‘**Production** level’ : ce fichier se situe ici: /home/cloud/imagefactory/run/**filch.json**
 
 ![](img/caas_blacklistNP.png)
 
-### Examples of validation
--   If validation is running well\
+### Exemples de validation
+-   Si la validation se déroule bien\
     ![](img/caas_ValidOK.png)
 
--   If validation is KO\
+-   En cas de problème\
     ![](img/caas_ValidKO.png)
 
 
