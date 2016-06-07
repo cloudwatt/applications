@@ -1,0 +1,791 @@
+{
+  "descriptor" :
+  {
+  "heat_template_version": "2014-10-16",
+  "description": "Heat stack to deploy OOCaaS system (OOCaaS_PrivateRegistry, OOCaaS_BuildServer, OOCaaS_Magnumn)",
+  "parameter_groups": [
+    {
+      "label": "Network parameters",
+      "parameters": [
+        "public_openstack_name",
+        "public_openstack_ip"
+      ]
+    },
+    {
+      "label": "Instance parameters",
+      "parameters": [
+        "keypair_name",
+        "flavor_name",
+        "private_volume_size"
+      ]
+    },
+    {
+      "label": "Proxy parameters",
+      "parameters": [
+        "http_proxy",
+        "https_proxy",
+        "no_proxy"
+      ]
+    },
+    {
+      "label": "Authentication parameters",
+      "parameters": [
+        "tenant_name",
+        "username",
+        "password"
+      ]
+    }
+  ],
+  "parameters": {
+    "public_openstack_name": {
+      "type": "string",
+      "description": "Openstack Platform VIP Name",
+      "default": "identity.fr1.cloudwatt.com"
+    },
+    "public_openstack_ip": {
+      "type": "string",
+      "description": "Openstack Platform VIP IP",
+      "default": "185.23.94.20"
+    },
+    "keypair_name": {
+      "type": "string",
+      "description": "Name of key pair to assign to OOCaaS Servers",
+      "default": ""
+    },
+    "flavor_name": {
+      "type": "string",
+      "description": "Flavor to use for the OOCaaS Servers",
+      "default": "s1.cw.small-1",
+      "label": "instance Type (Flavor)",
+      "constraints": [
+        {
+          "allowed_values": [
+            "s1.cw.small-1",
+            "n1.cw.standard-1",
+            "n1.cw.standard-2"
+          ]
+        }
+      ]
+    },
+    "private_volume_size": {
+      "label": "Volume size",
+      "description": "Size of the private registry volume (Go)",
+      "type": "number",
+      "default": 5
+    },
+    "http_proxy": {
+      "type": "string",
+      "description": "Http proxy env variable",
+      "default": ""
+    },
+    "https_proxy": {
+      "type": "string",
+      "description": "Https proxy env variable",
+      "default": ""
+    },
+    "no_proxy": {
+      "type": "string",
+      "description": "No proxy env variable",
+      "default": ""
+    },
+    "tenant_name": {
+      "type": "string",
+      "description": "Openstack Tenant Name",
+      "default": ""
+    },
+    "username": {
+      "type": "string",
+      "description": "Openstack User Name",
+      "default": ""
+    },
+    "password": {
+      "type": "string",
+      "hidden": true,
+      "description": "Openstack password",
+      "default": ""
+    },
+    "private_heat_endpoint": {
+      "type": "string",
+      "default": "http://orchestration.fr1.cloudwatt.net:8004"
+    },
+    "public_heat_endpoint": {
+      "type": "string",
+      "default": "https://orchestration.fr1.cloudwatt.com"
+    }
+  },
+  "resources": {
+    "generated_pwd": {
+      "type": "OS::Heat::RandomString",
+      "properties": {
+        "length": 8
+      }
+    },
+    "privateregistry_wait_handle": {
+      "type": "OS::Heat::WaitConditionHandle"
+    },
+    "privateregistry_wait_condition": {
+      "type": "OS::Heat::WaitCondition",
+      "depends_on": "privateregistry",
+      "properties": {
+        "handle": {
+          "get_resource": "privateregistry_wait_handle"
+        },
+        "timeout": 600
+      }
+    },
+    "privateregistry": {
+      "type": "OS::Nova::Server",
+      "depends_on": "OOCaasNetwork_subnet",
+      "properties": {
+        "key_name": {
+          "get_param": "keypair_name"
+        },
+        "image": "6f8be268-6e5f-4083-b715-ea6fdd76f530",
+        "flavor": {
+          "get_param": "flavor_name"
+        },
+        "admin_user": "cloud",
+        "security_groups": [
+          {
+            "get_resource": "privateregistry_security_group"
+          }
+        ],
+        "networks": [
+          {
+            "network": {
+              "get_resource": "OOCaasNetwork"
+            }
+          }
+        ],
+        "user_data": {
+          "str_replace": {
+            "template": "#!/bin/bash\n#utilisation de la partition\nwhile [ `fdisk -l  /dev/vdb | wc -l` -eq 0 ]\ndo\necho wait vdb\nsleep 1\ndone\nsleep 1\necho end wait vdb\n/sbin/mkfs -t ext3 /dev/vdb\npvcreate -y /dev/vdb\nvgcreate dockervg /dev/vdb \nlvcreate -l 100%FREE dockervg -n docker_lv\nmkfs.ext3 /dev/dockervg/docker_lv\nmkdir -p /data\necho /dev/dockervg/docker_lv /data          ext3    defaults 1 2 >>  /etc/fstab\nmount /dev/dockervg/docker_lv\nsed -i \"s|HTTP_PROXY|$HTTP_PROXY|g\" /etc/default/docker  \nsed -i \"s|PRIVATE_REGISTRY|$PRIVATE_REGISTRY|g\" /home/cloud/auth/httpd.conf\nsed -i \"s|PRIVATE_REGISTRY|$PRIVATE_REGISTRY|g\" /home/cloud/docker-compose.yml    \nopenssl req -subj '/CN=$PRIVATE_REGISTRY/O=Orange LTD./C=FR' -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout /home/cloud/auth/domain.key -out /home/cloud/auth/domain.crt\nhtpasswd -Bbn oocaas_read $GENERATED_PWD > /home/cloud/auth/httpd.htpasswd\nhtpasswd -Bbn oocaas_push $GENERATED_PWD>> /home/cloud/auth/httpd.htpasswd\necho \"pusher: oocaas_push\" > /home/cloud/auth/httpd.groups\nservice docker restart\ncd /home/cloud && docker-compose up -d \necho \"$VIP_IP $VIP_NAME\" >> /etc/hosts\nREGISTRY_PRIVATE=`docker inspect --format '{{ .NetworkSettings.IPAddress }}' zabbix30_zabbix-server_1`\nIP_REGISTRY_PRIVATE=`ifconfig  eth0 | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'` \nsed -i \"s|Server=PRIVATE_REGISTRY|Server=$IP_REGISTRY_PRIVATE,$REGISTRY_PRIVATE|g\" /etc/zabbix/zabbix_agentd.conf\nsed -i \"s|ServerActive=PRIVATE_REGISTRY|ServerActive=$IP_REGISTRY_PRIVATE|g\" /etc/zabbix/zabbix_agentd.conf\nservice zabbix-agent restart\nheat=private_heat_endpoint\nheat_public=public_heat_endpoint\nendpoint=wc_endpoint\ncurl_endpoint=${endpoint/$heat/$heat_public}\ncurl -i -X POST --insecure --data-binary '{\"status\": \"SUCCESS\"}' -H 'X-Auth-Token: wc_token' -H 'Content-Type: application/json' -H 'Accept :application/json' $curl_endpoint\n",
+            "params": {
+              "$HTTP_PROXY": {
+                "get_param": "http_proxy"
+              },
+              "$USERNAME": {
+                "get_param": "username"
+              },
+              "$PRIVATE_REGISTRY": {
+                "get_attr": [
+                  "privateregistry_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$VIP_IP": {
+                "get_param": "public_openstack_ip"
+              },
+              "$VIP_NAME": {
+                "get_param": "public_openstack_name"
+              },
+              "$GENERATED_PWD": {
+                "get_resource": "generated_pwd"
+              },
+              "private_heat_endpoint": {
+                "get_param": "private_heat_endpoint"
+              },
+              "public_heat_endpoint": {
+                "get_param": "public_heat_endpoint"
+              },
+              "wc_token": {
+                "get_attr": [
+                  "privateregistry_wait_handle",
+                  "token"
+                ]
+              },
+              "wc_endpoint": {
+                "get_attr": [
+                  "privateregistry_wait_handle",
+                  "endpoint"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "privateregistry_floating_ip": {
+      "type": "OS::Neutron::FloatingIP",
+      "properties": {
+        "floating_network_id": "6ea98324-0f14-49f6-97c0-885d1b8dc517"
+      }
+    },
+    "registry_floating_ip_link": {
+      "type": "OS::Nova::FloatingIPAssociation",
+      "properties": {
+        "floating_ip": {
+          "get_resource": "privateregistry_floating_ip"
+        },
+        "server_id": {
+          "get_resource": "privateregistry"
+        }
+      }
+    },
+    "magnum_wait_handle": {
+      "type": "OS::Heat::WaitConditionHandle"
+    },
+    "magnum_wait_condition": {
+      "type": "OS::Heat::WaitCondition",
+      "depends_on": "magnum",
+      "properties": {
+        "handle": {
+          "get_resource": "magnum_wait_handle"
+        },
+        "timeout": 600
+      }
+    },
+    "magnum": {
+      "type": "OS::Nova::Server",
+      "depends_on": "privateregistry",
+      "properties": {
+        "key_name": {
+          "get_param": "keypair_name"
+        },
+        "image": "a8dddde0-d303-4d06-bd08-8589b66db32d",
+        "flavor": {
+          "get_param": "flavor_name"
+        },
+        "admin_user": "cloud",
+        "security_groups": [
+          {
+            "get_resource": "magnum_security_group"
+          }
+        ],
+        "networks": [
+          {
+            "network": {
+              "get_resource": "OOCaasNetwork"
+            }
+          }
+        ],
+        "user_data": {
+          "str_replace": {
+            "template": "#!/bin/bash\nsed -i \"s|HEAT_BUILD_SERVER|$BUILD_SERVER|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_MAGNUM|$MAGNUM|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_STACK_NAME|$STACK_NAME|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_ZABBIX_ENDPOINT|http://$ZABBIX_ENDPOINT:9090/|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PRIVATE_NETWORK|$PRIVATE_NETWORK|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PRIVATE_SUBNET|$PRIVATE_SUBNET|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PRIVATE_REGISTRY|$PRIVATE_REGISTRY|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PRIVATE_IP|$PRIVATE_IP|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_VIP_NAME|$VIP_NAME|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_VIP_IP|$VIP_IP|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_TENANT_NAME|$TENANT_NAME|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_USERNAME|$USERNAME|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PASSWORD|$PASSWORD|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_HTTP_PROXY|$HTTP_PROXY|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_HTTPS_PROXY|$HTTPS_PROXY|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_NO_PROXY|$NO_PROXY|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_PUBLIC_NETWORK|$PUBLIC_NETWORK|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_IP_REGISTRY_PRIVATE|$IP_PRIVATE_REGISTRY_PRIVATE|g\" /home/cloud/post-config.sh\nIP_MAGNUM_PRIVATE=`ifconfig  eth0 | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`\nsed -i \"s|HEAT_IP_MAGNUM_PRIVATE|$IP_MAGNUM_PRIVATE|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_IP_BUILD_SERVER_PRIVATE|$IP_BUILD_SERVER_PRIVATE|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_GENERATED_PWD|$GENERATED_PWD|g\" /home/cloud/post-config.sh\nsed -i \"s|HEAT_SUBNET_CIDR|$PRIVATE_SUBNET_CIDR|g\" /home/cloud/post-config.sh\nsed -i \"s|PRIVATE_REGISTRY|$IP_PRIVATE_REGISTRY_PRIVATE|g\" /etc/zabbix/zabbix_agentd.conf\nservice zabbix-agent restart\n/home/cloud/post-config.sh\nservice magnum-api restart\nservice magnum-conductor restart\nsource /home/cloud/openrc\nsudo python /home/cloud/horizon/manage.py compress\nservice apache2 restart; service apache2 reload\nheat=private_heat_endpoint\nheat_public=public_heat_endpoint\nendpoint=wc_endpoint\ncurl_endpoint=${endpoint/$heat/$heat_public}\ncurl -i -X POST --insecure --data-binary '{\"status\": \"SUCCESS\"}' -H 'X-Auth-Token: wc_token' -H 'Content-Type: application/json' -H 'Accept :application/json' $curl_endpoint\n",
+            "params": {
+              "$PRIVATE_NETWORK": {
+                "get_resource": "OOCaasNetwork"
+              },
+              "$PRIVATE_SUBNET": {
+                "get_resource": "OOCaasNetwork_subnet"
+              },
+              "$PRIVATE_REGISTRY": {
+                "get_attr": [
+                  "privateregistry_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$PRIVATE_IP": "0.0.0.0",
+              "$VIP_IP": {
+                "get_param": "public_openstack_ip"
+              },
+              "$VIP_NAME": {
+                "get_param": "public_openstack_name"
+              },
+              "$TENANT_NAME": {
+                "get_param": "tenant_name"
+              },
+              "$USERNAME": {
+                "get_param": "username"
+              },
+              "$PASSWORD": {
+                "get_param": "password"
+              },
+              "$HTTP_PROXY": {
+                "get_param": "http_proxy"
+              },
+              "$HTTPS_PROXY": {
+                "get_param": "https_proxy"
+              },
+              "$NO_PROXY": {
+                "get_param": "no_proxy"
+              },
+              "$PUBLIC_NETWORK": "6ea98324-0f14-49f6-97c0-885d1b8dc517",
+              "$STACK_NAME": "stack-oocaas",
+              "$BUILD_SERVER": {
+                "get_attr": [
+                  "build_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$ZABBIX_ENDPOINT": {
+                "get_attr": [
+                  "privateregistry_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$MAGNUM": {
+                "get_attr": [
+                  "magnum_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$IP_PRIVATE_REGISTRY_PRIVATE": {
+                "get_attr": [
+                  "privateregistry",
+                  "first_address"
+                ]
+              },
+              "$GENERATED_PWD": {
+                "get_resource": "generated_pwd"
+              },
+              "$IP_BUILD_SERVER_PRIVATE": {
+                "get_attr": [
+                  "build",
+                  "first_address"
+                ]
+              },
+              "$PRIVATE_SUBNET_CIDR": {
+                "get_attr": [
+                  "OOCaasNetwork_subnet",
+                  "cidr"
+                ]
+              },
+              "private_heat_endpoint": {
+                "get_param": "private_heat_endpoint"
+              },
+              "public_heat_endpoint": {
+                "get_param": "public_heat_endpoint"
+              },
+              "wc_token": {
+                "get_attr": [
+                  "magnum_wait_handle",
+                  "token"
+                ]
+              },
+              "wc_endpoint": {
+                "get_attr": [
+                  "magnum_wait_handle",
+                  "endpoint"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "magnum_floating_ip": {
+      "type": "OS::Neutron::FloatingIP",
+      "properties": {
+        "floating_network_id": "6ea98324-0f14-49f6-97c0-885d1b8dc517"
+      }
+    },
+    "magnum_floating_ip_link": {
+      "type": "OS::Nova::FloatingIPAssociation",
+      "properties": {
+        "floating_ip": {
+          "get_resource": "magnum_floating_ip"
+        },
+        "server_id": {
+          "get_resource": "magnum"
+        }
+      }
+    },
+    "build": {
+      "type": "OS::Nova::Server",
+      "depends_on": "privateregistry_wait_condition",
+      "properties": {
+        "key_name": {
+          "get_param": "keypair_name"
+        },
+        "image": "51d2022a-04e3-4d0a-b820-0d0c288f7e58",
+        "flavor": {
+          "get_param": "flavor_name"
+        },
+        "admin_user": "cloud",
+        "security_groups": [
+          {
+            "get_resource": "build_security_group"
+          }
+        ],
+        "networks": [
+          {
+            "network": {
+              "get_resource": "OOCaasNetwork"
+            }
+          }
+        ],
+        "user_data": {
+          "str_replace": {
+            "template": "#!/bin/bash -v\nset -v       \nsed -i \"s|PRIVATE_REGISTRY|$PRIVATE_REGISTRY|g\" /etc/default/docker\nDNS_LOCAL=`grep nameserver /etc/resolv.conf  | awk -F \" \" '{print $2}'| head -n1`\nsed -i \"s|DNS_LOCAL|$DNS_LOCAL|g\" /etc/default/docker\nsed -i \"s|HTTP_PROXY|$HTTP_PROXY|g\" /etc/default/docker\nsed -i \"s|HTTP_PROXY|$HTTP_PROXY|g\" /home/cloud/imagefactory/run/init.sh\nsed -i \"s|PRIVATE_REGISTRY|$PRIVATE_REGISTRY|g\" /home/cloud/imagefactory/etc/configuration.json\nsed -i \"s|PRIVATE_REGISTRY|$PRIVATE_REGISTRY_PRIVATE|g\" /etc/zabbix/zabbix_agentd.conf\nservice zabbix-agent restart\nservice docker restart\ndocker login --username=oocaas_push --password=$GENERATED_PWD --email=' ' $PRIVATE_REGISTRY:5000\n/home/cloud/imagefactory/bin/imagefactoryd > /var/log/imageFactory.log 2>&1 &\nsed -i '13i/home/cloud/imagefactory/bin/imagefactoryd > /var/log/imageFactory.log 2>&1 &' /etc/rc.local\nAUTH=`curl -s -H \"Content-Type: application/json-rpc\" -X POST -d '{\"jsonrpc\": \"2.0\", \"method\": \"user.login\", \"params\": { \"user\": \"Admin\", \"password\": \"zabbix\" }, \"id\": 1}' http://$PRIVATE_REGISTRY_PRIVATE:9090/api_jsonrpc.php | python -m json.tool | grep result | awk -F \": \" '{print $2}' | awk -F '\"' '{print $2}'`\ncurl -s -H \"Content-Type: application/json-rpc\" -X POST -d '{\"jsonrpc\": \"2.0\", \"method\": \"user.update\", \"params\": { \"userid\": \"1\", \"passwd\": \"'\"$GENERATED_PWD\"'\"}, \"auth\": \"'\"$AUTH\"'\", \"id\": 1}' http://$PRIVATE_REGISTRY_PRIVATE:9090/api_jsonrpc.php\ncurl -s -H \"Content-Type: application/json-rpc\" -X POST -d '{\"jsonrpc\": \"2.0\", \"method\": \"user.create\", \"params\": {\"alias\": \"oocaas_read\", \"passwd\": \"'\"$GENERATED_PWD\"'\", \"usrgrps\": [{\"usrgrpid\": \"7\"}], \"user_medias\": [{\"mediatypeid\": \"1\",\"sendto\": \"'\"$USERNAME\"'\",\"active\": 0,\"severity\": 63,\"period\": \"1-7,00:00-24:00\"}]},\"auth\": \"'\"$AUTH\"'\",\"id\": 1}' http://$PRIVATE_REGISTRY_PRIVATE:9090/api_jsonrpc.php\n",
+            "params": {
+              "$PRIVATE_REGISTRY": {
+                "get_attr": [
+                  "privateregistry_floating_ip",
+                  "floating_ip_address"
+                ]
+              },
+              "$USERNAME": {
+                "get_param": "username"
+              },
+              "$GENERATED_PWD": {
+                "get_resource": "generated_pwd"
+              },
+              "$HTTP_PROXY": {
+                "get_param": "http_proxy"
+              },
+              "$PRIVATE_REGISTRY_PRIVATE": {
+                "get_attr": [
+                  "privateregistry",
+                  "first_address"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "build_floating_ip": {
+      "type": "OS::Neutron::FloatingIP",
+      "properties": {
+        "floating_network_id": "6ea98324-0f14-49f6-97c0-885d1b8dc517"
+      }
+    },
+    "build_floating_ip_link": {
+      "type": "OS::Nova::FloatingIPAssociation",
+      "properties": {
+        "floating_ip": {
+          "get_resource": "build_floating_ip"
+        },
+        "server_id": {
+          "get_resource": "build"
+        }
+      }
+    },
+    "build_security_group": {
+      "type": "OS::Neutron::SecurityGroup",
+      "properties": {
+        "description": "Add security group rules for server",
+        "name": "build server security-group",
+        "rules": [
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 22,
+            "port_range_max": 22
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "icmp"
+          },
+          {
+            "remote_ip_prefix": "10.0.9.0/24",
+            "protocol": "tcp",
+            "port_range_min": 10050,
+            "port_range_max": 10050
+          }
+        ]
+      }
+    },
+    "magnum_security_group": {
+      "type": "OS::Neutron::SecurityGroup",
+      "properties": {
+        "description": "Add security group rules for magnum",
+        "name": "magnum server security-group",
+        "rules": [
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 22,
+            "port_range_max": 22
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 80,
+            "port_range_max": 80
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "icmp"
+          },
+          {
+            "remote_ip_prefix": "10.0.9.0/24",
+            "protocol": "tcp",
+            "port_range_min": 10050,
+            "port_range_max": 10050
+          }
+        ]
+      }
+    },
+    "privateregistry_security_group": {
+      "type": "OS::Neutron::SecurityGroup",
+      "properties": {
+        "description": "Add security group rules for private registry",
+        "name": "private registry server security-group",
+        "rules": [
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 22,
+            "port_range_max": 22
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 5000,
+            "port_range_max": 5000
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 443,
+            "port_range_max": 443
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 8080,
+            "port_range_max": 8080
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "icmp"
+          },
+          {
+            "remote_ip_prefix": "10.0.9.0/24",
+            "protocol": "tcp",
+            "port_range_min": 10050,
+            "port_range_max": 10051
+          },
+          {
+            "remote_ip_prefix": "0.0.0.0/0",
+            "protocol": "tcp",
+            "port_range_min": 9090,
+            "port_range_max": 9090
+          }
+        ]
+      }
+    },
+    "OOCaasNetwork": {
+      "type": "OS::Neutron::Net",
+      "properties": {
+        "name": "caas"
+      }
+    },
+    "OOCaasNetwork_subnet": {
+      "type": "OS::Neutron::Subnet",
+      "properties": {
+        "name": "caas_subnet",
+        "network_id": {
+          "get_resource": "OOCaasNetwork"
+        },
+        "ip_version": 4,
+        "cidr": "10.0.9.0/24",
+        "allocation_pools": [
+          {
+            "start": "10.0.9.100",
+            "end": "10.0.9.199"
+          }
+        ]
+      }
+    },
+    "OOCaasRouter": {
+      "type": "OS::Neutron::Router",
+      "properties": {
+        "external_gateway_info": {
+          "network": "6ea98324-0f14-49f6-97c0-885d1b8dc517"
+        }
+      }
+    },
+    "OOCaasRouter_interface": {
+      "type": "OS::Neutron::RouterInterface",
+      "properties": {
+        "router_id": {
+          "get_resource": "OOCaasRouter"
+        },
+        "subnet_id": {
+          "get_resource": "OOCaasNetwork_subnet"
+        }
+      }
+    },
+    "data_private_registry": {
+      "type": "OS::Cinder::Volume",
+      "properties": {
+        "name": "Private_registry_volume",
+        "size": {
+          "get_param": "private_volume_size"
+        }
+      }
+    },
+    "attach_data_private_registry": {
+      "type": "OS::Cinder::VolumeAttachment",
+      "properties": {
+        "instance_uuid": {
+          "get_resource": "privateregistry"
+        },
+        "mountpoint": "/dev/vdb",
+        "volume_id": {
+          "get_resource": "data_private_registry"
+        }
+      }
+    }
+  },
+  "outputs": {
+    "Privateregistry_private_ip": {
+      "description": "Private registry Instance private IP address",
+      "value": {
+        "get_attr": [
+          "privateregistry",
+          "first_address"
+        ]
+      }
+    },
+    "Privateregistry_public_ip": {
+      "description": "Private registry Instance public IP address (API on port 5000, UI on 443, Zabbix on 9090)",
+      "value": {
+        "get_attr": [
+          "privateregistry_floating_ip",
+          "floating_ip_address"
+        ]
+      }
+    },
+    "ZabbixUI": {
+      "description": "Zabbix monitoring UI",
+      "value": {
+        "str_replace": {
+          "template": "http://$floating_ip:9090",
+          "params": {
+            "$floating_ip": {
+              "get_attr": [
+                "privateregistry_floating_ip",
+                "floating_ip_address"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PrivateRegistryUI": {
+      "description": "Private registry UI",
+      "value": {
+        "str_replace": {
+          "template": "https://$floating_ip",
+          "params": {
+            "$floating_ip": {
+              "get_attr": [
+                "privateregistry_floating_ip",
+                "floating_ip_address"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Magnum_private_ip": {
+      "description": "Magnum Instance private IP address",
+      "value": {
+        "get_attr": [
+          "magnum",
+          "first_address"
+        ]
+      }
+    },
+    "Magnum_public_ip": {
+      "description": "Magnum Instance public IP address",
+      "value": {
+        "str_replace": {
+          "template": "http://$floating_ip",
+          "params": {
+            "$floating_ip": {
+              "get_attr": [
+                "magnum_floating_ip",
+                "floating_ip_address"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Build_private_ip": {
+      "description": "Build Instance private IP address",
+      "value": {
+        "get_attr": [
+          "build",
+          "first_address"
+        ]
+      }
+    },
+    "Build_public_ip": {
+      "description": "Build Instance public IP address",
+      "value": {
+        "get_attr": [
+          "build_floating_ip",
+          "floating_ip_address"
+        ]
+      }
+    },
+    "Password": {
+      "description": "Generated password for user oocaas_read, oocaas_push & Zabbix Admin",
+      "value": {
+        "get_resource": "generated_pwd"
+      }
+    }
+  }
+},
+  "guiGroups" : [ {
+    "label" : "Generic Parameters",
+    "description" : "All remaining parameters needed for the Heat Template",
+    "inputs" : [ {
+      "nodeType" : "input",
+      "attributes" : {
+        "name" : "keypair_name",
+        "description" : "Paire de cles a injecter dans instance - Keypair to inject in instance",
+        "id" : "keypair_name",
+        "label" : "Paire de cles SSH - SSH Keypair",
+        "type" : "text"
+      }
+    }, {
+      "nodeType" : "select",
+      "attributes" : {
+        "name" : "flavor_name",
+        "description" : "Type instance a deployer - Flavor to use for the deployed instance",
+        "id" : "flavor_name",
+        "label" : "Type instance - Instance Type (Flavor)",
+        "type" : "text",
+        "value" : "m1.small"
+      },
+      "possibleValues" : ["m1.small", "s1.cw.small-1", "n1.cw.standard-1", "n1.cw.standard-2", "n1.cw.standard-4", "m1.medium", "n1.cw.highcpu-2", "n1.cw.highcpu-4", "m1.large", "n1.cw.highmem-2",  "m1.xlarge"]
+    },{
+      "nodeType" : "input",
+      "attributes" : {
+        "name" : "username",
+        "description" : "Openstack User Name",
+        "id" : "username",
+        "label" : "User name",
+        "type" : "text"
+      }
+    },{
+      "nodeType" : "input",
+      "attributes" : {
+        "name" : "password",
+        "description" : "Openstack User Password",
+        "id" : "password",
+        "label" : "Password",
+        "type" : "password"
+      }
+    },{
+      "nodeType" : "input",
+      "attributes" : {
+        "name" : "private_volume_size",
+        "description" : "Private volume size",
+        "id" : "private_volume_size",
+        "label" : "Private volume size (Gb)",
+        "type" : "text",
+        "value" : "5"
+      }
+    },{
+      "nodeType" : "input",
+      "attributes" : {
+        "name" : "tenant_name",
+        "description" : "Tenant Name",
+    "id" : "tenant_name",
+        "label" : "Tenant Name",
+        "type" : "hidden"
+
+      }
+    }
+    ]
+    }
+  ]
+}
