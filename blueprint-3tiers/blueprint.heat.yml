@@ -1,0 +1,431 @@
+heat_template_version: 2013-05-23
+description: All-in-one Blueprint 3-tier
+parameters:
+
+ keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+ os_type:
+    default: Ubuntu 14.04
+    description: os type
+    label: Os type
+    type: string
+    constraints:
+      - allowed_values:
+          - Ubuntu 14.04
+          - Ubuntu 16.04
+          - Debian Jessie
+          - Centos 7.2
+
+ Application_type:
+    default: php
+    description: Application type
+    label: Application type
+    type: string
+    constraints:
+      - allowed_values:
+          - php
+          - tomcat
+          - nodejs
+ Application_source:
+    default: https://github.com/dalitun/cw-bundle-lamp.git
+    description: url for your application php , tar.gz ,war or nodejs
+    label: Artefact in zip ,git, tar.gz or war
+    type: string
+
+ nodes_number:
+    default: 0
+    description: number of web servers 10 nodes
+    label: Number of front nodes
+    type: number
+    constraints:
+      - range: { min: 0, max: 6 }
+
+ nodes_flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Flavor Type for Front nodes
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+ nodes_net_cidr:
+    default: 192.168.0.0/24
+    description: /24 cidr of fronts network
+    label: /24 cidr of fronts network
+    type: string
+
+
+ db_net_cidr:
+    default: 192.168.1.0/24
+    description: /24 cidr of databases network
+    label: /24 cidr of databases network
+    type: string
+
+
+ glusterfs_flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Flavor Type for glusterfs
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+ number_db_clusters:
+    default: 0
+    description: number of web servers 10 nodes
+    label: number of database clusters
+    type: number
+    constraints:
+      - range: { min: 0, max: 6 }
+
+ database_name:
+    default: mydbtest
+    description: database name
+    label: Database name
+    type: string
+
+ database_admin:
+    default: admin
+    description: database user
+    label: Database user
+    type: string
+
+
+ database_admin_password:
+    description: database password
+    label: Database password
+    type: string
+    hidden: true
+
+ db_flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Flavor Type for databases
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+resources:
+  db_net:
+    type: OS::Neutron::Net
+    properties:
+      admin_state_up: true
+      name:
+        str_replace:
+            template: $stack-db-net
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+  db_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: db_net }
+      cidr: { get_param: db_net_cidr }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: db_net_cidr} ] }
+      name:
+        str_replace:
+            template: $stack-db-subnet
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+
+  nodes_net:
+    type: OS::Neutron::Net
+    properties:
+      admin_state_up: true
+      name:
+        str_replace:
+            template: $stack-nodes-net
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+
+  nodes_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: nodes_net }
+      ip_version: 4
+      cidr: { get_param: nodes_net_cidr }
+      name:
+        str_replace:
+            template: $stack-nodes-subnet
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+      allocation_pools:
+        - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: nodes_net_cidr} ] }
+          end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: nodes_net_cidr} ] }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      name:
+        str_replace:
+            template: $stack-router
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router1_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : nodes_subnet }
+
+  router2_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : db_subnet }
+
+
+  sg_web:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+
+  sg_db:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 3306, port_range_max: 3306 }
+        - { direction: ingress,remote_ip_prefix: { get_attr: [db_subnet, cidr] }, protocol: TCP }
+        - { direction: ingress,remote_ip_prefix: { get_attr: [db_subnet, cidr] }, protocol: UDP }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  sg_glusterfs:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 24007 , port_range_max: 24007 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 111 , port_range_max: 111 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 2049   , port_range_max: 2049 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 38465 , port_range_max: 38469 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min:  49152 , port_range_max:  49152 }
+        - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: UDP, port_range_min: 111 , port_range_max: 111 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+
+  glusterfs_nodes:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: 2
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/glusterfs.heat.yaml
+        properties:
+          nodename:
+            str_replace:
+               template: $stack-glusterfs-%index%
+               params:
+                  $stack: { get_param: 'OS::stack_name' }
+          security_group: { get_resource: sg_glusterfs }
+          network: { get_resource: nodes_net }
+          subnet: {get_resource: nodes_subnet }
+          cidr_net: { get_param: nodes_net_cidr }
+          index: "%index%"
+          nodeip:
+            str_replace:
+              template: $p
+              params:
+                 $p: { "Fn::Replace": [ {'.0/24': '.12%index%'}, {get_param: nodes_net_cidr} ] }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: glusterfs_flavor_name }
+          os_type: { get_param: os_type }
+
+
+  db_nodes:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: number_db_clusters}
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/db.heat.yaml
+        properties:
+          nodename:
+            str_replace:
+               template: $stack-db-%index%
+               params:
+                  $stack: { get_param: 'OS::stack_name' }
+          security_group: { get_resource: sg_db }
+          network: { get_resource: db_net }
+          subnet: {get_resource: db_subnet }
+          cidr_net: { get_param: db_net_cidr }
+          pool_id: {get_resource: pool_db}
+          index: "%index%"
+          nodeip:
+            str_replace:
+              template: $p
+              params:
+                 $p: { "Fn::Replace": [ {'.0/24': '.1%index%'}, {get_param: db_net_cidr} ] }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: db_flavor_name }
+          os_type: { get_param: os_type }
+          db_name: { get_param: database_name }
+          db_admin: { get_param: database_admin }
+          db_admin_password: { get_param: database_admin_password }
+          clusters_size:  { get_param: number_db_clusters }
+
+
+
+
+  web_nodes:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: nodes_number}
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/node.heat.yaml
+        properties:
+          nodename:
+            str_replace:
+               template: $stack-web-%index%
+               params:
+                  $stack: { get_param: 'OS::stack_name' }
+          security_group: { get_resource: sg_web }
+          network: { get_resource: nodes_net }
+          subnet: {get_resource: nodes_subnet }
+          cidr_net: { get_param: nodes_net_cidr }
+          pool_id: {get_resource: pool_web}
+          index: "%index%"
+          nodeip:
+            str_replace:
+              template: $p
+              params:
+                 $p: { "Fn::Replace": [ {'.0/24': '.11%index%'}, {get_param: nodes_net_cidr} ] }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: nodes_flavor_name }
+          os_type: { get_param: os_type }
+          Application_type: { get_param: Application_type }
+          Application_source: { get_param: Application_source }
+
+
+#--------------------------#
+# Load Balancer properties #
+#--------------------------#
+  lb_vip_port_web:
+     type: OS::Neutron::Port
+     properties:
+       security_groups: [{ get_resource: sg_web }]
+       network_id: { get_resource: nodes_net }
+       fixed_ips:
+          - subnet_id: { get_resource: nodes_subnet }
+
+  pool_web:
+    type: OS::Neutron::Pool
+    properties:
+      name: pool_web
+      protocol: TCP
+      lb_method: ROUND_ROBIN
+      subnet: { get_resource: nodes_subnet }
+      vip: {"protocol_port": 80}
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+        floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+        port_id: { get_resource: lb_vip_port_web }
+
+  vip_floating:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: floating_ip }
+      port_id: { get_attr: [pool_web, vip, port_id] }
+
+  lb_web:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      pool_id: { get_resource: pool_web }
+      protocol_port: 80
+######################################
+#lb databases
+################################################
+  lb_vip_port_db:
+    type: OS::Neutron::Port
+    properties:
+      security_groups: [{ get_resource: sg_db }]
+      network_id: { get_resource: db_net }
+      fixed_ips:
+        - subnet_id: { get_resource: db_subnet }
+
+  pool_db:
+    type: OS::Neutron::Pool
+    properties:
+      name: pool_db
+      protocol: TCP
+      lb_method: ROUND_ROBIN
+      subnet: { get_resource: db_subnet }
+      vip: {"protocol_port": 3306}
+
+  lb_db:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      pool_id: { get_resource: pool_db }
+      protocol_port: 3306
+
+
+#---------#
+# Outputs #
+#---------#
+outputs:
+  App_url_external:
+    description: external web url
+    value:
+      str_replace:
+        template: http://$floating_ip/
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  App_url_internal:
+    description: Internal web url
+    value:
+      str_replace:
+        template: http://$ip_internal/
+        params:
+          $ip_internal: { get_attr: [pool_web, vip, address] }
+
+  Database_ip:
+    description: database ip
+    value: { get_attr: [pool_db, vip, address] }
+  Database_name:
+    description: database name
+    value: { get_param: database_name }
+  Database_user:
+    description: database user
+    value: { get_param: database_admin }
+  Database_port:
+    description: database port
+    value: 3306
