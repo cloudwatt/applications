@@ -2,6 +2,8 @@
 
 ## Episode 26 : Blueprint 3 tier
 
+### Work in progress
+
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
 Through this blueprint we propose to set up web front-end, the glusterfs with a database cluster.

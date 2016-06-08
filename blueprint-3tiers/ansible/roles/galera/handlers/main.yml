@@ -1,0 +1,11 @@
+---
+- name: restart mysql
+  service: name=mysql state=restarted enabled=yes
+
+- name: restarted apparmor
+  service: name=apparmor state=restarted enabled=yes
+
+
+
+
+

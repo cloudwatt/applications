@@ -1,0 +1,34 @@
+- name: Install lvm and mylvmbackup on Debian
+  apt: pkg={{ item }} state=present
+  with_items:
+    - lvm2
+    - mylvmbackup
+  when: ansible_os_family == "Debian"
+
+- name: Install lvm and mylvmbackup on Redhat
+  yum: name={{ item }} state=present
+  with_items:
+   - lvm2
+   - mylvmbackup
+  when: ansible_os_family == "RedHat"
+
+- name: create /data folder
+  file: path={{ folder_mnt }} state=directory
+
+- name: create vg01
+  lvg: vg={{ vg_name }} pvs={{ pv_disk }}
+
+- name: create lvm global
+  lvol: vg={{ vg_name }} lv={{ lv_name }} size={{ lv_size }}
+
+- name: create filesystem on global
+  filesystem: fstype={{ fs_type }} dev=/dev/{{ vg_name }}/{{ lv_name }}
+
+- name: mount global
+  mount: name={{ folder_mnt }} src=/dev/{{ vg_name }}/{{ lv_name }} fstype={{ fs_type }} opts=noatime passno=2 state=mounted
+
+
+#- name: Modify configuration mylvmbackup
+#  template: src=mylvmbackup.conf.j2 dest=/etc/mylvmbackup.conf
+
+

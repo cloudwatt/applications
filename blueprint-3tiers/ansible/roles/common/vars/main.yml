@@ -1,0 +1,4 @@
+gluster_mount_dir: /mnt/gluster
+gluster_brick_dir: /srv/gluster/brick
+gluster_brick_name: gluster
+

@@ -1,0 +1,8 @@
+- name: Install glusterfs server packages (CentOS)
+  yum: name={{item}} state=installed enablerepo="glusterfs-epel"
+  with_items:
+     - glusterfs-server
+
+- name: Ensure the GlusterFS service is running (CentOS)
+  service: name=glusterd state=started
+  ignore_errors: yes

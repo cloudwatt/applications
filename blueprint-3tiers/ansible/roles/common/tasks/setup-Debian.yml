@@ -1,0 +1,28 @@
+
+- name: fix bug ubunut xenial
+  shell: | 
+          killall aptitude
+          rm -rf /var/lib/dpkg/lock
+          dpkg --configure -a
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+
+- name: apt-get update & upgrade
+  apt: upgrade=full update_cache=yes
+
+
+- name: install common packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - glusterfs-client
+    - mysql-client
+    - git
+    - rsync
+    - vim
+    - htop
+    - zip
+    - unzip
+
+

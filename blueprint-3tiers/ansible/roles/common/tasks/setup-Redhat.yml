@@ -1,0 +1,39 @@
+
+#- name: upgrade all packages
+#  yum: name=* state=latest
+
+- name: Fetch glusterfs repo file
+  get_url: dest=/etc/yum.repos.d/glusterfs-epel.repo
+           url=http://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/glusterfs-epel.repo
+
+- name: Set repo file permissions
+  file: owner=root group=root mode=0644
+        path=/etc/yum.repos.d/glusterfs-epel.repo
+
+
+- name: Install glusterfs client  packages Redhat
+  yum: name={{item}} state=installed enablerepo="glusterfs-epel"
+  with_items:
+     - glusterfs
+     - glusterfs-fuse
+
+- name: Ensure build dependencies are installed (RedHat).
+  yum: 'name="{{ item }}" state=present'
+  with_items:
+     - libselinux-python
+     - wget
+     - git
+     - rsync
+     - vim
+     - htop
+     - mariadb
+     - zip
+     - unzip
+     
+- name: Set selinux into 'permissive' mode.
+  selinux: policy=targeted state=permissive
+
+- name: change conf selinux Redhat
+  lineinfile: dest=/etc/selinux/config  regexp="^SELINUX=" line="SELINUX=disabled"
+
+

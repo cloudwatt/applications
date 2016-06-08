@@ -1,0 +1,6 @@
+gluster_mount_dir: /mnt/gluster
+gluster_brick_dir: /srv/gluster/brick
+gluster_brick_name: gluster
+node:
+  0: 10.0.0.120
+  1: 10.0.0.121

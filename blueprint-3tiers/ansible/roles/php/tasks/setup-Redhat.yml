@@ -1,0 +1,17 @@
+- name: Install php
+  yum: name={{ item }} state=present
+  with_items:
+   - php
+   - php-mysql
+   - php-xml
+   - php-xmlrpc
+   - php-soap
+   - php-pgsql
+   - php-gd
+   - php-mbstring
+   - php-mcrypt
+   - php-json
+   - php-curl
+   - php-redis
+   - php-memcache
+   - php-xsl

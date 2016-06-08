@@ -1,0 +1,13 @@
+---
+- name: Install openjdk on redhat
+  include: setup-Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Install openjdk on debian
+  include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: JDK | Oracle JDK | Add the JDK binaries to the system path (/etc/profile)
+  shell: |
+           echo "JAVA_HOME={{ java_home }}" >> /etc/profile
+           echo "PATH=$PATH:$HOME/bin:$JAVA_HOME/bin" >> /etc/profile

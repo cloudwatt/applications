@@ -1,0 +1,55 @@
+- name: setup glusterfs
+  include: setup-Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: setup glusterfs
+  include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+
+
+- name: Ensure Gluster brick and mount directories exist.
+  file: "path={{ item }} state=directory mode=0775"
+  with_items:
+    - "{{ gluster_brick_dir }}"
+    - "{{ gluster_mount_dir }}"
+
+
+- name: connect gluster peers 0
+  shell: gluster peer probe {{ node.0 }}
+  register: result0
+  ignore_errors: yes
+
+- debug: var=result0
+
+- name: connect gluster peers 1
+  shell: gluster peer probe {{ node.1 }}
+  register: result1
+  ignore_errors: yes
+- debug: var=result1
+
+- name: test No volumes present
+  shell: gluster volume info
+  register: result2
+  ignore_errors: yes
+- debug: var=result2
+
+- name: Configure Gluster volume.
+  gluster_volume:
+     state: present
+     name: "{{ gluster_brick_name }}"
+     brick: "{{ gluster_brick_dir }}"
+     replicas: 2
+     cluster: "{{ node.0 }},{{ node.1 }}"
+     host: "{{ ansible_default_ipv4.address }}"
+     force: yes
+  when: result0.stdout.find("success") != -1 and result1.stdout.find("success") != -1 and result2.stderr.find("No volumes present") != -1
+
+
+- name: Start Gluster volume
+  gluster_volume: name={{ gluster_brick_name }} state=started
+  when: result0.stdout.find("success") != -1 and result1.stdout.find("success") != -1 and result2.stderr.find("No volumes present") != -1
+
+
+
+

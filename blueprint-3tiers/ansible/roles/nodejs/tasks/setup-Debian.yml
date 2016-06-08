@@ -1,0 +1,8 @@
+---
+- name: Add NodeSource repositories for Node.js.
+  shell: curl -sL https://deb.nodesource.com/setup_{{ version }} | sudo -E bash -
+
+- name: Ensure build dependencies are installed (Debian).
+  apt: 'name="{{ item }}" state=installed'
+  with_items:
+     - nodejs

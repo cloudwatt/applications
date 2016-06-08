@@ -1,0 +1,11 @@
+- name: Ensure GlusterFS is installed.
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - glusterfs-server
+
+- name: glusterfs-service start
+  service: name=glusterfs-server state=started
+  ignore_errors: yes
+

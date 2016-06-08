@@ -1,0 +1,6 @@
+version: 8
+release: 8.0.33
+user: admin
+password: admin
+http_port: 8080
+java_home: /usr/lib/jvm/java

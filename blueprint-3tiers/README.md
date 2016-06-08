@@ -2,6 +2,8 @@
 
 ## Episode 26 : Blueprint 3 tiers
 
+### Work in progress
+
 Ce blueprint va vous aider à mettre en place une architecture 3-tiers.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
 A travers ce blueprint nous vous proposons de mettre en place frontaux web, du glusterfs avec un cluster de base de données.

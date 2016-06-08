@@ -1,0 +1,57 @@
+---
+- name: add group "tomcat"
+  group: name=tomcat
+
+- name: add user "tomcat"
+  user: name=tomcat group=tomcat home=/usr/share/tomcat createhome=no
+  sudo: True
+
+- name: Download Tomcat
+  get_url: url=http://www-eu.apache.org/dist/tomcat/tomcat-{{ version }}/v{{ release }}/bin/apache-tomcat-{{ release }}.tar.gz dest=/opt
+
+- name: create /opt/tomcat folder
+  file: path=/opt/tomcat state=directory mode=0755 recurse=yes
+
+
+- name: Extract archive
+  shell: /bin/tar xvfz /opt/apache-tomcat-{{ release }}.tar.gz -C /opt/tomcat --strip 1
+
+- name: purge tomcat webapps
+  file: path=/opt/tomcat/webapps/{{ item }} state=absent
+  with_items:
+          - ROOT
+          - docs
+          - examples
+- name: add permission for /opt/tomcat
+  shell: chown -R tomcat:tomcat /opt/tomcat
+
+- name: Symlink install directory
+  file: src=/opt/tomcat path=/usr/share/tomcat owner=tomcat group=tomcat state=link
+
+- name: config Tomcat
+  template: src=server.xml.j2 dest=/usr/share/tomcat/conf/server.xml
+
+- name: Configure Tomcat users
+  template: src=tomcat-users.xml.j2 dest=/usr/share/tomcat/conf/tomcat-users.xml
+
+
+- name: Install Tomcat init script on Ubuntu
+  template: src=tomcat-initscript.sh.j2 dest=/etc/init.d/tomcat mode=0755
+  when: ansible_os_family == 'Debian' and (not ansible_distribution_release == 'xenial')
+
+- name: Install Tomcat init script on Debian
+  shell: update-rc.d tomcat defaults
+  when: ansible_distribution == 'Debian'
+
+- name: Install Tomcat init script
+  template: src=tomcat.service.j2 dest=/etc/systemd/system/tomcat.service mode=0755
+  when: ansible_os_family == 'RedHat' or (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial')
+
+- name: tomcat service state
+  service: name=tomcat enabled=yes
+  when: not ansible_distribution == 'Debian'
+
+- name: Start Tomcat
+  service: name=tomcat state=started enabled=yes
+
+

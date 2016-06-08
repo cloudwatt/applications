@@ -1,0 +1,7 @@
+---
+
+- name: install repo 5.x
+  shell: curl -sL https://rpm.nodesource.com/setup_{{ version }} | bash -
+
+- name: Ensure Node.js and npm are installed.
+  yum: "name=nodejs state=present enablerepo='epel,nodesource'"

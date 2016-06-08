@@ -1,0 +1,24 @@
+- name:  install apache
+  apt: pkg=apache2 state=present
+
+- name: apache2 service state
+  service: name=apache2 enabled=yes
+
+- name: apache vhost configuration
+  template:
+     src=vhost.conf.j2
+     dest=/etc/apache2/sites-available/vhost.conf
+     owner=root
+     group=root
+     mode=0644
+
+- name: enable apache vhost
+  shell: /usr/sbin/a2dissite 000-default && /usr/sbin/a2ensite vhost.conf
+  notify: restart apache
+
+- name : clear /var/www/html
+  file: path=/var/www/html/* state=absent
+
+
+- name: change access
+  file: path=/var/www/html owner=www-data group=www-data mode=0775 recurse=yes
