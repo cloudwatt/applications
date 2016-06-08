@@ -26,8 +26,6 @@ composants:
  - logo: ""
    version: "Nginx 1.9.12"
  - logo: ""
-   version: "Aptly 0.9.6" 
- - logo: ""
    version: "SkyDNS 2.5.3a"
  - logo: ""
    version: "Etcd 2.0.3" 
