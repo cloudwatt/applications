@@ -1,0 +1,9 @@
+---
+# Requires Ansible >= 1.9
+- hosts: all
+  user: cloud
+  become: true
+
+  roles:
+    - common
+    - glusterfs

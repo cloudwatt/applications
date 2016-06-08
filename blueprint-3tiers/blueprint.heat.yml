@@ -248,7 +248,7 @@ resources:
     properties:
       count: 2
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/glusterfs.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/glusterfs.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -275,7 +275,7 @@ resources:
     properties:
       count: { get_param: number_db_clusters}
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/db.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/db.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -309,7 +309,7 @@ resources:
     properties:
       count: { get_param: nodes_number}
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/node.heat.yaml
         properties:
           nodename:
             str_replace:
