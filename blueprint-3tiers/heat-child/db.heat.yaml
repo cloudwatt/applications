@@ -1,0 +1,136 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  network:
+    label: network
+    type: string
+  subnet:
+    label: subnet
+    type: string
+  cidr_net:
+    label: subnet
+    type: string
+  os_type:
+    label: os type
+    type: string
+  nodename:
+    label: nodename
+    type: string
+  index:
+    label: index
+    type: string
+  nodeip:
+    label: nodeip
+    type: string
+  security_group:
+    label: security_group
+    type: string
+  keypair_name:
+    label: SSH Keypair
+    type: string
+  pool_id:
+    label: pool id
+    type: string
+  flavor_name:
+    type: string
+    label: Instance Type (Flavor)
+  clusters_size:
+    label: number of nodes
+    type: number
+  db_name:
+    label: database name
+    type: string
+  db_admin:
+    label: database admin
+    type: string
+  db_admin_password:
+    label: database admin password
+    type: string
+
+resources:
+  db_port:
+      type: OS::Neutron::Port
+      properties:
+        network: { get_param: network }
+        fixed_ips:
+          - ip_address: { get_param: nodeip }
+            subnet_id: { get_param: subnet }
+        security_groups:
+          - { get_param: security_group }
+
+  node:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: { get_param: os_type }
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+       - port: { get_resource: db_port }
+      name: {get_param: nodename}
+      user_data:
+        str_replace:
+          template: |
+             #!/bin/bash
+             mkdir /etc/ansible
+             echo "[local]" >> /etc/ansible/hosts
+             echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                cat << EOF > /etc/ansible/vars.yml
+                 clusters_size: $clusters_size
+                 ip_node: $prefix_net$index
+                 hostname: node$index
+                 db_name: $db_name
+                 db_admin: $db_admin
+                 db_admin_password: $pass
+             EOF
+
+               if [ $index -eq 0 ]
+               then
+               echo "    master: true" >> /etc/ansible/vars.yml
+               else
+               echo "    master: false" >> /etc/ansible/vars.yml
+               fi
+               START=1
+               END=$clusters_size
+               echo "$prefix_net0 node0" >> /etc/hosts
+               TEMP="clusters:  $prefix_net0"
+               for ((i=1;i<$END;i++)); do
+               echo "$prefix_net$i node$i" >> /etc/hosts
+               TEMP=$TEMP,$prefix_net$i
+               done
+               echo "    $TEMP" >> /etc/ansible/vars.yml
+               if [ "$os" == "Debian Jessie" ] ;
+               then
+               /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
+               else
+               ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
+               fi
+
+          params:
+
+            $index: { get_param: index }
+            $db_name: { get_param: db_name}
+            $db_admin: { get_param: db_admin }
+            $pass: { get_param: db_admin_password }
+            $os: { get_param: os_type }
+            $clusters_size: { get_param: clusters_size }
+            $prefix_net: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: cidr_net} ] }
+  Data:
+     type: OS::Cinder::Volume
+     properties:
+       size: 20
+
+  Data_att:
+     type: OS::Cinder::VolumeAttachment
+     properties:
+       instance_uuid: { get_resource: node }
+       volume_id: { get_resource: Data }
+       mountpoint: /dev/vdb
+
+
+  member:
+    type: OS::Neutron::PoolMember
+    properties:
+      pool_id: {get_param: pool_id}
+      address: {get_attr: [node , first_address]}
+      protocol_port: 3306

@@ -1,0 +1,128 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  network:
+    label: network
+    type: string
+  subnet:
+    label: subnet
+    type: string
+  cidr_net:
+    label: subnet
+    type: string
+  os_type:
+    label: os type
+    type: string
+  nodename:
+    label: nodename
+    type: string
+  index:
+    label: index
+    type: string
+  nodeip:
+    label: nodeip
+    type: string
+  Application_type:
+    label: Application_type
+    type: string
+  Application_source:
+    label: url for your application php , war or nodejs
+    type: string
+  security_group:
+    label: security_group
+    type: string
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+  pool_id:
+     description: pool id
+     label: pool id
+     type: string
+  flavor_name:
+    type: string
+    label: Instance Type (Flavor)
+
+
+resources:
+  web_port:
+      type: OS::Neutron::Port
+      properties:
+        network: { get_param: network }
+        fixed_ips:
+          - ip_address: { get_param: nodeip }
+            subnet_id: { get_param: subnet }
+        security_groups:
+          - { get_param: security_group }
+
+  node:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: { get_param: os_type }
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+       - port: { get_resource: web_port }
+      name: {get_param: nodename}
+      user_data:
+        str_replace:
+          template: |
+             #!/bin/bash
+             mkdir /etc/ansible
+             echo "[local]" >> /etc/ansible/hosts
+             echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                 rem=$(( $index % 2 ))
+              if [ $rem -eq 0 ]
+              then
+                cat << EOF > /etc/ansible/vars.yml
+                 Application_type: $Application_type
+                 Application_source: $Application_source
+                 gluster_ip: $prefix_net0
+             EOF
+              else
+                cat << EOF > /etc/ansible/vars.yml
+                 Application_type: $Application_type
+                 Application_source: $Application_source
+                 gluster_ip: $prefix_net1
+             EOF
+              fi
+
+
+              case "$Application_type" in
+
+              "php")
+                        echo "    app_directory: /var/www/html" >> /etc/ansible/vars.yml
+                                      ;;
+              "tomcat")
+                        echo "    app_directory: /opt/tomcat/webapps" >> /etc/ansible/vars.yml
+
+                                      ;;
+              "nodejs") echo "    app_directory: /nodejs" >> /etc/ansible/vars.yml
+
+                                      ;;
+                *)      echo "what do you do fuck"
+
+                                      ;;
+               esac
+                 if [ "$os" == "Debian Jessie" ] ;
+                 then
+                 /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/deploy_nodes.yml -e @/etc/ansible/vars.yml
+                 else
+                 ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/deploy_nodes.yml -e @/etc/ansible/vars.yml
+                 fi
+
+          params:
+
+            $index: { get_param: index }
+            $Application_type: { get_param: Application_type }
+            $Application_source: { get_param: Application_source }
+            $os: { get_param: os_type }
+            $prefix_net: { "Fn::Replace": [ {'.0/24': '.12'}, {get_param: cidr_net} ] }
+
+  member:
+    type: OS::Neutron::PoolMember
+    properties:
+      pool_id: {get_param: pool_id}
+      address: {get_attr: [node , first_address]}
+      protocol_port: 80
