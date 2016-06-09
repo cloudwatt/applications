@@ -1,8 +1,6 @@
-# 5 Minutes Stacks, épisode 26 : Blueprint 3 tiers#
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers#
 
-## Episode 26 : Blueprint 3 tiers
-
-### Work in progress
+## Episode 27 : Blueprint 3 tiers
 
 Ce blueprint va vous aider à mettre en place une architecture 3-tiers.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
