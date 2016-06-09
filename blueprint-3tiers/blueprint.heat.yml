@@ -37,7 +37,7 @@ parameters:
 
  nodes_number:
     default: 0
-    description: number of web servers 10 nodes
+    description: number of web servers 6 nodes
     label: Number of front nodes
     type: number
     constraints:
@@ -85,7 +85,7 @@ parameters:
           - n1.cw.standard-16
  number_db_clusters:
     default: 0
-    description: number of web servers 10 nodes
+    description: number of web servers 6 nodes
     label: number of database clusters
     type: number
     constraints:
