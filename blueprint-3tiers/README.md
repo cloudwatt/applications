@@ -250,6 +250,12 @@ swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 
+## So watt ?
+
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+
 ### Autres sources pouvant vous intéresser:
 * [ Apache Home page](http://www.apache.org/)
 * [ Galera Documentation](http://galeracluster.com/support)
