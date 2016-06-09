@@ -1,8 +1,6 @@
-# 5 Minutes Stacks, episode 26 : Blueprint 3 tier#
+# 5 Minutes Stacks, episode 27 : Blueprint 3 tier#
 
-## Episode 26 : Blueprint 3 tier
-
-### Work in progress
+## Episode 27 : Blueprint 3 tier
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
@@ -245,6 +243,12 @@ mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global -
 swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
+
+## So watt ?
+
+The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
+
+You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
 
 ### Resources you could be interested in:
 * [ Apache Home page](http://www.apache.org/)
