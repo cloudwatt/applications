@@ -1,13 +1,11 @@
-# 5 Minutes Stacks, 25 episode : Drone #
+# 5 Minutes Stacks, episode 28 : Drone #
 
-## Episode 25 : Drone
+## Episode 28 : Drone
 
 ![Drone](img/logo.png)
 
-
-Drone is a hosted continuous integration service. It enables you to conveniently set up projects to automatically build, test, and deploy as you make changes to your code.
-
-Drone integrates seamlessly with Github, Bitbucket and Google Code as well as third party services such as Heroku, Dotcloud, Google AppEngine and more.
+Drone is a hosted continuous integration service. It enables you to conveniently set up projects to automatically build, test, and deploy as you make changes to your code. Drone integrates seamlessly with Github, Bitbucket and Google Code as well as third party services such as Heroku, Dotcloud, Google AppEngine and more.
+Drone.io is the name of the SaaS version, Drone the name of the open source one.
 
 ## Preparations
 
@@ -28,16 +26,18 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ### Size of the instance
 
-   By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+Stack parameters, of course, are yours to tweak at your fancy.
 
-   Stack parameters, of course, are yours to tweak at your fancy.
+### By the way...
+
+If you do not like command lines, you can go directly to the "run it thru the console" section or "run it by the 1-clic" section by clicking [here](#console).
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `blueprint-coreos-drone/` repository:
-
-   * `blueprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
-   * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
+Once you have cloned the github, you will find in the `blueprint-coreos-drone/` repository:
+* `blueprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
+* `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 
 ## Start-up
 
@@ -54,16 +54,16 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
    ~~~
 
-   Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
 
 ### Adjust the parameters
 
-  In the `blueprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+In the `blueprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
 
-  Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
+Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
 
-  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-drone.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
+By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-drone.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
 
 
 ~~~ yaml
@@ -139,7 +139,36 @@ description: Bundle CoreOS Drone
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
-### Enjoy
+<a name="console" />
+
+## That's fine but...
+
+### I already came out of my shell in order to drone... do I have to go back?
+
+Nah, you can keep your eyes on the browser: all Drone setup can be accomplished from the console.
+
+To create our Drone stack from the console:
+
+1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-drone](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-drone/) repository
+2.	Click on the file named `blueprint-coreos-drone.heat.yml`
+3.	Click on RAW, a web page will appear containing purely the template
+4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the «[Stacks](https://console.cloudwatt.com/project/stacks/)» section of the console
+6.	Click on «Launch stack», then «Template file» and select the file you just saved to your PC, and finally click on «NEXT»
+7.	Name your stack in the «Stack name» field
+8.	Enter the name of your keypair in the «SSH Keypair» field
+9.	Choose your instance size using the «Instance Type» dropdown and click on «LAUNCH»
+
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
+
+If you've reached this point, Drone is running!
+
+### A one-click sounds really nice...
+
+... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Drone!
+
+
+## Enjoy
 
 Once all of this done, stack's description can be obtained with the following command :
 
@@ -233,14 +262,21 @@ To stop the service:
 ~~~ bash
 sudo systemctl stop drone.service
 ~~~
-#### Fichiers configurations
+
+#### Configurations files
 `/home/core/drone.env`: File contains the environment variables.
 
-#### Other resources you could be interested in:
+
+## So watt?
+
+The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
+You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
+
+### Other resources you could be interested in:
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [Drone Documentatuion](https://drone.io/)
+* [Drone Documentation](https://drone.io/)
 
 -----
 
