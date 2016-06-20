@@ -26,7 +26,7 @@ Drone.io is the name of the SaaS version, Drone the name of the open source one.
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 Stack parameters, of course, are yours to tweak at your fancy.
 
 ### By the way...
@@ -43,16 +43,16 @@ Once you have cloned the github, you will find in the `blueprint-coreos-drone/` 
 
 ### Initialize the environment
 
-   Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
-   If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell accesses towards the Cloudwatt APIs.
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell accesses towards the Cloudwatt APIs.
 
-   Source the downloaded file in your shell. Your password will be requested.
+Source the downloaded file in your shell. Your password will be requested.
 
-   ~~~ bash
-   $ source COMPUTE-[...]-openrc.sh
-   Please enter your OpenStack Password:
+~~~ bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
 
-   ~~~
+~~~
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
@@ -115,9 +115,10 @@ description: Bundle CoreOS Drone
       type: string
  [...]
  ~~~
+
 ### Start the stack
 
- In a shell, run the script `stack-start.sh`:
+In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
  $ ./stack-start.sh Drone
@@ -128,7 +129,7 @@ description: Bundle CoreOS Drone
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
- Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
 
  ~~~ bash
  $ watch -n 1 heat stack-list
@@ -156,7 +157,7 @@ To create our Drone stack from the console:
 5.  Go to the «[Stacks](https://console.cloudwatt.com/project/stacks/)» section of the console
 6.	Click on «Launch stack», then «Template file» and select the file you just saved to your PC, and finally click on «NEXT»
 7.	Name your stack in the «Stack name» field
-8.	Enter the name of your keypair in the «SSH Keypair» field
+8.	Enter the name of your keypair in the «SSH Keypair» field and few other fields required
 9.	Choose your instance size using the «Instance Type» dropdown and click on «LAUNCH»
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
