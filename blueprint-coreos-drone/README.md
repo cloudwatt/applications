@@ -273,7 +273,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [Drone Documentatuion](https://drone.io/)
+* [Drone Documentation](https://drone.io/)
 
 -----
 Have fun. Hack in peace.
