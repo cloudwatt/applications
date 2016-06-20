@@ -274,6 +274,7 @@ sudo systemctl stop drone.service
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
+
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default user name `cloud`).
 
 ### Other resources you could be interested in:
