@@ -5,6 +5,7 @@
 ![Drone](img/logo.png)
 
 Drone is a hosted continuous integration service. It enables you to conveniently set up projects to automatically build, test, and deploy as you make changes to your code. Drone integrates seamlessly with Github, Bitbucket and Google Code as well as third party services such as Heroku, Dotcloud, Google AppEngine and more.
+
 Drone.io is the name of the SaaS version, Drone the name of the open source one.
 
 This stack is a blueprint (as opposed to a bundle) because there is no specific stack orchestration image. The blueprint is built above the standard CoreOS image provided on Cloudwatt IaaS.
