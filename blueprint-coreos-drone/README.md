@@ -153,7 +153,7 @@ Pour créer votre stack Drone depuis la [Console Cloudwatt](https://console.clou
 5.  Allez dans la section [Stacks](https://console.cloudwatt.com/project/stacks/) de la console
 6.	Cliquez sur `LAUNCH STACK`, puis `Browse` sous `Template file` et selectionnez le fichier que vous venez d'enregistrer sur votre PC et puis cliquez finalement sur `NEXT`
 7.	Nommez votre stack dans le champs `Stack Name`
-8.	Entrez le nom de votre keypair dans le champs `SSH Keypair`
+8.	Entrez le nom de votre keypair dans le champs `SSH Keypair` et remplissez les quelques autres champs 
 9.	Choisissez votre instance flavor en utilisant le menu déroulant `Instance Type` et cliquez sur `LAUNCH`
 
 La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
