@@ -232,15 +232,15 @@ Vous choisissez le projet drone et l'activer.
 
 ![page4](./img/drone4.png)
 
-Puis committer une chose dans ce projet et vous allez voir la résultat.
+Puis committer une chose dans ce projet et vous allez voir le résultat.
 
 ![page5](./img/drone5.png)
 
-Après le committe.
+Après le commit.
 
 ![page6](./img/drone6.png)
 
-Pour créer OAuth voir les lien suivants:
+Pour créer OAuth voir les liens suivants:
 
 * [Pour github](http://readme.drone.io/setup/remotes/github/)
 * [Pour gitlab](http://readme.drone.io/setup/remotes/gitlab/)
