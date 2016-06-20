@@ -5,9 +5,10 @@
 ![Drone](img/logo.png)
 
 Drone est un serveur d’intégration continue qui s’appuie sur Docker, permettant aux développeurs de contrôler l’environnement dans lequel s’exécutent les builds de leurs applications. Il s’appuie lui aussi sur un ecosystème de plugins pour s’adapter aux différents environnements, tous ces plugins étant packagés via Docker. 
+
 Drone est un produit initialement disponible en SaaS et rendu Open Source dans un second temps. Drone.io est la version SaaS, Drone la version open source.
 
-Cette stack est un blueprint ou modèle de déploiement (et non pas un bundle) car il ne reose pas sur une image spécifique. Ce modèle est construit à partir de l'image CoreOS standard fournit sur le IaaS de Cloudwatt.
+Cette stack est un blueprint ou modèle de déploiement (et non pas un bundle) car il ne repose pas sur une image spécifique. Ce modèle est construit à partir de l'image CoreOS standard fournit sur le IaaS de Cloudwatt.
 
 ## Preparations
 
