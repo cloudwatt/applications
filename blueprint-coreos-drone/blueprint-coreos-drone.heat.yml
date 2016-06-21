@@ -15,7 +15,7 @@ parameter_groups:
     - keypair_name
     - flavor_name
     - drone_driver
-    - drone_url
+    - drone_driver_url
     - drone_client
     - drone_secret
 
