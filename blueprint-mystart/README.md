@@ -1,8 +1,8 @@
-# 5 Minutes Stacks, épisode 29 : Mystart #
+# 5 Minutes Stacks, épisode 29 : MyStart #
 
-## Episode 29 : Mystart
+## Episode 29 : MyStart
 
-Cette stack vous permet d'intialiser votre tenant par la création rapide d'une keypair, d'un réseau et d'un security group.
+Cette stack vous permet d'intialiser votre tenant par la création rapide d'une keypair, d'un réseau et d'un security group. Ces ressources sont des pré-requis pour la création d'instances dans le cloud.
 
 
 ## Preparations
