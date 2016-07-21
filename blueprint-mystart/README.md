@@ -101,10 +101,12 @@ $ heat resource-list nom_de_votre_stack
 +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
 ~~~
 
+<a name="console" />
+
 ## C’est bien tout ça,
 ### mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+Et bien si ! En utilisant la console, vous pouvez déployer votre kit de démarrage :
 
 1.	Allez sur le Github Cloudwatt dans le répertoire
 [applications/blueprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart)
@@ -118,10 +120,6 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée.
 C’est (déjà) FINI !
-
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
-
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur **DEPLOYER** et laisser vous guider... 2 minutes plus tard un bouton vert apparait... **ACCEDER** : vous avez votre Stack !
 
 
 ## Enjoy
