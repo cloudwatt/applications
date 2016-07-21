@@ -36,12 +36,6 @@ parameters:
     label: OpenStack Auth URL
     type: string
 
-  domain:
-    description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
-    default: mycloudmanager
-    label: Cloud DNS
-    type: string
-
   flavor_master:
     default: s1.cw.small-1
     description: Flavor to use for the deployed instance
@@ -51,12 +45,8 @@ parameters:
       - allowed_values:
           - s1.cw.small-1
           - n1.cw.standard-1
-          - n2.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
   flavor_node:
     default: n2.cw.standard-1
@@ -66,7 +56,6 @@ parameters:
     constraints:
       - allowed_values:
           - n1.cw.standard-1
-          - n2.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
@@ -151,6 +140,7 @@ resources:
           security_group: { get_resource: security_group }
           network: { get_resource: network }
           nodeip: 10.0.1.24%index%
+          stack: { get_param: 'OS::stack_name' }
           os_username: { get_param: os_username }
           os_password: { get_param: os_password }
           os_tenant: { get_param: os_tenant }
@@ -164,7 +154,7 @@ resources:
           nodeid: "%index%"
           keypair_name: { get_param: keypair_name }
           mastercount: { get_param: master_count }
-          domain: { get_param: domain }
+          domain: "mycloudmanager"
 
   masters:
     type: OS::Heat::ResourceGroup
@@ -180,7 +170,7 @@ resources:
                 $stack: { get_param: 'OS::stack_name' }
           nodeip: 10.0.1.25%index%
           stack: { get_param: 'OS::stack_name' }
-          domain: { get_param: domain }
+          domain: "mycloudmanager"
           subnet: { get_resource: subnet }
           security_group: { get_resource: security_group }
           network: { get_resource: network }
@@ -223,7 +213,7 @@ resources:
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v2/kube-node.heat.yaml
         properties:
-          domain: { get_param: domain }
+          domain: "mycloudmanager"
           master: { get_attr: [pool_masters, vip, address] }
           subnet: { get_resource: subnet }
           nodeip: 10.0.1.1%index%
