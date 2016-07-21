@@ -49,7 +49,7 @@ parameters:
           - n1.cw.standard-4
 
   flavor_node:
-    default: n2.cw.standard-1
+    default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
     label: Node Instance Type (Flavor)
