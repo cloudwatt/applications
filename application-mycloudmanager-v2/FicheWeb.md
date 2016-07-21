@@ -5,14 +5,14 @@ title: "MyCloudManager"
 url: mycloudmanager.html
 date: 2016-05-16 00:00:00
 date-creation: "16 Mai 2016"
-date-maj: "16 Mai 2016"
-description: "MyCloudManager est une innovation Cloudwatt permettant d’administrer au jour le jour vos instances avec ensemble d’outils opensource leaders sur leurs domaines respectifs. Ainsi, MyCloudManager inclut des services de monitoring, supervision, alerting, log management, synchronisation de temps, planication de taches des instances Linux du tenant de l'utilisateur. MyCloudManager est proposé en version BETA."
+date-maj: "21 Juillet 2016"
+description: "MyCloudManager est une innovation Cloudwatt permettant d’administrer au jour le jour vos instances avec ensemble d’outils opensource leaders sur leurs domaines respectifs. Ainsi, MyCloudManager inclut des services de monitoring, supervision, alerting, log management, synchronisation de temps, planication de taches et backup (snapshot ou soft) des instances Linux du tenant de l'utilisateur. MyCloudManager v2 est proposé en version BETA."
 github: 
 siteofficiel: https://www.cloudwatt.com/fr/labs/mycloudmanager.html
 sitesupport: https://support.cloudwatt.com/
 composants:
  - logo: ""
-   version: "CoreOS Stable 899.13.0"
+   version: "CoreOS Stable 1010.6"
  - logo: ""
    version: "Docker 1.10.3"
  - logo: ""
@@ -20,7 +20,7 @@ composants:
  - logo: ""
    version: "Rundeck 2.6.2"
  - logo: ""
-   version: "Graylog 1.3.4"
+   version: "Graylog 2.0"
  - logo: ""
    version: "Artifactory 4.7.5"
  - logo: ""
