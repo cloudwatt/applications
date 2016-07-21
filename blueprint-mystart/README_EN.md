@@ -104,11 +104,12 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 * Starts an Ubuntu Trusty Tahr based instance
 * Expose it on the Internet via a floating IP.
 
+<a name="console" />
 
 ## All of this is fine,
 ### but you do not have a way to create the stack from the console?
 
-We do indeed! Using the console, you can deploy a mail server:
+We do indeed! Using the console, you can deploy your starting kit:
 
 1.	Go the Cloudwatt Github in the [applications/blueprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart) repository
 2.	Click on the file named `blueprint-mystart.heat.yml` (or `blueprint-mystart.restore.heat.yml` to [restore from backup](#backup))
@@ -119,13 +120,8 @@ We do indeed! Using the console, you can deploy a mail server:
 7.	Name your stack in the « Stack name » field
 8. Fill the two fields « Name prefix key » and «/ 24 cidr of private network » and click "LAUNCH"
 
-
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete.
 If you've reached this point, you're already done!
-
-### A one-click sounds really nice...
-
-... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your stack !
 
 
 ## Enjoy
