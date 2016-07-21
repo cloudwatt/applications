@@ -382,7 +382,7 @@ To go further, here are some helpful links :
 ### The MyCloudManager versions **v2** (Beta)
 
 - CoreOS Stable 1010.6
-- Docker 1.9.1
+- Docker 1.10.3
 - Kubernetes 1.3
 - Zabbix 3.0
 - Rundeck 2.6.2
