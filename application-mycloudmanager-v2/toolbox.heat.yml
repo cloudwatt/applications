@@ -5,7 +5,7 @@
 #
 heat_template_version: 2013-05-23
 
-description: MyCloudManager for Cloudwatt
+description: MyCloudManager by Cloudwatt
 
 
 parameters:
@@ -43,13 +43,15 @@ parameters:
     type: string
 
   flavor_master:
-    default: n1.cw.standard-4
+    default: s1.cw.small-1
     description: Flavor to use for the deployed instance
     type: string
     label: Master Instance Type (Flavor)
     constraints:
       - allowed_values:
+          - s1.cw.small-1
           - n1.cw.standard-1
+          - n2.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
@@ -57,43 +59,32 @@ parameters:
           - n1.cw.standard-16
 
   flavor_node:
-    default: n1.cw.standard-4
+    default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
     label: Node Instance Type (Flavor)
     constraints:
       - allowed_values:
           - n1.cw.standard-1
+          - n2.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-
-  volume_size:
-    default: 20
-    label: Backup Volume Size
-    description: Size of Volume for Toolbox Storage (Gigabytes)
-    type: number
-    constraints:
-      - range: { min: 20, max: 10000 }
-        description: Volume must be at least 10 gigabytes
-
-  volume_type:
-    default: standard
-    label: Backup Volume Type
-    description: Performance flavor of the linked Volume for DevKit Storage
-    type: string
-    constraints:
-      - allowed_values:
-          - standard
-          - performant
-
   node_count:
-    default: 1
+    default: 3
     label: Node Count
     description: Additional node counts
+    type: number
+    constraints:
+      - range: { min: 1, max: 10 }
+
+  master_count:
+    default: 2
+    label: Master Count
+    description: Additional master counts
     type: number
     constraints:
       - range: { min: 1, max: 3 }
@@ -139,11 +130,6 @@ resources:
         - { direction: ingress, protocol: ICMP }
         - { direction: egress }
 
-  floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-
   vpn_username:
     type: OS::Heat::RandomString
     properties:
@@ -154,50 +140,102 @@ resources:
     properties:
       length: 10
 
+  drivers:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: 3
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v2/kube-driver.heat.yaml
+        properties:
+          subnet: { get_resource: subnet }
+          security_group: { get_resource: security_group }
+          network: { get_resource: network }
+          nodeip: 10.0.1.24%index%
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant: { get_param: os_tenant }
+          os_auth: { get_param: os_auth }
+          os_region: fr1
+          nodename:
+            str_replace:
+              template: $stack-driver-%index%
+              params:
+                $stack: { get_param: 'OS::stack_name' }
+          nodeid: "%index%"
+          keypair_name: { get_param: keypair_name }
+          mastercount: { get_param: master_count }
+          domain: { get_param: domain }
+
   masters:
     type: OS::Heat::ResourceGroup
     properties:
-      count: 1
+      count: { get_param: master_count }
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox/kube-master.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v2/kube-master.heat.yaml
         properties:
           nodename:
             str_replace:
               template: $stack-master-%index%
               params:
                 $stack: { get_param: 'OS::stack_name' }
+          nodeip: 10.0.1.25%index%
+          stack: { get_param: 'OS::stack_name' }
           domain: { get_param: domain }
           subnet: { get_resource: subnet }
           security_group: { get_resource: security_group }
           network: { get_resource: network }
           keypair_name: { get_param: keypair_name }
           flavor_name: { get_param: flavor_master }
-          volume_size: { get_param: volume_size }
-          volume_type: { get_param: volume_type }
+          pool_id: {get_resource: pool_masters}
           os_username: { get_param: os_username }
           os_password: { get_param: os_password }
           os_tenant: { get_param: os_tenant }
           os_auth: { get_param: os_auth }
-          floating_ip: { get_resource: floating_ip }
-          public_ip: { get_attr: [floating_ip, floating_ip_address] }
+          os_region: fr1
+          os_tenant_id: { get_param: 'OS::project_id' }
           vpn_username: { get_resource: vpn_username }
           vpn_password: { get_resource: vpn_password }
+
+  pool_masters:
+    type: OS::Neutron::Pool
+    properties:
+      name: pool_masters
+      protocol: TCP
+      lb_method: ROUND_ROBIN
+      subnet: { get_resource: subnet }
+      vip:
+        name: master_lb
+        address: 10.0.1.3
+        protocol_port: 443
+        subnet: { get_resource: subnet }
+
+  lb_master:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      pool_id: { get_resource: pool_masters }
+      protocol_port: 443
+
 
   nodes:
     type: OS::Heat::ResourceGroup
     properties:
       count: { get_param: node_count }
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox/kube-node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v2/kube-node.heat.yaml
         properties:
           domain: { get_param: domain }
-          master: 10.0.1.254
+          master: { get_attr: [pool_masters, vip, address] }
           subnet: { get_resource: subnet }
           nodeip: 10.0.1.1%index%
           security_group: { get_resource: security_group }
-          volume_size: { get_param: volume_size }
-          volume_type: { get_param: volume_type }
           network: { get_resource: network }
+          stack: { get_param: 'OS::stack_name' }
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant: { get_param: os_tenant }
+          os_auth: { get_param: os_auth }
+          os_region: fr1
+          os_tenant_id: { get_param: 'OS::project_id' }
           nodename:
             str_replace:
               template: $stack-node-%index%
@@ -209,7 +247,7 @@ resources:
 outputs:
   public_ip:
     description: VPN IP
-    value: { get_attr: [floating_ip, floating_ip_address] }
+    value: { get_attr: [masters, public_ip] }
   vpn_username:
     description: VPN Username
     value: { get_resource: vpn_username }
