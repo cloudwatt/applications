@@ -33,7 +33,7 @@ prix: "FREE for software (for beta version) + Cloudwatt usage fees"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/en/blog/MyCloudManager_v1.html
 install-url: 
-comingsoon: true
+comingsoon: false
 type: solution
 categories: ["admin"]
 ---
