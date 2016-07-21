@@ -1,8 +1,8 @@
 # 5 Minutes Stacks, épisode 29 : Mystart #
 
-## Episode 25 : Mystart
+## Episode 29 : Mystart
 
-Ce stack vous permet d'intialiser votre tenant, il vous permet de créer une keypair ,un réseau et une security group.
+Cette stack vous permet d'intialiser votre tenant par la création rapide d'une keypair, d'un réseau et d'un security group.
 
 
 ## Preparations
@@ -121,10 +121,11 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur **DEPLOYER** et laisser vous guider... 2 minutes plus tard un bouton vert apparait... **ACCEDER** : vous avez votre Stack !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur **DEPLOYER** et laisser vous guider... 2 minutes plus tard un bouton vert apparait... **ACCEDER** : vous avez votre Stack !
 
 
 ## Enjoy
+
 Pour télécharger votre clé privée, consultez cet url
 `https://console.cloudwatt.com/project/access_and_security/keypairs/prefix-nom_votre_stack/download/`.
 Puis cliquez sur `Download key pair "prefix-nom_votre_stack"`.
