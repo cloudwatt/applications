@@ -129,27 +129,28 @@ resources:
           template: |
             #cloud-config
             write_files:
+              - path: /home/core/format.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  eval $(sudo blkid /dev/vdb | awk '{print $3}')
+                  if [[ "$TYPE" != "ext4" ]]; then
+                    /usr/sbin/wipefs -f /dev/vdb
+                    /usr/sbin/mkfs.ext4 -F /dev/vdb
+                  fi
               - path: /home/core/mount.sh
                 permissions: 0755
                 owner: "root:root"
                 content: |
                   #!/bin/bash
                   sudo mkdir -p /owncloud/{apps,config,data,mysql}
-
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$sqlpass
                     MYSQL_DATABASE=owncloud
-
-              - path: /home/core/rm.sh
-                permissions: 0775
-                owner: "core:core"
-                content: |
-                    #!/bin/bash
-                    sudo rm -rf /home/core/mysql.env
-
 
             coreos:
               etcd2:
@@ -186,8 +187,7 @@ resources:
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
-                    ExecStart=/usr/sbin/wipefs -f /dev/vdb
-                    ExecStart=/usr/sbin/mkfs.ext4 -F /dev/vdb
+                    ExecStart=/home/core/format.sh
                 - name: owncloud.mount
                   command: start
                   content: |
@@ -211,15 +211,13 @@ resources:
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
+                    Restart=Always
                     ExecStartPre=-/usr/bin/docker kill mysql
                     ExecStartPre=-/usr/bin/docker rm mysql
                     ExecStartPre=/usr/bin/docker pull mysql
                     ExecStart=/usr/bin/docker run \
                              --volume /owncloud/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
-                             --restart=always \
-                             --detach=true \
-                             --publish=3306:3306 \
                              --name=mysql mysql
                 - name: owncloud.service
                   command: start
@@ -230,6 +228,7 @@ resources:
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
+                    Restart=Always
                     ExecStartPre=-/usr/bin/docker kill owncloud
                     ExecStartPre=-/usr/bin/docker rm owncloud
                     ExecStartPre=/usr/bin/docker pull owncloud:8.1
@@ -237,20 +236,12 @@ resources:
                              --volume /owncloud/apps:/var/www/html/apps \
                              --volume /owncloud/config:/var/www/html/config \
                              --volume /owncloud/data:/var/www/html/data \
-                             --restart=always \
                              --publish=80:80 \
-                             --detach=true \
                              --link=mysql \
                              --name=owncloud owncloud:8.1
 
                     [Install]
                     WantedBy=multi-user.target
-                - name: rm.service
-                  command: start
-                  content: |
-                    [Service]
-                    Type=oneshot
-                    ExecStart=/home/core/rm.sh
 
   cinder_volume:
     type: OS::Cinder::Volume

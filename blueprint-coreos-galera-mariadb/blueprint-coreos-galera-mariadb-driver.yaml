@@ -1,0 +1,182 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  nodename:
+    label: nodename
+    type: string
+  nodeid:
+    label: nodeid
+    type: string
+  mastercount:
+    label: mastercount
+    type: number
+  domain:
+    label: domain
+    type: string
+  nodeip:
+    label: nodeip
+    type: string
+  subnet:
+    label: subnet
+    type: string
+  network:
+    label: network
+    type: string
+  security_group:
+    label: security_group
+    type: string
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+resources:
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: network }
+      fixed_ips:
+        - ip_address: { get_param: nodeip }
+          subnet_id: { get_param: subnet }
+      security_groups:
+        - { get_param: security_group }
+
+  etcd:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1010.6
+      flavor: t1.cw.tiny
+      user_data_format: RAW
+      name: { get_param: nodename}
+      networks:
+        - port: { get_resource: port }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4: { get_attr: [ port, fixed_ips, 0, ip_address ] }
+            $domain: { get_param: domain }
+            $nodeid: { get_param: nodeid }
+            $mastercount: { get_param: mastercount }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /opt/flannel-init.sh
+                permissions: 0700
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  echo "Waiting for etcd..."
+                  ETCD="http://$private_ipv4:2379"
+                  until curl --silent "$ETCD/v2/machines"
+                  do
+                      echo "Trying: $ETCD"
+                      sleep 1
+                  done
+                  RES=$(curl --silent -X PUT -d "value={\"Network\":\"10.1.0.0/16\",\"Backend\":{\"Type\":\"udp\"}}" "$ETCD/v2/keys/coreos.com/network/config?prevExist=false")
+                  if [ -z "$(echo $RES | grep '"action":"create"')" ] && [ -z "$(echo $RES | grep 'Key already exists')" ]; then
+                      echo "Unexpected error configuring flannel pod network: $RES"
+                  fi
+              - path: /opt/kubernetes-init.sh
+                permissions: 0700
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  until /usr/bin/etcdctl ls
+                  do
+                    echo "Waiting for etcd to be ready"
+                    sleep 1
+                  done
+                  if etcdctl get /initialized/kube; then exit 0; fi
+                  etcdctl set /initialized/kube true
+                  mkdir -p /etc/kubernetes/ssl
+                  cd /etc/kubernetes/ssl
+                  # Config
+                  cat <<EOF > openssl.cnf
+                  [req]
+                  req_extensions = v3_req
+                  distinguished_name = req_distinguished_name
+                  [req_distinguished_name]
+                  [ v3_req ]
+                  basicConstraints = CA:FALSE
+                  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+                  subjectAltName = @alt_names
+                  [alt_names]
+                  DNS.1 = kubernetes
+                  DNS.2 = kubernetes.default
+                  DNS.3 = kubernetes.default.svc
+                  DNS.4 = kubernetes.default.svc.$domain
+                  IP.1 = 10.0.2.1
+                  IP.2 = 10.0.1.3
+                  EOF
+                  for i in $(seq 1 $mastercount); do
+                    num=$(expr $i + 2)
+                    ip=$(expr $i + 249)
+                    echo IP.$num = 10.0.1.$ip >> openssl.cnf
+                  done
+                  # Root CA
+                  openssl genrsa -out ca-key.pem 2048
+                  openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+                  # Server CA
+                  openssl genrsa -out apiserver-key.pem 2048
+                  openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
+                  openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
+                  # Admin CA
+                  openssl genrsa -out admin-key.pem 2048
+                  openssl req -new -key admin-key.pem -out admin.csr -subj "/CN=kube-admin"
+                  openssl x509 -req -in admin.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin.pem -days 365
+                  # Set permissions
+                  chmod 600 /etc/kubernetes/ssl/*-key.pem
+                  chown root:root /etc/kubernetes/ssl/*-key.pem
+                  # Export CA to Etcd
+                  curl --silent -X PUT --data-urlencode value@ca.pem "http://localhost:2379/v2/keys/ssl/ca"
+                  curl --silent -X PUT --data-urlencode value@ca-key.pem "http://localhost:2379/v2/keys/ssl/key"
+                  curl --silent -X PUT --data-urlencode value@apiserver.pem "http://localhost:2379/v2/keys/ssl/apiserver"
+                  curl --silent -X PUT --data-urlencode value@apiserver-key.pem "http://localhost:2379/v2/keys/ssl/apiserver-key"
+                  curl --silent -X PUT --data-urlencode value@admin.pem "http://localhost:2379/v2/keys/ssl/admin"
+                  curl --silent -X PUT --data-urlencode value@admin-key.pem "http://localhost:2379/v2/keys/ssl/admin-key"
+
+            coreos:
+              etcd2:
+                name: "driver-$nodeid"
+                advertise-client-urls: http://$private_ipv4:2379
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                initial-cluster: "driver-0=http://10.0.1.240:2380,driver-1=http://10.0.1.241:2380,driver-2=http://10.0.1.242:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: docker.service
+                  command: start
+                - name: flannel-init.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=etcd2.service
+                    After=etcd2.service
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/opt/flannel-init.sh
+                - name: settimezone.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Set the time zone
+
+                    [Service]
+                    ExecStart=/usr/bin/timedatectl set-timezone Europe/Paris
+                    RemainAfterExit=yes
+                    Type=oneshot
+                - name: kubeinit.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=etcd2.service docker.service
+                    After=etcd2.service docker.service
+                    Description=Kubernetes Initializer
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/opt/kubernetes-init.sh
