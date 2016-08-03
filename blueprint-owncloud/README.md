@@ -5,11 +5,11 @@
 ![OwnCloudlogo](img/owncloudlogo.png)
 
 OwnCloud est un logiciel pour créer et utiliser un serveur de stockage et de partage de fichiers en ligne.
-À la différence de Dropbox ou Google Drive pour ne citer que deux alternatives commerciales, vos fichiers sont sur un serveur que vous contrôlez.
+Vos fichiers sont sur un serveur que vous contrôlez et hébergé en France pour Cloudwatt.
 
 Autre point intéressant, les personnes avec qui vous partagez des données n'ont pas besoin de créer un compte ! Libre à vous de partager sans ou avec mot de passe, idem pour autoriser ou non le dépôt de fichiers.
 
-ownCloud utilise le protocole WebDAV qui permet d'accéder au serveur de façon transparente via un "disque réseau" sur Linux, Windows ou Mac. Il existe également des logiciels de synchronisation pour de très nombreuses plateformes (Linux, Mac, Windows, Android, etc) afin de garder une copie locale de vos fichiers et de travailler hors connexion. ownCloud ne s'arrête pas au simple partage de fichiers. Il permet par exemple de gérer votre calendrier, vos contacts, vos marque-pages et même votre musique. Il intègre les services commerciaux de partage en ligne devenant un point d'accès central pour Amazon S3, Dropbox, Google Drive, OpenStack Swift, voire d'autres serveurs ownCloud. Un système de plugins (apps) permet d'installer et/ou de développer d'autres applications en fonction de ce qui vous intéresse.
+ownCloud utilise le protocole WebDAV qui permet d'accéder au serveur de façon transparente via un "disque réseau" sur Linux, Windows ou Mac. Il existe également des logiciels de synchronisation pour de très nombreuses plateformes (Linux, Mac, Windows, Android, etc) afin de garder une copie locale de vos fichiers et de travailler hors connexion. ownCloud ne s'arrête pas au simple partage de fichiers. Il permet par exemple de gérer votre calendrier, vos contacts, vos marque-pages et même votre musique. Il intègre les services commerciaux de partage en ligne devenant un point d'accès central pour OpenStack Swift, voire d'autres serveurs ownCloud. Un système de plugins (apps) permet d'installer et/ou de développer d'autres applications en fonction de ce qui vous intéresse.
 
 Le projet est issu de KDE. Il est développé entièrement en PHP et se veut autonome. Il s'installe ainsi sur de nombreux serveurs web sans nécessiter de fonctionnalités trop spécifiques tels que Java ou des extensions propres à un serveur web.
 
@@ -117,7 +117,7 @@ Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 
  ~~~
-$ heat resource-list Owncloud
+$ watch heat resource-list Owncloud
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -141,7 +141,7 @@ $ heat resource-list Owncloud
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur OwnCloud:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-OwnCloud](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-OwnCloud)
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-owncloud](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-owncloud)
 2.	Cliquez sur le fichier nommé `blueprint-coreos-owncloud.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
@@ -158,12 +158,11 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre cozy !
-
-
-![owncloudschema](img/owncloudschema.png)
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre owncloud !
 
 ## Enjoy
+
+![owncloudschema](img/owncloudschema.png)
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 

@@ -160,9 +160,9 @@ parameters:
 
  ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your owncloud server!
 
- [owncloudschema](img/owncloudschema.png)
-
 ## Enjoy
+
+ [owncloudschema](img/owncloudschema.png)
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
