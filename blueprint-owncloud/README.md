@@ -170,7 +170,7 @@ Vous etes maintenant en possession de votre propre serveur de cloud. Vous pouvez
 
 Lors de votre première connexion owncloud vous demandera de saisir les informations de la base de donnée ainsi qu'un compte de connexion,
 
-Le compte par defaut est `admin` avec son mot de passe identique à son nom,
+Le compte par defaut est : user : `admin`, mot de passe : `admin`.
 Côté base de donnée c'est un mysql qui est utilisé ici, remplisser à présent les champs comme ci dessous,
 
 ![firstco](img/firstco.png)

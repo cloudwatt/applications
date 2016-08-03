@@ -171,7 +171,7 @@ parameters:
 
 At your first connexion Owncloud will ask you to give the database informations, and a user account.
 
-The default account is `admin` with the same password. Database is a mysql used here , now complete the fields as below,
+The default account is : user : `admin`, password: `admin`. Database is a mysql used here , now complete the fields as below,
 
 ![firstco](img/firstco.png)
 
