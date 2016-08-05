@@ -1,4 +1,4 @@
-# Innovation Beta : Container aaS #
+# Innovation Beta : Container aaS #   Beta 1.1
 
 ## La promesse
 
@@ -201,12 +201,29 @@ Chaque Bay fournit une boîte de dialogue ‘*simple mais magique*’:
 
 ![](img/caas_DevOpsIntegration.png)
 
-Cliquez sur le boutonn 'DevOps integration': Le contenu de cette boite de dialogue affiche les **paramètres de configuration de votre futur Playbook Ansible!**!
+Cliquez sur le bouton 'DevOps integration': Le contenu de cette boite de dialogue affiche les **paramètres de configuration de votre futur Playbook Ansible!**!
 
 /!\ En tant que créateur de l'infrastructure CaaS, votre KeyPair a été utilisée pour configurer le serveur *CaaS_BuildServer*: accès via SSH avec l'utilisateur **'cloud'** et votre privateKey. \
 ***Et si vous voulez autoriser vos collègues à s'y connecter avec leur keyPair, vous devez les y autoriser*** par\
 vi du fichier */home/cloud/.ssh/authorized_keys* et ajout des clefs ssh-rsa ressemblant à\
 *ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA0t°°°UqQ== rsa-key-20160218 *.
+
+### NEW in Beta 1.1: Utiliser le mode 'TLS' de gestion des baies: Certificats Client et Serveur en HTTPS
+La version CaaS Beta 1.1 permet de configurer la baie en mode 'TLS'; dès lors les APIs Swarm ou K8S sont encryptées en HTTPS, avec certificats client et serveurs générés par le framework CaaS Magnum.
+-	Lors de la phase de création d'un BayModel, veillez à NE PAS désactiver ce mode de sécurisation (*qui était la valeur par défaut en Beta 1.0*)
+![](img/caaS_bayModelTLS.png)
+-	Dès lors suite à la création d'une baie au travers de ce BayModel 'TLS', un élément complémentaire d'intégration DevOps est affiché: *Download Bay certificate* afin de télécharger sur son PC le fichier 'P12' contenant les certificats client et serveur
+![](img/caas_P12Certificate_download.png)
+-	L'import du certificat se réalise dans Firefox par  1)Open the "preferences" of the browser.  2)Click on Advanced link.  3)Select the Certificates tabs.  4)Click on "View Certificates" button.  5)Select "Your Certificates" tabs.  6)Click on "Import..." button.  7)Import your p12 certificate (currently NO PASSWORD is required, so ignore the step).
+-	Ce certificat P12 est stocké dans l'objectStore, en même temps que ceux définis pour la *BuildServer*
+![](img/caas_P12ForBuildServer.png)
+-	Et le paramètre *build_server bay_uuid* est introduit dans la configuration du *Playbook* Ansible utilisé pour la génération et déploiement de l'application (voir plus bas l'étape de post-configuration : 'Invoke Ansible Playbook') 
+![](img/caas_DevOpsIntegrationTLS.png)
+-	Comme précédemment, il convient de rajouter une règle dans le *SecurityGroup* relatif au *Master* de la bay, afin de permettre l'accès aux APIs: elles sont maintenant exposées sur le port TCP 6443 au lieu de 8080
+-	En conséquence la nouvelle version du Portail K8S (provenant de la release v1.3) est aussi disponible et affiche les informations relatives aux *replicationControllers* en mode TLS
+![](img/caas_KubeUI_TLS.png)
+-	De façon alternative, le client peut aussi interagir en mode CLI en générant par utilisateur un certificat différent de celui dédié au *BuildServer* par les commandes suivantes, en s'étant connecté en SSH sur l'instance Magnum:
+![](img/caas_genRSA.png)
 
 ### Configurez votre job Jenkins job et son Playbook
 Consulter l'ensemble de **l'Annexe 1 Jenkins setup** à la fin de ce document. …***créez votre job Jenkins job et configurez le avec quelques paramètres, mais vos développeurs ont l'habitude!***
@@ -246,6 +263,13 @@ Dans cet exemple, le packaging CaaS fournit pour le job jenkins PetClinic un pla
 
 
 ***=> Regardez les videos: Tous les détails y sont!!!***
+
+### NEW in Beta 1.1: Fournissez-nous du Feedback !
+Nous avons introduit deux façons pour que vous interagissez avec l'équipe Beta:
+1) Au sein de la page CaaS/GettingStarted, un lien vers un sondage complet est disponible: vous pouvez nous parler de votre perception relatif à l'ensemble du pilote
+2) Chaque page contient une popup permettant de commenter la fonctionnalité
+![](img/caas_giveFeedback.png)
+
 
 ### Comment utiliser la Private registry?
 L'IHM CaaS intègre une IHM ‘Docker dashboard’ en tant qu'iFrame. Dans cette version Beta 1, des fonctions de visualisation sont dispobinles. La prochaine version à base d'IHM Docker ‘Portus’ permettra des fonctions de read/write et la gestion de nameSpaces et repositories.\
