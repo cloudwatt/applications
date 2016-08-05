@@ -104,6 +104,14 @@ By default, the wizard selects the flavor “m1.small”. A variety of other ins
 Please remember that you are providing your KeyPair that will be used in order to postConfigure the future three KVM instances: this will be your way to SSH on those instances for troubleshooting or granting your colleagues on them if required.\
 /!\ **On CloudWatt IaaS please let empty the proxy attributes if you use the Internet exposure.**
 
+**Experimental feature: external registry**
+![](img/caas_experimentalExtRegistry.png)
+
+CaaS infrastructure contains by default an *internal* PrivateRegistry. Some customers required the setting up to a second registry, externe from this CaaS infrastructure.
+In experimental version, during the '1-click' deployment it is now optional to declare the URL to an external Docker_registry (eg: 10.226.226.38:5000 without any http:// or https://) which will be declared ase *insecure* inside BuildServer and Bays.
+If necessary you can add the *login* and *password* information.
+
+
 **Press DEPLOY**. The 1-click handles the launch of an Heat stack that triggers the allocation of three instances and the related OpenStack elements (cinder volumes, neutron internal private network…)
 
 You can see its progression by clicking on its name which will take youto the Horizon console. When all modules become “green”, the creation is finished.
@@ -155,7 +163,7 @@ Once you have your BayModel(s), then simply create one or mode bays.
 -   When ‘Create’, then a Heat Stack is launched. Please wait for the completion of the creation and review the resulting clusters.
 
 As a result, one cluster of each COE will be similar to the following screenshot\
-/!\ ***please note that the SSH user for both master and nodes instances is 'minion', with your private key!***
+/!\ ***please note that the SSH user for both master and nodes instances is no longer '*minion*' but '*cloud*', with your private key!***
 
 ![](img/caas_Bays.png)
 

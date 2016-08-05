@@ -98,6 +98,14 @@ Par défaut le wizard sélection la flavor “m1.small” pour les instances à 
 N'oubliez pas de pointer sur votre KeyPair qui sera utilisée lors de la postConfiguration de CaaS pour définir votre connexion SSh (et vous permettre d'inviter vos collègues sur ces VMs si nécessaire)..\
 /!\ **Chez CloudWatt laissez les champs 'Proxy' vierges si vous utilisez l'exposition du service sur Internet**
 
+**Fonctionnalité expérimentale: external registry**
+![](img/caas_experimentalExtRegistry.png)
+
+L'infrastructure CaaS contient par défaut une *internal* PrivateRegistry. Des clients du CaaS nous ont remonté le besoin de pouvoir déclarer une deuxième registry, externe à cette infrastructure CaaS.
+En version expérimentale, lors du deploiement '1-click' il est maintenant possible de préciser une URL d'accès à un service Docker_registry (ex: 10.226.226.38:5000 sans préciser http:// ou https://) qui sera déclaré en mode *insecure* dans les BuildServer et Bays.
+Si nécessaire, vous pouvez ajouter les *login* et *password* si ils sont requis.
+
+
 **Press DEPLOY**. Le framework '1-click' se charge de lancer la stack Heat avec les paramètres adHoc. Cela entraîne la création de trois instances KVM et des éléments OpenStack associés(cinder volumes, neutron internal private network…)
 
 Vous pouvez voir la progression de l'installation en cliquant sur le nom de la stack, ce qui vous amène dans la CWConsole sur l'onglet 'Stacks'. Quand la création est achevée en succès alors l'icone de la stack passe à 'vert'.
@@ -151,7 +159,7 @@ Grâce à vos BayModel(s), il vous reste à déployer vos cluster Docker (c'est 
 -   Suite à 'Create', la Stack Heat est lancée. Attendez la fin de création de ces 3 instances pour visualiser le panneau 'Bay' et l'affichage des attributs.
 
 En résultat, un cluster pour chacun des COE sera similaire à la copie d'écran suivante\
-/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra est 'minion', avec votre clef privée!***
+/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra n'est plus '*minion*', mais '*cloud*' à utiliser avec avec votre clef privée!***
 
 
 ![](img/caas_Bays.png)
@@ -222,7 +230,7 @@ La version CaaS Beta 1.1 permet de configurer la baie en mode 'TLS'; dès lors l
 -	Comme précédemment, il convient de rajouter une règle dans le *SecurityGroup* relatif au *Master* de la bay, afin de permettre l'accès aux APIs: elles sont maintenant exposées sur le port TCP 6443 au lieu de 8080
 -	En conséquence la nouvelle version du Portail K8S (provenant de la release v1.3) est aussi disponible et affiche les informations relatives aux *replicationControllers* en mode TLS
 ![](img/caas_KubeUI_TLS.png)
--	De façon alternative, le client peut aussi interagir en mode CLI en générant par utilisateur un certificat différent de celui dédié au *BuildServer* par les commandes suivantes, en s'étant connecté en SSH sur l'instance Magnum:
+-	De façon alternative, le client peut aussi interagir en mode CLI vers les masters de Swarm et/ou K8S en générant par utilisateur un certificat différent de celui dédié au *BuildServer* par les commandes suivantes, en s'étant connecté en SSH sur l'instance Magnum:
 ![](img/caas_genRSA.png)
 
 ### Configurez votre job Jenkins job et son Playbook
