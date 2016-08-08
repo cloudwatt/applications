@@ -15,7 +15,7 @@ composants:
    version: "Ubuntu Xenial 16.04"
  - logo: ""
    version: "Glusterfs 3.7"
-prix: "FREE for the application + Cloudwatt usage fees"
+prix: "FREE for software + Cloudwatt usage fees"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-twenty-nine-glusterfs.html
 install-url: 
