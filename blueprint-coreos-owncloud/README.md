@@ -1,15 +1,15 @@
-# 5 Minutes Stacks, épisode 29 : OwnCloud #
+# 5 Minutes Stacks, épisode 30 : OwnCloud #
 
-## Episode 29 : OwnCloud
+## Episode 30 : OwnCloud
 
 ![OwnCloudlogo](img/owncloudlogo.png)
 
 OwnCloud est un logiciel pour créer et utiliser un serveur de stockage et de partage de fichiers en ligne.
-Vos fichiers sont sur un serveur que vous contrôlez et hébergé en France pour Cloudwatt.
+Vos fichiers sont sur un serveur que vous contrôlez et sont hébergés en France par Cloudwatt.
 
 Autre point intéressant, les personnes avec qui vous partagez des données n'ont pas besoin de créer un compte ! Libre à vous de partager sans ou avec mot de passe, idem pour autoriser ou non le dépôt de fichiers.
 
-ownCloud utilise le protocole WebDAV qui permet d'accéder au serveur de façon transparente via un "disque réseau" sur Linux, Windows ou Mac. Il existe également des logiciels de synchronisation pour de très nombreuses plateformes (Linux, Mac, Windows, Android, etc) afin de garder une copie locale de vos fichiers et de travailler hors connexion. ownCloud ne s'arrête pas au simple partage de fichiers. Il permet par exemple de gérer votre calendrier, vos contacts, vos marque-pages et même votre musique. Il intègre les services commerciaux de partage en ligne devenant un point d'accès central pour OpenStack Swift, voire d'autres serveurs ownCloud. Un système de plugins (apps) permet d'installer et/ou de développer d'autres applications en fonction de ce qui vous intéresse.
+ownCloud utilise le protocole WebDAV qui permet d'accéder au serveur de façon transparente via un "disque réseau" sur Linux, Windows ou Mac. Il existe également des logiciels de synchronisation pour de très nombreuses plateformes (Linux, Mac, Windows, Android, etc.) afin de garder une copie locale de vos fichiers et de travailler hors connexion. ownCloud ne s'arrête pas au simple partage de fichiers. Il permet par exemple de gérer votre calendrier, vos contacts, vos marque-pages et même votre musique. Il intègre les services commerciaux de partage en ligne devenant un point d'accès central pour OpenStack Swift, voire d'autres serveurs ownCloud. Un système de plugins (apps) permet d'installer et/ou de développer d'autres applications en fonction de ce qui vous intéresse.
 
 Le projet est issu de KDE. Il est développé entièrement en PHP et se veut autonome. Il s'installe ainsi sur de nombreux serveurs web sans nécessiter de fonctionnalités trop spécifiques tels que Java ou des extensions propres à un serveur web.
 
@@ -29,7 +29,7 @@ Ceci devrait être une routine à présent:
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
  Vous pouvez ajuster les parametres de la stack à votre goût.
 
@@ -135,6 +135,8 @@ $ watch heat resource-list Owncloud
    * démarrer une instance basée sur Coreos y deposer le conteneur *Owncloud* rattaché a sa database *Mysql*,
    * l'exposer sur Internet via une IP flottante.
 
+<a name="console" />
+
 ## C’est bien tout ça, mais...
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
@@ -158,7 +160,7 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre owncloud !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Owncloud !
 
 ## Enjoy
 
@@ -168,14 +170,14 @@ Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en u
 
 Vous etes maintenant en possession de votre propre serveur de cloud. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
-Lors de votre première connexion owncloud vous demandera de saisir les informations de la base de donnée ainsi qu'un compte de connexion,
+Lors de votre première connexion owncloud vous demandera de saisir les informations de la base de donnée ainsi qu'un compte de connexion:
 
 Le compte par defaut est : user : `admin`, mot de passe : `admin`.
 Côté base de donnée c'est un mysql qui est utilisé ici, remplisser à présent les champs comme ci dessous,
 
 ![firstco](img/firstco.png)
 
-Un conseil changer dès la première connexion votre mot de passe admin
+Un conseil : changer dès la première connexion votre mot de passe admin.
 
 Vous pouvez à présent télécharger l'application owncloud et faire une synchronisation de vos données avec votre owncloud, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
 
@@ -185,7 +187,7 @@ Vous pouvez à présent télécharger l'application owncloud et faire une synchr
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
