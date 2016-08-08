@@ -17,6 +17,7 @@ composants:
    version: "Glusterfs 3.7"
 solutions: GlusterFS est particulièrement utile pour les solutions Cloudwatt suivantes :
 solutions-list: 
+ - text: "Multi-Regions"
  - text: "Sauvegarde et Archivage"
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
