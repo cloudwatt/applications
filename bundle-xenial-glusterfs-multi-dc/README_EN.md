@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 25 : GlusterFs multi Data center #
+# 5 Minutes Stacks, episode 29 : GlusterFs multi Data center #
 
-## Episode 25 : GlusterFs multi Data center
+## Episode 29 : GlusterFs multi Data center
 
 ![gluster](https://www.gluster.org/images/antmascot.png?1458134976)
 
@@ -22,13 +22,13 @@ In this episode, we will create two glusterfs replicate between them, but they a
 
  * an internet acces
  * a Linux shell
- * a [Cloudwatt account](https://www.cloudwatt.com/cockpit/#/create-contact), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+ * a [Cloudwatt account](https://www.cloudwatt.com/cockpit/#/create-contact), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab) with access to both regions fr1 and fr2
  * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Size of the instance
 
- Per default, the script is proposing a deployement on an instance type "Standard 1" (n1.cw.standard-1) for fr1 zone and "Standard 2" (n2.cw.standard-1) for fr2 .  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
+ Per default, the script is proposing a deployement on an instance type "Standard 1" (n1.cw.standard-1) for fr1 zone and "Standard 1" (n2.cw.standard-1) for fr2. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
@@ -186,6 +186,8 @@ The `start-stack-fr1.sh` script takes care of running the API necessary requests
 * Starts an Ubuntu xenial based instance on fr1 zone
 * Expose it on the Internet via a floating IP.
 
+<a name="console" />
+
 ## All of this is fine,
 ### but you do not have a way to create the stack from the console?
 
@@ -204,7 +206,7 @@ We do indeed! Using the console, you can deploy a the both glusterfs servers:
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy Mail!
+If you've reached this point, you're already done! Go enjoy GlusterFS!
 
 ## Enjoy
 
