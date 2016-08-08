@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 29 : OwnCloud #
+# 5 Minutes Stacks, épisode 30 : OwnCloud #
 
-## Episode 29 : OwnCloud
+## Episode 30 : OwnCloud
 
 ![OwnCloudlogo](img/owncloudlogo.png)
 
@@ -30,7 +30,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Small" (s1.cw.small-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Standard 1" (n1.cw.standard-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
  Stack parameters, of course, are yours to tweak at your fancy.
 
@@ -135,6 +135,8 @@ parameters:
  * Starts an CoreOS based instance with the docker container *Owncloud* attached to his database *Mysql*
  * Expose it on the Internet via a floating IP.
 
+<a name="console" />
+
 ## All of this is fine, but...
 
 ### You do not have a way to create the stack from the console?
@@ -158,7 +160,7 @@ parameters:
 
 ### A one-click chat sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your owncloud server!
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your owncloud server!
 
 ## Enjoy
 
@@ -175,7 +177,7 @@ The default account is : user : `admin`, password: `admin`. Database is a mysql 
 
 ![firstco](img/firstco.png)
 
-Advice change at the first login your admin password
+An advise: change your admin password at the first login
 
 You can now download the android application and sync your data with your owncloud, this one being hosted in France in a safe environment, you can completely trust on this product.
 
