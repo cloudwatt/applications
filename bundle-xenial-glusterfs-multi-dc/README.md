@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : GlusterFs multi Data center #
+# 5 Minutes Stacks, épisode 29 : GlusterFs multi Data center #
 
-## Episode 25 : GlusterFs multi Data center
+## Episode 29 : GlusterFs multi Data center
 
 ![gluster](https://www.gluster.org/images/antmascot.png?1458134976)
 
@@ -8,7 +8,7 @@ GlusterFS est un logiciel libre de système de fichiers distribué en parallèle
 GlusterFS est un système de fichiers de cluster/réseaux. GlusterFS est livré avec deux éléments, un serveur et un client.
 Le serveur de stockage (ou chaque serveur d'un cluster) fait tourner glusterfsd et les clients utilisent la commande mount ou glusterfs client pour monter les systèmes de fichiers servis, en utilisant FUSE.
 
-Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone.
+Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ne sont pas dans la même zone.
 
 ## Preparations
 
@@ -21,13 +21,12 @@ Ceci devrait être une routine à présent:
 
 * Un accès internet
 * Un shell linux
-* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab) avec accès aux 2 régions fr1 et fr2
 * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "Standard 1" (n1.cw.standard-1) pour la zone fr1 et "Standard 2" (n2.cw.standard-1) pour la zone fr2. Il
-existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "Standard-1" (n1.cw.standard-1) pour la zone fr1 et "Standard-1" (n2.cw.standard-1) pour la zone fr2. Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
 
@@ -42,9 +41,9 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-gluster
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr1.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
 
-* `stack-start-fr1.sh`: Scipt de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-start-fr1.sh`: Script de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
-* `stack-start-fr2.sh`: Scipt de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-start-fr2.sh`: Script de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
@@ -67,8 +66,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
-est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -136,9 +134,9 @@ parameters:
 ~~~
 ### Démarrer la stack
 
-D'abord il faut lancer la stack fr2 la permière ,si la stack fr2 est bien lancée, vous pouvez lancer la stack sur fr1.
+D'abord il faut lancer la stack fr2 la première et si la stack fr2 est bien lancée, vous pouvez lancer la stack sur fr1.
 Il faut aussi que les deux stacks sur fr1 et fr2 aient le même nom.
-Dans un shell,lancer le script `stack-start-fr2.sh`:
+Dans un shell, lancer le script `stack-start-fr2.sh`:
 
 ~~~bash
 $ export OS_REGION_NAME=fr2
@@ -193,6 +191,7 @@ Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur le
 * démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack glusterfs sur fr1
 * l'exposer sur Internet via une IP flottante
 
+<a name="console" />
 
 ## C’est bien tout ça,
 ### mais vous n’auriez pas un moyen de lancer l’application par la console ?
