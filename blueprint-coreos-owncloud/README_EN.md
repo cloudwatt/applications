@@ -15,7 +15,7 @@ The project come from KDE. It is developed entirely in PHP and autonome. it can 
 
 ### The Versions
 - CoreOS Stable 1010.6
-- Cozycloud 2.0
+- OwnCloud 9.1
 
 ### The prerequisites to deploy this stack
 
