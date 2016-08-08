@@ -1,0 +1,103 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+description: All-in-one Glusterfs Multi DC
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n2.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+         - n2.cw.standard-1
+         - n2.cw.standard-2
+         - n2.cw.standard-4
+         - n2.cw.standard-8
+         - n2.cw.standard-16
+         - n2.cw.highmem-2
+         - n2.cw.highmem-4
+         - n2.cw.highmem-8
+         - n2.cw.highmem-16
+
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.250.0/24
+      allocation_pools:
+        - { start: 10.0.250.100, end: 10.0.250.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: ingress, protocol: UDP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: b5dd7532-1533-4b9c-8bf9-e66631a9be1d
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 4b555823-b069-49ee-a0a5-2dbe93959a41
+      flavor: { get_param: flavor_name }
+      name:
+         str_replace:
+            template: $stack-dc2
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+             SLAVE_HOST=$(echo $stack-dc2 | tr ‘[A-Z]’ ‘[a-z]’) 
+             mkdir /etc/ansible
+             cat << EOF >> /etc/ansible/vars.yml
+                master: false
+                hostname_slave: $SLAVE_HOST
+            EOF
+            sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+          params:
+            $stack: { get_param: 'OS::stack_name' }
+
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: IP address of the deployed compute instance
+    value: { get_attr: [floating_ip, floating_ip_address] }
