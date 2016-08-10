@@ -20,6 +20,6 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-twenty-nine-glusterfs.html
 install-url: 
 comingsoon: false
-type: blueprint
+type: application
 categories: ["admin"]
 ---
