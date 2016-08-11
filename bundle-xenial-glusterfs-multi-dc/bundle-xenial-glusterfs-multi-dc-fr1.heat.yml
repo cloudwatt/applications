@@ -50,10 +50,14 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 24007, port_range_max: 24007 }
+        - { direction: ingress, protocol: TCP, port_range_min: 49152, port_range_max: 49152 }
+        - { direction: ingress, protocol: TCP, port_range_min: 49153, port_range_max: 49153 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
+
 
 
   floating_ip:
@@ -90,6 +94,9 @@ resources:
             EOF
              sudo export ANSIBLE_HOST_KEY_CHECKING=False
              sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+             sudo gluster system:: execute gsec_create
+             sudo gluster vol geo-rep datastore $SLAVE_HOST::datastore create push-pem force
+             sudo gluster vol geo-rep datastore $SLAVE_HOST::datastore start
           params:
             $slave_public_ip : { get_param: slave_public_ip }
             $stack: { get_param: 'OS::stack_name' }
