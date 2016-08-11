@@ -15,7 +15,7 @@ This stack helps you to initialize your tenant, it helps you to create a keypair
 
 ### A one-click chat sounds really nice...
 
-Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your starter kit!
+Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps...
 
 ### You do not have a way to create the stack from the console?
 
