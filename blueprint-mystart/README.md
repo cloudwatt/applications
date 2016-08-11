@@ -15,7 +15,7 @@ Cette stack vous permet d'intialiser votre tenant par la création rapide d'une 
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez lancez votre kit de démarrage !
+Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider...
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
