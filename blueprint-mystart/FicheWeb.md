@@ -13,7 +13,7 @@ sitesupport: https://support.cloudwatt.com/
 composants:
  - logo: ""
    version: ""
-solutions: MyStart est particulièrement utile pour les solutions Cloudwatt suivantes :
+solutions: "MyStart est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
