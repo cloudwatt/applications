@@ -1,0 +1,396 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  master:
+    label: master
+    type: string
+  nodename:
+    label: nodename
+    type: string
+  mastercount:
+    label: mastercount
+    type: number
+  nodeip:
+    label: nodeip
+    type: string
+  stack:
+    label: stack
+    type: string
+  subnet:
+    label: subnet
+    type: string
+  os_username:
+    label: os_username
+    type: string
+  os_password:
+    label: os_password
+    type: string
+  os_tenant:
+    label: os_tenant
+    type: string
+  os_tenant_id:
+    label: os_tenant_id
+    type: string
+  os_auth:
+    label: os_auth
+    type: string
+  os_region:
+    label: os_region
+    type: string
+  network:
+    label: network
+    type: string
+  security_group:
+    label: security_group
+    type: string
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+  domain:
+    description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
+    label: Cloud DNS
+    type: string
+  flavor_name:
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+
+resources:
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: network }
+      fixed_ips:
+        - ip_address: { get_param: nodeip }
+          subnet_id: { get_param: subnet }
+      security_groups:
+        - { get_param: security_group }
+
+  node:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1010.6
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      name: { get_param: nodename}
+      networks:
+        - port: { get_resource: port }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4$: { get_attr: [ port, fixed_ips, 0, ip_address ] }
+            $domain$: { get_param: domain }
+            $master$: { get_param: master }
+            $stack$: { get_param: stack }
+            $fqdn$: { get_param: nodename }
+            $os_username$: { get_param: os_username}
+            $os_password$: { get_param: os_password}
+            $os_tenant$: { get_param: os_tenant }
+            $os_auth$: { get_param: os_auth }
+            $os_region$: { get_param: os_region }
+            $os_project_id$: { get_param: os_tenant_id }
+            $count$: { get_param: mastercount }
+            $subnet$: { get_param: subnet }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /opt/weave-init.sh
+                permissions: 0700
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  NB=$(expr $count$ - 1)
+                  PEERS=""
+                  for i in $(seq 0 $NB)
+                  do
+                    PEERS="$PEERS 10.0.1.25$i"
+                  done
+                  echo WEAVE_PEERS=\"$PEERS\" > /etc/weave.env
+                  echo WEAVEPROXY_ARGS=\"--rewrite-inspect --without-dns\" >> /etc/weave.env
+              - path: /etc/kubernetes/worker-$fqdn$-kubeconfig.yaml
+                permissions: 0666
+                owner: "root:root"
+                content: |
+                  apiVersion: v1
+                  kind: Config
+                  clusters:
+                  - name: local
+                    cluster:
+                      certificate-authority: /etc/kubernetes/ssl/ca.pem
+                  users:
+                  - name: kubelet
+                    user:
+                      client-certificate: /etc/kubernetes/ssl/worker-$fqdn$.pem
+                      client-key: /etc/kubernetes/ssl/worker-$fqdn$-key.pem
+                  contexts:
+                  - context:
+                      cluster: local
+                      user: kubelet
+                    name: kubelet-context
+                  current-context: kubelet-context
+              - path: /etc/kubernetes/manifests/kube-proxy.yaml
+                permissions: 0666
+                owner: "root:root"
+                content: |
+                  apiVersion: v1
+                  kind: Pod
+                  metadata:
+                    name: kube-proxy
+                    namespace: kube-system
+                  spec:
+                    hostNetwork: true
+                    containers:
+                    - name: kube-proxy
+                      image: quay.io/coreos/hyperkube:v1.3.5_coreos.0
+                      command:
+                      - /hyperkube
+                      - proxy
+                      - --master=https://$master$
+                      - --kubeconfig=/etc/kubernetes/worker-$fqdn$-kubeconfig.yaml
+                      - --proxy-mode=iptables
+                      securityContext:
+                        privileged: true
+                      volumeMounts:
+                        - mountPath: /etc/ssl/certs
+                          name: "ssl-certs"
+                        - mountPath: /etc/kubernetes/worker-$fqdn$-kubeconfig.yaml
+                          name: "kubeconfig"
+                          readOnly: true
+                        - mountPath: /etc/kubernetes/ssl
+                          name: "etc-kube-ssl"
+                          readOnly: true
+                    volumes:
+                      - name: "ssl-certs"
+                        hostPath:
+                          path: "/usr/share/ca-certificates"
+                      - name: "kubeconfig"
+                        hostPath:
+                          path: "/etc/kubernetes/worker-$fqdn$-kubeconfig.yaml"
+                      - name: "etc-kube-ssl"
+                        hostPath:
+                          path: "/etc/kubernetes/ssl"
+              - path: /etc/environment
+                permissions: 0666
+                owner: "root:root"
+                content: |
+                  COREOS_PRIVATE_IPV4=$private_ipv4$
+                  COREOS_PUBLIC_IPV4=$private_ipv4$
+                  ETCD_ADDR=localhost:2379
+                  ETCD_PEER_ADDR=$private_ipv4$:2380
+              - path: /etc/kubernetes/cloud.conf
+                permissions: 0766
+                owner: "root:root"
+                content: |
+                  [Global]
+                  auth-url=$os_auth$
+                  username=$os_username$
+                  password=$os_password$
+                  region=$os_region$
+                  tenant-id=$os_project_id$
+                  [LoadBalancer]
+                  subnet-id = $subnet$
+              - path: /opt/kubernetes-init-ssl.sh
+                permissions: 0700
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  mkdir -p /etc/kubernetes/ssl /home/core/keys
+                  cd /etc/kubernetes/ssl
+                  # Worker Config
+                  cat <<EOF > worker-openssl.cnf
+                  [req]
+                  req_extensions = v3_req
+                  distinguished_name = req_distinguished_name
+                  [req_distinguished_name]
+                  [ v3_req ]
+                  basicConstraints = CA:FALSE
+                  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+                  subjectAltName = @alt_names
+                  [alt_names]
+                  IP.1 = \$ENV::WORKER_IP
+                  EOF
+                  # Worker CA
+                  echo "Waiting for Kubernetes to be Started..."
+                  K8S="https://$master$"
+                  until curl --silent -k "$K8S/version"
+                  do
+                      echo "Trying: $K8S"
+                      sleep 1
+                  done
+                  etcdctl get /ssl/ca > ca.pem
+                  etcdctl get /ssl/key > ca-key.pem
+                  openssl genrsa -out worker-$fqdn$-key.pem 2048
+                  WORKER_IP=$private_ipv4$ openssl req -new -key worker-$fqdn$-key.pem -out worker-$fqdn$.csr -subj "/CN=$fqdn$" -config worker-openssl.cnf
+                  WORKER_IP=$private_ipv4$ openssl x509 -req -in worker-$fqdn$.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out worker-$fqdn$.pem -days 365 -extensions v3_req -extfile worker-openssl.cnf
+                  # Set permissions
+                  chmod 600 /etc/kubernetes/ssl/*-key.pem
+                  chown root:root /etc/kubernetes/ssl/*-key.pem
+            coreos:
+              etcd2:
+                proxy: on
+                listen-client-urls: http://0.0.0.0:2379
+                initial-cluster: driver-0=http://10.0.1.240:2380,driver-1=http://10.0.1.241:2380,driver-2=http://10.0.1.242:2380
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: generatessl.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=etcd2.service weave-network.target
+                    After=etcd2.service weave-network.target
+                    ConditionPathExists=!/etc/kubernetes/ssl/worker-$fqdn$-key.pem
+                    Description=Kubernetes Keys Generator
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/opt/kubernetes-init-ssl.sh
+                - name: weave-network.target
+                  enable: true
+                  content: |
+                    [Unit]
+                    Description=Weave Network Setup Complete
+                    Documentation=man:systemd.special(7)
+                    RefuseManualStart=no
+                    [Install]
+                    WantedBy=multi-user.target
+                - name: weave-init.service
+                  command: start
+                  content: |
+                      [Unit]
+                      Before=install-weave.service
+                      Description=Install Weave
+                      [Service]
+                      Type=oneshot
+                      RemainAfterExit=yes
+                      TimeoutStartSec=0
+                      ExecStart=/opt/weave-init.sh
+                - name: 10-weave.network
+                  runtime: false
+                  content: |
+                    [Match]
+                    Type=bridge
+                    Name=weave*
+                    [Network]
+                - name: install-weave.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=docker.service weave-init.service
+                    Requires=docker.service weave-init.service
+                    Before=weave.service
+                    Description=Install Weave
+                    [Service]
+                    EnvironmentFile=-/etc/weave.env
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    TimeoutStartSec=0
+                    ExecStartPre=/bin/mkdir -p /opt/bin/
+                    ExecStartPre=/usr/bin/curl \
+                      --silent \
+                      --location \
+                      git.io/weave \
+                      --output /opt/bin/weave
+                    ExecStartPre=/usr/bin/chmod +x /opt/bin/weave
+                    ExecStart=/opt/bin/weave setup
+                    [Install]
+                    WantedBy=weave-network.target
+                    WantedBy=weave.service
+                - name: weaveproxy.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=install-weave.service
+                    After=docker.service
+                    Description=Weave proxy for Docker API
+                    Requires=docker.service
+                    Requires=install-weave.service
+                    [Service]
+                    EnvironmentFile=-/etc/weave.env
+                    ExecStartPre=/opt/bin/weave launch-proxy $WEAVEPROXY_ARGS
+                    ExecStart=/usr/bin/docker attach weaveproxy
+                    Restart=on-failure
+                    ExecStop=/opt/bin/weave stop-proxy
+                    [Install]
+                    WantedBy=weave-network.target
+                - name: weave.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=install-weave.service
+                    After=docker.service
+                    Description=Weave Network Router
+                    Documentation=http://weave.works/docs
+                    Requires=docker.service
+                    Requires=install-weave.service
+                    [Service]
+                    TimeoutStartSec=0
+                    EnvironmentFile=-/etc/weave.env
+                    ExecStartPre=/opt/bin/weave launch-router $WEAVE_PEERS
+                    ExecStart=/usr/bin/docker attach weave
+                    Restart=on-failure
+                    ExecStop=/opt/bin/weave stop-router
+                    [Install]
+                    WantedBy=weave-network.target
+                - name: weave-expose.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=install-weave.service
+                    After=weave.service
+                    After=docker.service
+                    Documentation=http://weave.works/docs
+                    Requires=docker.service
+                    Requires=install-weave.service
+                    Requires=weave.service
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    TimeoutStartSec=0
+                    EnvironmentFile=-/etc/weave.env
+                    ExecStart=/opt/bin/weave expose
+                    ExecStop=/opt/bin/weave hide
+                    [Install]
+                    WantedBy=weave-network.target
+                - name: settimezone.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Set the time zone
+
+                    [Service]
+                    ExecStart=/usr/bin/timedatectl set-timezone Europe/Paris
+                    RemainAfterExit=yes
+                    Type=oneshot
+                - name: kubelet.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=docker.service generatessl.service
+                    After=docker.service generatessl.service
+
+                    [Service]
+                    ExecStartPre=/usr/bin/mkdir -p /opt/bin
+                    ExecStartPre=-/usr/bin/curl -o /opt/bin/kubelet -C - http://storage.googleapis.com/kubernetes-release/release/v1.3.5/bin/linux/amd64/kubelet
+                    ExecStartPre=-/usr/bin/chmod +x /opt/bin/kubelet
+                    ExecStart=/opt/bin/kubelet \
+                      --docker-endpoint=unix:///var/run/weave/weave.sock \
+                      --api-servers=https://$master$ \
+                      --register-node=true \
+                      --node-labels=mode=SchedulingDisabled \
+                      --allow-privileged=true \
+                      --config=/etc/kubernetes/manifests \
+                      --hostname-override=$fqdn$ \
+                      --cloud-provider=openstack \
+                      --cloud-config=/etc/kubernetes/cloud.conf \
+                      --cluster-dns=10.0.2.2 \
+                      --cluster-domain=$domain$ \
+                      --tls-cert-file=/etc/kubernetes/ssl/worker-$fqdn$.pem \
+                      --tls-private-key-file=/etc/kubernetes/ssl/worker-$fqdn$-key.pem \
+                      --kubeconfig=/etc/kubernetes/worker-$fqdn$-kubeconfig.yaml
+                    Restart=always
+                    RestartSec=10
+                    [Install]
+                    WantedBy=multi-user.target

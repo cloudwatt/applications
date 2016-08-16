@@ -1,0 +1,298 @@
+heat_template_version: 2013-05-23
+
+parameters:
+  stack:
+    label: stack
+    type: string
+  nodename:
+    label: nodename
+    type: string
+  nodeid:
+    label: nodeid
+    type: string
+  mastercount:
+    label: mastercount
+    type: number
+  masterfloating:
+    label: mastercount
+    type: string
+  os_username:
+    label: os_username
+    type: string
+  os_password:
+    label: os_password
+    type: string
+  os_tenant:
+    label: os_tenant
+    type: string
+  os_auth:
+    label: os_auth
+    type: string
+  os_region:
+    label: os_region
+    type: string
+  domain:
+    label: domain
+    type: string
+  nodeip:
+    label: nodeip
+    type: string
+  subnet:
+    label: subnet
+    type: string
+  network:
+    label: network
+    type: string
+  security_group:
+    label: security_group
+    type: string
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+resources:
+  port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_param: network }
+      fixed_ips:
+        - ip_address: { get_param: nodeip }
+          subnet_id: { get_param: subnet }
+      security_groups:
+        - { get_param: security_group }
+
+  etcd:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1010.6
+      flavor: t1.cw.tiny
+      user_data_format: RAW
+      name: { get_param: nodename}
+      networks:
+        - port: { get_resource: port }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4$: { get_attr: [ port, fixed_ips, 0, ip_address ] }
+            $domain$: { get_param: domain }
+            $nodeid$: { get_param: nodeid }
+            $os_username$: { get_param: os_username}
+            $os_password$: { get_param: os_password}
+            $os_tenant$: { get_param: os_tenant }
+            $os_auth$: { get_param: os_auth }
+            $os_region$: { get_param: os_region }
+            $stack$: { get_param: stack }
+            $mastercount$: { get_param: mastercount }
+            $masterfloating$: { get_param: masterfloating }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /opt/kubernetes-init.sh
+                permissions: 0700
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  until /usr/bin/etcdctl ls
+                  do
+                    echo "Waiting for etcd to be ready"
+                    sleep 1
+                  done
+                  if etcdctl get /initialized/kube; then exit 0; fi
+                  etcdctl set /initialized/kube true
+                  mkdir -p /etc/kubernetes/ssl
+                  cd /etc/kubernetes/ssl
+                  # Config
+                  cat <<EOF > openssl.cnf
+                  [req]
+                  req_extensions = v3_req
+                  distinguished_name = req_distinguished_name
+                  [req_distinguished_name]
+                  [ v3_req ]
+                  basicConstraints = CA:FALSE
+                  keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+                  subjectAltName = @alt_names
+                  [alt_names]
+                  DNS.1 = kubernetes
+                  DNS.2 = kubernetes.default
+                  DNS.3 = kubernetes.default.svc
+                  DNS.4 = kubernetes.default.svc.$domain$
+                  IP.1 = 10.0.2.1
+                  IP.2 = 10.0.1.3
+                  IP.3 = $masterfloating$
+                  EOF
+                  for i in $(seq 1 $mastercount$); do
+                    num=$(expr $i + 3)
+                    ip=$(expr $i + 249)
+                    echo IP.$num = 10.0.1.$ip >> openssl.cnf
+                  done
+                  # Root CA
+                  openssl genrsa -out ca-key.pem 2048
+                  openssl req -x509 -new -nodes -key ca-key.pem -days 10000 -out ca.pem -subj "/CN=kube-ca"
+                  # Server CA
+                  openssl genrsa -out apiserver-key.pem 2048
+                  openssl req -new -key apiserver-key.pem -out apiserver.csr -subj "/CN=kube-apiserver" -config openssl.cnf
+                  openssl x509 -req -in apiserver.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out apiserver.pem -days 365 -extensions v3_req -extfile openssl.cnf
+                  # Admin CA
+                  openssl genrsa -out admin-key.pem 2048
+                  openssl req -new -key admin-key.pem -out admin.csr -subj "/CN=kube-admin"
+                  openssl x509 -req -in admin.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out admin.pem -days 365
+                  # Set permissions
+                  chmod 600 /etc/kubernetes/ssl/*-key.pem
+                  chown root:root /etc/kubernetes/ssl/*-key.pem
+                  # Export CA to Etcd
+                  curl --silent -X PUT --data-urlencode value@ca.pem "http://localhost:2379/v2/keys/ssl/ca"
+                  curl --silent -X PUT --data-urlencode value@ca-key.pem "http://localhost:2379/v2/keys/ssl/key"
+                  curl --silent -X PUT --data-urlencode value@apiserver.pem "http://localhost:2379/v2/keys/ssl/apiserver"
+                  curl --silent -X PUT --data-urlencode value@apiserver-key.pem "http://localhost:2379/v2/keys/ssl/apiserver-key"
+                  curl --silent -X PUT --data-urlencode value@admin.pem "http://localhost:2379/v2/keys/ssl/admin"
+                  curl --silent -X PUT --data-urlencode value@admin-key.pem "http://localhost:2379/v2/keys/ssl/admin-key"
+              - path: /etc/rclone.conf
+                permissions: 0766
+                owner: "root:root"
+                content: |
+                  [Openstack]
+                  type = swift
+                  user = $os_username$
+                  key = $os_password$
+                  auth = $os_auth$
+                  tenant = $os_tenant$
+                  region = $os_region$
+                  storage_url =
+              - path: /etc/etcd-backup-env
+                permissions: 0766
+                owner: "root:root"
+                content: |
+                  ETCD_NAME=driver-$nodeid$
+                  ETCD_ADVERTISE_CLIENT_URLS=http://$private_ipv4$:2379
+                  ETCD_INITIAL_ADVERTISE_PEER_URLS=http://$private_ipv4$:2380
+                  ETCD_INITIAL_CLUSTER=driver-0=http://10.0.1.240:2380,driver-1=http://10.0.1.241:2380,driver-2=http://10.0.1.242:2380
+                  ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379,http://0.0.0.0:4001
+                  ETCD_LISTEN_PEER_URLS=http://$private_ipv4$:2380
+                  RCLONE_ENDPOINT=Openstack:etcd-backup-$stack$
+                  RCLONE_CONFIG_PATH=/etc/rclone.conf
+                  ETCD_DATA_DIR=/var/lib/etcd2
+                  ETCD_BACKUP_DIR=/var/lib/etcd2-backup
+                  ETCD_RESTORE_DIR=/var/lib/etcd2-restore
+                  RCLONE_CHECKSUM=true
+
+            coreos:
+              etcd2:
+                name: "driver-$nodeid$"
+                advertise-client-urls: http://$private_ipv4$:2379
+                initial-advertise-peer-urls: http://$private_ipv4$:2380
+                initial-cluster: "driver-0=http://10.0.1.240:2380,driver-1=http://10.0.1.241:2380,driver-2=http://10.0.1.242:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4$:2380
+              units:
+                - name: docker.service
+                  command: start
+                - name: etcd2-backup.timer
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=etcd2-backup service timer
+
+                    [Timer]
+                    OnBootSec=1min
+                    OnUnitActiveSec=30sec
+
+                    [Install]
+                    WantedBy=timers.target
+                - name: etcd2-restore.service
+                  content: |
+                    [Unit]
+                    Description=Restore single-node etcd2 node from rclone endpoint
+                    Conflicts=etcd2.service etcd2-backup.service
+                    Before=etcd2.service etcd2-backup.service
+
+                    [Service]
+                    Type=oneshot
+                    EnvironmentFile=/etc/etcd-backup-env
+                    ExecStartPre=/usr/bin/rm -rf ${ETCD_DATA_DIR}/member
+                    ExecStartPre=/usr/bin/mkdir -p ${ETCD_RESTORE_DIR} /opt/bin
+                    ExecStartPre=/usr/bin/rm -rf ${ETCD_RESTORE_DIR}/member
+                    ExecStartPre=-/usr/bin/curl -C - -o /opt/bin/etcd2-restore https://storage.fr1.cloudwatt.com/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/kube-ha-fr1/etcd2-restore
+                    ExecStartPre=/usr/bin/chmod +x /opt/bin/etcd2-restore
+
+                    # Copy the last backup from rclone endpoint
+                    ExecStartPre=/usr/bin/docker run --rm \
+                    			     -v ${RCLONE_CONFIG_PATH}:/etc/rclone.conf \
+                    			     -v ${ETCD_RESTORE_DIR}:/etcd2backup \
+                    			     quay.io/coreos/rclone:latest \
+                    			        --config /etc/rclone.conf --checksum=${RCLONE_CHECKSUM} \
+                    				   copy ${RCLONE_ENDPOINT}/%m /etcd2backup
+
+                    ExecStartPre=/usr/bin/ls -R ${ETCD_RESTORE_DIR}
+                    ExecStartPre=/opt/bin/etcd2-restore -etcd-name ${ETCD_NAME} -etcd-peer-urls ${ETCD_INITIAL_ADVERTISE_PEER_URLS}
+                    ExecStartPre=/usr/bin/cp -r ${ETCD_RESTORE_DIR}/member ${ETCD_DATA_DIR}/member
+                    ExecStart=/usr/bin/chown -R etcd:etcd ${ETCD_DATA_DIR}/member
+
+                    [Install]
+                    WantedBy=multi-user.target
+                - name: etcd2-backup.service
+                  content: |
+                    [Unit]
+                    Description=rclone powered etcd2 backup service
+                    After=etcd2.service
+
+                    [Service]
+                    EnvironmentFile=/etc/etcd-backup-env
+                    Type=oneshot
+
+                    ExecStartPre=/usr/bin/rm -rf ${ETCD_BACKUP_DIR}
+                    ExecStartPre=/usr/bin/mkdir -p ${ETCD_BACKUP_DIR}/member/snap
+                    ExecStartPre=/usr/bin/echo ETCD_DATA_DIR: ${ETCD_DATA_DIR}
+                    ExecStartPre=/usr/bin/echo ETCD_BACKUP_DIR: ${ETCD_BACKUP_DIR}
+                    ExecStartPre=/usr/bin/etcdctl backup --data-dir=${ETCD_DATA_DIR} --backup-dir=${ETCD_BACKUP_DIR}
+                    ExecStartPre=/usr/bin/touch ${ETCD_BACKUP_DIR}/member/snap/iamhere.txt
+
+                    # Copy the last backup, in case the new upload gets corrupted
+                    ExecStartPre=-/usr/bin/docker run --rm \
+                                      -v ${RCLONE_CONFIG_PATH}:/etc/rclone.conf \
+                                      quay.io/coreos/rclone:latest --config /etc/rclone.conf --checksum=${RCLONE_CHECKSUM} \
+                                      copy ${RCLONE_ENDPOINT}/%m ${RCLONE_ENDPOINT}/%m_backup
+
+                    # Upload new backup
+                    ExecStart=/usr/bin/docker run --rm \
+                                  -v ${ETCD_BACKUP_DIR}:/etcd2backup \
+                                  -v ${RCLONE_CONFIG_PATH}:/etc/rclone.conf \
+                                  quay.io/coreos/rclone:latest --config ${RCLONE_CONFIG_PATH} --checksum=${RCLONE_CHECKSUM} \
+                                  copy /etcd2backup/ ${RCLONE_ENDPOINT}/%m/
+
+                    [Install]
+                    WantedBy=multi-user.target
+                - name: etcd2.service
+                  command: start
+                - name: flannel-init.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=etcd2.service
+                    After=etcd2.service
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/opt/flannel-init.sh
+                - name: settimezone.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Set the time zone
+
+                    [Service]
+                    ExecStart=/usr/bin/timedatectl set-timezone Europe/Paris
+                    RemainAfterExit=yes
+                    Type=oneshot
+                - name: kubeinit.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Requires=etcd2.service docker.service
+                    After=etcd2.service docker.service
+                    Description=Kubernetes Initializer
+
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/opt/kubernetes-init.sh
