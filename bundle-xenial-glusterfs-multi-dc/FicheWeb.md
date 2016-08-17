@@ -15,7 +15,7 @@ composants:
    version: "Ubuntu Xenial 16.04"
  - logo: ""
    version: "Glusterfs 3.7"
-solutions: GlusterFS est particulièrement utile pour les solutions Cloudwatt suivantes :
+solutions: "GlusterFS est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Multi-Regions"
  - text: "Sauvegarde et Archivage"
