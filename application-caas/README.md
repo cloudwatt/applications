@@ -1,4 +1,4 @@
-# Innovation Beta : Container aaS #
+# Innovation Beta : Container aaS #   Beta 1.1
 
 ## La promesse
 
@@ -98,6 +98,19 @@ Par défaut le wizard sélection la flavor “m1.small” pour les instances à 
 N'oubliez pas de pointer sur votre KeyPair qui sera utilisée lors de la postConfiguration de CaaS pour définir votre connexion SSh (et vous permettre d'inviter vos collègues sur ces VMs si nécessaire)..\
 /!\ **Chez CloudWatt laissez les champs 'Proxy' vierges si vous utilisez l'exposition du service sur Internet**
 
+**En version Beta 1.1** vous devez maintenant renseigner les champs *private network ID* et  *private subnet ID*. Tant que le framework '1-click' de CloudWatt framework n'est pas mis à jour, merci de renseigner les UUIDs techniques au lieu de la copie d'ecran suivante:
+
+![](img/caas_internalnet_subnet.png)
+
+**Fonctionnalité expérimentale Beta 1.1: external registry**
+
+![](img/caas_experimentalExtRegistry.png)
+
+L'infrastructure CaaS contient par défaut une *internal* PrivateRegistry. Des clients du CaaS nous ont remonté le besoin de pouvoir déclarer une deuxième registry, externe à cette infrastructure CaaS.
+En version expérimentale, lors du deploiement '1-click' il est maintenant possible de préciser une URL d'accès à un service Docker_registry (ex: 10.226.226.38:5000 sans préciser http:// ou https://) qui sera déclaré en mode *insecure* dans les BuildServer et Bays.
+Si nécessaire, vous pouvez ajouter les *login* et *password* si ils sont requis.
+
+
 **Press DEPLOY**. Le framework '1-click' se charge de lancer la stack Heat avec les paramètres adHoc. Cela entraîne la création de trois instances KVM et des éléments OpenStack associés(cinder volumes, neutron internal private network…)
 
 Vous pouvez voir la progression de l'installation en cliquant sur le nom de la stack, ce qui vous amène dans la CWConsole sur l'onglet 'Stacks'. Quand la création est achevée en succès alors l'icone de la stack passe à 'vert'.
@@ -151,7 +164,7 @@ Grâce à vos BayModel(s), il vous reste à déployer vos cluster Docker (c'est 
 -   Suite à 'Create', la Stack Heat est lancée. Attendez la fin de création de ces 3 instances pour visualiser le panneau 'Bay' et l'affichage des attributs.
 
 En résultat, un cluster pour chacun des COE sera similaire à la copie d'écran suivante\
-/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra est 'minion', avec votre clef privée!***
+/!\ ***Veuillez noter que le compte d'accès en SSH aux trois VMs de CaaS_infra n'est plus '*minion*', mais '*cloud*' à utiliser avec avec votre clef privée!***
 
 
 ![](img/caas_Bays.png)
@@ -201,12 +214,29 @@ Chaque Bay fournit une boîte de dialogue ‘*simple mais magique*’:
 
 ![](img/caas_DevOpsIntegration.png)
 
-Cliquez sur le boutonn 'DevOps integration': Le contenu de cette boite de dialogue affiche les **paramètres de configuration de votre futur Playbook Ansible!**!
+Cliquez sur le bouton 'DevOps integration': Le contenu de cette boite de dialogue affiche les **paramètres de configuration de votre futur Playbook Ansible!**!
 
 /!\ En tant que créateur de l'infrastructure CaaS, votre KeyPair a été utilisée pour configurer le serveur *CaaS_BuildServer*: accès via SSH avec l'utilisateur **'cloud'** et votre privateKey. \
 ***Et si vous voulez autoriser vos collègues à s'y connecter avec leur keyPair, vous devez les y autoriser*** par\
 vi du fichier */home/cloud/.ssh/authorized_keys* et ajout des clefs ssh-rsa ressemblant à\
 *ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA0t°°°UqQ== rsa-key-20160218 *.
+
+### NEW in Beta 1.1: Utiliser le mode 'TLS' de gestion des baies: Certificats Client et Serveur en HTTPS
+La version CaaS Beta 1.1 permet de configurer la baie en mode 'TLS'; dès lors les APIs Swarm ou K8S sont encryptées en HTTPS, avec certificats client et serveurs générés par le framework CaaS Magnum.
+-	Lors de la phase de création d'un BayModel, veillez à NE PAS désactiver ce mode de sécurisation (*qui était la valeur par défaut en Beta 1.0*)
+![](img/caaS_bayModelTLS.png)
+-	Dès lors suite à la création d'une baie au travers de ce BayModel 'TLS', un élément complémentaire d'intégration DevOps est affiché: *Download Bay certificate* afin de télécharger sur son PC le fichier 'P12' contenant les certificats client et serveur
+![](img/caas_P12Certificate_download.png)
+-	L'import du certificat se réalise dans Firefox par  1)Open the "preferences" of the browser.  2)Click on Advanced link.  3)Select the Certificates tabs.  4)Click on "View Certificates" button.  5)Select "Your Certificates" tabs.  6)Click on "Import..." button.  7)Import your p12 certificate (currently NO PASSWORD is required, so ignore the step).
+-	Ce certificat P12 est stocké dans l'objectStore, en même temps que ceux définis pour la *BuildServer*
+![](img/caas_P12ForBuildServer.png)
+-	Et le paramètre *build_server bay_uuid* est introduit dans la configuration du *Playbook* Ansible utilisé pour la génération et déploiement de l'application (voir plus bas l'étape de post-configuration : 'Invoke Ansible Playbook') 
+![](img/caas_DevOpsIntegrationTLS.png)
+-	Comme précédemment, il convient de rajouter une règle dans le *SecurityGroup* relatif au *Master* de la bay, afin de permettre l'accès aux APIs: elles sont maintenant exposées sur le port TCP 6443 au lieu de 8080
+-	En conséquence la nouvelle version du Portail K8S (provenant de la release v1.3) est aussi disponible et affiche les informations relatives aux *replicationControllers* en mode TLS
+![](img/caas_KubeUI_TLS.png)
+-	De façon alternative, le client peut aussi interagir en mode CLI vers les masters de Swarm et/ou K8S en générant par utilisateur un certificat différent de celui dédié au *BuildServer* par les commandes suivantes, en s'étant connecté en SSH sur l'instance Magnum:
+![](img/caas_genRSA.png)
 
 ### Configurez votre job Jenkins job et son Playbook
 Consulter l'ensemble de **l'Annexe 1 Jenkins setup** à la fin de ce document. …***créez votre job Jenkins job et configurez le avec quelques paramètres, mais vos développeurs ont l'habitude!***
@@ -247,6 +277,13 @@ Dans cet exemple, le packaging CaaS fournit pour le job jenkins PetClinic un pla
 
 ***=> Regardez les videos: Tous les détails y sont!!!***
 
+### NEW in Beta 1.1: Fournissez-nous du Feedback !
+Nous avons introduit deux façons pour que vous interagissez avec l'équipe Beta:
+1) Au sein de la page CaaS/GettingStarted, un lien vers un sondage complet est disponible: vous pouvez nous parler de votre perception relatif à l'ensemble du pilote
+2) Chaque page contient une popup permettant de commenter la fonctionnalité
+![](img/caas_giveFeedback.png)
+
+
 ### Comment utiliser la Private registry?
 L'IHM CaaS intègre une IHM ‘Docker dashboard’ en tant qu'iFrame. Dans cette version Beta 1, des fonctions de visualisation sont dispobinles. La prochaine version à base d'IHM Docker ‘Portus’ permettra des fonctions de read/write et la gestion de nameSpaces et repositories.\
 
@@ -261,7 +298,7 @@ Dans la boite de dialogue 'DevOps integration', deux attributs controllent l'usa
 
 Si le paramètre *DockerImageFactory* est configuré à ‘0’, la validation est ignorée… Plus de détails dans l'Annexe2 à la fin du document**.
 
-### Comment utiliser la fonctionnalité d'auto-monitoringavec l'outil Zabbix intégré?
+### Comment utiliser la fonctionnalité d'auto-monitoring avec l'outil Zabbix intégré?
 Le service CaaS intègre une fonction d'auto-monitoring, cf l'onglet ‘service monitoring’.
 
 ![](img/caas_ServiceMonitoring.png)
@@ -271,6 +308,12 @@ Les instances sont classées en deux groupes: Celles de l'infrastructure ‘CaaS
 En cliquant sur le lien ‘Zabbix link’ d'un élément, un onglet complémentaire s'ouvre et affiche les informations de monitoring avec le filtre adhoc: Connectez-vous avec le login ‘admin’ et le password=&lt;**StackAutoGeneratedPassword**&gt;
 
 ![](img/caas_ZabbixDisplay.png)
+
+## About: et les versions incluses?
+La page *About* a été ajoutée afin de tracer les versions incluses dans le produit CaaS:
+
+![](img/caas_about.png)
+
 
 ## Et Watt else?
 Un prochain document détaillera quelques infos complémentaires concernant:

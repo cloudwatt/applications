@@ -104,13 +104,7 @@ By default, the wizard selects the flavor “m1.small”. A variety of other ins
 Please remember that you are providing your KeyPair that will be used in order to postConfigure the future three KVM instances: this will be your way to SSH on those instances for troubleshooting or granting your colleagues on them if required.\
 /!\ **On CloudWatt IaaS please let empty the proxy attributes if you use the Internet exposure.**
 
-**In Beta 1.1 version** you are now requested to select an existing *private network ID* and the related existing *private subnet ID*. As long as the '1-click' CloudWatt framework is not updated, please declare the technical UUIDs instead of the easy screenshot:
-
-![](img/caas_internalnet_subnet.png)
-
-
-**Experimental feature Beta 1.1: external registry**
-
+**Experimental feature: external registry**
 ![](img/caas_experimentalExtRegistry.png)
 
 CaaS infrastructure contains by default an *internal* PrivateRegistry. Some customers required the setting up to a second registry, externe from this CaaS infrastructure.
