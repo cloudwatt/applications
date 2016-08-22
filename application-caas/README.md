@@ -74,7 +74,7 @@ Les éléments habituels:
 -   la compréhension de l'usage de l'AppStore de CW: le **'one-click deploy’**
 
 ### Taille des instances
-Le bundle ‘One-Click’ sous forme de stack Heat. Par défaut les trois instances qui seront créées sont paramétrées pour utiliser le  'Flavour' ‘m1.small’. Nous vous recommendons de ne pas minorer cette 'Flavour'.
+Le bundle ‘One-Click’ sous forme de stack Heat. Par défaut les trois instances qui seront créées sont paramétrées pour utiliser le  'Flavor' ‘n1.cw.standard-4’. Nous vous recommendons de ne pas minorer cette 'Flavor'.
 Pour chacune de ces 3 instances, un volume Cinder y sera attaché afin de stocker les données persistantes.
 
 
@@ -90,15 +90,15 @@ Une fois que vous aurez consulté ou cloné le repository GitHub de CloudWatt
 ## Procédure d'installation CaaS en mode '1-click':
 ==>Regardez la vidéo [*one-click-caas-deployment*](https://www.dailymotion.com/video/x4cinqb_one-click-caas-deployment_tech) !
 
-CaaS s'installe en mode '1-click' via la page web [*Apps page*](https://www.cloudwatt.com/fr/applications/application-caas). Choisissez 'CaaS', pressez DEPLOY. Après la saisie de vos login / password pour vous authentifier, le wizard apparaît:
+CaaS s'installe en mode '1-click' via la page web [*Apps page*](https://www.cloudwatt.com/fr/applications/caas.html). Choisissez 'CaaS', pressez DEPLOY. Après la saisie de vos login / password pour vous authentifier, le wizard apparaît:
 
 ![](img/caas_1clickDeploySetup.png)
 
-Par défaut le wizard sélection la flavor “m1.small” pour les instances à instancier. D'autres tailles d'instances sont disponibles,en lien avec leur facturation (voir [*Pricing page*](https://www.cloudwatt.com/en/pricing.html) ).
+Par défaut le wizard sélection la flavor “n1.cw.standard-4” pour les instances à instancier. D'autres tailles d'instances sont disponibles,en lien avec leur facturation (voir [*Pricing page*](https://www.cloudwatt.com/en/pricing.html) ).
 N'oubliez pas de pointer sur votre KeyPair qui sera utilisée lors de la postConfiguration de CaaS pour définir votre connexion SSh (et vous permettre d'inviter vos collègues sur ces VMs si nécessaire)..\
 /!\ **Chez CloudWatt laissez les champs 'Proxy' vierges si vous utilisez l'exposition du service sur Internet**
 
-**En version Beta 1.1** vous devez maintenant renseigner les champs *private network ID* et  *private subnet ID*. Tant que le framework '1-click' de CloudWatt framework n'est pas mis à jour, merci de renseigner les UUIDs techniques au lieu de la copie d'ecran suivante:
+**En version Beta 1.1** vous devez maintenant renseigner les champs *private network ID* et  *private subnet ID*. Tant que le framework '1-click' de CloudWatt framework n'est pas mis à jour, merci de renseigner les UUIDs techniques au lieu de la copie d'écran suivante:
 
 ![](img/caas_internalnet_subnet.png)
 
