@@ -231,7 +231,7 @@ sudo systemctl stop couchbase.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [CouchBase Documentatuion](http://www.couchbase.com/)
+* [CouchBase Documentation](http://www.couchbase.com/)
 
 -----
 Have fun. Hack in peace.
