@@ -234,7 +234,7 @@ sudo systemctl stop mongodb.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [Mongodb Documentatuion](https://www.mongodb.com/)
+* [Mongodb Documentation](https://www.mongodb.com/)
 
 -----
 Have fun. Hack in peace.
