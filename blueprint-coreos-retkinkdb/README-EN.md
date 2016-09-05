@@ -155,7 +155,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
 
 ### A one-click sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your RethinkDB!
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... You have your RethinkDB!
 
 
 
