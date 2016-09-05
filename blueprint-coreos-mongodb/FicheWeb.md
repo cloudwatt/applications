@@ -17,7 +17,7 @@ composants:
    version: "Docker 1.10.3"
  - logo: ""
    version: "MongoDb 3.2"
-solutions: Ce blueprint Drone est particulièrement utile pour les solutions Cloudwatt suivantes :
+solutions: "Ce blueprint Drone est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
