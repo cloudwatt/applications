@@ -228,7 +228,7 @@ sudo systemctl stop rethinkdb.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [RethinkDb Documentatuion](https://www.rethinkdb.com/)
+* [RethinkDb Documentation](https://www.rethinkdb.com/)
 
 -----
 
