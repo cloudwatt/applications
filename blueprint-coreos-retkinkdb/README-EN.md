@@ -31,7 +31,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `blueprint-coreos-rethinkdb/` repository:
+   Once you have cloned the github, you will find in the `blueprint-coreos-retkinkdb/` repository:
 
    * `blueprint-coreos-rethinkdb.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
