@@ -1,8 +1,8 @@
 ---
 layout: applications-fiche
 pictonic: true
-title: "retkinkdb"
-url: retkinkdb.html
+title: "rethinkdb"
+url: rethinkdb.html
 date: 2016-09-09 00:00:00
 date-creation: "9 septembre 2016"
 date-maj: "9 septembre 2016"
@@ -17,7 +17,7 @@ composants:
    version: "Docker 1.10.3"
  - logo: ""
    version: "RethinkDb 2.3.4"
-solutions: "Ce blueprint RetkinkDb est particulièrement utile pour les solutions Cloudwatt suivantes :"
+solutions: "Ce blueprint RethinkDb est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
  - text: "Sites et applications à fort trafic"
@@ -26,7 +26,7 @@ solutions-list:
  - text: "Big data"
 prix: "Gratuit pour le blueprint + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-trente-quatre-blueprint-retkinkdb.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-trente-quatre-blueprint-rethinkdb.html
 install-url:
 comingsoon: false
 type: blueprint
