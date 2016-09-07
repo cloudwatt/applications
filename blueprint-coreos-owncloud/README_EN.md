@@ -183,6 +183,61 @@ You can now download the android application and sync your data with your ownclo
 
 ![welcome](img/welcome.png)
 
+### Swift Integration
+
+Swift is an object HA storage and distributed. Swift used to store a lot of data efficiently, safely, and cheaply at Cloudwatt.
+Owncloud gives you the opportunity to create a folder directly connected to our infrastructure via OpenStack Swift component.
+
+Here's how:
+
+* First you must activate the application:
+    * Click the `fichier` button at the top left of the screen,
+    * Click on `+` button,
+    * Go into the menu `Desactivée`
+    * Then activate the application `External Storage Support`
+
+![addappli](img/addappli.png)
+![activappli](img/activappli.png)
+
+* Go now in the `Administration` part of your Owncloud via the menu at the top right of your screen,
+
+![admin](img/admin.png)
+
+* Click now on the menu `Storage Externe`
+
+![stoext](img/stoext.png)
+
+* Naming your folder here `Owncloud` , and then set the storage type` OpenStack Object Storage`
+
+![swiftconf](img/swiftconf.png)
+
+* Fill in the fields request with the elements of your Cloudwatt tenant
+     * Service Name: swift
+     * Region: Openstack region of the container, `FR1`
+     * Bucket: container name
+     * Username: Cloudwatt user
+     * Password: password OpenStack
+     * Tenant name: Name of your Cloudwatt tenant
+     * Identity Endpoint URL: https://identity.fr1.cloudwatt.com/v2.0
+     * Maximum time: timeout http request, not needed
+
+* Once all the input correctly a green check information must appear
+
+![idok](img/idok.png)
+
+* You can now synchronize your files in a container swift hosted by Cloudwatt,
+
+![addswift](img/addswift.png)
+![swiftcw](img/swiftcw.png)
+
+
+
+
+
+
+
+
+
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
