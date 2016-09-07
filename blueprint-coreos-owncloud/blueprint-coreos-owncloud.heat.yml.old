@@ -1,3 +1,8 @@
+#
+##
+### Written by the CAT team
+##
+#
 heat_template_version: 2013-05-23
 
 
@@ -29,14 +34,26 @@ parameters:
     type: string
     hidden: true
 
-  volume_attachment:
-    description: Attacher un volume cinder de 20GO ?
-    default: Swift
+
+  volume_size:
+    default: 5
+    label: Backup Volume Size
+    description: Size of Volume for owncloud Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 5, max: 10000 }
+        description: Volume must be at least 10 gigabytes
+
+  volume_type:
+    default: standard
+    label: Backup Volume Type
+    description: Performance flavor of the linked Volume for owncloud Storage
     type: string
     constraints:
       - allowed_values:
-          - Swift
-          - Cinder
+          - standard
+          - performant
+
 
 resources:
   network:
@@ -53,6 +70,20 @@ resources:
       cidr: 10.0.1.0/24
       allocation_pools:
         - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
 
   security_group:
     type: OS::Neutron::SecurityGroup
@@ -120,6 +151,7 @@ resources:
                 content: |
                     MYSQL_ROOT_PASSWORD=$sqlpass
                     MYSQL_DATABASE=owncloud
+
             coreos:
               etcd2:
                 name: "%H"
@@ -199,31 +231,30 @@ resources:
                     Restart=Always
                     ExecStartPre=-/usr/bin/docker kill owncloud
                     ExecStartPre=-/usr/bin/docker rm owncloud
-                    ExecStartPre=/usr/bin/docker pull owncloud:latest
+                    ExecStartPre=/usr/bin/docker pull owncloud:8.1
                     ExecStart=/usr/bin/docker run \
                              --volume /owncloud/apps:/var/www/html/apps \
                              --volume /owncloud/config:/var/www/html/config \
                              --volume /owncloud/data:/var/www/html/data \
                              --publish=80:80 \
                              --link=mysql \
-                             --name=owncloud owncloud:latest
+                             --name=owncloud owncloud:8.1
 
                     [Install]
                     WantedBy=multi-user.target
 
-  cinder:
-    type: OS::Heat::ResourceGroup
+  cinder_volume:
+    type: OS::Cinder::Volume
     properties:
-      str_replace:
-        template: |
-          {"Fn::Replace": [{'1': 'Swift', '0': 'Cinder'}]}
-        params:
-        $cider: {get_param: volume_attachment}  
-      count: { get_param: volume_attachment } 
-      resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
-        properties:
-          server_id: { get_resource: server }  
+      size: { get_param: volume_size }
+      volume_type: {get_param: volume_type }
+
+  volume_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: cinder_volume }
+      instance_uuid: { get_resource: server }
+      mountpoint: /dev/vdb
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
