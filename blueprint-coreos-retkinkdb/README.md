@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 34 : RetkinkDb #
+# 5 Minutes Stacks, épisode 34 : RethinkDb #
 
 ## Episode 34 : RethinkDb
 
@@ -34,7 +34,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-rethinkdb/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-retkinkdb/`
 
 * `blueprint-coreos-rethinkdb.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
