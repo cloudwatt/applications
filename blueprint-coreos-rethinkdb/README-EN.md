@@ -31,7 +31,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `blueprint-coreos-rethinkdb/` repository:
+   Once you have cloned the github, you will find in the `blueprint-coreos-retkinkdb/` repository:
 
    * `blueprint-coreos-rethinkdb.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
@@ -155,7 +155,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
 
 ### A one-click sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your RethinkDB!
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... You have your RethinkDB!
 
 
 
@@ -228,7 +228,7 @@ sudo systemctl stop rethinkdb.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [RethinkDb Documentatuion](https://www.rethinkdb.com/)
+* [RethinkDb Documentation](https://www.rethinkdb.com/)
 
 -----
 

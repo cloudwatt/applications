@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 31 episode : CouchBase #
+# 5 Minutes Stacks, 35 episode : CouchBase #
 
-## Episode 31 : CouchBase
+## Episode 35 : CouchBase
 
 ![couchebase](img/couchbase-logo.gif)
 
@@ -158,7 +158,7 @@ If you've reached this point, Couchbase is running!
 
 ### A one-click sounds really nice...
 
-... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Couchbase!
+... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... You have your Couchbase!
 
 
 ### Enjoy
@@ -230,7 +230,7 @@ sudo systemctl stop couchbase.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [CouchBase Documentatuion](http://www.couchbase.com/)
+* [CouchBase Documentation](http://www.couchbase.com/)
 
 -----
 

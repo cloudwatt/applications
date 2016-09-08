@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 34 : RetkinkDb #
+# 5 Minutes Stacks, épisode 34 : RethinkDb #
 
 ## Episode 34 : RethinkDb
 
@@ -34,7 +34,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-rethinkdb/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-retkinkdb/`
 
 * `blueprint-coreos-rethinkdb.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
@@ -156,7 +156,7 @@ parameters:
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
- Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
+ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... Coder maintenant !
 
 
 
@@ -231,7 +231,7 @@ sudo systemctl stop rethinkdb.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [RethinkDb Documentatuion](https://www.rethinkdb.com/)
+* [RethinkDb Documentation](https://www.rethinkdb.com/)
 
 -----
 Have fun. Hack in peace.

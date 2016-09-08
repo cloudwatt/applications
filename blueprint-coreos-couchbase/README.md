@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 31 : CouchBase #
+# 5 Minutes Stacks, épisode 35 : CouchBase #
 
-## Episode 31 : CouchBase
+## Episode 35 : CouchBase
 
 ![couchebase](img/couchbase-logo.gif)
 
@@ -157,7 +157,7 @@ Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... Coder maintenant !
 
 
 ### Enjoy
@@ -231,7 +231,7 @@ sudo systemctl stop couchbase.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [CouchBase Documentatuion](http://www.couchbase.com/)
+* [CouchBase Documentation](http://www.couchbase.com/)
 
 -----
 Have fun. Hack in peace.
