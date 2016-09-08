@@ -31,13 +31,12 @@ parameters:
 
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
-    default: Swift
+    default: 0
     type: string
     constraints:
       - allowed_values:
-          - Swift
-          - Cinder
-
+          - 0
+          - 1
 resources:
   network:
     type: OS::Neutron::Net
@@ -64,7 +63,7 @@ resources:
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-
+  
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -214,11 +213,6 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      str_replace:
-        template: |
-          {"Fn::Replace": [{'1': 'Swift', '0': 'Cinder'}]}
-        params:
-        $cider: {get_param: volume_attachment}  
       count: { get_param: volume_attachment } 
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
