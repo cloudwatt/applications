@@ -191,15 +191,15 @@ Owncloud gives you the opportunity to create a folder directly connected to our 
 Here's how:
 
 * First you must activate the application:
-    * Click the `fichier` button at the top left of the screen,
+    * Click the `Folder` button at the top left of the screen,
     * Click on `+` button,
-    * Go into the menu `Desactivée`
+    * Go into the menu `Disable`
     * Then activate the application `External Storage Support`
 
 ![addappli](img/addappli.png)
 ![activappli](img/activappli.png)
 
-* Go now in the `Administration` part of your Owncloud via the menu at the top right of your screen,
+* Go now in the `Admin` part of your Owncloud via the menu at the top right of your screen,
 
 ![admin](img/admin.png)
 
@@ -221,7 +221,7 @@ Here's how:
      * Identity Endpoint URL: https://identity.fr1.cloudwatt.com/v2.0
      * Maximum time: timeout http request, not needed
 
-* Once all the input correctly a green check information must appear
+* Once all the input correctly a green check must appear
 
 ![idok](img/idok.png)
 

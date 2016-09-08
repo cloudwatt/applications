@@ -39,7 +39,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-owncloud/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-owncloud/`
 
 * `blueprint-coreos-owncloud.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
@@ -65,7 +65,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-owncloud.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte Root de votre base `Mysql`.
+Dans le fichier `blueprint-coreos-owncloud.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `Root` de votre base `Mysql`.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -132,7 +132,8 @@ $ watch heat resource-list Owncloud
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Coreos y deposer le conteneur *Owncloud* rattaché a sa database *Mysql*,
+   * démarrer une instance basée sur Coreos y deposer le conteneur *Owncloud* rattaché à sa database *Mysql*,
+
    * l'exposer sur Internet via une IP flottante.
 
 <a name="console" />
@@ -177,7 +178,7 @@ Côté base de donnée c'est un mysql qui est utilisé ici, remplisser à prése
 
 ![firstco](img/firstco.png)
 
-Un conseil : changer dès la première connexion votre mot de passe admin.
+Un conseil : changez dès la première connexion votre mot de passe admin.
 
 Vous pouvez à présent télécharger l'application owncloud et faire une synchronisation de vos données avec votre owncloud, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
 
@@ -186,7 +187,7 @@ Vous pouvez à présent télécharger l'application owncloud et faire une synchr
 ### Intégration Swift
 
 Swift est un stockage objet HA et distribué. Swift sert à stocker beaucoup de données efficacement, en toute sécurité, et à moindre coût chez Cloudwatt.
-Owncloud vous donne la possibilité de crée un dossier relier directement à notre infrastructure openstack via son composant Swift.
+Owncloud vous donne la possibilité de crée un dossier relier directement à notre infrastructure Openstack via son composant Swift.
 
 Voici comment faire :
 
@@ -222,10 +223,10 @@ Voici comment faire :
     *  Temps maximal : timeout de requête http, non nécessaire
 
 
-* Une fois l'ensemble des informations correctement entrée une pastille verte doit apparaitre
+* Une fois l'ensemble des informations correctement entrée une pastille verte doit apparaitre.
 ![idok](img/idok.png)
 
-* Vous pouvez maintenant synchroniser vos fichiers dans un conteneur swift hebergé par Cloudwatt,
+* Vous pouvez maintenant synchroniser vos fichiers dans un conteneur swift hebergé par Cloudwatt.
 
 ![addswift](img/addswift.png)
 ![swiftcw](img/swiftcw.png)
