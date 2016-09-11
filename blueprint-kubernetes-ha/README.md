@@ -2,11 +2,11 @@
 
 ![Kubernetes](img/kube.png)
 
-Lorsque vous travailler avec beaucoup de conteneurs, il devient vite indispensable de les orchestrer.
+Lorsque vous travaillez avec beaucoup de conteneurs, il devient vite indispensable de les orchestrer.
 
 C'est là que Kubernetes entre en jeu.
 
-Kubernetes est un orchestrateur de conteneur Docker initié par Google grâce à son savoir-faire en la matière.
+Kubernetes est un orchestrateur de conteneur Docker et Rkt initié par Google grâce à son savoir-faire en la matière.
 
 Cette stack va vous permettre de déployer un cluster de production en quelques clicks.
 
@@ -15,7 +15,7 @@ Cette stack va vous permettre de déployer un cluster de production en quelques 
 ### Les versions
   - CoreOS Stable 1010.6
   - Docker 1.10.3
-  - Kubernetes 1.3.4
+  - Kubernetes 1.3.6
 
 ### Les pré-requis pour déployer cette stack
 
@@ -46,7 +46,7 @@ Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-kube
 
 * `blueprint-kubernetes-ha.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
-* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres.
 
 ## Démarrage
 
@@ -72,12 +72,17 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
  ~~~ bash
  $ ./stack-start.sh
  ~~~
+ 
+ Le script va vous poser plusieurs questions, puis, une fois la stack créer vous afficher deux lignes :
 
-Après quelques minutes, vous devriez obtenir un message ressemblant à ceci:
  ~~~ bash
- $ 
+scale_dn_url: ...
+scale_up_url: ...
  ~~~
 
+scale_dn_url est une url que vous pouvez appeler pour diminuer la capacitée de votre cluster
+
+scale_up_url est une url que vous pouvez appeler pour augmenter la capatictée de votre cluster
 
 
 ## C’est bien tout ça, mais...
@@ -89,107 +94,13 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
- Une fois tout ceci fait, vous pouvez récupérer la description du votre stack à partir de cette commande :
 
- ~~~ bash
- $ heat stack-show kube-ha
- +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
-| Property              | Value                                                                                                                                |
-+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
-| capabilities          | []                                                                                                                                   |
-| creation_time         | 2016-06-09T10:53:33Z                                                                                                                 |
-| description           | Bleuprint CoreOS Drone                                                                                                                  |
-| disable_rollback      | True                                                                                                                                 |
-| id                    | a754ce3f-870b-47f9-9863-9ddbe41a0267                                                                                                 |
-| links                 | https://orchestration.fr1.cloudwatt.com/v1/7da34701e2fe488683d8a8382ee6f454/stacks/drone/a754ce3f-870b-47f9-9863-9ddbe41a0267 (self) |
-| notification_topics   | []                                                                                                                                   |
-| outputs               | [                                                                                                                                    |
-|                       |   {                                                                                                                                  |
-|                       |     "output_value": "http://flottingIp",                                                                                           |
-|                       |     "description": "Drone URL",                                                                                                      |
-|                       |     "output_key": "floating_ip_url"                                                                                                  |
-|                       |   }                                                                                                                                  |
-|                       | ]                                                                                                                                    |
-| parameters            | {                                                                                                                                    |
-|                       |   "OS::project_id": "7da34701e2fe488683d8a8382ee6f454",                                                                              |
-|                       |   "OS::stack_id": "a754ce3f-870b-47f9-9863-9ddbe41a0267",                                                                            |
-|                       |   "OS::stack_name": "drone",                                                                                                         |
-|                       |   "keypair_name": "testkey",                                                                                                         |
-|                       |   "drone_driver": "github",                                                                                                          |
-|                       |   "drone_client": "********************",                                                                                            |
-|                       |   "flavor_name": "n1.cw.standard-1",                                                                                                 |
-|                       |   "drone_secret": "****************************************",                                                                        |
-|                       |   "drone_url": "https://github.com"                                                                                                  |
-|                       | }                                                                                                                                    |
-| parent                | None                                                                                                                                 |
-| stack_name            | drone                                                                                                                                |
-| stack_owner           | youremail@cloudwatt.com                                                                                                 |
-| stack_status          | CREATE_COMPLETE                                                                                                                      |
-| stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
-| stack_user_project_id | eb79ff46f2e44090ada252dc32f62b4a                                                                                                     |
-| template_description  | Blueprint CoreOS Drone                                                                                                                  |
-| timeout_mins          | 60                                                                                                                                   |
-| updated_time          | None                                                                                                                                 |
-+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
-
- ~~~
-
-
-Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de Drone via un navigateur web à partir de cet url http://flottingIp.
-
-![page1](./img/drone1.png)
-
-Puis s'authentifier sur le github, bitbucket ou gitlab.
-
-![page2](./img/drone2.png)
-
-Après vous arrivez à cette page.
-
-![page3](./img/drone3.png)
-
-Vous choisissez le projet drone et l'activer.
-
-![page4](./img/drone4.png)
-
-Puis committer une chose dans ce projet et vous allez voir le résultat.
-
-![page5](./img/drone5.png)
-
-Après le commit.
-
-![page6](./img/drone6.png)
-
-Pour créer OAuth voir les liens suivants:
-
-* [Pour github](http://readme.drone.io/setup/remotes/github/)
-* [Pour gitlab](http://readme.drone.io/setup/remotes/gitlab/)
-* [Pour bitbucket](http://readme.drone.io/setup/remotes/bitbucket/)
-
-##### systemd - système d'initialisation de service drone
-
-Pour démarrer le service :
-~~~ bash
-sudo systemctl start drone.service
-~~~
-
-Il est possible de consulter les logs en sortie du service lancé grâce à la commande suivante :
-~~~ bash
-journalctl -f -u drone.service
-~~~
-
-Le service se stop de la manière suivante :
-~~~ bash
-sudo systemctl stop drone.service
-~~~
-
-#### Fichiers configurations
-`/home/core/drone.env`: fichier qui contient les variables d'environnements.
 
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
 ### Autres sources pouvant vous intéresser
 
@@ -198,4 +109,4 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * [Kubernetes Documentation](https://kubernetes.io/)
 
 -----
-Have fun. Hack in peace.
+Have fun. Hack in peace.ccccccfngetrtbhbtueiiugnrvvitvgktnfehiuukreb
