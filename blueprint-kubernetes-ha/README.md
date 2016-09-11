@@ -85,15 +85,71 @@ scale_dn_url est une url que vous pouvez appeler pour diminuer la capacitée de 
 scale_up_url est une url que vous pouvez appeler pour augmenter la capatictée de votre cluster
 
 
+### Et ensuite
+
+Chaque noeud possède une ip publique et privée.
+Connectez vous sur l'une d'elle en ssh et tappez cette comande pour identifier le rôle de chaque machine :
+
+~~~bash
+$ fleetctl list-units
+~~~
+
+Cette commande devrais vous afficher ceci :
+
+~~~
+UNIT                             MACHINE                      ACTIVE SUB
+pidalio-master@fr1-1.service   	5b369d72.../84.39.40.167     active running
+pidalio-node@fr1-1.service     	d940c6cd.../84.39.48.245     active running
+pidalio-node@fr1-2.service     	51487df4.../84.39.49.15      active running
+pidalio.service			          1337b168.../84.39.43.230     active running
+~~~
+
+Pidalio est un utilitaire permettant de bootstrappé facilement un cluster Kubernetes.
+
+Il est composé de trois parties :
+
+	- pidalio : Il met a disposition l'ensemble des certificats et resources nécessaires au fonctionnement du cluster.
+	- pidalio-node : correspond a un noeud Kubernetes
+	- pidalio-master : corresponse a un master Kubernetes
+
+
+Nous allons donc nous connecter en ssh au noeud 84.39.40.167 et ensuite utiliser le client Kubernetes pour lancer, par exemple, un serveur nginx.
+
+~~~bash
+kubectl run --image=nginx --port=80 nginx
+~~~
+
+Ensuite nous allons rendre disponible ce serveur sur internet
+
+~~~bash
+kubectl expose deployment nginx --type=NodePort
+kubectl describe service nginx
+~~~
+
+Cette dernière commande va vous afficher ceci :
+
+~~~bash
+Name:  					nginx
+Namespace:     			default
+Labels:					run=nginx
+Selector:      			run=nginx
+Type:  					NodePort
+IP:    					10.18.203.177
+Port:  					<unset>	80/TCP
+NodePort:      			<unset>	24466/TCP
+Endpoints:     			10.40.0.2:80
+Session Affinity:      	None
+No events.
+~~~
+
+Pour accéder à nginx, vous pouvez vous rendre sur n'importe quel ip publique de votre cluster sur le port 24466
+
+
 ## C’est bien tout ça, mais...
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Et oui, c'est aussi simple que cela de lancer un cluster Kubernetes hautement disponible !
-
-
-## Enjoy
-
 
 
 ## So watt ?
