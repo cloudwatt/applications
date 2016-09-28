@@ -10,32 +10,11 @@ parameters:
   floating_network:
     label: floating_network
     type: string
-  mastercount:
-    label: mastercount
-    type: number
-  nodecount:
-    label: nodecount
-    type: number
-  subnet:
-    label: subnet
-    type: string
-  os_username:
-    label: os_username
-    type: string
-  os_password:
-    label: os_password
-    type: string
-  os_tenant:
-    label: os_tenant
-    type: string
-  os_tenant_id:
-    label: os_tenant_id
-    type: string
-  os_auth:
-    label: os_auth
-    type: string
   os_region:
     label: os_region
+    type: string
+  ceph:
+    label: ceph
     type: string
   network:
     label: network
@@ -79,15 +58,8 @@ resources:
             $private_ipv4$: { get_attr: [ port, fixed_ips, 0, ip_address ] }
             $public_ipv4$: { get_attr: [ floating_ip, floating_ip_address] }
             $domain$: { get_param: domain }
-            $os_username$: { get_param: os_username}
-            $os_password$: { get_param: os_password}
-            $os_tenant$: { get_param: os_tenant }
-            $os_auth$: { get_param: os_auth }
             $os_region$: { get_param: os_region }
-            $os_project_id$: { get_param: 'OS::project_id' }
-            $node_count$: { get_param: nodecount }
-            $master_count$: { get_param: mastercount }
-            $subnet$: { get_param: subnet }
+            $ceph$: { get_param: ceph }
             $token$: { get_param: token }
             $peer$: { get_param: peer }
           template: |
@@ -100,6 +72,7 @@ resources:
                   #!/bin/bash
                   echo WEAVE_PEERS=\"$peer$\" > /etc/weave.env
                   echo WEAVEPROXY_ARGS=\"--rewrite-inspect\" >> /etc/weave.env
+                  echo WEAVE_PASSWORD=\"$token$\" >> /etc/weave.env
               - path: /opt/pidalio-init.sh
                 permissions: 0700
                 owner: "root:root"
@@ -107,25 +80,19 @@ resources:
                   #!/bin/bash
                   NODE_NAME=$(hostname |cut -d '.' -f 1)
                   NODE_FQDN=$(hostname)
-                  NODE_ID=$(curl -s http://169.254.169.254/openstack/latest/meta_data.json | jq -r .uuid)
                   cat <<EOF > /etc/pidalio.env
                   NODE_NAME=$NODE_NAME
                   NODE_FQDN=$NODE_FQDN
-                  NODE_ID=$NODE_ID
                   NODE_IP=$private_ipv4$
                   NODE_PUBLIC_IP=$public_ipv4$
+                  NODE_TYPE=$os_region$
+                  CEPH=$ceph$
+                  ETCD_NODES=3
                   PEER=$peer$
                   PIDALIO_TOKEN=$token$
                   DOMAIN=$domain$
-                  OS_AUTH_URL=$os_auth$
-                  OS_PASSWORD=$os_password$
-                  OS_USERNAME=$os_username$
-                  OS_TENANT_NAME=$os_tenant$
-                  OS_PROJECT_ID=$os_project_id$
-                  OS_REGION=$os_region$
-                  OS_SUBNET=$subnet$
+                  PATH=/opt/bin/:/usr/bin/:/usr/sbin:$PATH
                   EOF
-
                   if [[ -d /opt/pidalio ]]
                   then
                     echo "Pidalio already checkout"
@@ -138,84 +105,26 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  set -xe
-                  /usr/bin/fleetctl start /opt/pidalio.service
-                  for i in $(seq 1 $master_count$)
-                  do
-                    /usr/bin/fleetctl start /opt/pidalio-master@$os_region$-$i.service
-                  done
-                  while true
-                  do
-                    nb_machines=$(fleetctl list-machines | grep region=$os_region$ | wc -l)
-                    for i in $(seq 1 $(expr $nb_machines - $master_count$))
+                  while true; do
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/pidalio.service
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/master/pidalio-apiserver.service
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/master/pidalio-controller.service
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/master/pidalio-scheduler.service
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/pidalio-proxy.service
+                    /usr/bin/fleetctl start /opt/pidalio/kube/units/pidalio-node.service
+                    for peer in $(/opt/bin/weave report | /usr/bin/jq -r '.IPAM.Entries | unique_by(.Peer) | .[] | select(.IsKnownPeer==false) | .Peer')
                     do
-                      /usr/bin/fleetctl start /opt/pidalio-node@$os_region$-$i.service
+                      /opt/bin/weave rmpeer $peer
                     done
                     sleep 60
                   done
-              - path: /opt/pidalio.service
-                permissions: 0700
-                owner: "root:root"
-                content: |
-                  [Unit]
-                  Description=Pidalio Service
-                  After=weave-network.target
-                  After=etcd2.service
-                  Requires=weave-network.target
-                  Requires=etcd2.service
-                  [Service]
-                  Restart=always
-                  RestartSec=10
-                  Environment=DOCKER_HOST=unix:///var/run/weave/weave.sock
-                  ExecStartPre=/usr/bin/docker pull cedbossneo/pidalio
-                  ExecStartPre=/usr/bin/etcdctl cluster-health
-                  ExecStart=/usr/bin/docker run --name=pidalio \
-                    -e TOKEN=$token$ \
-                    -e ETCD_URI=http://$private_ipv4$:2379 \
-                    cedbossneo/pidalio
-                  ExecStop=/usr/bin/docker rm -f pidalio
-              - path: /opt/pidalio-master@.service
-                permissions: 0700
-                owner: "root:root"
-                content: |
-                  [Unit]
-                  Description=Pidalio Master Service
-                  After=weave-network.target etcd2.service
-                  Requires=weave-network.target etcd2.service
-                  [Service]
-                  Restart=always
-                  RestartSec=10
-                  EnvironmentFile=/etc/pidalio.env
-                  Environment=MASTER=true
-                  ExecStart=/opt/pidalio/start.sh
-                  ExecStop=/opt/pidalio/stop.sh
-                  [X-Fleet]
-                  MachineMetadata=region=$os_region$
-                  Conflicts=pidalio-master@*.service
-                  Conflicts=pidalio-node@*.service
-              - path: /opt/pidalio-node@.service
-                permissions: 0700
-                owner: "root:root"
-                content: |
-                  [Unit]
-                  Description=Pidalio Node Service
-                  After=weave-network.target etcd2.service
-                  Requires=weave-network.target etcd2.service
-                  [Service]
-                  Restart=always
-                  RestartSec=10
-                  EnvironmentFile=/etc/pidalio.env
-                  Environment=MASTER=false
-                  ExecStart=/opt/pidalio/start.sh
-                  ExecStop=/opt/pidalio/stop.sh
-                  [X-Fleet]
-                  MachineMetadata=region=$os_region$
-                  Conflicts=pidalio-master@*.service
-                  Conflicts=pidalio-node@*.service
             coreos:
+              update:
+                reboot-strategy: "off"
               fleet:
                   public-ip: "$public_ipv4$"
                   metadata: "region=$os_region$"
+                  etcd_servers: "http://localhost:2379"
               units:
                 - name: etcd2.service
                   command: start
@@ -281,7 +190,9 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     TimeoutStartSec=5m
-                    ExecStartPre=/bin/mkdir -p /opt/bin/
+                    ExecStartPre=/bin/mkdir -p /opt/bin/ /opt/cni/bin /etc/cni/net.d
+                    ExecStartPre=-/usr/bin/wget -O /tmp/cni.tgz https://github.com/containernetworking/cni/releases/download/v0.3.0/cni-v0.3.0.tgz
+                    ExecStartPre=-/usr/bin/tar -xvzf /tmp/cni.tgz -C /opt/cni/bin/
                     ExecStartPre=/usr/bin/curl \
                       --silent \
                       --location \
@@ -292,23 +203,6 @@ resources:
                     [Install]
                     WantedBy=weave-network.target
                     WantedBy=weave.service
-                - name: weaveproxy.service
-                  enable: true
-                  content: |
-                    [Unit]
-                    After=install-weave.service
-                    After=docker.service
-                    Description=Weave proxy for Docker API
-                    Requires=docker.service
-                    Requires=install-weave.service
-                    [Service]
-                    EnvironmentFile=-/etc/weave.env
-                    ExecStartPre=/opt/bin/weave launch-proxy $WEAVEPROXY_ARGS
-                    ExecStart=/usr/bin/docker attach weaveproxy
-                    Restart=on-failure
-                    ExecStop=/opt/bin/weave stop-proxy
-                    [Install]
-                    WantedBy=weave-network.target
                 - name: weave.service
                   enable: true
                   content: |
@@ -326,6 +220,44 @@ resources:
                     ExecStart=/usr/bin/docker attach weave
                     Restart=on-failure
                     ExecStop=/opt/bin/weave stop-router
+                    [Install]
+                    WantedBy=weave-network.target
+                - name: weaveproxy.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=install-weave.service
+                    After=docker.service
+                    Description=Weave Network Proxy
+                    Documentation=http://weave.works/docs
+                    Requires=docker.service
+                    Requires=install-weave.service
+                    [Service]
+                    TimeoutStartSec=5m
+                    EnvironmentFile=-/etc/weave.env
+                    ExecStartPre=/opt/bin/weave launch-proxy $WEAVEPROXY_ARGS
+                    ExecStart=/usr/bin/docker attach weaveproxy
+                    Restart=on-failure
+                    ExecStop=/opt/bin/weave stop-proxy
+                    [Install]
+                    WantedBy=weave-network.target
+                - name: weaveplugin.service
+                  enable: true
+                  content: |
+                    [Unit]
+                    After=install-weave.service
+                    After=docker.service
+                    Description=Weave Network Plugin
+                    Documentation=http://weave.works/docs
+                    Requires=docker.service
+                    Requires=install-weave.service
+                    [Service]
+                    TimeoutStartSec=5m
+                    EnvironmentFile=-/etc/weave.env
+                    ExecStartPre=/opt/bin/weave launch-plugin
+                    ExecStart=/usr/bin/docker attach weaveplugin
+                    Restart=on-failure
+                    ExecStop=/opt/bin/weave stop-plugin
                     [Install]
                     WantedBy=weave-network.target
                 - name: pidalio-launch.service

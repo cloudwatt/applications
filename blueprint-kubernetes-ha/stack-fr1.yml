@@ -13,27 +13,11 @@ parameters:
     label: SSH Keypair
     type: string
 
-  os_username:
-    description: OpenStack Username
-    label: OpenStack Username
+  ceph:
+    description: Activate Ceph
+    label: Ceph
     type: string
-
-  os_password:
-    description: OpenStack Password
-    label: OpenStack Password
-    type: string
-    hidden: true
-
-  os_tenant:
-    description: OpenStack Tenant Name
-    label: OpenStack Tenant Name
-    type: string
-
-  os_auth:
-    description: OpenStack Auth URL
-    default: https://identity.fr1.cloudwatt.com/v2.0
-    label: OpenStack Auth URL
-    type: string
+    default: false
 
   domain:
     description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
@@ -64,14 +48,6 @@ parameters:
     type: number
     constraints:
       - range: { min: 1, max: 10 }
-
-  master_count:
-    default: 1
-    label: Master Count
-    description: Master counts
-    type: number
-    constraints:
-      - range: { min: 1, max: 3 }
 
   token:
     default: averylongpassphraseatleast16chars
@@ -135,14 +111,8 @@ resources:
           network: { get_resource: network }
           keypair_name: { get_param: keypair_name }
           flavor_name: { get_param: flavor }
-          nodecount: { get_param: node_count }
-          mastercount: { get_param: master_count }
-          os_username: { get_param: os_username }
-          os_password: { get_param: os_password }
-          os_tenant: { get_param: os_tenant }
-          os_auth: { get_param: os_auth }
           os_region: fr1
-          os_tenant_id: { get_param: 'OS::project_id' }
+          ceph: { get_param: ceph }
           floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
   scaleup_policy:
     type: OS::Heat::ScalingPolicy
@@ -165,5 +135,3 @@ outputs:
     description: >
       his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
     value: {get_attr: [scaledown_policy, alarm_url]}
-  public_ips:
-    value: {get_attr: [nodes, public_ip]}

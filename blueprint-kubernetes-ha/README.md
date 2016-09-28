@@ -97,23 +97,32 @@ $ fleetctl list-units
 Cette commande devrais vous afficher ceci :
 
 ~~~
-UNIT                             MACHINE                      ACTIVE SUB
-pidalio-master@fr1-1.service   	5b369d72.../84.39.40.167     active running
-pidalio-node@fr1-1.service     	d940c6cd.../84.39.48.245     active running
-pidalio-node@fr1-2.service     	51487df4.../84.39.49.15      active running
-pidalio.service			          1337b168.../84.39.43.230     active running
+UNIT                       MACHINE                  ACTIVE SUB
+pidalio-apiserver.service  62bf699b.../84.39.36.87  active running
+pidalio-controller.service b8cc10ee.../84.39.35.207 active running
+pidalio-node.service       4f723b52.../84.39.36.13  active running
+pidalio-node.service       62bf699b.../84.39.36.87  active running
+pidalio-node.service       b8cc10ee.../84.39.35.207 active running
+pidalio-proxy.service      4f723b52.../84.39.36.13  active running
+pidalio-proxy.service      62bf699b.../84.39.36.87  active running
+pidalio-proxy.service      b8cc10ee.../84.39.35.207 active running
+pidalio-scheduler.service  4f723b52.../84.39.36.13  active running
+pidalio.service            4f723b52.../84.39.36.13  active running
 ~~~
 
 Pidalio est un utilitaire permettant de bootstrappé facilement un cluster Kubernetes.
 
-Il est composé de trois parties :
+Il est composé de six parties :
 
 	- pidalio : Il met a disposition l'ensemble des certificats et resources nécessaires au fonctionnement du cluster.
-	- pidalio-node : correspond a un noeud Kubernetes
-	- pidalio-master : corresponse a un master Kubernetes
+	- pidalio-apiserver : correspond a un noeud Kubernetes
+	- pidalio-controller : corresponse a un master Kubernetes
+	- pidalio-scheduler : corresponse a un master Kubernetes
+	- pidalio-proxy : corresponse a un master Kubernetes
+	- pidalio-node : corresponse a un master Kubernetes
 
 
-Nous allons donc nous connecter en ssh au noeud 84.39.40.167 et ensuite utiliser le client Kubernetes pour lancer, par exemple, un serveur nginx.
+Vous pouvez utiliser le client Kubernetes depuis n'importe quel noeud, nous allons donc lancer un serveur nginx dans notre cluster.
 
 ~~~bash
 kubectl run --image=nginx --port=80 nginx
