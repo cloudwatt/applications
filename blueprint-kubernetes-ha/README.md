@@ -170,7 +170,7 @@ Et voila !
 
 ### Un petit schéma ?
 
-![Architecture Réseau](archi.png)
+![Architecture Réseau](img/archi.png)
 
 
 ## C’est bien tout ça, mais...

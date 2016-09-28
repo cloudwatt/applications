@@ -32,6 +32,16 @@ do
   break;
 done
 
+echo "Do you want to deploy Ceph (distributed storage) in your cluster ?"
+select CEPH in yes no
+do
+  case "$CEPH" in
+    yes) CEPH="true" ;;
+    no)  CEPH="false" ;;
+  esac
+  echo "Ceph: $CEPH"
+  break;
+done
 echo "Do you want to create a new cluster or join an existing one ?"
 select MODE in Create Join
 do
@@ -55,9 +65,9 @@ if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN $NAME
+  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN -P ceph=$CEPH $NAME
 else
-  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN -P peer=$PEER $NAME
+  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN -P ceph=$CEPH -P peer=$PEER $NAME
 fi
 
 until heat stack-show $NAME 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
