@@ -106,7 +106,6 @@ resources:
           token: { get_param: token }
           peer: { get_param: peer }
           domain: { get_param: domain }
-          subnet: { get_resource: subnet }
           security_group: { get_resource: security_group }
           network: { get_resource: network }
           keypair_name: { get_param: keypair_name }
