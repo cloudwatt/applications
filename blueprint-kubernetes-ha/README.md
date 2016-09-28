@@ -115,11 +115,11 @@ Pidalio est un utilitaire permettant de bootstrappé facilement un cluster Kuber
 Il est composé de six parties :
 
 	- pidalio : Il met a disposition l'ensemble des certificats et resources nécessaires au fonctionnement du cluster.
-	- pidalio-apiserver : correspond a un noeud Kubernetes
-	- pidalio-controller : corresponse a un master Kubernetes
-	- pidalio-scheduler : corresponse a un master Kubernetes
-	- pidalio-proxy : corresponse a un master Kubernetes
-	- pidalio-node : corresponse a un master Kubernetes
+	- pidalio-apiserver : correspond au composant API Server de Kubernetes, il fait office de point central des différents composants
+	- pidalio-controller : correspond au composant Controller Manager de Kubernetes, il s'occupe de vos Pods
+	- pidalio-scheduler : correspond au composant Scheduler, il s'occupe de répartir les Pods dans votre cluster
+	- pidalio-proxy : correspond au composant Kube Proxy, il prend soin de votre table iptable pour rediriger automatiquement les services Kubernetes vers les bons pods
+	- pidalio-node : correspond au Kubelet, l'agent Kubernetes responsable de chaque Noeud.
 
 
 Vous pouvez utiliser le client Kubernetes depuis n'importe quel noeud, nous allons donc lancer un serveur nginx dans notre cluster.
@@ -157,8 +157,20 @@ Pour accéder à nginx, vous pouvez vous rendre sur n'importe quel ip publique d
 
 Et la haute disponibilitée dans tout ça ?
 
-Avec Pidalio, rien de plus simple, lancez à nouveau le script stack-start.sh mais sur une région différente de la première et choisissez le mode Join.
+Rien de plus simple, lancez à nouveau le script stack-start.sh mais sur une région différente de la première et choisissez le mode Join.
 Une fois la stack créée, les deux clusters vont se rejoindre pour ne former plus qu'un. Simple non ?
+
+### C'est magique, comment ça fonctionne ?
+
+Chaque noeud se connecte de manière sécurisée à un réseau virtuel Weave, de cette façon, tous les conteneurs peuvent discuter les un avec les autres quelque soit leurs localisation.
+
+Une fois interconnecté, Fleet prend le relai pour dispatcher les différents composants Kubernetes à travers le cluster et Pidalio leurs fournit tout ce dont ils ont besoin pour fonctionner correctement.
+
+Et voila !
+
+### Un petit schéma ?
+
+![Architecture Réseau](archi.png)
 
 
 ## C’est bien tout ça, mais...
@@ -181,4 +193,4 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * [Kubernetes Documentation](https://kubernetes.io/)
 
 -----
-Have fun. Hack in peace.ccccccfngetrtbhbtueiiugnrvvitvgktnfehiuukreb
+Have fun. Hack in peace.
