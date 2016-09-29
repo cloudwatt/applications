@@ -19,6 +19,9 @@ parameters:
   monitoring:
     label: monitoring
     type: string
+  subnet:
+    label: subnet
+    type: string
   network:
     label: network
     type: string
@@ -43,6 +46,8 @@ resources:
     type: OS::Neutron::Port
     properties:
       network: { get_param: network }
+      fixed_ips:
+        - subnet: { get_param: subnet }
       security_groups:
         - { get_param: security_group }
 

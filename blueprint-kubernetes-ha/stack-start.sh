@@ -17,16 +17,16 @@ EOF
 fi
 cat <<EOF
 Openstack credentials :
-Username: $OS_USERNAME
+Username: ${OS_USERNAME}
 Password: *************
-Tenant name: $OS_TENANT_NAME
-Authentication url: $OS_AUTH_URL
-Region: $OS_REGION_NAME
+Tenant name: ${OS_TENANT_NAME}
+Authentication url: ${OS_AUTH_URL}
+Region: ${OS_REGION_NAME}
 -----------------------
 EOF
 KEYS=$(nova keypair-list | egrep '\|.*' | tail -n +2 | cut -d' ' -f 2)
 echo "What is your keypair name ?"
-select KEYPAIR in $KEYS
+select KEYPAIR in ${KEYS}
 do
   echo "Key selected: $KEYPAIR"
   break;
@@ -69,32 +69,36 @@ else
 fi
 
 read -p "Enter the secret token (default: $TOKEN): " TOKEN_C
-if [ "${TOKEN_C}" != "" ]; then TOKEN=$TOKEN_C; fi
-if [ "$(echo -n $TOKEN | wc -c | sed 's/ //g')" != "16" ]; then echo "Token must be 16 alphanumeric characters"; exit 1; fi
+if [ "${TOKEN_C}" != "" ]; then TOKEN=${TOKEN_C}; fi
+if [ "$(echo -n ${TOKEN} | wc -c | sed 's/ //g')" != "16" ]; then echo "Token must be 16 alphanumeric characters"; exit 1; fi
+
+NODE_COUNT=3
+read -p "Enter the number of nodes (default: $NODE_COUNT): " NODE_COUNT_C
+if [ "${NODE_COUNT_C}" != "" ]; then NODE_COUNT=${NODE_COUNT_C}; fi
 
 read -p "How do you want to name this stack : " NAME
 if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN -P ceph=$CEPH $NAME
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} ${NAME}
 else
-  heat stack-create -f stack-$OS_REGION_NAME.yml -P keypair_name=$KEYPAIR -P token=$TOKEN -P ceph=$CEPH -P peer=$PEER $NAME
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P peer=${PEER} ${NAME}
 fi
 
-until heat stack-show $NAME 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
+until heat stack-show ${NAME} 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
 do
   echo "Waiting for stack to be ready..."
   sleep 10
 done
 
-if heat stack-show $NAME 2> /dev/null | grep CREATE_FAILED
+if heat stack-show ${NAME} 2> /dev/null | grep CREATE_FAILED
 then
   echo "Error while creating stack"
   exit 1
 fi
 
-for output in $(heat output-list $NAME 2> /dev/null | egrep '\|.*' | tail -n +2 | cut -d' ' -f 2)
+for output in $(heat output-list ${NAME} 2> /dev/null | egrep '\|.*' | tail -n +2 | cut -d' ' -f 2)
 do
-  echo "$output: $(heat output-show $NAME $output 2> /dev/null)"
+  echo "$output: $(heat output-show ${NAME} ${output} 2> /dev/null)"
 done
