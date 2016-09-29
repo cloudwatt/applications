@@ -36,8 +36,8 @@ echo "Do you want to deploy Ceph (distributed storage) in your cluster ?"
 select CEPH in yes no
 do
   case "$CEPH" in
-    yes) CEPH="true" ;;
-    no)  CEPH="false" ;;
+    yes) CEPH="1" ;;
+    no)  CEPH="0" ;;
   esac
   echo "Ceph: $CEPH"
   break;
@@ -47,8 +47,8 @@ echo "Do you want to deploy Prometheus (monitoring) in your cluster ?"
 select MONITORING in yes no
 do
   case "$MONITORING" in
-    yes) MONITORING="true" ;;
-    no)  MONITORING="false" ;;
+    yes) MONITORING="1" ;;
+    no)  MONITORING="0" ;;
   esac
   echo "Monitoring: $MONITORING"
   break;

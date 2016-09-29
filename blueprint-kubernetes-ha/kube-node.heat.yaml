@@ -15,10 +15,10 @@ parameters:
     type: string
   ceph:
     label: ceph
-    type: string
+    type: boolean
   monitoring:
     label: monitoring
-    type: string
+    type: boolean
   subnet:
     label: subnet
     type: string
