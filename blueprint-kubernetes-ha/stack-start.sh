@@ -81,9 +81,9 @@ if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P monitoring=${MONITORING} ${NAME}
 else
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P peer=${PEER} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P monitoring=${MONITORING} -P peer=${PEER} ${NAME}
 fi
 
 until heat stack-show ${NAME} 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
