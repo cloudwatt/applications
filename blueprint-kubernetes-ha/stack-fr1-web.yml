@@ -21,7 +21,7 @@ parameters:
 
   monitoring:
     description: Activate Monitoring
-    label: monitoring
+    label: Monitoring
     type: boolean
     default: 0
 

@@ -23,7 +23,7 @@ Ceci devrait être une routine à présent:
  
  * Un accès internet
 
- * Un shell linux
+ * Un shell linux ou avoir accès à la console Cloudwatt
 
  * Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 

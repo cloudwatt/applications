@@ -16,14 +16,14 @@ parameters:
   ceph:
     description: Activate Ceph
     label: Ceph
-    type: string
-    default: false
+    type: boolean
+    default: 0
 
   monitoring:
     description: Activate Monitoring
-    label: monitoring
-    type: string
-    default: false
+    label: Monitoring
+    type: boolean
+    default: 0
 
   domain:
     description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
