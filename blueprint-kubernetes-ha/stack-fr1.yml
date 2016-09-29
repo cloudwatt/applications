@@ -19,6 +19,12 @@ parameters:
     type: string
     default: false
 
+  monitoring:
+    description: Activate Monitoring
+    label: monitoring
+    type: string
+    default: false
+
   domain:
     description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
     default: cluster.local
@@ -112,6 +118,7 @@ resources:
           flavor_name: { get_param: flavor }
           os_region: fr1
           ceph: { get_param: ceph }
+          monitoring: { get_param: monitoring }
           floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
   scaleup_policy:
     type: OS::Heat::ScalingPolicy

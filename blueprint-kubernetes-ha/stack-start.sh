@@ -42,6 +42,18 @@ do
   echo "Ceph: $CEPH"
   break;
 done
+
+echo "Do you want to deploy Prometheus (monitoring) in your cluster ?"
+select MONITORING in yes no
+do
+  case "$MONITORING" in
+    yes) MONITORING="true" ;;
+    no)  MONITORING="false" ;;
+  esac
+  echo "Monitoring: $MONITORING"
+  break;
+done
+
 echo "Do you want to create a new cluster or join an existing one ?"
 select MODE in Create Join
 do

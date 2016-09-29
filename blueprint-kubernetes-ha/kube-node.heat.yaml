@@ -16,6 +16,9 @@ parameters:
   ceph:
     label: ceph
     type: string
+  monitoring:
+    label: monitoring
+    type: string
   network:
     label: network
     type: string
@@ -62,6 +65,7 @@ resources:
             $ceph$: { get_param: ceph }
             $token$: { get_param: token }
             $peer$: { get_param: peer }
+            $monitoring$: { get_param: monitoring }
           template: |
             #cloud-config
             write_files:
@@ -87,6 +91,7 @@ resources:
                   NODE_PUBLIC_IP=$public_ipv4$
                   NODE_TYPE=$os_region$
                   CEPH=$ceph$
+                  MONITORING=$monitoring$
                   ETCD_NODES=3
                   PEER=$peer$
                   PIDALIO_TOKEN=$token$
