@@ -176,8 +176,7 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-* Vous avez accès à l'interface web en http via l'adresse indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
-
+* Il ne vous reste plus qu'à copier vos fichiers dans le dossier /lamp/data et ils seront accessibles en http via l'adresse indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
 
 
 ----

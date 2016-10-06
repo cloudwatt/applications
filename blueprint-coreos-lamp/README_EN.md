@@ -173,7 +173,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You have access to the web interface via the address specified in your output stack in horizon console.
+* You just have to copy your files in /lamp/data and they will be available via the address specified in your output stack in horizon console.
 
 
 ----
