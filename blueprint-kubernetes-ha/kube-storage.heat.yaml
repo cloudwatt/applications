@@ -131,7 +131,7 @@ resources:
                   NODE_IP=$private_ipv4$
                   NODE_PUBLIC_IP=$public_ipv4$
                   NODE_TYPE=$os_region$
-                  NODE_STORAGE=false
+                  NODE_STORAGE=true
                   CEPH=$ceph$
                   MONITORING=$monitoring$
                   ETCD_NODES=3
@@ -352,6 +352,19 @@ resources:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network_id: { get_param: floating_network }
+
+  cinder_volume:
+    type: OS::Cinder::Volume
+    properties:
+      size: 200
+      volume_type: standard
+
+  volume_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      volume_id: { get_resource: cinder_volume }
+      instance_uuid: { get_resource: node }
+      mountpoint: /dev/vdb
 
 outputs:
   public_ip:

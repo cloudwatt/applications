@@ -32,17 +32,6 @@ do
   break;
 done
 
-echo "Do you want to deploy Ceph (distributed storage) in your cluster ?"
-select CEPH in yes no
-do
-  case "$CEPH" in
-    yes) CEPH="1" ;;
-    no)  CEPH="0" ;;
-  esac
-  echo "Ceph: $CEPH"
-  break;
-done
-
 echo "Do you want to deploy Prometheus (monitoring) in your cluster ?"
 select MONITORING in yes no
 do
@@ -76,14 +65,18 @@ NODE_COUNT=3
 read -p "Enter the number of nodes (default: $NODE_COUNT): " NODE_COUNT_C
 if [ "${NODE_COUNT_C}" != "" ]; then NODE_COUNT=${NODE_COUNT_C}; fi
 
+STORAGE_COUNT=1
+read -p "Enter the number of storage nodes (default: $STORAGE_COUNT): " STORAGE_COUNT_C
+if [ "${STORAGE_COUNT_C}" != "" ]; then STORAGE_COUNT=${STORAGE_COUNT_C}; fi
+
 read -p "How do you want to name this stack : " NAME
 if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P monitoring=${MONITORING} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=$OS_USERNAME -P os_password=$OS_PASSWORD -P os_tenant=$OS_TENANT_NAME -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} ${NAME}
 else
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=${CEPH} -P monitoring=${MONITORING} -P peer=${PEER} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=$OS_USERNAME -P os_password=$OS_PASSWORD -P os_tenant=$OS_TENANT_NAME -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} -P peer=${PEER} ${NAME}
 fi
 
 until heat stack-show ${NAME} 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
