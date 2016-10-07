@@ -30,7 +30,7 @@ parameters:
     hidden: true
 
   volume_attachment:
-    description: Attacher un volume cinder de 20GO ?
+    description: Attacher un volume bloc de 20GO ?
     default: 0
     type: string
     constraints:
