@@ -58,7 +58,7 @@ resources:
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-  
+
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -74,6 +74,11 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
+  random_agent_key:
+    type: OS::Heat::RandomString
+    properties:
+      length: 15
+
   server:
     type: OS::Nova::Server
     properties:
@@ -88,6 +93,7 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $random_agent_key: { get_resource: random_agent_key }
           template: |
             #cloud-config
             write_files:
@@ -106,8 +112,8 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /gocd/{etc,lib,log}
-                  sudo chmod -R 777 /gocd
+                  sudo mkdir -p /opt/gocd/{etc,lib,log}
+                  sudo chown -R 999 /opt/gocd
             coreos:
               etcd2:
                 name: "%H"
@@ -144,7 +150,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: gocd.mount
+                - name: opt-gocd.mount
                   command: start
                   content: |
                     [Unit]
@@ -153,10 +159,18 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/gocd/
+                    Where=/opt/gocd/
                     Type=ext4
+                - name: gocd-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=GoCD Mount
+                    After=opt-gocd.mount
+                    Requires=opt-gocd.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
                 - name: gocd.service
                   command: start
@@ -174,10 +188,10 @@ resources:
                     ExecStart=/usr/bin/docker run \
                              --publish=8153:8153 \
                              --publish=8154:8154 \
-                             --volume /gocd/etc:/etc/go \
-                             --volume /gocd/lib:/var/lib/go-server \
-                             --volume /gocd/log:/var/log/go-server \
-                             --user root:root \
+                             --volume /opt/gocd/etc:/etc/go \
+                             --volume /opt/gocd/lib:/var/lib/go-server \
+                             --volume /opt/gocd/log:/var/log/go-server \
+                             --env AGENT_KEY=$random_agent_key \
                              --name=gocd-server gocd/gocd-server:latest
 
                     [Install]
@@ -186,11 +200,11 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      count: { get_param: volume_attachment } 
+      count: { get_param: volume_attachment }
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
-          server_id: { get_resource: server }  
+          server_id: { get_resource: server }
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -206,3 +220,6 @@ outputs:
         template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  random_agent_key:
+    description: GoCD Agent Key
+    value: { get_resource: random_agent_key }
