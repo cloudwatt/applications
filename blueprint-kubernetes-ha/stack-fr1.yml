@@ -32,7 +32,7 @@ parameters:
     type: string
 
   flavor:
-    default: s1.cw.small-1
+    default: n1.cw.standard-2
     description: Flavor to use for the deployed instances
     type: string
     label: Instance Type (Flavor)
@@ -54,6 +54,14 @@ parameters:
     type: number
     constraints:
       - range: { min: 1, max: 10 }
+
+  storage_count:
+    default: 1
+    label: Storage Count
+    description: Storage counts
+    type: number
+    constraints:
+      - range: { min: 1, max: 5 }
 
   token:
     default: averylongpassphraseatleast16chars
@@ -121,6 +129,28 @@ resources:
           monitoring: { get_param: monitoring }
           subnet: { get_resource: subnet }
           floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  storages:
+    type: OS::Heat::AutoScalingGroup
+    properties:
+      min_size: { get_param: storage_count }
+      max_size: 5
+      resource:
+        type: kube-storage.heat.yaml
+        properties:
+          token: { get_param: token }
+          peer: { get_param: peer }
+          domain: { get_param: domain }
+          security_group: { get_resource: security_group }
+          network: { get_resource: network }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: flavor }
+          os_region: fr1
+          ceph: { get_param: ceph }
+          monitoring: { get_param: monitoring }
+          subnet: { get_resource: subnet }
+          floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
   scaleup_policy:
     type: OS::Heat::ScalingPolicy
     properties:
@@ -133,6 +163,20 @@ resources:
       adjustment_type: change_in_capacity
       auto_scaling_group_id: {get_resource: nodes}
       scaling_adjustment: -1
+
+  scaleup_storage_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+       adjustment_type: change_in_capacity
+       auto_scaling_group_id: {get_resource: storages}
+       scaling_adjustment: 1
+  scaledown_storage_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: {get_resource: storages}
+      scaling_adjustment: -1
+
 outputs:
   scale_up_url:
     description: >
@@ -142,3 +186,17 @@ outputs:
     description: >
       his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
     value: {get_attr: [scaledown_policy, alarm_url]}
+  scale_up_storage_url:
+    description: >
+      This URL is the webhook to scale up the autoscaling group. You can invoke the scale-up operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaleup_storage_policy, alarm_url]}
+  scale_dn_storage_url:
+    description: >
+      his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaledown_storage_policy, alarm_url]}
+  vpn_username:
+    description: VPN Username
+    value: { get_resource: vpn_username }
+  vpn_password:
+    description: VPN Password
+    value: { get_resource: vpn_password }
