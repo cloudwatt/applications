@@ -16,7 +16,7 @@ composants:
  - logo: ""
    version: "Zabbix 2.2"
 - logo: ""
-   version: "Mysql 5.5"
+   version: "Mysql 5.7"
 prix: "FREE for software + Cloudwatt usage fees"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-nineteen-zabbix.html
