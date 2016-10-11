@@ -19,7 +19,7 @@ composants:
    version: "Mysql 5.7"
 prix: "FREE for software + Cloudwatt usage fees"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-thirty-six-zabbix.html
+blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-thirtysix-zabbix.html
 install-url:
 comingsoon: false
 type: application
