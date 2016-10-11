@@ -16,7 +16,7 @@ composants:
  - logo: ""
    version: "Zabbix 3.2"
  - logo: ""
-   version: "Mysql 5.5"
+   version: "Mysql 5.7"
 solutions: Zabbix est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
@@ -26,7 +26,7 @@ solutions-list:
  - text: "Big data"
 prix: "Gratuit pour l'application + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-dixneuf-zabbix.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-trentesix-zabbix.html
 install-url:
 comingsoon: false
 type: application
