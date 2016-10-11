@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS GOCD
+description: Blueprint CoreOS GoCD Server
 
 
 parameters:
