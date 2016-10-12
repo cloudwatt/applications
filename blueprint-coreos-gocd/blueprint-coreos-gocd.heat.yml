@@ -167,7 +167,6 @@ resources:
                     [Unit]
                     Description=GoCD Mount
                     After=opt-gocd.mount
-                    Requires=opt-gocd.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
