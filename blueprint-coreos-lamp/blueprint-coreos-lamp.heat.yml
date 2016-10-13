@@ -24,8 +24,8 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: password root sql
+  pass:
+    description: password root ftp and sql
     type: string
     hidden: true
 
@@ -59,6 +59,9 @@ resources:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
         - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 2176, port_range_max: 2176 }
+        - { direction: ingress, protocol: TCP, port_range_min: 4559, port_range_max: 4564 }
+        - { direction: ingress, protocol: TCP, port_range_min: 8059, port_range_max: 8059 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -93,7 +96,7 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $sqlpass: { get_param: sqlpass }
+            $pass: { get_param: pass }
           template: |
             #cloud-config
             write_files:
@@ -113,11 +116,12 @@ resources:
                 content: |
                   #!/bin/bash
                   sudo mkdir -p /lamp/{apache2,data,mysql}
+                  sudo chown 48:48 /lamp/data
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
-                    MYSQL_ROOT_PASSWORD=$sqlpass
+                    MYSQL_ROOT_PASSWORD=$pass
                     MYSQL_DATABASE=lamp
             coreos:
               etcd2:
@@ -128,22 +132,6 @@ resources:
                 listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
                 listen-peer-urls: http://$private_ipv4:2380
               units:
-                - name: etcd2.service
-                  command: start
-                - name: fleet.service
-                  command: start
-                - name: docker-tcp.socket
-                  command: start
-                  enable: true
-                  content: |
-                    [Unit]
-                    Description=Docker Socket for the API
-                    [Socket]
-                    ListenStream=2375
-                    BindIPv6Only=both
-                    Service=docker.service
-                    [Install]
-                    WantedBy=sockets.target
                 - name: format.service
                   command: start
                   content: |
@@ -166,9 +154,40 @@ resources:
                     What=/dev/vdb
                     Where=/lamp/
                     Type=ext4
+                - name: lamp-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=LAMP Mount
+                    After=lamp.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
+                - name: vsftpd.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=vsftpd
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull panubo/vsftpd:latest
+                    ExecStart=/usr/bin/docker run \
+                             --publish=2176:21 \
+                             --publish=4559:4559 \
+                             --publish=4560:4560 \
+                             --publish=4561:4561 \
+                             --publish=4562:4562 \
+                             --publish=4563:4563 \
+                             --publish=4564:4564 \
+                             --volume /lamp/data/:/srv \
+                             --env FTP_USER=root \
+                             --env FTP_PASSWORD=$pass \
+                             --name=vsftpd panubo/vsftpd:latest
+                    ExecStop=/usr/bin/docker rm -f vsftpd
                 - name: mysql.service
                   command: start
                   content: |
@@ -179,13 +198,29 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill mysql
-                    ExecStartPre=-/usr/bin/docker rm mysql
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
                              --volume /lamp/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
+                    ExecStop=/usr/bin/docker rm -f mysql
+                - name: phpmyadmin.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=phpMyAdmin
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull phpmyadmin/phpmyadmin:latest
+                    ExecStart=/usr/bin/docker run \
+                             --link mysql \
+                             --publish=8059:80 \
+                             --env PMA_HOST=mysql \
+                             --name=phpmyadmin phpmyadmin/phpmyadmin:latest
+                    ExecStop=/usr/bin/docker rm -f phpmyadmin
                 - name: apache2.service
                   command: start
                   content: |
@@ -196,17 +231,23 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill apache2
-                    ExecStartPre=-/usr/bin/docker rm apache2
                     ExecStartPre=/usr/bin/docker pull simondecaestecker/php7-apache2
                     ExecStart=/usr/bin/docker run \
                              --volume /lamp/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
                              --name=apache2 simondecaestecker/php7-apache2
+                    ExecStop=/usr/bin/docker rm -f apache2
 
                     [Install]
                     WantedBy=multi-user.target
+
+            write_files:
+              - path: /lamp/data/index.html
+                permissions: 0755
+                owner: "48:48"
+                content: |
+                  Hello world
 
   cinder:
     type: OS::Heat::ResourceGroup
