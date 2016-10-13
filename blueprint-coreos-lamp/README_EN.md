@@ -173,8 +173,8 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You just have to copy your files in /lamp/data and they will be available via the address specified in your output stack in horizon console.
-
+* You just have to copy your files through the FTP server on port 2176 and they will be available via the floating IP specified in your output stack in horizon console.
+* You can manage your databases easily with phpMyAdmin in your browser on port 8059.
 
 ----
 Have fun. Hack in peace.
