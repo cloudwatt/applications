@@ -173,6 +173,25 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
+Il ne vous reste plus qu'à ajouter un ou plusieurs agents GoCD en indiquant l'adresse IP flottante du serveur ainsi que la clé de 15 caractères générée aléatoirement et disponible dans la console Cloudwatt.
+
+Vous pouvez maintenant lancer un travail avec votre outil de déploiement continu.
+
+En premier lieu, vous pouvez créer un nouveau pipeline en indiquant son nom :
+![createPipeline](img/createPipeline.png)
+
+Vous pouvez maintenant indiquer les ressources à utiliser (material), par exemple un dépôt Git :
+![chooseMaterial](img/chooseMaterial.png)
+
+Puis il est nécessaire d'indiquer la tâche à effectuer (job) :
+![createJob](img/createJob.png)
+
+Vous n'avez plus qu'à démarrer le pipeline en cliquant sur le bouton pause :
+![startPipeline](img/startPipeline.png)
+
+Une fois que la tâche s'est exécutée, vous pouvez visualiser les logs d'exécution :
+![jobFinished](img/jobFinished.png)
+![jobConsole](img/jobConsole.png)
 
 ----
 Have fun. Hack in peace.

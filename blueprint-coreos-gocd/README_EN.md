@@ -170,6 +170,25 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
+You just have to add one or more GoCD agents indicating floating IP of the server and the randomly-generated key available in the Cloudwatt console.
+
+You can now start a job using your Continuous Delivery tool.
+
+First of all, you have to cerate a pipeline providing its name:
+![createPipeline](img/createPipeline.png)
+
+You can now select which material you want to use, for example a Git repository:
+![chooseMaterial](img/chooseMaterial.png)
+
+Next you have to add a new job:
+![createJob](img/createJob.png)
+
+You can start the job clicking the pause button:
+![startPipeline](img/startPipeline.png)
+
+When the job is running, you can access to the console:
+![jobFinished](img/jobFinished.png)
+![jobConsole](img/jobConsole.png)
 
 ----
 Have fun. Hack in peace.
