@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : GoCD Server #
+# 5 Minutes Stacks, épisode X : GoCD #
 
-## Episode X : GoCD Server
+## Episode X : GoCD
 
 ![Gologo](img/gologo.png)
 
@@ -15,6 +15,7 @@ Le système Go Continuous Delivery est composé d'un serveur et d'un ou plusieur
 ### Les versions
  - CoreOS Stable 1010.6
  - GoCD Server 16.10.0
+ - GoCD Agent 16.10.0
 
 ### Les pré-requis pour déployer cette stack
 
@@ -69,7 +70,7 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS GoCD Server
+description: Blueprint CoreOS GoCD
 
 
 parameters:
@@ -103,18 +104,18 @@ parameters:
 Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~ bash
- $ ./stack-start.sh GoCDServer
+ $ ./stack-start.sh GoCD
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | ed4ac18a-4415-467e-928c-1bef193e4f38 | GoCDServer | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+ | ed4ac18a-4415-467e-928c-1bef193e4f38 | GoCD       | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
  +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 
  ~~~ bash
- $ watch heat resource-list GoCDServer
+ $ watch heat resource-list GoCD
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -129,7 +130,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Coreos y déposer le conteneur *GoCD Server*,
+   * démarrer une instance basée sur Coreos y déposer le conteneur *GoCD Server* et le conteneur *GoCD Agent*,
 
    * l'exposer sur Internet via une IP flottante.
 
@@ -139,7 +140,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer GoCD Server :
+Et bien si ! En utilisant la console, vous pouvez déployer GoCD :
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-gocd](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-gocd)
 2.	Cliquez sur le fichier nommé `blueprint-coreos-gocd.heat.yml`
@@ -163,7 +164,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous êtes maintenant en possession de GoCD Server. Vous pouvez y acceder via l'url `http://ip-floatingip:8153`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+Vous êtes maintenant en possession de GoCD. Vous pouvez y acceder via l'url `http://ip-floatingip:8153`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
 Vous pouvez à présent mettre en place votre outil de déploiement, celui-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
@@ -173,7 +174,7 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-Il ne vous reste plus qu'à ajouter un ou plusieurs agents GoCD en indiquant l'adresse IP flottante du serveur ainsi que la clé de 15 caractères générée aléatoirement et disponible dans la console Cloudwatt.
+Un agent est déjà à votre disposition, vous pouvez en ajouter d'autres si nécessaire en indiquant l'adresse IP flottante du serveur ainsi que la clé de 15 caractères générée aléatoirement et disponible dans la console Cloudwatt.
 
 Vous pouvez maintenant lancer un travail avec votre outil de déploiement continu.
 

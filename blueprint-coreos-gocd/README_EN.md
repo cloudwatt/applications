@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : GoCD Server #
+# 5 Minutes Stacks, episode X : GoCD #
 
-## Episode X : GoCD Server
+## Episode X : GoCD
 
 ![Gologo](img/gologo.png)
 
@@ -15,6 +15,7 @@ Go Continuous Delivery system is composed by a server and one or more agents. Th
 ### The Versions
  - CoreOS Stable 1010.6
  - GoCD Server 16.10.0
+ - GoCD Agent 16.10.0
 
 ### The prerequisites to deploy this stack
 
@@ -37,7 +38,7 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-gocd/` repository:
+ Once you have cloned the github, you will find in the `blueprint-coreos-gocd/` repository:
 
  * `blueprint-coreos-gocd.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
@@ -68,7 +69,7 @@ With the `blueprint-coreos-gocd.heat.yml` file, you will find at the top a secti
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS GoCD Server
+description: Blueprint CoreOS GoCD
 
 
 parameters:
@@ -103,18 +104,18 @@ parameters:
 
 
  ~~~ bash
- ./stack-start.sh stack_name
+ ./stack-start.sh GoCD
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
- | ee873a3a-a306-4127-8647-4bc80469cec4 | GoCDServer      | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | GoCD            | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
  Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
  ~~~
- $ watch heat resource-list GoCDServer
+ $ watch heat resource-list GoCD
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -129,7 +130,7 @@ parameters:
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *GoCD Server*
+ * Starts an CoreOS based instance with the docker container *GoCD Server* and the container *GoCD Agent*
  * Expose it on the Internet via a floating IP.
 
 <a name="console" />
@@ -138,7 +139,7 @@ parameters:
 
 ### You do not have a way to create the stack from the console?
 
- We do indeed! Using the console, you can deploy GoCD Server:
+ We do indeed! Using the console, you can deploy GoCD:
 
  1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-gocd](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-gocd) repository
  2.	Click on the file named `blueprint-coreos-gocd.heat.yml`
@@ -152,17 +153,17 @@ parameters:
 
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
- If you've reached this point, you're already done! Go enjoy GoCD Server!
+ If you've reached this point, you're already done! Go enjoy GoCD!
 
 ### A one-click deployment sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your GoCD Server.
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your GoCD.
 
 ## Enjoy
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own GoCD Server, you can enter via the URL `http://ip-floatingip:8153`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of GoCD, you can enter via the URL `http://ip-floatingip:8153`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
 ## So watt?
 
@@ -170,7 +171,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-You just have to add one or more GoCD agents indicating floating IP of the server and the randomly-generated key available in the Cloudwatt console.
+An agent is already installed, you can add more agents indicating floating IP of the server and the randomly-generated key available in the Cloudwatt console.
 
 You can now start a job using your Continuous Delivery tool.
 
