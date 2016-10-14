@@ -171,18 +171,16 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
-                - name: gocd.service
+                - name: gocdserver.service
                   command: start
                   content: |
                     [Unit]
-                    Description=gocd UI
+                    Description=GoCD Server
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill gocd-server
-                    ExecStartPre=-/usr/bin/docker rm gocd-server
                     ExecStartPre=/usr/bin/docker pull gocd/gocd-server:latest
                     ExecStart=/usr/bin/docker run \
                              --publish=8153:8153 \
@@ -192,6 +190,24 @@ resources:
                              --volume /opt/gocd/log:/var/log/go-server \
                              --env AGENT_KEY=$random_agent_key \
                              --name=gocd-server gocd/gocd-server:latest
+                    ExecStop=/usr/bin/docker rm -f gocd-server
+                - name: gocdagent.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=GoCD Agent
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull gocd/gocd-agent:latest
+                    ExecStart=/usr/bin/docker run \
+                             --env GO_SERVER=gocd-server \
+                             --env AGENT_KEY=$random_agent_key \
+                             --link gocd-server \
+                             --name=gocd-agent gocd/gocd-agent:latest
+                    ExecStop=/usr/bin/docker rm -f gocd-agent
 
                     [Install]
                     WantedBy=multi-user.target
