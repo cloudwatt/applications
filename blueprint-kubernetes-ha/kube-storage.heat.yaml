@@ -99,7 +99,7 @@ resources:
                   CEPH=$ceph$
                   MONITORING=$monitoring$
                   ETCD_NODES=3
-                  PEER=$peer$
+                  PEER="$peer$"
                   PIDALIO_TOKEN=$token$
                   DOMAIN=$domain$
                   PATH=/opt/bin/:/usr/bin/:/usr/sbin:$PATH
@@ -108,7 +108,7 @@ resources:
                   then
                     echo "Pidalio already checkout"
                   else
-                    git clone https://github.com/cedbossneo/pidalio.git /opt/pidalio
+                    git clone https://github.com/juliend88/pidalio.git /opt/pidalio
                   fi
                   /opt/pidalio/init.sh
               - path: /opt/pidalio-units.sh

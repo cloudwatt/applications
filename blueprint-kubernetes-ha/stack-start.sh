@@ -51,7 +51,7 @@ do
 done
 if [ "${MODE}" == "Join" ]
 then
-  read -p "Enter the peer Public IP: " PEER
+  read -p "Enter the peers(at least 3) Public IPs: " PEER
   if [ "${PEER}" == "" ]; then echo "Peer cannot be empty"; exit 1; fi
 else
   TOKEN=$(cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
@@ -65,7 +65,7 @@ NODE_COUNT=3
 read -p "Enter the number of nodes (default: $NODE_COUNT): " NODE_COUNT_C
 if [ "${NODE_COUNT_C}" != "" ]; then NODE_COUNT=${NODE_COUNT_C}; fi
 
-STORAGE_COUNT=1
+STORAGE_COUNT=2
 read -p "Enter the number of storage nodes (default: $STORAGE_COUNT): " STORAGE_COUNT_C
 if [ "${STORAGE_COUNT_C}" != "" ]; then STORAGE_COUNT=${STORAGE_COUNT_C}; fi
 

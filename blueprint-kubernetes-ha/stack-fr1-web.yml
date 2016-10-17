@@ -56,7 +56,7 @@ parameters:
       - range: { min: 1, max: 10 }
 
   storage_count:
-    default: 1
+    default: 2
     label: Storage Count
     description: Storage counts
     type: number
@@ -69,7 +69,7 @@ parameters:
     type: string
 
   peer:
-    default: 10.1.1.10
+    default: 10.1.1.10 10.1.1.11 10.1.1.12
     label: Peer
     type: string
 
@@ -194,9 +194,3 @@ outputs:
     description: >
       his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
     value: {get_attr: [scaledown_storage_policy, alarm_url]}
-  vpn_username:
-    description: VPN Username
-    value: { get_resource: vpn_username }
-  vpn_password:
-    description: VPN Password
-    value: { get_resource: vpn_password }
