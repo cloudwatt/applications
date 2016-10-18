@@ -196,7 +196,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: e9dc1515-47cc-4d52-8f54-48577ab5b216
+      image: Ubuntu 14.04
       flavor: { get_param: flavor_name_admin }
       networks:
         - { network: { get_resource: privatenet } }
