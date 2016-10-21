@@ -1,0 +1,254 @@
+heat_template_version: 2013-05-23
+
+
+description: Blueprint CoreOS ONLYOFFICE
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+  domain_name:
+    description: Domain name to use for ONLYOFFICE Mail Server
+    label: Domain name
+    type: string
+    default: domain.tld
+
+  volume_attachment:
+    description: Attacher un volume cinder de 20GO ?
+    default: 0
+    type: string
+    constraints:
+      - allowed_values:
+          - 0
+          - 1
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  ports:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1010.6
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+        - port: { get_resource: ports }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
+            $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $domain_name: { get_param: domain_name }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /home/core/format.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  eval $(sudo blkid /dev/vdb | awk '{print $3}')
+                  if [[ "$TYPE" != "ext4" ]]; then
+                    /usr/sbin/wipefs -f /dev/vdb
+                    /usr/sbin/mkfs.ext4 -F /dev/vdb
+                  fi
+              - path: /home/core/mount.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  sudo mkdir -p /opt/onlyoffice/{communityserver,documentserver,mailserver}
+                  sudo mkdir -p /opt/onlyoffice/communityserver/{data,logs,mysql}
+                  sudo mkdir -p /opt/onlyoffice/documentserver/{data,logs}
+                  sudo mkdir -p /opt/onlyoffice/mailserver/{data,logs,mysql}
+                  sudo mkdir -p /opt/onlyoffice/mailserver/data/certs
+            coreos:
+              etcd2:
+                name: "%H"
+                advertise-client-urls: http://$private_ipv4:2379
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                initial-cluster: "%H=http://$private_ipv4:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+              units:
+                - name: format.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Formats the ephemeral drive
+                    After=dev-vdb.device
+                    Requires=dev-vdb.device
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/format.sh
+                - name: opt-onlyoffice.mount
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Mount ephemeral to /var/lib/docker
+                    Requires=format.service
+                    After=format.service
+                    [Mount]
+                    What=/dev/vdb
+                    Where=/opt/onlyoffice/
+                    Type=ext4
+                - name: onlyoffice-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Mount
+                    After=opt-onlyoffice.mount
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/mount.sh
+                - name: onlyoffice-documentserver.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Document Server
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/documentserver:latest
+                    ExecStartPre=/usr/bin/docker create \
+                             -ti \
+                             --restart=always \
+                             --volume /opt/onlyoffice/documentserver/data:/var/www/onlyoffice/Data \
+                             --volume /opt/onlyoffice/documentserver/logs:/var/log/onlyoffice \
+                             --name=onlyoffice-documentserver onlyoffice/documentserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-documentserver
+                - name: onlyoffice-mailserver.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Mail Server
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/mailserver:latest
+                    ExecStartPre=/usr/bin/docker create \
+                             -ti \
+                             --privileged \
+                             --restart=always \
+                             --publish "25:25" \
+                             --publish "143:143" \
+                             --publish "587:587" \
+                             --volume /opt/onlyoffice/mailserver/data:/var/vmail \
+                             --volume /opt/onlyoffice/mailserver/data/certs:/etc/pki/tls/mailserver \
+                             --volume /opt/onlyoffice/mailserver/logs:/var/log \
+                             --volume /opt/onlyoffice/mailserver/mysql:/var/lib/mysql \
+                             --hostname $domain_name \
+                             --name=onlyoffice-mailserver onlyoffice/mailserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-mailserver
+                - name: onlyoffice-communityserver.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Community Server
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/communityserver:latest
+                    ExecStartPre=/usr/bin/docker create \
+                             -ti \
+                             --restart=always \
+                             --publish 80:80 \
+                             --volume /opt/onlyoffice/communityserver/data:/var/www/onlyoffice/Data \
+                             --volume /opt/onlyoffice/communityserver/logs:/var/log/onlyoffice \
+                             --volume /opt/onlyoffice/communityserver/mysql:/var/lib/mysql \
+                             --env DOCUMENT_SERVER_PORT_80_TCP_ADDR=onlyoffice-documentserver \
+                             --env MAIL_SERVER_DB_HOST=onlyoffice-mailserver \
+                             --link onlyoffice-documentserver \
+                             --name=onlyoffice-communityserver onlyoffice/communityserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-communityserver
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+  cinder:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: volume_attachment }
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        properties:
+          server_id: { get_resource: server }
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip_url:
+    description: ONLYOFFICE URL
+    value:
+      str_replace:
+        template: http://$floating_ip
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
