@@ -32,7 +32,7 @@ parameters:
     type: string
 
   flavor:
-    default: n1.cw.standard-2
+    default: n2.cw.highmem-4
     description: Flavor to use for the deployed instances
     type: string
     label: Instance Type (Flavor)
@@ -46,14 +46,14 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-
+          - n2.cw.highmem-4
   node_count:
     default: 3
     label: Node Count
     description: Node counts
     type: number
     constraints:
-      - range: { min: 1, max: 10 }
+      - range: { min: 1, max: 50 }
 
   storage_count:
     default: 2

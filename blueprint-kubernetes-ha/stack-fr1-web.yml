@@ -46,7 +46,7 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-
+          - n2.cw.highmem-4
   node_count:
     default: 3
     label: Node Count

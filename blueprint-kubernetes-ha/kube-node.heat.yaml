@@ -127,6 +127,7 @@ resources:
                     do
                       /opt/bin/weave rmpeer $peer
                     done
+                    /usr/bin/docker rm pidalio pidalio-apiserver 2> /dev/null
                     sleep 60
                   done
             coreos:
