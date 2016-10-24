@@ -2,7 +2,7 @@
 layout: applications-fiche
 pictonic: true
 title: "blueprint3tierauto"
-url: blueprint3tier.html
+url: blueprint3tierauto.html
 date: 2016-10-24 00:00:00
 date-creation: "24 octobre 2016"
 date-maj: "24 octobre 2016"
