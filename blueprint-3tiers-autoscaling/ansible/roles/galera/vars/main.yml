@@ -1,0 +1,9 @@
+clusters: 10.0.1.6
+ip_node: 10.0.1.6
+hostname: node0
+master: true
+clusters_size: 1
+db_name: test
+db_admin: admin
+db_admin_password: changeme
+datadir: /DbStorage/mysql

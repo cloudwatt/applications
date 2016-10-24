@@ -1,0 +1,33 @@
+- name: packages installed Debian 8 and Ubuntu trusty
+  apt: pkg={{ item }} state=present
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-mysql
+    - php5-xmlrpc
+    - php5-gd
+    - php5-mcrypt
+    - php5-json
+    - php5-curl
+    - php5-redis
+    - php5-memcache
+    - php5-xsl
+  when: not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial')
+
+- name: packages installed Ubuntu xenial
+  apt: pkg={{ item }} state=present
+  with_items:
+    - php
+    - libapache2-mod-php
+    - php-mysql
+    - php-gd
+    - php-mbstring
+    - php-mcrypt
+    - php-xml
+    - php-xmlrpc
+    - php-json
+    - php-curl
+    - php-redis
+    - php-memcache
+    - php-xsl
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'

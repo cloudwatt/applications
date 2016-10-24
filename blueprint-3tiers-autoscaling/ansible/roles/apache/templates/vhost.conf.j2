@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+
+ ServerAdmin webmaster@localhost
+ DocumentRoot /var/www/html
+
+{% if ansible_os_family == 'RedHat' %}
+ErrorLog /var/log/httpd/error.log
+CustomLog /var/log/httpd/access.log combined
+{% endif %}
+
+{%if ansible_os_family == 'Debian'%}
+ErrorLog /var/log/apache2/error.log
+CustomLog /var/log/apache2/access.log combined
+{%endif%}
+
+</VirtualHost>

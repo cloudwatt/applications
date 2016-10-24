@@ -1,0 +1,21 @@
+
+- name: Install MySQL-python
+  yum: name=MySQL-python state=installed
+
+
+- name: Install repo Mariadb
+  shell: wget -O /etc/yum.repos.d/MariaDB.repo http://mariadb.if-not-true-then-false.com/rhel/$(rpm -E %rhel)/$(uname -i)/10_1
+
+
+- name: packages installed
+  yum: pkg={{ item }} state=present enablerepo="mariadb"
+  with_items:
+    - MariaDB-server
+    - galera
+
+
+- name: Modify configuration file to listen on all interfaces
+  template: src=server.cnf.j2 dest=/etc/my.cnf.d/server.cnf
+
+
+

@@ -1,0 +1,19 @@
+- name: Install http and php etc
+  yum: name={{ item }} state=present
+  with_items:
+   - httpd
+
+- name: httpd vhost configuration
+  template:
+     src=vhost.conf.j2
+     dest=/etc/httpd/conf.d/vhost.conf
+     owner=root
+     group=root
+     mode=0644
+  notify: restart httpd
+
+- name : clear /var/www/html
+  file: path=/var/www/html/* state=absent
+
+- name: change access
+  file: path=/var/www/html owner=apache group=apache mode=0775 recurse=yes

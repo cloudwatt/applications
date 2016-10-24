@@ -1,0 +1,16 @@
+- name: installing repo for Java 8 in Ubuntu
+  apt_repository: repo='ppa:openjdk-r/ppa' state=present
+  when: ansible_distribution == 'Ubuntu' and jdk_version == 8
+
+- name: installing repo for Java 8 in Debian
+  apt_repository: repo='deb http://http.debian.net/debian jessie-backports main' state=present
+  when: ansible_distribution == 'Debian' and jdk_version == 8
+
+- name: update
+  apt: update_cache=yes
+
+- name: packages installed
+  apt: pkg=openjdk-{{ jdk_version }}-jdk state=present
+
+- name: Symlink java
+  file: src=/usr/lib/jvm/java-{{ jdk_version }}-openjdk-amd64 path={{ java_home }} state=link

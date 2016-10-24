@@ -1,0 +1,16 @@
+- name: installing repo for glusterfs ubuntu
+  apt_repository: repo='ppa:gluster/glusterfs-{{ version }}' state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: installing repo for glusterfs debian
+  shell: |
+          wget -O - http://download.gluster.org/pub/gluster/glusterfs/{{ version }}/LATEST/rsa.pub | apt-key add -
+          echo deb http://download.gluster.org/pub/gluster/glusterfs/{{ version }}/LATEST/Debian/jessie/apt jessie main > /etc/apt/sources.list.d/gluster.list
+  when: ansible_distribution == 'Debian'
+
+- name: update
+  apt: update_cache=yes
+
+
+- name: install glusterfs client
+  apt: name=glusterfs-client state=installed

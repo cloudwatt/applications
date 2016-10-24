@@ -1,0 +1,6 @@
+version: 9
+release: 9.0.0.M10
+user: admin
+password: admin
+http_port: 8080
+java_home: /usr/lib/jvm/java

@@ -1,0 +1,44 @@
+- name: setup database
+  include: setup-Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: setup database
+  include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: mv /var/lib/mysql to datadir
+  shell: cp -rp /var/lib/mysql/ `dirname {{ datadir }}`
+  when : not datadir == '/var/lib/mysql'
+
+- name: stop mysql
+  shell: service mysql stop
+  ignore_errors: yes
+
+- name: start master
+  shell: galera_new_cluster
+  when: master == true and not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty')
+
+- name: start master for ubuntu 14.04
+  shell: service mysql start --wsrep-new-cluster
+  when: master == true and (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty')
+
+- name: restart mysql
+  copy: src=sync.sh dest=/root/sync.sh mode=755
+  when: master == false
+
+- name: cron mount
+  cron: name="check dirs" job=" wait 20 ; /root/sync.sh "
+  when: master == false
+
+
+
+- name: creating database MySQL database
+  shell: mysql -u root -e "CREATE DATABASE IF NOT EXISTS {{ db_name }};"
+  when: master == true
+
+- name: create user database
+  shell: |
+          mysql -u root -e "CREATE USER IF NOT EXISTS '{{ db_admin }}'@'%' IDENTIFIED BY '{{ db_admin_password }}';"
+          mysql -u root -e "GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON {{ db_name }}.* TO '{{ db_admin }}'@'%';"
+          mysql -u root -e "flush privileges;"
+  when: master == true

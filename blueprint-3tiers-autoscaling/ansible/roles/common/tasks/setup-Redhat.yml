@@ -1,0 +1,28 @@
+
+- name: upgrade all packages
+  yum: name=* state=latest
+
+
+- name: Ensure build dependencies are installed (RedHat).
+  yum: 'name="{{ item }}" state=present'
+  with_items:
+     - libselinux-python
+     - wget
+     - git
+     - rsync
+     - vim
+     - htop
+     - mariadb
+     - zip
+     - unzip
+
+
+- name: Set selinux into 'permissive' mode.
+  selinux: policy=targeted state=permissive
+
+- name: change conf selinux Redhat
+  lineinfile: dest=/etc/selinux/config  regexp="^SELINUX=" line="SELINUX=disabled"
+
+- name: change time zone
+  shell: timedatectl set-timezone {{ timezone }}
+

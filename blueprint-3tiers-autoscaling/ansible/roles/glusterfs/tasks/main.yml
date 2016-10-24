@@ -1,0 +1,22 @@
+- name: setup glusterfs
+  include: setup-Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: setup glusterfs
+  include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure Gluster brick and mount directories exist.
+  file: "path={{ gluster_brick_dir }} state=directory mode=0775"
+
+
+- name: Create Gluster volume
+  gluster_volume: brick={{gluster_brick_dir}} force=true
+                  cluster={{storage_nodes | join(",")}}
+                  replicas={{gluster_replicas}} name={{gluster_volume}} state=present
+  run_once: true
+  ignore_errors: True
+
+- name: Start Gluster volume
+  gluster_volume: name={{gluster_volume}} state=started
+  ignore_errors: True

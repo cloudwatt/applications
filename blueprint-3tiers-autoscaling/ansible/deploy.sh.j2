@@ -1,0 +1,183 @@
+#!/bin/bash
+
+function GetArtefact {
+
+URL=$1
+DIR=$2
+
+EXTENSTION=${URL: -3}
+
+case "$EXTENSTION" in
+
+"git")
+
+git clone $URL  /tmp/website/ ; cp -R /tmp/website/*  $DIR/ ; rm -rf /tmp/website
+
+               ;;
+
+"zip")                  
+
+wget --no-check-certificate $URL -P /tmp
+
+FILE="${URL##*/}"
+
+
+unzip -uo /tmp/$FILE -d $DIR
+
+                ;;
+
+".gz")
+
+wget --no-check-certificate $URL -P /tmp
+FILE="${URL##*/}"
+ 
+tar vzfx /tmp/$FILE -C $DIR --strip 1
+
+                 ;;
+
+"war")
+
+
+wget --no-check-certificate $URL -P  $DIR
+                 ;;
+
+
+*) 
+
+echo "juste war , zip , git and tar.gz"
+   ;;
+
+ esac               
+ }
+
+
+
+########################################################Main
+
+
+
+if [ $# -eq 3 ]
+ 
+then
+
+DIR=$1
+
+APP=$2
+
+URL=$3
+
+mount -a
+
+if  mount|grep $DIR ; then
+
+echo "mounted"
+
+cd $DIR
+
+
+if [ "$(ls $DIR)" ]; then
+   
+echo "Take action $DIR is not Empty"
+case "$APP" in
+
+"php")
+
+chmod -R 775 /var/www/html
+
+DIST={{ ansible_os_family }}
+
+ if [ "$DIST" == "Debian" ]; then
+
+    chown -R www-data:www-data /var/www/html
+
+   elif [ "$DIST" == "RedHat" ]; then
+ 
+    chown -R apache:apache /var/www/html
+
+ fi
+
+                 ;;
+"tomcat")
+service nginx start
+service tomcat start
+  
+  ;;
+  
+"nodejs") 
+
+service nginx start   
+/etc/init.d/nodejs start
+      ;;
+
+*) echo "what do you do fuck"
+                                     
+
+                          ;;
+esac
+
+
+
+else
+
+case "$APP" in
+
+"php")
+
+rm -rf $DIR/index.html
+
+GetArtefact $URL $DIR
+
+chmod -R 775 /var/www/html
+
+DIST={{ ansible_os_family }}
+
+ if [ "$DIST" == "Debian" ]; then
+
+    chown -R www-data /var/www/html
+
+   elif [ "$DIST" == "RedHat" ]; then
+ 
+    chown -R apache /var/www/html
+
+ fi
+
+                 ;;
+"tomcat")
+
+GetArtefact $URL $DIR
+service tomcat restart
+  
+  ;;
+  
+"nodejs") 
+
+GetArtefact $URL $DIR
+   
+/etc/init.d/nodejs start
+      ;;
+
+*) echo "what do you do fuck"
+                                     
+
+                          ;;
+esac
+
+
+   fi
+
+
+   else
+ 
+    echo "not mounted"
+
+
+  fi
+
+
+else
+
+
+ echo "Usage $0 Dir Application_type url_repo  "
+
+fi
+

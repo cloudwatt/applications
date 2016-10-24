@@ -1,0 +1,38 @@
+- name: fix bug ubunut xenial
+  shell: | 
+          killall aptitude
+          rm -rf /var/lib/dpkg/lock
+          dpkg --configure -a
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+- name: apt-get update & upgrade
+  apt: upgrade=full update_cache=yes
+
+- name: install common packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - python-software-properties
+    - mysql-client
+    - git
+    - rsync
+    - vim
+    - htop
+    - zip
+    - unzip
+
+
+
+
+- name: Set timezone variables
+  copy: content='{{ timezone }}'
+        dest=/etc/timezone
+        owner=root
+        group=root
+        mode=0644
+        backup=yes
+
+- name: update timezone
+  shell: dpkg-reconfigure --frontend noninteractive tzdata
+ 

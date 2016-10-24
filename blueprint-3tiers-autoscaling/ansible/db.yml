@@ -1,0 +1,10 @@
+---
+# Requires Ansible >= 1.9
+- hosts: all
+  user: cloud
+  sudo: true
+  roles:
+    - common
+    - mylvm
+    - galera
+

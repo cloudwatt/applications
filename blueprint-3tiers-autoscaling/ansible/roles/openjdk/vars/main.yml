@@ -1,0 +1,3 @@
+# version openjdk <=8
+jdk_version: 8
+java_home: /usr/lib/jvm/java

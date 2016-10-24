@@ -1,0 +1,6 @@
+---
+## nodejs version 0.10,0.12,4.x,5.x,6.x
+version: "6.x"
+app_directory: /nodejs
+app_port: "2368"
+script_start: "index.js"

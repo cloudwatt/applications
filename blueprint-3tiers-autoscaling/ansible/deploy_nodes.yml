@@ -1,0 +1,45 @@
+
+- hosts: all
+  user: cloud
+  become: true
+  roles:
+     - { role: common }
+     - { role: glusterfs-client }
+     - { role: apache, when: Application_type == "php" }
+     - { role: php, when: Application_type == "php" }
+     - { role: nginx, when: Application_type == "tomcat"  or Application_type == "nodejs"}
+     - { role: openjdk, when: Application_type == "tomcat" }
+     - { role: tomcat, when: Application_type == "tomcat" }
+     - { role: nodejs, when: Application_type == "nodejs" }
+
+  tasks:
+     - name: mount
+       mount:
+        name: "{{ app_directory }}"
+        src: "{{ gluster_ip }}:/gluster"
+        fstype: glusterfs
+        state: mounted
+       ignore_errors: yes
+
+
+     - name: rev proxy tomcat
+       template:
+          src=revproxy.conf.j2
+          dest=/etc/nginx/conf.d/default.conf
+          owner=root
+          group=root
+          mode=0644
+       when: Application_type == "tomcat" or Application_type == "nodejs"
+
+     - name: restart nginx
+       service: name=nginx state=restarted
+       when:  Application_type == "tomcat" or Application_type == "nodejs"
+
+
+     - name: add script deploy  
+       template: src=deploy.sh.j2 dest=/root/deploy.sh mode=0755
+
+     - name: cron mount
+       cron: name="check dirs" job=" wait 20 ; /root/deploy.sh {{ app_directory }} {{ Application_type }} {{ Application_source }}"
+ 
+ 

@@ -1,0 +1,16 @@
+---
+- include: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: install forever
+  npm: name=forever global=yes
+  ignore_errors: yes
+  
+- name: create app directory folder
+  file: path={{ app_directory }} state=directory mode=0755 recurse=yes
+
+- name: add nodejs init
+  template: src=nodejs.init.j2 dest=/etc/init.d/nodejs mode=0775

@@ -1,0 +1,59 @@
+- name: install common packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - software-properties-common
+    - python-software-properties
+    - python-mysqldb
+
+
+- name: Add repository key to the system on Debian family
+  apt_key: keyserver=keyserver.ubuntu.com id=0xcbcb082a1bb943db
+  when: not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial')
+
+
+- name: Add repository key to the system on Ubuntu xenial
+  apt_key: keyserver=keyserver.ubuntu.com id=0xF1656F24C74CD1D8
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+
+- name: Install MariaDB repository on Debian family
+  apt_repository: repo='deb [arch=amd64,i386] http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.1/debian {{ ansible_distribution_release }} main' state=present
+  when: ansible_distribution == 'Debian'
+
+#- name: Install MariaDB repository on ubuntu
+#  apt_repository: repo='deb [arch=amd64,i386] http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.1/ubuntu trusty main' state=present
+#  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+- name: Install MariaDB repository on ubuntu
+  apt_repository: repo='deb [arch=amd64,i386] http://de-rien.fr/mariadb/repo/10.1/ubuntu {{ ansible_distribution_release }} main' state=present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: apt-get update
+  apt: update_cache=yes
+
+- name: Install MariaDB Server
+  apt: name=mariadb-server state=installed
+
+- name:  change conf apparmor
+  template: src=usr.sbin.mysqld.j2  dest=/etc/apparmor.d/usr.sbin.mysqld
+  when: ansible_distribution == 'Ubuntu'
+
+- name: restarted apparamor
+  service: name=mysql state=restarted enabled=yes
+  when: ansible_distribution == 'Ubuntu'
+
+- name: change conf my.cnf Debian
+  lineinfile: dest=/etc/mysql/my.cnf regexp='^datadir' line='datadir     = {{ datadir }}'
+  when: not (ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial')
+
+
+- name: change conf my.cnf Ubuntu xenial
+  shell: echo "[mysqld] \ndatadir = {{ datadir }} \n!includedir /etc/mysql/conf.d/" > /etc/mysql/my.cnf
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'xenial'
+
+- name: Modify configuration file to listen on all interfaces
+  template: src=galera.cnf.j2 dest=/etc/mysql/conf.d/galera.cnf
+
+

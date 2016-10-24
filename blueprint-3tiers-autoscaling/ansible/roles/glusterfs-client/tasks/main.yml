@@ -1,0 +1,8 @@
+- name: setup glusterfs
+  include: setup-Redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: setup glusterfs
+  include: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+

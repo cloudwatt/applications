@@ -1,0 +1,27 @@
+
+- name: Install nginx repository on Debian
+  apt_repository: repo='{{ item }} {{ ansible_distribution_release }} nginx' state=present
+  with_items:
+    - "deb http://nginx.org/packages/debian/ "
+    - "deb-src http://nginx.org/packages/debian/"
+  when: ansible_distribution == 'Debian'
+
+
+- name: Install nginx repository on Ubuntu
+  apt_repository: repo='{{ item }} {{ ansible_distribution_release }} nginx' state=present
+  with_items:
+    - "deb http://nginx.org/packages/ubuntu/ "
+    - "deb-src http://nginx.org/packages/ubuntu/"
+  when: ansible_distribution == 'Ubuntu'
+
+
+- name: add key nginx
+  shell: curl http://nginx.org/keys/nginx_signing.key | apt-key add -
+
+
+- name: apt-get update
+  apt: update_cache=yes
+
+- name: install nginx
+  apt: pkg=nginx state=present
+

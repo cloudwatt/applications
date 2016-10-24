@@ -1,0 +1,20 @@
+
+
+- name: version edit
+  shell: echo {{ version }}| tr -d "."
+  register: ver
+
+- name: install centos-release-gluster{{ ver.stdout }}
+  yum: name=centos-release-gluster{{ ver.stdout }} state=latest
+
+
+- name: enable repo
+  lineinfile: dest=/etc/yum.repos.d/CentOS-Gluster-{{ version }}.repo  regexp="enabled=0" line="enabled=1"
+
+
+
+- name: Install glusterfs client  packages Redhat
+  yum: name={{item}} state=installed enablerepo="centos-gluster{{ ver.stdout }},epel"
+  with_items:
+     - glusterfs
+     - glusterfs-fuse
