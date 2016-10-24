@@ -24,12 +24,6 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  domain_name:
-    description: Domain name to use for ONLYOFFICE Mail Server
-    label: Domain name
-    type: string
-    default: domain.tld
-
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
     default: 0
@@ -94,7 +88,6 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $domain_name: { get_param: domain_name }
           template: |
             #cloud-config
             write_files:
@@ -199,7 +192,7 @@ resources:
                              --volume /opt/onlyoffice/mailserver/data/certs:/etc/pki/tls/mailserver \
                              --volume /opt/onlyoffice/mailserver/logs:/var/log \
                              --volume /opt/onlyoffice/mailserver/mysql:/var/lib/mysql \
-                             --hostname $domain_name \
+                             --hostname "domain.tld" \
                              --name=onlyoffice-mailserver onlyoffice/mailserver:latest
                     ExecStart=/usr/bin/docker start onlyoffice-mailserver
                 - name: onlyoffice-communityserver.service
@@ -223,6 +216,7 @@ resources:
                              --env DOCUMENT_SERVER_PORT_80_TCP_ADDR=onlyoffice-documentserver \
                              --env MAIL_SERVER_DB_HOST=onlyoffice-mailserver \
                              --link onlyoffice-documentserver \
+                             --link onlyoffice-mailserver \
                              --name=onlyoffice-communityserver onlyoffice/communityserver:latest
                     ExecStart=/usr/bin/docker start onlyoffice-communityserver
 
