@@ -113,7 +113,7 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/icescrum/mysql
+                  sudo mkdir -p /opt/icescrum/{data,mysql}
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
@@ -194,6 +194,7 @@ resources:
                              --env ICESCRUM_HOST=$floating_ip \
                              --env ICESCRUM_PORT=80 \
                              --env ICESCRUM_CONTEXT=/ \
+                             --volume /opt/icescrum/data:/root \
                              --name=icescrum icescrum/icescrum
                     ExecStop=/usr/bin/docker rm -f icescrum
 
