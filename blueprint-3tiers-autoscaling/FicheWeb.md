@@ -37,14 +37,14 @@ composants:
    version: "Ubuntu Trusty 14.04"
  - logo: ""
    version: "Ubuntu Xenial 16.04"
-solutions: Ce blueprint 3 tier autoscalé est particulièrement utile pour les solutions Cloudwatt suivantes :
+solutions: "Ce blueprint 3 tier autoscalé est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
 prix: "Gratuit pour le blueprint + consommation à l'usage"
 logo: 
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-trente-sept-blueprint-3tier-autoscale.html
-install-url:
+install-url: oneclick/#/heat/blueprint-3tiers
 comingsoon: false
 type: application
-categories: ["dev&test"]
+categories: ["devtest"]
 ---
