@@ -172,6 +172,8 @@ Lors de votre première connexion, il vous sera demandé de saisir des informati
 
 ![firstco](img/firstco.png)
 
+Une fois la configuration terminée, il est nécessaire de redémarrer iceScrum avec la commande suivante : `docker restart icescrum`
+
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.

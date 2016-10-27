@@ -171,6 +171,8 @@ parameters:
 
 ![firstco](img/firstco.png)
 
+When setup is completed, you have to restart iceScrum with the following command:`docker restart icescrum`
+
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
