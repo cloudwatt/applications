@@ -97,6 +97,7 @@ resources:
                   NODE_TYPE=$os_region$
                   NODE_STORAGE=true
                   CEPH=$ceph$
+                  CEPH_DISK=True
                   MONITORING=$monitoring$
                   ETCD_NODES=3
                   PEER="$peer$"
@@ -138,6 +139,10 @@ resources:
                   metadata: "region=$os_region$"
                   etcd_servers: "http://localhost:2379"
               units:
+                - name: update-engine.service
+                  command: stop
+                - name: locksmithd.service
+                  command: stop
                 - name: etcd2.service
                   command: start
                   content: |

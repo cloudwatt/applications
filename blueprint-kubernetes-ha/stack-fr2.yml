@@ -32,7 +32,7 @@ parameters:
     type: string
 
   flavor:
-    default: n1.cw.standard-2
+    default: n2.cw.standard-2
     description: Flavor to use for the deployed instances
     type: string
     label: Instance Type (Flavor)
@@ -40,7 +40,7 @@ parameters:
       - allowed_values:
           - s1.cw.small-1
           - n1.cw.standard-1
-          - n2.cw.standard-1
+          - n2.cw.standard-2
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
