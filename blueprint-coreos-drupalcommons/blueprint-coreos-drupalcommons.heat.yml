@@ -187,12 +187,12 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull simondecaestecker/drupal-commons
-                    ExecStartPre=-/usr/bin/docker create \
+                    ExecStartPre=/usr/bin/docker run \
                              --volume /opt/drupalcommons/data:/var/www/html/sites \
                              --link mysql \
                              --publish 80:80 \
                              --name=drupalcommons simondecaestecker/drupal-commons
-                    ExecStart=/usr/bin/docker start drupalcommons
+                    ExecStartStop=/usr/bin/docker rm -f drupalcommons
 
                     [Install]
                     WantedBy=multi-user.target
