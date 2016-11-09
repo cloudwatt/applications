@@ -59,7 +59,6 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 8035, port_range_max: 8035 }
         - { direction: ingress, protocol: UDP, port_range_min: 1194, port_range_max: 1194 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
@@ -121,8 +120,7 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/openvpn/{apache2,data}
-                  #sudo chmod -R 777 /opt/openvpn/apache2
+                  sudo mkdir -p /opt/openvpn/data
               - path: /home/core/mkuser.sh
                 permissions: 0755
                 owner: "root:root"
@@ -130,7 +128,7 @@ resources:
                   #!/bin/bash
                   /usr/bin/docker run \
                       --volume /opt/openvpn/data/:/etc/openvpn \
-                      --rm simondecaestecker/openvpn ovpn_getclient $user > /opt/openvpn/apache2/$user.ovpn
+                      --rm simondecaestecker/openvpn ovpn_getclient $user > /home/core/$user.ovpn
             coreos:
               etcd2:
                 name: "%H"
@@ -210,22 +208,6 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mkuser.sh
-                - name: apache2.service
-                  command: start
-                  content: |
-                    [Unit]
-                    Description=apache2
-                    After=docker.service
-                    Requires=docker.service
-                    [Service]
-                    TimeoutStartSec=0
-                    Restart=Always
-                    ExecStartPre=/usr/bin/docker pull php:7-apache
-                    ExecStart=/usr/bin/docker run \
-                             --volume /opt/openvpn/apache2:/var/www/html \
-                             --publish=8035:80 \
-                             --name=apache2 php:7-apache
-                    ExecStop=/usr/bin/docker rm -f apache2
 
                     [Install]
                     WantedBy=multi-user.target
@@ -247,10 +229,10 @@ resources:
 
 outputs:
   config_file_url:
-    description: OpenVPN Configuration File
+    description: SCP command to download OpenVPN Configuration File
     value:
       str_replace:
-        template: http://$floating_ip:8035/$user.ovpn
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user.ovpn .
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           $user: { get_resource: user }

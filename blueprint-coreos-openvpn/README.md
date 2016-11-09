@@ -130,9 +130,9 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur CoreOS y déposer le conteneur *OpenVPN* et le conteneur *Apache2*,
+   * démarrer une instance basée sur CoreOS y déposer le conteneur *OpenVPN*,
 
-   * exposer le fichier de configuration sur Internet via une IP flottante.
+   * mettre à disposition le fichier de configuration grâce à une commande `scp`
 
 <a name="console" />
 
@@ -165,7 +165,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous êtes maintenant en possession de OpenVPN. Vous pouvez télécharger votre fichier de configuration via l'url présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+Vous êtes maintenant en possession de OpenVPN. Vous pouvez télécharger votre fichier de configuration via la commande présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
 Vous pouvez à présent créer d'autres instances et les connecter au même réseau, celles-ci seront ainsi accessible sans être exposées publiquement sur Internet. Votre VPN étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
@@ -175,7 +175,7 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-* Vous avez accès au fichier de configuration client en http via l'adresse indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
+* Vous avez accès au fichier de configuration client grâce à la commande indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
 
 * Voici quelques sites d'informations avant d'aller plus loin :
 

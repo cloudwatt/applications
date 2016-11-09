@@ -130,8 +130,8 @@ parameters:
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *OpenVPN* and the container *Apache2*
- * Expose the configuration file on Internet via a floating IP.
+ * Starts an CoreOS based instance with the docker container *OpenVPN*
+ * Provide the configuration file with a `scp` command
 
 <a name="console" />
 
@@ -164,7 +164,7 @@ parameters:
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of OpenVPN, you can download your configuration file by clicking the URL present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of OpenVPN, you can download your configuration file by using the command present in your stack overview in horizon Cloudwatt console.
 
 You can now create other instances on the same network and access to them without giving them a floating IP. Your VPN being hosted in France in a safe environment, you can completely trust on this product.
 
@@ -174,7 +174,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You have access to the configuration file via the address specified in your output stack in horizon console.
+* You have access to the configuration file with the command specified in your output stack in horizon console.
 
 * Here are some news sites to learn more:
 
