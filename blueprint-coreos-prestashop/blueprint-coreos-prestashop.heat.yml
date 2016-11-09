@@ -187,7 +187,7 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull prestashop/prestashop:1.6.1.7
-                    ExecStartPre=/usr/bin/docker run \
+                    ExecStartPre=-/usr/bin/docker create \
                              --env DB_SERVER=mysql \
                              --env DB_PASSWD=$sqlpass \
                              --link mysql \

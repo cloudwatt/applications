@@ -179,13 +179,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill mysql
-                    ExecStartPre=-/usr/bin/docker rm mysql
                     ExecStartPre=/usr/bin/docker pull mysql
                     ExecStart=/usr/bin/docker run \
                              --volume /joomla/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql
+                    ExecStop=/usr/bin/docker rm -f mysql
                 - name: joomla.service
                   command: start
                   content: |
@@ -196,14 +195,13 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill joomla
-                    ExecStartPre=-/usr/bin/docker rm joomla
                     ExecStartPre=/usr/bin/docker pull joomla:latest
                     ExecStart=/usr/bin/docker run \
                              --volume /joomla/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
                              --name=joomla joomla:latest
+                    ExecStop=/usr/bin/docker rm -f joomla
 
                     [Install]
                     WantedBy=multi-user.target

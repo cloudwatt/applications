@@ -202,12 +202,12 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull gocd/gocd-agent:latest
-                    ExecStart=/usr/bin/docker run \
+                    ExecStartPre=-/usr/bin/docker create \
                              --env GO_SERVER=gocd-server \
                              --env AGENT_KEY=$random_agent_key \
                              --link gocd-server \
                              --name=gocd-agent gocd/gocd-agent:latest
-                    ExecStop=/usr/bin/docker rm -f gocd-agent
+                    ExecStart=/usr/bin/docker start gocd-agent
 
                     [Install]
                     WantedBy=multi-user.target

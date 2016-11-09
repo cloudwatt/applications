@@ -162,7 +162,7 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull onlyoffice/documentserver:latest
-                    ExecStartPre=/usr/bin/docker create \
+                    ExecStartPre=-/usr/bin/docker create \
                              -ti \
                              --restart=always \
                              --volume /opt/onlyoffice/documentserver/data:/var/www/onlyoffice/Data \
@@ -180,7 +180,7 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull onlyoffice/mailserver:latest
-                    ExecStartPre=/usr/bin/docker create \
+                    ExecStartPre=-/usr/bin/docker create \
                              -ti \
                              --privileged \
                              --restart=always \
@@ -205,7 +205,7 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull onlyoffice/communityserver:latest
-                    ExecStartPre=/usr/bin/docker create \
+                    ExecStartPre=-/usr/bin/docker create \
                              -ti \
                              --restart=always \
                              --publish 80:80 \
