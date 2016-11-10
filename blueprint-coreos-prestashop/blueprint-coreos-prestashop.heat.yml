@@ -197,6 +197,7 @@ resources:
                     ExecStartPre=/usr/bin/docker pull prestashop/prestashop:1.6.1.7
                     ExecStartPre=-/usr/bin/docker create \
                              --env DB_SERVER=mysql \
+                             --env DB_USER=prestashop \
                              --env DB_PASSWD=$sqlpass \
                              --link mysql \
                              --publish 80:80 \
