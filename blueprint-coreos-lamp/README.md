@@ -64,7 +64,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `root` du serveur FTP et de votre base `MySQL`.
+Dans le fichier `blueprint-coreos-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `lamp` du serveur FTP et de votre base `MySQL`.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
  ~~~ yaml
@@ -95,7 +95,7 @@ parameters:
           - n1.cw.standard-16
 
   pass:
-    description: password root ftp and sql
+    description: "password ftp et sql (user: lamp)"
     type: string
     hidden: true
 [...]
@@ -151,7 +151,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer LAMP :
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.  Donner votre passphrase qui servira pour le compte root du serveur FTP et votre base de données MySQL
+9.  Donner votre passphrase qui servira pour le compte lamp du serveur FTP et votre base de données MySQL
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.

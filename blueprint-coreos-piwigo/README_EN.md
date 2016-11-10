@@ -94,7 +94,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: password root sql
+    description: "password sql (user: piwigo)"
     type: string
     hidden: true
 
@@ -151,7 +151,8 @@ parameters:
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+ 9.  Write a passphrase that will be used for the database piwigo user
+ 10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 

@@ -64,7 +64,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `blueprint-coreos-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.You will also enter the `root` password account of the FTP server and your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `blueprint-coreos-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.You will also enter the `lamp` password account of the FTP server and your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -94,7 +94,7 @@ parameters:
           - n1.cw.standard-16
 
   pass:
-    description: password root ftp and sql
+    description: "password ftp et sql (user: lamp)"
     type: string
     hidden: true
 [...]
@@ -150,7 +150,7 @@ parameters:
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.  Write a passphrase that will be used for the FTP server and the database root user
+ 9.  Write a passphrase that will be used for the FTP server and the database lamp user
  10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
