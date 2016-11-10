@@ -168,6 +168,15 @@ Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en u
 
 Vous êtes maintenant en possession de votre propre serveur LAMP. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
+Voici la page d'accueil par défaut de votre site web :
+![DefaultHomepage](img/default-homepage.png)
+
+Vous avez la possibilité de gérer votre base de données grâce à phpMyAdmin :
+![pmaOverview](img/pma-overview.png)
+
+Pour transférer de nouveaux fichiers accessibles en http, vous pouvez utiliser un client FTP tel que *FileZilla* :
+![FileZillaConnected](img/filezilla-connected.png)
+
 Vous pouvez à présent mettre en place votre site web, celui-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
 ## So watt ?

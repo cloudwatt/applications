@@ -163,9 +163,20 @@ parameters:
 
 ## Enjoy
 
- Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
+Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own LAMP server, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+You are now in possession of your own LAMP server, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+
+Here is the default homepage of your website:
+![DefaultHomepage](img/default-homepage.png)
+
+You can directly manage your database with phpMyAdmin:
+![pmaOverview](img/pma-overview.png)
+
+To upload new files reachable online, you can use a FTP client software as *FileZilla*:
+![FileZillaConnected](img/filezilla-connected.png)
+
+You can now setup your website, this one being hosted in France in a safe environment, you can completely trust on this product.
 
 ## So watt?
 
