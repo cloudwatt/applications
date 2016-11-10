@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   pass:
-    description: password root ftp and sql
+    description: "password ftp et sql (user: lamp)"
     type: string
     hidden: true
 
@@ -82,6 +82,11 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
+  random_root_pass:
+    type: OS::Heat::RandomString
+    properties:
+      length: 15
+
   server:
     type: OS::Nova::Server
     properties:
@@ -97,6 +102,7 @@ resources:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $pass: { get_param: pass }
+            $rootpass: { get_resource: random_root_pass }
           template: |
             #cloud-config
             write_files:
@@ -121,7 +127,9 @@ resources:
                 permissions: 0775
                 owner: "core:core"
                 content: |
-                    MYSQL_ROOT_PASSWORD=$pass
+                    MYSQL_ROOT_PASSWORD=$rootpass
+                    MYSQL_USER=lamp
+                    MYSQL_PASSWORD=$pass
                     MYSQL_DATABASE=lamp
             coreos:
               etcd2:
@@ -184,7 +192,7 @@ resources:
                              --publish=4563:4563 \
                              --publish=4564:4564 \
                              --volume /lamp/data/:/srv \
-                             --env FTP_USER=root \
+                             --env FTP_USER=lamp \
                              --env FTP_PASSWORD=$pass \
                              --name=vsftpd panubo/vsftpd:latest
                     ExecStop=/usr/bin/docker rm -f vsftpd
@@ -272,3 +280,10 @@ outputs:
         template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  root_password:
+    description: MySQL Root Password
+    value:
+      str_replace:
+        template: $rootpass
+        params:
+          $rootpass: { get_resource: random_root_pass }

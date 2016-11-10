@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: password root sql
+    description: "password sql (user: icescrum)"
     type: string
     hidden: true
 
@@ -79,6 +79,11 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
+  random_root_pass:
+    type: OS::Heat::RandomString
+    properties:
+      length: 15
+
   server:
     type: OS::Nova::Server
     properties:
@@ -94,6 +99,7 @@ resources:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $sqlpass: { get_param: sqlpass }
+            $rootpass: { get_resource: random_root_pass }
             $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           template: |
             #cloud-config
@@ -118,7 +124,9 @@ resources:
                 permissions: 0775
                 owner: "core:core"
                 content: |
-                    MYSQL_ROOT_PASSWORD=$sqlpass
+                    MYSQL_ROOT_PASSWORD=$rootpass
+                    MYSQL_USER=icescrum
+                    MYSQL_PASSWORD=$sqlpass
                     MYSQL_DATABASE=icescrum
             coreos:
               etcd2:
@@ -224,3 +232,10 @@ outputs:
         template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  root_password:
+    description: MySQL Root Password
+    value:
+      str_replace:
+        template: $rootpass
+        params:
+          $rootpass: { get_resource: random_root_pass }
