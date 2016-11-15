@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : Piwigo #
+# 5 Minutes Stacks, épisode 40 : Piwigo #
 
-## Episode X : Piwigo
+## Episode 40 : Piwigo
 
 ![Piwigologo](img/piwigologo.png)
 
