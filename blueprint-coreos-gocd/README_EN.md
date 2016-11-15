@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : GoCD #
+# 5 Minutes Stacks, episode 39 : GoCD #
 
-## Episode X : GoCD
+## Episode 39 : GoCD
 
 ![Gologo](img/gologo.png)
 
