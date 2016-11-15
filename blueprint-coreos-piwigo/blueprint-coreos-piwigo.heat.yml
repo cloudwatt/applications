@@ -1,0 +1,236 @@
+heat_template_version: 2013-05-23
+
+
+description: Blueprint CoreOS Piwigo
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+  sqlpass:
+    description: "password sql (user: piwigo)"
+    type: string
+    hidden: true
+
+  volume_attachment:
+    description: Attacher un volume cinder de 20GO ?
+    default: 0
+    type: string
+    constraints:
+      - allowed_values:
+          - 0
+          - 1
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  ports:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  random_root_pass:
+    type: OS::Heat::RandomString
+    properties:
+      length: 15
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1010.6
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+        - port: { get_resource: ports }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
+            $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $sqlpass: { get_param: sqlpass }
+            $rootpass: { get_resource: random_root_pass }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /home/core/format.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  eval $(sudo blkid /dev/vdb | awk '{print $3}')
+                  if [[ "$TYPE" != "ext4" ]]; then
+                    /usr/sbin/wipefs -f /dev/vdb
+                    /usr/sbin/mkfs.ext4 -F /dev/vdb
+                  fi
+              - path: /home/core/mount.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  sudo mkdir -p /opt/piwigo/mysql
+              - path: /home/core/mysql.env
+                permissions: 0775
+                owner: "core:core"
+                content: |
+                    MYSQL_ROOT_PASSWORD=$rootpass
+                    MYSQL_USER=piwigo
+                    MYSQL_PASSWORD=$sqlpass
+                    MYSQL_DATABASE=piwigo
+            coreos:
+              etcd2:
+                name: "%H"
+                advertise-client-urls: http://$private_ipv4:2379
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                initial-cluster: "%H=http://$private_ipv4:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+              units:
+                - name: format.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Formats the ephemeral drive
+                    After=dev-vdb.device
+                    Requires=dev-vdb.device
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/format.sh
+                - name: opt-piwigo.mount
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Mount ephemeral to /var/lib/docker
+                    Requires=format.service
+                    After=format.service
+                    [Mount]
+                    What=/dev/vdb
+                    Where=/opt/piwigo/
+                    Type=ext4
+                - name: piwigo-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Piwigo Mount
+                    After=opt-piwigo.mount
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/mount.sh
+                - name: mysql.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Piwigo DB
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull mysql:latest
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
+                             --env-file /home/core/mysql.env \
+                             --name=mysql mysql:latest
+                    ExecStop=/usr/bin/docker rm -f mysql
+                - name: piwigo.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Piwigo UI
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull simondecaestecker/piwigo:2.8.2
+                    ExecStartPre=-/usr/bin/docker create \
+                             --link mysql \
+                             --publish 80:80 \
+                             --name=piwigo simondecaestecker/piwigo:2.8.2
+                    ExecStart=/usr/bin/docker start piwigo
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+  cinder:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: volume_attachment }
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        properties:
+          server_id: { get_resource: server }
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip_url:
+    description: Piwigo URL
+    value:
+      str_replace:
+        template: http://$floating_ip
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  root_password:
+    description: MySQL Root Password
+    value:
+      str_replace:
+        template: $rootpass
+        params:
+          $rootpass: { get_resource: random_root_pass }
