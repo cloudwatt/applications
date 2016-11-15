@@ -126,9 +126,12 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
+                  echo "script-security 2" > /home/core/$user.ovpn
+                  echo "up /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
+                  echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
                   /usr/bin/docker run \
                       --volume /opt/openvpn/data/:/etc/openvpn \
-                      --rm simondecaestecker/openvpn ovpn_getclient $user > /home/core/$user.ovpn
+                      --rm simondecaestecker/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
             coreos:
               etcd2:
                 name: "%H"
@@ -170,6 +173,26 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
+                - name: openvpnconf.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=OpenVPN Configuration
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    ExecStartPre=/usr/bin/docker pull simondecaestecker/openvpn
+                    ExecStartPre=/usr/bin/docker run \
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env DOMAIN_NAME=$floating_ip \
+                             --env PASSPHRASE=$passphrase \
+                             --rm simondecaestecker/openvpn ovpn_init
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env PASSPHRASE=$passphrase \
+                             --env LOGIN=$user \
+                             --rm simondecaestecker/openvpn ovpn_mkuser
                 - name: openvpn.service
                   command: start
                   content: |
@@ -181,16 +204,6 @@ resources:
                     TimeoutStartSec=0
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull simondecaestecker/openvpn
-                    ExecStartPre=/usr/bin/docker run \
-                             --volume /opt/openvpn/data/:/etc/openvpn \
-                             --env DOMAIN_NAME=$floating_ip \
-                             --env PASSPHRASE=$passphrase \
-                             --rm simondecaestecker/openvpn ovpn_init
-                    ExecStartPre=/usr/bin/docker run \
-                             --volume /opt/openvpn/data/:/etc/openvpn \
-                             --env PASSPHRASE=$passphrase \
-                             --env LOGIN=$user \
-                             --rm simondecaestecker/openvpn ovpn_mkuser
                     ExecStart=/usr/bin/docker run \
                              --volume /opt/openvpn/data:/etc/openvpn \
                              --privileged \
