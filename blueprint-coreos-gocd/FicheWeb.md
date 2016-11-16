@@ -17,7 +17,7 @@ composants:
    version: "GoCD Server 16.10.0"
  - logo: ""
    version: "GoCD Agent 16.10.0"
-solutions: Ce blueprint GoCD est particulièrement utile pour les solutions Cloudwatt suivantes :
+solutions: "Ce blueprint GoCD est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
 prix: "Gratuit pour le blueprint + consommation à l'usage"
@@ -25,6 +25,6 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-trente-neuf-gocd.html
 install-url:
 comingsoon: false
-type: blueprint
-categories: ["dev&test"]
+type: modele
+categories: ["devtest"]
 ---
