@@ -172,6 +172,10 @@ Vous pouvez à présent mettre en place votre outil de déploiement, celui-ci é
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
+Quelques liens utiles:
+[Home GoCD](https://www.go.cd/)
+[Help GoCD](https://www.go.cd/help/)
+
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
 Un agent est déjà à votre disposition, vous pouvez en ajouter d'autres si nécessaire en indiquant l'adresse IP flottante du serveur ainsi que la clé de 15 caractères générée aléatoirement et disponible dans la console Cloudwatt.
