@@ -187,12 +187,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/php7-apache2
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/php7-apache2
                     ExecStart=/usr/bin/docker run \
                              --volume /piwik/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
-                             --name=apache2 simondecaestecker/php7-apache2
+                             --name=apache2 cloudwattfr/php7-apache2
                     ExecStop=/usr/bin/docker rm -f apache2
                 - name: piwik.service
                   command: start

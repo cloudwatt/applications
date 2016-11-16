@@ -131,7 +131,7 @@ resources:
                   echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
                   /usr/bin/docker run \
                       --volume /opt/openvpn/data/:/etc/openvpn \
-                      --rm simondecaestecker/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
+                      --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
             coreos:
               etcd2:
                 name: "%H"
@@ -182,17 +182,17 @@ resources:
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/openvpn
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
                     ExecStartPre=/usr/bin/docker run \
                              --volume /opt/openvpn/data/:/etc/openvpn \
                              --env DOMAIN_NAME=$floating_ip \
                              --env PASSPHRASE=$passphrase \
-                             --rm simondecaestecker/openvpn ovpn_init
+                             --rm cloudwattfr/openvpn ovpn_init
                     ExecStart=/usr/bin/docker run \
                              --volume /opt/openvpn/data/:/etc/openvpn \
                              --env PASSPHRASE=$passphrase \
                              --env LOGIN=$user \
-                             --rm simondecaestecker/openvpn ovpn_mkuser
+                             --rm cloudwattfr/openvpn ovpn_mkuser
                 - name: openvpn.service
                   command: start
                   content: |
@@ -203,12 +203,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/openvpn
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
                     ExecStart=/usr/bin/docker run \
                              --volume /opt/openvpn/data:/etc/openvpn \
                              --privileged \
                              --publish 1194:1194/udp \
-                             --name openvpn simondecaestecker/openvpn
+                             --name openvpn cloudwattfr/openvpn
                     ExecStop=/usr/bin/docker rm -f openvpn
                 - name: mkuser.service
                   command: start

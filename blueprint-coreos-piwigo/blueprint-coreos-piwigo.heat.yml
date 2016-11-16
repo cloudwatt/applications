@@ -194,11 +194,11 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/piwigo:2.8.2
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
                     ExecStartPre=-/usr/bin/docker create \
                              --link mysql \
                              --publish 80:80 \
-                             --name=piwigo simondecaestecker/piwigo:2.8.2
+                             --name=piwigo cloudwattfr/piwigo:2.8.2
                     ExecStart=/usr/bin/docker start piwigo
 
                     [Install]
