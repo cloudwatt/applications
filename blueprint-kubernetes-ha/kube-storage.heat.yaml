@@ -10,6 +10,18 @@ parameters:
   floating_network:
     label: floating_network
     type: string
+  os_username:
+    label: os_username
+    type: string
+  os_password:
+    label: os_password
+    type: string
+  os_tenant_name:
+    label: os_tenant
+    type: string
+  os_auth_url:
+    label: os_auth
+    type: string
   os_region:
     label: os_region
     type: string
@@ -55,7 +67,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: Coreos-1185.3
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -66,6 +78,10 @@ resources:
             $private_ipv4$: { get_attr: [ port, fixed_ips, 0, ip_address ] }
             $public_ipv4$: { get_attr: [ floating_ip, floating_ip_address] }
             $domain$: { get_param: domain }
+            $os_username$: { get_param: os_username }
+            $os_password$: { get_param: os_password }
+            $os_auth_url$: { get_param: os_auth_url }
+            $os_tenant_name$: { get_param: os_tenant_name }
             $os_region$: { get_param: os_region }
             $ceph$: { get_param: ceph }
             $token$: { get_param: token }
@@ -89,6 +105,15 @@ resources:
                   #!/bin/bash
                   NODE_NAME=$(hostname |cut -d '.' -f 1)
                   NODE_FQDN=$(hostname)
+                  cat <<EOF > /etc/pidalio.etcd.rclone.conf
+                  [remote]
+                  type = swift
+                  user = $os_username$
+                  key = "$os_password$"
+                  auth = $os_auth_url$
+                  tenant = $os_tenant_name$
+                  region = $os_region$
+                  EOF
                   cat <<EOF > /etc/pidalio.env
                   NODE_NAME=$NODE_NAME
                   NODE_FQDN=$NODE_FQDN
@@ -98,6 +123,7 @@ resources:
                   NODE_STORAGE=true
                   CEPH=$ceph$
                   CEPH_DISK=True
+                  CEPH_DISK_DEVICE=/dev/vdb
                   MONITORING=$monitoring$
                   ETCD_NODES=3
                   PEER="$peer$"
@@ -139,10 +165,23 @@ resources:
                   metadata: "region=$os_region$"
                   etcd_servers: "http://localhost:2379"
               units:
-                - name: update-engine.service
-                  command: stop
-                - name: locksmithd.service
-                  command: stop
+                - name: 50-docker.network
+                  mask: true
+                - name: 50-docker-veth.network
+                  mask: true
+                - name: zz-default.network
+                  runtime: false
+                  content: |
+                    # default should not match virtual Docker/weave bridge/veth network interfaces
+                    [Match]
+                    Name=eth*
+
+                    [Network]
+                    DHCP=yes
+
+                    [DHCP]
+                    UseMTU=true
+                    UseDomains=true
                 - name: etcd2.service
                   command: start
                   content: |
@@ -151,7 +190,6 @@ resources:
                     After=weave-network.target
                     Requires=weave-network.target
                     Conflicts=etcd.service
-
                     [Service]
                     EnvironmentFile=-/etc/weave.env
                     ExecStartPre=/opt/bin/weave expose
@@ -161,7 +199,6 @@ resources:
                     RestartSec=10s
                     LimitNOFILE=40000
                     TimeoutStartSec=5m
-
                     [Install]
                     WantedBy=multi-user.target
                 - name: fleet.service

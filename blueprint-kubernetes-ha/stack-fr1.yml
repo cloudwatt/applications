@@ -46,7 +46,6 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-          - n2.cw.highmem-2
   node_count:
     default: 3
     label: Node Count
@@ -71,6 +70,28 @@ parameters:
   peer:
     default: 10.1.1.10 10.1.1.11 10.1.1.12
     label: Peer
+    type: string
+
+  os_username:
+    description: OpenStack Username
+    label: OpenStack Username
+    type: string
+
+  os_password:
+    description: OpenStack Password
+    label: OpenStack Password
+    type: string
+    hidden: true
+
+  os_tenant_name:
+    description: OpenStack Tenant Name
+    label: OpenStack Tenant Name
+    type: string
+
+  os_auth_url:
+    description: OpenStack Auth URL
+    default: https://identity.fr1.cloudwatt.com/v2.0
+    label: OpenStack Auth URL
     type: string
 
 resources:
@@ -124,6 +145,10 @@ resources:
           network: { get_resource: network }
           keypair_name: { get_param: keypair_name }
           flavor_name: { get_param: flavor }
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant_name: { get_param: os_tenant_name }
+          os_auth_url: { get_param: os_auth_url }
           os_region: fr1
           ceph: { get_param: ceph }
           monitoring: { get_param: monitoring }
@@ -145,6 +170,10 @@ resources:
           network: { get_resource: network }
           keypair_name: { get_param: keypair_name }
           flavor_name: { get_param: flavor }
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant_name: { get_param: os_tenant_name }
+          os_auth_url: { get_param: os_auth_url }
           os_region: fr1
           ceph: { get_param: ceph }
           monitoring: { get_param: monitoring }

@@ -74,9 +74,9 @@ if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} ${NAME}
+  time heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} ${NAME}
 else
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} -P peer=${PEER} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} -P peer="$PEER" ${NAME}
 fi
 
 until heat stack-show ${NAME} 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'
