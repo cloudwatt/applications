@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : GoCD #
+# 5 Minutes Stacks, épisode 39 : GoCD #
 
-## Episode X : GoCD
+## Episode 39 : GoCD
 
 ![Gologo](img/gologo.png)
 
@@ -171,6 +171,10 @@ Vous pouvez à présent mettre en place votre outil de déploiement, celui-ci é
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
+
+Quelques liens utiles:
+[Home GoCD](https://www.go.cd/)
+[Help GoCD](https://www.go.cd/help/)
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 

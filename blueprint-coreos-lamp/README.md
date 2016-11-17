@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : LAMP #
+# 5 Minutes Stacks, épisode 42 : LAMP #
 
-## Episode X : LAMP
+## Episode 42 : LAMP
 
 ![LAMPlogo](img/lamplogo.gif)
 

@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : GoCD #
+# 5 Minutes Stacks, episode 39 : GoCD #
 
-## Episode X : GoCD
+## Episode 39 : GoCD
 
 ![Gologo](img/gologo.png)
 
@@ -161,13 +161,17 @@ parameters:
 
 ## Enjoy
 
- Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
+Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of GoCD, you can enter via the URL `http://ip-floatingip:8153`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+You are now in possession of GoCD, you can enter via the URL `http://ip-floatingip:8153`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
 ## So watt?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
+
+Some useful links:
+[Home GoCD](https://www.go.cd/) 
+[Help GoCD](https://www.go.cd/help/)
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
