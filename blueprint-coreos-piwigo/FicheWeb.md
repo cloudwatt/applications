@@ -14,7 +14,7 @@ composants:
  - logo: ""
    version: "CoreOS Stable 899.13.0"
  - logo: ""
-   version: Piwigo 2.8.2""
+   version: "Piwigo 2.8.2"
 solutions: "Ce blueprint Piwigo est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Sauvegarde et Archivage"
