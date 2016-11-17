@@ -12,7 +12,7 @@ siteofficiel: https://www.go.cd/
 sitesupport: https://www.go.cd/help/
 composants:
  - logo: ""
-   version: "CoreOS Stable 899.13.0"
+   version: "CoreOS Stable 1010.6"
  - logo: ""
    version: "GoCD Server 16.10.0"
  - logo: ""
