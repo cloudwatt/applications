@@ -12,7 +12,7 @@ siteofficiel: http://www.piwigo.org/
 sitesupport: http://www.piwigo.org/doc/
 composants:
  - logo: ""
-   version: "CoreOS Stable 899.13.0"
+   version: "CoreOS Stable 1010.6"
  - logo: ""
    version: "Piwigo 2.8.2"
 solutions: "Ce blueprint Piwigo est particulièrement utile pour les solutions Cloudwatt suivantes :"
