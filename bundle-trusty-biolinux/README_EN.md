@@ -1,6 +1,6 @@
-## 5 Minutes Stacks, episode 39 BioLinux 8 #
+## 5 Minutes Stacks, episode 41 BioLinux 8 #
 
-## Episode 39 : BioLinux 8
+## Episode 41 : BioLinux 8
 
 ![logo](images/Biolinux.png)
 
