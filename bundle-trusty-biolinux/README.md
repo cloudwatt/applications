@@ -4,7 +4,7 @@
 
 ![logo](images/Biolinux.png)
 
-Bio-Linux 8 est une plate-forme puissante bioinformatique libres, poste de travail qui peut être installé sur quoi que ce soit à partir d'un ordinateur portable à un gros serveur, ou courir comme une machine virtuelle. Bio-Linux 8 ajoute plus de 250 paquets de bioinformatique à une base LTS Ubuntu Linux 14.04, fournissant environ 50 applications graphiques et plusieurs centaines d'outils de ligne de commande. L'environnement Galaxy pour l'analyse basée sur le navigateur des données et la construction de workflow est également incorporé dans Bio-Linux 8.
+Bio-Linux 8 est une plate-forme open source bioinformatique puissante, qui peut être installée depuis un large PC jusqu'à un serveur ou dans le cloud sur une machine virtuelle. Bio-Linux 8 ajoute plus de 250 paquets de bioinformatique à une base Linux Ubuntu 14.04 LTS, fournissant environ 50 applications graphiques et plusieurs centaines d'outils de ligne de commande. L'environnement Galaxy pour l'analyse basée sur le navigateur des données et la construction de workflow est également incorporé dans Bio-Linux 8.
 
 
 ### Les versions
