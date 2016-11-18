@@ -169,25 +169,25 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous etes maintenant en possession de votre propre serveur de cloud. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+Vous êtes maintenant en possession de votre propre serveur de cloud. Vous pouvez y accéder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console Horizon Cloudwatt.
 
-Lors de votre première connexion owncloud vous demandera de saisir les informations de la base de donnée ainsi qu'un compte de connexion:
+Lors de votre première connexion OwnCloud vous demandera de saisir les informations de la base de donnée ainsi qu'un compte de connexion:
 
-Le compte par defaut est : user : `admin`, mot de passe : `admin`.
-Côté base de donnée c'est un mysql qui est utilisé ici, remplisser à présent les champs comme ci dessous,
+Le compte par défaut est : user : `admin`, mot de passe : `admin`.
+Côté base de donnée c'est un mysql qui est utilisé ici, remplissez à présent les champs comme ci dessous,
 
 ![firstco](img/firstco.png)
 
-Un conseil : changez dès la première connexion votre mot de passe admin.
+Un conseil : changer dès la première connexion votre mot de passe admin.
 
-Vous pouvez à présent télécharger l'application owncloud et faire une synchronisation de vos données avec votre owncloud, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez faire une totale confiance dans ce produit.
+Vous pouvez à présent télécharger l'application owncloud et faire une synchronisation de vos données avec votre owncloud, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez avoir une totale confiance dans ce produit.
 
 ![welcome](img/welcome.png)
 
 ### Intégration Swift
 
 Swift est un stockage objet HA et distribué. Swift sert à stocker beaucoup de données efficacement, en toute sécurité, et à moindre coût chez Cloudwatt.
-Owncloud vous donne la possibilité de crée un dossier relier directement à notre infrastructure Openstack via son composant Swift.
+Owncloud vous donne la possibilité de créer un dossier relié directement à notre infrastructure Openstack via son composant Swift.
 
 Voici comment faire :
 
@@ -208,11 +208,11 @@ Voici comment faire :
 
 ![stoext](img/stoext.png)
 
-* Donner un nom à votre dossier ici `Owncloud` et definissez ensuite le type de stockage `OpenStack Object Storage`
+* Donner un nom à votre dossier ici `Owncloud` et définissez ensuite le type de stockage `OpenStack Object Storage`
 
 ![swiftconf](img/swiftconf.png)
 
-* Remplir les champs demander avec les eléments de votre tenant Cloudwatt
+* Remplir les champs demandés avec les éléments de votre tenant Cloudwatt
     *  Nom du service : swift
     *  Région : la région Openstack du conteneur, `FR1`
     *  Bucket : nom du conteneur
@@ -223,10 +223,10 @@ Voici comment faire :
     *  Temps maximal : timeout de requête http, non nécessaire
 
 
-* Une fois l'ensemble des informations correctement entrée une pastille verte doit apparaitre.
+* Une fois l'ensemble des informations correctement entrées, une pastille verte doit apparaitre.
 ![idok](img/idok.png)
 
-* Vous pouvez maintenant synchroniser vos fichiers dans un conteneur swift hebergé par Cloudwatt.
+* Vous pouvez maintenant synchroniser vos fichiers dans un conteneur swift hebergé sur Cloudwatt.
 
 ![addswift](img/addswift.png)
 ![swiftcw](img/swiftcw.png)
