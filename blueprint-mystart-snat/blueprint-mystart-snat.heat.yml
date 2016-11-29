@@ -1,0 +1,127 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+description: Template blueprint-mystart.
+
+parameters:
+  keypair_name_prefix:
+    default: mykeypair
+    type: string
+    label: key Name prefix
+    description: the keypair name.
+  net_cidr:
+    default: 192.168.1.0/24
+    type: string
+    label: /24 cidr of your network
+    description: /24 cidr of private network
+
+resources:
+  keypair:
+    type: OS::Nova::KeyPair
+    properties:
+      name:
+        str_replace:
+          template: $prefix-$stack
+          params:
+             $prefix: { get_param: keypair_name_prefix }
+             $stack : { get_param: "OS::stack_name" }
+      save_private_key: true
+
+  sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP }
+        - { direction: ingress, protocol: UDP }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+      name:
+        str_replace:
+           template: start-sg-$stack
+           params:
+               $stack: { get_param: 'OS::stack_name' }
+
+
+  network:
+    type: OS::Neutron::Net
+    properties:
+      admin_state_up: true
+      name:
+        str_replace:
+            template: start-net-$stack
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: { get_param: net_cidr }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: net_cidr} ] }
+      allocation_pools:
+        - start: { "Fn::Replace": [ {'.0/24': '.2'}, {get_param: net_cidr} ] }
+          end: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: net_cidr} ] }
+      name:
+        str_replace:
+            template: start-subnet-$stack
+            params:
+                $stack: { get_param: 'OS::stack_name' }
+
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet }
+
+
+outputs:
+   url_download_keypairs:
+     description: URL for downloading your private key
+     value:
+       str_replace:
+         template: https://console.cloudwatt.com/project/access_and_security/keypairs/$prefix-$stack/download/
+         params:
+           $prefix: { get_param: keypair_name_prefix }
+           $stack : { get_param: "OS::stack_name" }
+
+   keypair_name:
+      description: Your key pair name
+      value:
+         str_replace:
+           template: $prefix-$stack
+           params:
+              $prefix: { get_param: keypair_name_prefix }
+              $stack : { get_param: "OS::stack_name" }
+
+   net_name:
+      description: Network name
+      value:
+           str_replace:
+               template: start-net-$stack
+               params:
+                   $stack: { get_param: 'OS::stack_name' }
+   Sg_name:
+      description:  Security Groupe name
+      value:
+        str_replace:
+           template: start-sg-$stack
+           params:
+               $stack: { get_param: 'OS::stack_name' }
