@@ -1,0 +1,194 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+description: All-in-one Mail stack
+
+parameter_groups:
+ - label: General parameters
+   parameters:
+     - keypair_name
+     - flavor_name
+ - label: Mail parameters
+   parameters:
+     - hostname
+     - mail_domain
+     - admin_pass
+
+
+ - label: Relay smtp parameters
+   parameters:
+     - smtp_server
+     - smtp_username
+     - smtp_password
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+  admin_pass:
+    description: admin password
+    label: admin password
+    type: string
+    hidden: true
+  mail_domain:
+    description: mail domain
+    label: mail domain
+    type: string
+  hostname:
+     description: host name machine
+     label: hostname
+     type: string
+     default: mail
+  smtp_server:
+     description: smtp server Mailjet or SenGrid
+     label: relay SMTP
+     type: string
+  smtp_username:
+     description: Username (API Key)
+     label: Username (API Key)
+     type: string
+  smtp_password:
+     description: Password (Secret Key)
+     label: Password (Secret Key)
+     type: string
+     hidden: true
+  flavor_name:
+    default: n2.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Openstack Flavor
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.250.0/24
+      allocation_pools:
+        - { start: 10.0.250.100, end: 10.0.250.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 25, port_range_max: 25 }
+        - { direction: ingress, protocol: TCP, port_range_min: 143, port_range_max: 143 }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  cloud_init:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+          #cloud-config
+          hostname: { get_param: hostname }
+          fqdn:
+             str_replace:
+             template: $hostname.$mail_domain
+             params:
+                 $hostname: { get_param: hostname }
+                 $mail_domain: { get_param: mail_domain }
+          manage_etc_hosts: true
+
+  postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+         str_replace:
+          template: |
+                  #!/bin/bash
+                  ip=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4 | awk -F"," '{print $1}')
+                  sudo echo "$ip $(hostname -f) $(hostname)" >/etc/hosts
+                  sudo mkdir /etc/ansible/
+                  sudo cat << EOF > /etc/ansible/mail-vars.yml
+                  ---
+                  mysql_mailuser_password: '$admin_pass'
+                  password_admin: '$admin_pass'
+                  email_admin: 'admin@$mail_domain'
+                  mail_domain: '$mail_domain'
+                  smtp_server: '$smtp_server'
+                  smtp_username: '$smtp_username'
+                  smtp_password: '$smtp_password'
+                  EOF
+                  ansible-playbook ~cloud/conf.yml -e @/etc/ansible/mail-vars.yml
+
+          params:
+                $admin_pass: { get_param: admin_pass }
+                $mail_domain: { get_param: mail_domain }
+                $smtp_server: { get_param: smtp_server }
+                $smtp_username: { get_param:  smtp_username }
+                $smtp_password: { get_param: smtp_password }
+
+  server_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: {get_resource: cloud_init}
+      - config: {get_resource: postboot}
+
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 37ea20b3-7559-4023-8237-7bc1d6cbe35a
+      flavor: { get_param: flavor_name }
+      name:
+        str_replace:
+            template: $hostname.$mail_domain
+            params:
+                $hostname: { get_param: hostname }
+                $mail_domain: { get_param: mail_domain }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_init
+
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip_url:
+    description: WEBMAIL URL
+    value:
+      str_replace:
+        template: http://$hostname.$mail_domain
+        params:
+           $hostname: { get_param: hostname }
+           $mail_domain: { get_param: mail_domain }
