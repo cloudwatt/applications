@@ -1,7 +1,7 @@
 #!/usr/local/bin/php -f
 <?php
 
-# PROVIDE: cw_setup
+# PROVIDE: cw_setup.sh
 ### Written by the CAT (Cloudwatt Automation Team)
 #/usr/local/etc/rc.d/cw_setup.sh
 require("globals.inc");
@@ -28,20 +28,6 @@ function retrieveMetaData($url) {
         return($metadata);
 }
 
-function retrievePublicIP() {
-
-	$wanintf = get_real_wan_interface();
-
-	$url = "http://169.254.169.254/latest/meta-data/public-ipv4";
-	$public_ipv4 = retrieveMetaData($url);
-
-	if (is_ipaddrv4($public_ipv4)) {
-		$natipfile = "/var/db/natted_{$wanintf}_ip";
-		file_put_contents($natipfile, $public_ipv4);
-
-	}
-
-}
 
 function addSSHkey(){
 
@@ -49,40 +35,116 @@ $key=retrieveMetaData("http://169.254.169.254/latest/meta-data/public-keys/0/ope
 shell_exec ('echo "' . $key .'">>~/.ssh/authorized_keys');
 
 }
+
 ####main#################################
+
 
 $tmp=retrieveMetaData("http://169.254.169.254/openstack/latest/user_data");
 parse_str($tmp);
 parse_config(true);
 
+$config['system']['hostname'] = $hostname;
+$config['system']['domain'] = $domain;
+$config['system']['dnsserver']['0'] = '185.23.94.244';
+$config['system']['dnsserver']['1'] = '185.23.94.245';
+
+
+$config['interfaces']['wan']['enable'] = 'true';
+$config['interfaces']['wan']['if'] = 'vtnet0';
+$config['interfaces']['wan']['descr'] = 'WAN';
+$config['interfaces']['wan']['ipaddr'] = 'dhcp';
+
+
 if($config['interfaces']['lan']['ipaddr'] != $ip_lan)
 {
+
 addSSHkey();
-#retrievePublicIP();
 $config['interfaces']['lan']['enable'] = true;
+$config['interfaces']['lan']['if'] = 'vtnet1';
+$config['interfaces']['lan']['descr'] = 'LAN';
 $config['interfaces']['lan']['ipaddr']= $ip_lan;
-$config['interfaces']['lan']['subnet']= $netmask;
-$c=count($config['gateways']['gateway_item']);
-$k=$c + 1;
-$config['gateways']['gateway_item'][$c] = array('interface'=>'lan', 'gateway'=>$ip_gateway, 'name'=>'GW_LAN_'.$k,'weight'=>1,'ipprotocol'=>'inet','interval'=>'','descr'=>'Interface lan Gateway');
-$config['interfaces']['lan']['gateway']= 'GW_LAN_'.$k;
-$config['dhcpd']['lan']['enable'] = true;
-$config['dhcpd']['lan']['range']['from']=$dhcp_to;
-$config['dhcpd']['lan']['range']['to']=$dhcp_from;
+$config['interfaces']['lan']['subnet']= 24;
+
+###conf synnc interface
+
+
+if($type) {
+
+$config['interfaces']['pfsync']['enable'] = 'true';
+$config['interfaces']['pfsync']['if'] = 'vtnet2';
+$config['interfaces']['pfsync']['descr'] = 'PFSYNC';
+$config['interfaces']['pfsync']['ipaddr'] = $ip_sync ;
+$config['interfaces']['pfsync']['subnet'] = 24;
+
+$config['filter']['rule']['2']['type'] = 'pass';
+$config['filter']['rule']['2']['interface'] = 'pfsync';
+$config['filter']['rule']['2']['ipprotocol'] = 'inet';
+$config['filter']['rule']['2']['tracker']= '0100000103';
+$config['filter']['rule']['2']['source']['any']= '';
+$config['filter']['rule']['2']['destination']['any'] = '';
+$config['filter']['rule']['2']['descr'] = 'Allow PFSYNC';
+
+
+$config['hasync']['pfsyncenabled'] = 'on';
+$config['hasync']['pfsyncpeerip'] = $ip_peer;# ip backup or master
+$config['hasync']['pfsyncinterface'] = 'pfsync';
+
+$config['hasync']['synchronizeusers'] = 'on';
+$config['hasync']['synchronizeauthservers'] = 'on';
+$config['hasync']['synchronizecerts'] = 'on';
+$config['hasync']['synchronizerules'] = 'on';
+$config['hasync']['synchronizeschedules'] = 'on';
+$config['hasync']['synchronizealiases'] = 'on';
+$config['hasync']['synchronizenat'] = 'on';
+$config['hasync']['synchronizeipsec'] = 'on';
+$config['hasync']['synchronizeopenvpn'] = 'on';
+$config['hasync']['synchronizedhcpd'] = 'on';
+$config['hasync']['synchronizewol'] = 'on';
+$config['hasync']['synchronizestaticroutes'] = 'on';
+$config['hasync']['synchronizelb'] = 'on';
+$config['hasync']['synchronizevirtualip'] = 'on';
+$config['hasync']['synchronizetrafficshaper'] = 'on';
+$config['hasync']['synchronizetrafficshaperlimiter'] = 'on';
+$config['hasync']['synchronizetrafficshaperlayer7'] = 'on';
+$config['hasync']['synchronizednsforwarder'] = 'on';
+$config['hasync']['synchronizecaptiveportal'] = 'on';
 
 
 
-	/* to save out the new configuration (config.xml) */
-	write_config();
-  log_error("rc.reload_all: Reloading all configuration settings.");
-  shell_exec('/etc/rc.reload_all');
-  wait(10);
- #shell_exec('pfSsh.php playback enableallowallwan');
-  shell_exec('/etc/rc.initial');
+
+if($type == 'MASTER') {
+
+$config['virtualip']['vip']['0']['mode'] = 'carp';
+$config['virtualip']['vip']['0']['interface'] = 'lan';
+$config['virtualip']['vip']['0']['vhid'] = '1';
+$config['virtualip']['vip']['0']['advskew'] = '0';
+$config['virtualip']['vip']['0']['advbase'] = '1';
+$config['virtualip']['vip']['0']['password'] = 'pfsense';
+$config['virtualip']['vip']['0']['descr'] = '';
+$config['virtualip']['vip']['0']['type'] = 'single';
+$config['virtualip']['vip']['0']['subnet_bits'] = '24';
+$config['virtualip']['vip']['0']['subnet'] = $vip_lan; #vip lan
+
+
+$config['hasync']['synchronizetoip'] = $ip_peer;
+$config['hasync']['username'] = 'admin';
+$config['hasync']['password'] = 'pfsense';
+
+                    }
+}
+
+shell_exec('rm -rf /tmp/config.cache');
+write_config();
+shell_exec('/etc/rc.reload_all');
+exit();
+
+
 }
 
 else
 
-  echo('This configuration is already existed');
+echo('This configuration is already existed');
+exit();
+
 
 ?>

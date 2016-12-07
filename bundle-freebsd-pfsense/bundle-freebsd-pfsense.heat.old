@@ -26,11 +26,12 @@ parameters:
         - n2.cw.highmem-4
         - n2.cw.highmem-8
         - n2.cw.highmem-16
-  flavor_name_client:
+
+  flavor_name_admin:
       default: t1.cw.tiny
       description: Flavor to use for the deployed instance
       type: string
-      label: Flavor for clients and admin machine
+      label: Flavor for Admin
       constraints:
         - allowed_values:
           - t1.cw.tiny
@@ -68,7 +69,6 @@ resources:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: public_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: public_net_cidr} ] }
 
-
   privatenet:
     type: OS::Neutron::Net
 
@@ -77,32 +77,37 @@ resources:
     properties:
       network_id: { get_resource: privatenet }
       ip_version: 4
-      enable_dhcp: True
       cidr: { get_param: private_net_cidr }
-      host_routes:
-        - destination: 0.0.0.0/0
-          nexthop: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-        - destination: 169.254.169.254/32
-          nexthop: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
 
-  clients_sg:
+  admin_sg:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
 
 
-  admin_floating_ip:
-    type: OS::Neutron::FloatingIP
+
+  fw_sg:
+    type: OS::Neutron::SecurityGroup
     properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
 
 
   fw_floating_ip:
@@ -110,18 +115,10 @@ resources:
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
-  fw_sg:
-    type: OS::Neutron::SecurityGroup
+  admin_floating_ip:
+    type: OS::Neutron::FloatingIP
     properties:
-      rules:
-        - { direction: ingress, protocol: TCP }
-        - { direction: ingress, protocol: UDP }
-        - { direction: ingress, protocol: ICMP }
-        - { direction: egress, protocol: ICMP }
-        - { direction: egress, protocol: TCP }
-        - { direction: egress, protocol: UDP }
-
-
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
   fw_postboot:
     type: OS::Heat::SoftwareConfig
@@ -129,17 +126,43 @@ resources:
       config:
          str_replace:
            template: |
-                ip_lan=$ip_lan$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&hostname=$name$&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$
+
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
                $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
                $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
-               $name$: { get_param: 'OS::stack_name' }
+
+
+
   fw_init:
     type: OS::Heat::MultipartMime
     properties:
       parts:
         - config: { get_resource: fw_postboot  }
+
+  admin_postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+
+            ip route add default via $route$
+            apt-get install -y lynx
+
+          params:
+            $route$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: public_net_cidr} ] }
+            $floating_ip$: { get_attr: [admin_floating_ip, floating_ip_address] }
+            $public_net_cidr$: { get_param: public_net_cidr }
+
+  admin_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+        - config: { get_resource: admin_postboot  }
 
   fw_public_port:
     type: OS::Neutron::Port
@@ -151,8 +174,6 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: privatenet }
-      allowed_address_pairs:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
@@ -162,7 +183,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: dd162fa3-a386-45a6-8737-3cce42aab014
+      image: 0635b197-4975-412e-bd21-1abcef503289
       flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: fw_public_port }
@@ -171,40 +192,33 @@ resources:
       user_data:
         get_resource: fw_postboot
 
+  admingw:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: Ubuntu 14.04
+      flavor: { get_param: flavor_name_admin }
+      networks:
+        - { network: { get_resource: privatenet } }
+      security_groups:
+        - { get_resource: admin_sg }
+      user_data_format: RAW
+      user_data:
+        get_resource: admin_init
+
+  admingw_internet_surface:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: admin_floating_ip }
+      server_id: { get_resource: admingw}
+
   fw_floating_ass:
     type: OS::Neutron::FloatingIPAssociation
     properties:
       floatingip_id: { get_resource: fw_floating_ip }
       port_id: { get_resource: fw_public_port }
 
-
-  admin:
-    type: OS::Nova::Server
-    depends_on: firewall
-    properties:
-      key_name: { get_param: keypair_name }
-      image: Ubuntu 14.04
-      flavor: { get_param: flavor_name_client }
-      networks:
-        - { network: { get_resource: privatenet } }
-      security_groups:
-        - { get_resource: clients_sg }
-      user_data_format: RAW
-      user_data: |
-            #!/bin/bash
-            sudo apt-get install -y lynx
-
-  admingw_internet_surface:
-    type: OS::Nova::FloatingIPAssociation
-    properties:
-      floating_ip: { get_resource: admin_floating_ip }
-      server_id: { get_resource: admin}
-
-
 outputs:
-  fw_floating_ip:
-    description: IP address of Pfsense
-    value: { get_attr: [fw_floating_ip, floating_ip_address] }
   admin_floating_ip:
-      description: IP address of Admin Machine
-      value: { get_attr: [admin_floating_ip, floating_ip_address] }
+    description: IP address of the deployed compute instance
+    value: { get_attr: [admin_floating_ip, floating_ip_address] }

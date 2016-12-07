@@ -4,16 +4,16 @@
 
 ![pfsenselogo](http://actuto.azurewebsites.net/wp-content/uploads/2014/10/pfsense-logo.png)
 
-pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
+pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense et la deuxième servant à l'administration de Pfsense, basée sur Ubuntu. Voici le schéma d'architecture.
 
 ![pfsense_schema](img/pfsense.png)
 
 ## Preparations
 
 ### Les versions
-  - Pfsense 2.2.6
+  - Pfsense 2.3
   - Ubuntu Trusty 14.04
 
 ### Les pré-requis pour déployer cette stack
@@ -28,7 +28,7 @@ Ceci devrait être une routine à présent:
 ### Taille de l'instance
 Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-Vous pouvez ajuster les parametres de la stack à votre goût.
+Vous pouvez ajuster les paramètres de la stack à votre goût.
 
 ### Au fait...
 
@@ -52,38 +52,71 @@ Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, pu
 
 Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
 
- ~~~ bash
+~~~ bash
  $ source COMPUTE-[...]-openrc.sh
  Please enter your OpenStack Password:
-
- ~~~
+~~~
 
 Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-freebsd-pfsense.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+Dans le fichier `bundle-freebsd-pfsense.heat.yml` vous trouverez en haut une section `parameters`. Afin de pouvoir déployer votre stack sans problèmes, il faut compléter l'ensemble des paramètres ci-dessous.
+C'est dans ce même fichier que vous pouvez ajuster la taille des instances par les paramètres `flavor_name_fw` et `flavor_name_client`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
-
-
-description: All-in-one Pfsense stack
-
 
 parameters:
   keypair_name:
-     default: my-keypair-name                   <-- Rajoutez cette ligne avec le nom de votre paire de clés
-     description: Keypair to inject in instance
-     label: SSH Keypair
-     type: string
+    description: Keypair for IPSEC server access
+    label: SSH Keypair
+    type: string
 
-   flavor_name:
-     default: n2.cw.standard-1
-     description: Flavor to use for the deployed instance
-     type: string
-     label: Instance Type (Flavor)
+  flavor_name_fw:
+    default: n2.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Flavor for Pfsense
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+  flavor_name_client:
+      default: t1.cw.tiny
+      description: Flavor to use for the deployed instance
+      type: string
+      label: Flavor for clients and admin machine
+      constraints:
+        - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-16
+
+  public_net_cidr:
+    description: /24 cidr of public network
+    type: string
+
+
+  private_net_cidr:
+    description: /24 cidr of private network
+    type: string
  [...]
  ~~~
 ### Démarrer la stack
@@ -125,14 +158,14 @@ $ heat resource-list Pfsense
 | firewall                 | 94c3797e-760a-4d65-8bb4-b5ed50866b43                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:51Z |
 | admingw                  | 88aeceff-e7b8-4ada-a92e-d3dd7c5afcc2                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:53Z |
 | fw_floating_ass          | abb864b2-ca78-444a-a142-6223f1083264:2642a85e-1f92-4398-b136-8db010dabdb8 | OS::Neutron::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-18T13:39:54Z |
-| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`flotting_ip_admin`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
+| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`admin_floating_ip`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
 +--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
 
 ~~~
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
-* `flotting_ip_admin` est la flotting Ip de la machine Admin.  
+* Démarrer une instance basée sur Ubuntu Trusty, afin de pouvoir administrer votre Pfsense et lui associer une FloatingIP que vous retrouverez via le paramètre `admin_floating_ip`.
 
 <a name="console" />
 
@@ -144,14 +177,13 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur pfsense:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-freebsd-pfsense](https://github.com/cloudwatt/applications/tree/master/bundle-freebsd-pfsense)
 2.	Cliquez sur le fichier nommé `bundle-freebsd-pfsense.heat.yml`
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
+3.	Cliquez sur RAW, une page web apparaît avec le détail du script.
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
-10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+8.	Renseignez l'ensemble des paramètres demandés
+9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
@@ -163,12 +195,12 @@ Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseau
 Vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04) en tapant la commande suivante sur le terminal
 
 ~~~bash
-$ lynx http://private_ip_pfsense
+$ lynx https://private_ip_pfsense
 ~~~
 
 ![lynx](img/lynx.png)
 
-pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
+Pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
 
 ![lynx1](img/lynx2.png)
 
@@ -176,18 +208,18 @@ pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
 Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez aussi utiliser une machine windows,
 sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
 
-1) Tapez la commande suivante dans la machine Admin(ubuntu)
+1) Tapez la commande suivante dans la machine Admin (ubuntu)
 
 ~~~bash
-$ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+$ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 443:localhost:443 -i private_key
 ~~~
 
-dans ce cas il faut utliser votre clé privée.
+Dans ce cas il faut utliser votre clé privée.
 
-ou
+Ou
 
 ~~~bash
-$ sudo ssh private_ip_pfsense -l root -L 80:localhost:80
+$ sudo ssh private_ip_pfsense -l root -L 443:localhost:443
 ~~~
 
 le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
@@ -195,10 +227,10 @@ le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
 ~~~bash
-$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:443
 ~~~
 
-3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
+3) Puis vous pouvez administrer votre pfsense en tapant cet url `https://localhost:5555` dans le navigateur
 
 avec **username:admin** et **password:pfsense**.
 
@@ -207,6 +239,13 @@ avec **username:admin** et **password:pfsense**.
 Maintenant vous pouvez configurer votre firewall:
 
 ![pfsense2](img/pfsense2.png)
+
+Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense, vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**.
+
+![pfsense3](img/pfsense3.png)
+
+Si cela ne corrige pas le problème, nous vous rappelons que la bande passante des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+Pour connaître la bande passante de nos flavors [Cliquez-ici](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
 
 ------
 ## So watt ?
