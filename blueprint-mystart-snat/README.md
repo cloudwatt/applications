@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 31 : MyStart #
+# 5 Minutes Stacks, épisode 44 : MyStart snat #
 
-## Episode 31 : MyStart
+## Episode 44 : MyStart snat
 
 Cette stack vous permet d'intialiser votre tenant par la création rapide d'une keypair, d'un réseau, d'un security group et d'un routeur de type SNAT (qui a accès à internet). Ces ressources sont des pré-requis pour la création d'instances dans le cloud.
 
@@ -22,7 +22,7 @@ Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du 
 Et bien si ! En utilisant la console, vous pouvez déployer votre kit de démarrage :
 
 1.	Allez sur le Github Cloudwatt dans le répertoire
-[applications/blueprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart)
+[applications/blueprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart-snat)
 2.	Cliquez sur le fichier nommé `blueprint-mystart-snat.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
@@ -43,7 +43,8 @@ Puis cliquez sur `Download key pair "prefix-nom_votre_stack"`.
 Maintenant vous pouvez lancer votre première instance
 
 ### Autres sources pouvant vous intéresser:
-* [ Openstack Home page](https://www.openstack.org/)
+* [Openstack Home page](https://www.openstack.org/)
+* [Cloudwatt Home page](https://www.cloudwatt.com/fr/)
 
 ----
 Have fun. Hack in peace.
