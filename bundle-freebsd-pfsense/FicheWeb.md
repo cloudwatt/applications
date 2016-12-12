@@ -5,14 +5,14 @@ title: "PfSense"
 url: pfsense.html
 date: 2016-04-05 00:00:00
 date-creation: "5 avril 2016"
-date-maj: "5 avril 2016"
-description: "pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires."
+date-maj: "13 Décembre 2016"
+description: "pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires. Cette stack va déployer 2 instances: l'une portant l'application Pfsense et la deuxième servant à l'administration de Pfsense, basée sur Ubuntu."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-freebsd-pfsense
 siteofficiel: https://www.pfsense.org/
 sitesupport: https://forum.pfsense.org
 composants:
  - logo: ""
-   version: "Pfsense 2.2.6"
+   version: "Pfsense 2.3"
  - logo: ""
    version: "Ubuntu Trusty 14.04"
 solutions: PfSense est particulièrement utile pour les solutions Cloudwatt suivantes :
