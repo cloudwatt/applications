@@ -131,8 +131,11 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 1723, port_range_max: 1723 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: 47 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress }
 
