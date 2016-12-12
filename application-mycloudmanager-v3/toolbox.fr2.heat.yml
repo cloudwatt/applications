@@ -142,7 +142,7 @@ resources:
       min_size: { get_param: node_count }
       max_size: 20
       resource:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_67776479fd524682899ed9931dd1a742/kube-ha/kube-node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v3/kube-node.heat.yaml
         properties:
           vpn_username: { get_resource: vpn_username }
           vpn_password: { get_resource: vpn_password }
