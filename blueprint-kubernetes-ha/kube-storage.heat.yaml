@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2014-10-16
 
 parameters:
   token:
@@ -67,7 +67,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: Coreos-1185.3
+      image: CoreOS Stable 1010.6
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -109,7 +109,7 @@ resources:
                   [remote]
                   type = swift
                   user = $os_username$
-                  key = "$os_password$"
+                  key = $os_password$
                   auth = $os_auth_url$
                   tenant = $os_tenant_name$
                   region = $os_region$
@@ -150,11 +150,6 @@ resources:
                     /usr/bin/fleetctl start /opt/pidalio/kube/units/master/pidalio-scheduler.service
                     /usr/bin/fleetctl start /opt/pidalio/kube/units/pidalio-proxy.service
                     /usr/bin/fleetctl start /opt/pidalio/kube/units/pidalio-node.service
-                    for peer in $(/opt/bin/weave report | /usr/bin/jq -r '.IPAM.Entries | unique_by(.Peer) | .[] | select(.IsKnownPeer==false) | .Peer')
-                    do
-                      /opt/bin/weave rmpeer $peer
-                    done
-                    /usr/bin/docker rm pidalio pidalio-apiserver 2> /dev/null
                     sleep 60
                   done
             coreos:
@@ -165,6 +160,10 @@ resources:
                   metadata: "region=$os_region$"
                   etcd_servers: "http://localhost:2379"
               units:
+                - name: update-engine.service
+                  command: stop
+                - name: locksmithd.service
+                  command: stop
                 - name: 50-docker.network
                   mask: true
                 - name: 50-docker-veth.network
@@ -338,6 +337,7 @@ resources:
 
   cinder_volume:
     type: OS::Cinder::Volume
+    deletion_policy: Retain
     properties:
       size: 200
       volume_type: standard
@@ -347,8 +347,8 @@ resources:
     properties:
       volume_id: { get_resource: cinder_volume }
       instance_uuid: { get_resource: node }
-      mountpoint: /dev/vdb
+      mountpoint: /dev/vdc
 
 outputs:
-  public_ip:
+  public_ip_storage:
     value: {get_attr: [floating_ip, floating_ip_address]}

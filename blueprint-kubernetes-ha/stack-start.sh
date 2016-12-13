@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+peers_fr1="10.1.1.10 10.1.1.11 10.1.1.12"
+peers_fr2="10.2.1.10 10.2.1.11 10.2.1.12"
 echo "Blueprint Kubernetes HA"
 echo "-----------------------"
 if [[ -z "$OS_PASSWORD" ]]
@@ -74,9 +76,11 @@ if [ "${NAME}" == "" ]; then echo "Name cannot be empty"; exit 1; fi
 
 if [ "${MODE}" == "Create" ]
 then
-  time heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} ${NAME}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} ${NAME}
 else
-  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} -P peer="$PEER" ${NAME}
+  var="peers_$OS_REGION_NAME"
+  INITIAL_PEERS=${!var}
+  heat stack-create -f stack-${OS_REGION_NAME}.yml -P os_username=${OS_USERNAME} -P os_password=${OS_PASSWORD} -P os_auth_url=${OS_AUTH_URL} -P os_tenant_name=${OS_TENANT_NAME} -P node_count=${NODE_COUNT} -P storage_count=${STORAGE_COUNT} -P keypair_name=${KEYPAIR} -P token=${TOKEN} -P ceph=1 -P monitoring=${MONITORING} -P peer="$INITIAL_PEERS $PEER" ${NAME}
 fi
 
 until heat stack-show ${NAME} 2> /dev/null | egrep 'CREATE_COMPLETE|CREATE_FAILED'

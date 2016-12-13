@@ -3,7 +3,7 @@
 ### Written by the CAT team
 ##
 #
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 description: Kubernetes HA
 
@@ -17,13 +17,13 @@ parameters:
     description: Activate Ceph
     label: Ceph
     type: boolean
-    default: 0
+    default: 1
 
   monitoring:
     description: Activate Monitoring
-    label: monitoring
+    label: Monitoring
     type: boolean
-    default: 0
+    default: 1
 
   domain:
     description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
@@ -38,14 +38,10 @@ parameters:
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - s1.cw.small-1
-          - n1.cw.standard-1
           - n2.cw.standard-2
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
   node_count:
     default: 3
     label: Node Count
@@ -125,8 +121,11 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress }
 
