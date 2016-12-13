@@ -3,7 +3,7 @@
 ### Written by the CAT team
 ##
 #
-heat_template_version: 2014-10-16
+heat_template_version: 2015-04-30
 
 description: MyCloudManager V3
 
@@ -132,13 +132,12 @@ resources:
     properties:
       rules:
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, remote_ip_prefix : 10.0.0.0/8, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
-        - { direction: ingress, remote_ip_prefix : 10.0.0.0/8, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 1723, port_range_max: 1723 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 6783, port_range_max: 6783 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 6783, port_range_max: 6783 }
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 53, port_range_max: 53 }
-        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: 47 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, protocol: 47 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress }
 
