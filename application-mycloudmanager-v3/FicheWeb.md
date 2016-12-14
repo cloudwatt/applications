@@ -3,12 +3,12 @@ layout: applications-fiche
 pictonic: true
 title: "MyCloudManager"
 url: mycloudmanager.html
-date: 2016-12-14 00:00:00
-date-creation: "14 Decembre 2016"
+date: 2016-05-15 00:00:00
+date-creation: "16 Mai 2016"
 date-maj: "14 Decembre 2016"
 description: "MyCloudManager est une innovation Cloudwatt permettant d’administrer au jour le jour vos instances avec ensemble d’outils opensource leaders sur leurs domaines respectifs. Ainsi, MyCloudManager inclut des services de monitoring, supervision, alerting, log management, synchronisation de temps, planication de taches et backup (snapshot ou soft) des instances Linux du tenant de l'utilisateur. 
 MyCloudManager v3 est proposé en version BETA et inclut les évolutions suivantes : multi-tenant, multi-région et monitoring détaillé de MyCloudManager."
-github: 
+github: https://github.com/cloudwatt/applications/tree/master/application-mycloudmanager
 siteofficiel: https://www.cloudwatt.com/fr/labs/mycloudmanager.html
 sitesupport: https://support.cloudwatt.com/
 composants:
@@ -42,7 +42,7 @@ solutions-list:
  - text: "Multi-Régions"
 prix: "Gratuit pour l'application (pour la version Beta) + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/MyCloudManager_v3.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/MyCloudManager_v1.html
 install-url:
 comingsoon: false
 type: solution
