@@ -121,8 +121,8 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /lamp/{apache2,data,mysql}
-                  sudo chown 48:48 /lamp/data
+                  sudo mkdir -p /opt/lamp/{data,mysql}
+                  sudo chown 48:48 /opt/lamp/data
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
@@ -131,6 +131,13 @@ resources:
                     MYSQL_USER=lamp
                     MYSQL_PASSWORD=$pass
                     MYSQL_DATABASE=lamp
+              - path: /home/core/write_index.sh
+                permissions: 0775
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  echo -e "Hello world" > /opt/lamp/data/index.html
+                  chown 48:48 /opt/lamp/data/index.html
             coreos:
               etcd2:
                 name: "%H"
@@ -151,7 +158,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: lamp.mount
+                - name: opt-lamp.mount
                   command: start
                   content: |
                     [Unit]
@@ -160,18 +167,28 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/lamp/
+                    Where=/opt/lamp/
                     Type=ext4
                 - name: lamp-mount.service
                   command: start
                   content: |
                     [Unit]
                     Description=LAMP Mount
-                    After=lamp.mount
+                    After=opt-lamp.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
+                - name: write-index.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Write index.html file
+                    After=opt-lamp.mount
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/write_index.sh
                 - name: vsftpd.service
                   command: start
                   content: |
@@ -191,7 +208,7 @@ resources:
                              --publish=4562:4562 \
                              --publish=4563:4563 \
                              --publish=4564:4564 \
-                             --volume /lamp/data/:/srv \
+                             --volume /opt/lamp/data/:/srv \
                              --env FTP_USER=lamp \
                              --env FTP_PASSWORD=$pass \
                              --name=vsftpd panubo/vsftpd:latest
@@ -208,7 +225,7 @@ resources:
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /lamp/mysql/:/var/lib/mysql \
+                             --volume /opt/lamp/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
@@ -239,23 +256,16 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/php7-apache2
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/php7-apache2
                     ExecStart=/usr/bin/docker run \
-                             --volume /lamp/data/:/var/www/html \
+                             --volume /opt/lamp/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
-                             --name=apache2 simondecaestecker/php7-apache2
+                             --name=apache2 cloudwattfr/php7-apache2
                     ExecStop=/usr/bin/docker rm -f apache2
 
                     [Install]
                     WantedBy=multi-user.target
-
-            write_files:
-              - path: /lamp/data/index.html
-                permissions: 0755
-                owner: "48:48"
-                content: |
-                  Hello world
 
   cinder:
     type: OS::Heat::ResourceGroup
