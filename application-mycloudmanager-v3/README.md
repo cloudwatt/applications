@@ -222,9 +222,9 @@ A savoir: la vue que vous avez sur cette interface n'est autre que l'ensemble de
 ### Monitoring du cluster
 
 
-Celui-ci vas vous permettre de voir l'ensemble de l'activité du cluster et donc de vous assurez que votre MyCloudManager est totalement fonctionnel.
+Celui-ci va vous permettre de voir l'ensemble de l'activité du cluster et donc de vous assurez que votre MyCloudManager est totalement fonctionnel.
 
-Nous vous avons fournis par défaut un ensemble de dashboard qui vous permettront d'avoir une vue d'ensemble de l'activité de votre cluster, mais ils vous permettront aussi de descendre beaucoup plus bas dans les couches pour analyser en profondeur le comportement de votre MyCloudManager.
+Nous vous avons fournis par défaut un ensemble de dashboards qui vous permettront d'avoir une vue d'ensemble de l'activité de votre cluster, mais ils vous permettront aussi de descendre beaucoup plus bas dans les couches pour analyser en profondeur le comportement de votre MyCloudManager.
 
 Vous pouvez y accéder, si vous avez choisi l'option monitoring au lancement de votre stack, depuis n'importe quelle adresse privée du cluster sur le port 31000 (ex: http://10.1.1.10:31000)
 
