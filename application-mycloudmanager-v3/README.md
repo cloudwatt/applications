@@ -209,22 +209,22 @@ L'envoi du mail se fait via le bouton ![sendmail](img/sendmail.png). Celui-ci de
 
 ### Gestion des volumes
 
-Afin de vous faciliter le plus possible la gestion de vos ressources Cloudwatt, nous vous avons crée une interface de gestion des volumes que vous retrouverez dans le menu de votre MyCloudManager.
+Afin de vous faciliter le plus possible la gestion de vos ressources Cloudwatt, nous vous avons créé une interface de gestion des volumes que vous retrouverez dans le menu de votre MyCloudManager.
 
-Dans cette interface vous trouverez le détail de vos différent volumes Ceph.
+Dans cette interface vous trouverez le détail de vos différents volumes Ceph.
 
 ![volumes](img/volumes.png)
 
-vous pouvez les redimensionner selon votre besoin en cliquant sur le bouton resize ![resize](img/resize.png)
+Vous pouvez les redimensionner selon votre besoin en cliquant sur le bouton resize ![resize](img/resize.png)
 
-A savoir: la vue que vous avez sur cette interface n'est autre que l'ensemble des volumes Ceph. En aucun cas cette page ne permet de redimensionner un volume de stockage Cinder. Cette partie reste possible mais il faudra le faire depuis la console horizon de Cloudwatt.
+A savoir: la vue que vous avez sur cette interface n'est autre que l'ensemble des volumes Ceph. En aucun cas cette page ne permet de redimensionner un volume de stockage Cinder. Cette partie reste possible mais il faudra le faire depuis la console Horizon de Cloudwatt.
 
 ### Monitoring du cluster
 
 
 Celui-ci vas vous permettre de voir l'ensemble de l'activité du cluster et donc de vous assurez que votre MyCloudManager est totalement fonctionnel.
 
-Nous vous avons fournis par défaut un ensemble de dashboard qui vous permettrons d'avoir une vue d'ensemble de l'activité de votre cluster, mais ils vous permettrons aussi de descendre beaucoup plus bas dans les couches pour analyser en profondeur le comportement de votre MyCloudManager.
+Nous vous avons fournis par défaut un ensemble de dashboard qui vous permettront d'avoir une vue d'ensemble de l'activité de votre cluster, mais ils vous permettront aussi de descendre beaucoup plus bas dans les couches pour analyser en profondeur le comportement de votre MyCloudManager.
 
 Vous pouvez y accéder, si vous avez choisi l'option monitoring au lancement de votre stack, depuis n'importe quelle adresse privée du cluster sur le port 31000 (ex: http://10.1.1.10:31000)
 
@@ -251,9 +251,9 @@ A savoir, une fois que vous avez entré votre OpenStack Username ainsi que votre
 Définissez sur quel réseau vous souhaitez attacher votre MyCloudManager, ainsi que le security groupe et la keypair qui vont s'appliquer à l'instance CoreOS de type "s1.cw.small-1" qui va se déployer dans le tenant en question. Car, oui, MyCloudManager à besoin d'une instance de type `worker` dans le tenant de destination afin de pouvoir communiquer avec les machines qui sont rattachées au réseau.
 
 **Attention:**
-Le réseau sur lequel vous attachez votre instance `worker` doit avoir accès à internet. En effet comme vous le savez l'ensemble des fonctionnalités de MyCloudManager repose sur des conteneur Docker. Ceux-ci étant hébergé sur le hub.docker il faut que l'instance puisse les télécharger.
+Le réseau sur lequel vous attachez votre instance `worker` doit avoir accès à internet. En effet comme vous le savez l'ensemble des fonctionnalités de MyCloudManager repose sur des conteneur Docker. Ceux-ci étant hébergés sur le hub.docker il faut que l'instance puisse les télécharger.
 
-Pour faire communiquer votre instance `worker` avec le reste du monde, vous avez deux possibilités, il faut que le SNAT soit activer sur votre routeur neutron ou que votre instance `worker` ait une adresse ip publique.
+Pour faire communiquer votre instance `worker` avec le reste du monde, vous avez deux possibilités, il faut que le SNAT soit activé sur votre routeur neutron ou que votre instance `worker` ait une adresse ip publique.
 
 Pour activer le snat, il faut lors de la création de votre routeur dans la console horizon Cloudwatt, spécifier le réseau `public` sur l'interface externe de votre routeur, comme ci-dessous :
 
@@ -281,8 +281,8 @@ Voila, vous venez en quelques clics d'ajouter la gestion d'une nouvelle région 
 
 #### Supprimer un réseau
 
-Nous vous avons aussi donné la possibilité de supprimer une région ou un tenant. Pour cela rien de plus simple, il vous suffit de cliquer sur le **toggle** de couleur bleu.
-Cela aura pour effet de supprimer l'instance `worker` de votre tenant. Une fois ceci fait il ne vous restera plus qu'a supprimer la ligne concernée grâce au bouton ![trash](img/trash.png).
+Nous vous avons aussi donné la possibilité de supprimer la visibilité d'une région ou un tenant dans MyCloudManager. Pour cela rien de plus simple, il vous suffit de cliquer sur le **toggle** de couleur bleu.
+Cela aura pour effet de supprimer l'instance `worker` de votre tenant. Une fois ceci fait il ne vous restera plus qu'à supprimer la ligne concernée grâce au bouton ![trash](img/trash.png).
 
 ### Ajouter des instances à MyCloudManager
 
