@@ -177,17 +177,50 @@ rbd ls
 ```
 
 Nous allons maintenant lancer une base de donnée MariaDB avec un volume attaché.
-
-Tout d'abord, executez cette commande pour créer un volume de 10Go
-
 ```bash
-rbd create db --size=10G
+     volumes:
+	     - name: mariadb-persistent-storage
+	       rbd:
+	         monitors:
+	           - ceph-mon.ceph:6789
+	             user: admin
+	             image: db
+	             pool: rbd
+	             secretRef:
+	               name: ceph-client-key
+EOF
 ```
 
-Maintenanrt que notre volume est prêt, vous pouvez lancer un Pod mariadb avec votre volume ceph attaché.
+Depuis Kubernetes 1.5, vous pouvez également utiliser l'autoprovisionning de volumes.
+
+Un exemple :
 
 ```bash
 cat <<EOF | kubectl create -f -
+apiVersion: storage.k8s.io/v1beta1
+kind: StorageClass
+metadata:
+   name: ceph
+provisioner: kubernetes.io/rbd
+parameters:
+    monitors: ceph-mon.ceph:6789
+    adminId: admin
+    adminSecretName: ceph-client-key
+    adminSecretNamespace: "ceph"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db
+  annotations: 
+    "volume.beta.kubernetes.io/storage-class": ceph
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -208,28 +241,18 @@ spec:
             - name: mariadb-persistent-storage
               mountPath: /var/lib/mysql
       volumes:
-	     - name: mariadb-persistent-storage
-	       rbd:
-	         monitors:
-	           - ceph-mon.ceph:6789
-	             user: admin
-	             image: db
-	             pool: rbd
-	             secretRef:
-	               name: ceph-client-key
+        - name: mariadb-persistent-storage
+          persistentVolumeClaim:
+            claimName: db
 EOF
 ```
 
-Depuis Kubernetes 1.5, vous pouvez également utiliser l'autoprovisionning de volumes.
-
-### Et la haute disponibilitée
-
-Et la haute disponibilitée dans tout ça ?
+### Et la haute disponibilitée dans tout ça ?
 
 Rien de plus simple, lancez à nouveau le script stack-start.sh mais sur une région différente de la première et choisissez le mode Join.
 Une fois la stack créée, les deux clusters vont se rejoindre pour ne former plus qu'un. Simple non ?
 
-### C'est magique, comment ça fonctionne ?
+### C'est magique mais comment ça fonctionne ?
 
 Chaque noeud se connecte de manière sécurisée à un réseau virtuel Weave, de cette façon, tous les conteneurs peuvent discuter les un avec les autres quelque soit leurs localisation.
 
@@ -253,14 +276,68 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Le cluster ne se lance pas correctement
 
+Si votre cluster ne se lance pas correctement, essayer de reconstruire la stack.
 
 ### Vous avez perdu un noeud Ceph, comment correctement le supprimmer
 
+Lorsque vous ajoutez un noeud de storage, votre cluster Ceph aumente automatiquement.
+Mais lorsqu'un noeud tombe ou est supprimé, nous ne pouvons pas savoir si il reviendra un jour, c'est pourquoi il n'est pas automatiquement supprimé de Ceph.
+
+Avant de supprimer votre noeud, déterminez l'osd à supprimmer :
+
+```bash
+echo $(kubectl --namespace=ceph get pods -o json | jq -r '.items[] | select(.metadata.labels.daemon=="osd") | select(.spec.nodeName=="ip_de_la_machine") | .metadata.name')
+```
+
+Ceci va vous donner le nom d'un des osd, exemple: ceph-osd-5mi7g
+
+Ensuite, il vous faut trouver le numéro de cet osd : 
+
+```bash
+echo $(ceph osd crush tree | jq '.[].items[] | select(.name=="ceph-osd-5mi7g") | .items[].id')
+```
+
+Nous allons maintenant sortir cet OSD du cluster :
+
+```bash
+ceph osd out numero_de_l_osd
+```
+
+Ensuite il faut attendre que Ceph ai finit de déplacer les données, vous pouvez vérifier l'état d'avancement grâce à la commande :
+
+```bash
+ceph -s
+```
+
+Lorsque le cluster est de nouveau dans un état normal (HEALTH_OK), vous pouvez passer à la suite :
+
+```bash
+ceph osd crush remove nom_de_l_osd
+ceph auth del osd.numero_de_l_osd
+ceph osd rm numero_de_l_osd
+```
+
+Et voila ! Vous pouvez désormais supprimer la machine.
 
 ### Certains volumes Ceph sont verrouillés
 
+Parfois, un conteneur bloque un volume Ceph, pour supprimer le verrou, executez ceci :
 
+```bash
+rbd lock list nom_du_volume
+```
 
+Devrais afficher ceci :
+
+```bash
+rbd lock rm nom_du_volume id_du_lock locker
+```
+
+Exemple:
+
+```bash
+rbd lock rm grafana kubelet_lock_magic_to-hfw3u7-e3pnkzd34lhp-22iuiamqx2s4-node-f644cpr26t7l.novalocal client.14105
+```
 
 ## So watt ?
 
