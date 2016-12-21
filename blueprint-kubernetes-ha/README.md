@@ -13,14 +13,16 @@ Cette stack va vous permettre de déployer un cluster de production en quelques 
 ## Preparations
 
 ### Les versions
+
   - CoreOS Stable 1010.6
   - Docker 1.10.3
-  - Kubernetes 1.3.6
+  - Kubernetes 1.5.1
+  - Ceph 10
 
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
- 
+
  * Un accès internet
 
  * Un shell linux ou avoir accès à la console Cloudwatt
@@ -32,6 +34,7 @@ Ceci devrait être une routine à présent:
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
+
 Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
@@ -42,7 +45,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-kubernetes-ha/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-kubernetes-ha/`
 
 * `stack-fr1.yml`: Template d'orchestration HEAT pour la région FR1, il servira à déployer l'infrastructure nécessaire.
 * `stack-fr2.yml`: Template d'orchestration HEAT pour la région FR2, il servira à déployer l'infrastructure nécessaire.
@@ -72,29 +75,37 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
  ~~~ bash
  $ ./stack-start.sh
  ~~~
- 
+
  Le script va vous poser plusieurs questions, puis, une fois la stack créer vous afficher deux lignes :
 
  ~~~ bash
 scale_dn_url: ...
 scale_up_url: ...
+scale_storage_dn_url: ...
+scale_storage_up_url: ...
  ~~~
 
 scale_dn_url est une url que vous pouvez appeler pour diminuer la capacitée de votre cluster
 
 scale_up_url est une url que vous pouvez appeler pour augmenter la capatictée de votre cluster
 
+scale_storage_up_url est une url que vous pouvez appeler pour augmenter la capacitée du cluster Ceph
+
+scale_storage_dn_url est une url que vous pouvez appeler pour diminuer la capacitée du cluster Ceph
 
 ### Et ensuite
 
 Chaque noeud possède une ip publique et privée.
-Connectez vous sur l'une d'elle en ssh et tappez cette comande pour identifier le rôle de chaque machine :
+
+Le cluster va mettre une dixaine de minutes à s'initialiser, une fois cette durée écoulée, vous pouvez vous connecter en ssh sur l'ip publique de l'un d'entre eux.
+
+Pour lister l'état des composants Kubernetes, vous pouvez executer cette commande :
 
 ~~~bash
 $ fleetctl list-units
 ~~~
 
-Cette commande devrais vous afficher ceci :
+Elle devrais vous afficher ceci :
 
 ~~~
 UNIT                       MACHINE                  ACTIVE SUB
@@ -153,6 +164,64 @@ No events.
 
 Pour accéder à nginx, vous pouvez vous rendre sur n'importe quel ip publique de votre cluster sur le port 24466
 
+### J'aimerai persister mes données
+
+Il est parfois utile de persister les données des conteneurs mais la tâche est souvent loins d'être facile.
+
+C'est pourquoi, vous disposez d'un cluster Ceph prêt à l'emploi.
+
+Tappez cette commande pour lister les volumes :
+
+```bash
+rbd ls
+```
+
+Nous allons maintenant lancer une base de donnée MariaDB avec un volume attaché.
+
+Tout d'abord, executez cette commande pour créer un volume de 10Go
+
+```bash
+rbd create db --size=10G
+```
+
+Maintenanrt que notre volume est prêt, vous pouvez lancer un Pod mariadb avec votre volume ceph attaché.
+
+```bash
+cat <<EOF | kubectl create -f -
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - image: mariadb
+          name: mariadb
+          volumeMounts:
+            - name: mariadb-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+	     - name: mariadb-persistent-storage
+	       rbd:
+	         monitors:
+	           - ceph-mon.ceph:6789
+	             user: admin
+	             image: db
+	             pool: rbd
+	             secretRef:
+	               name: ceph-client-key
+EOF
+```
+
+Depuis Kubernetes 1.5, vous pouvez également utiliser l'autoprovisionning de volumes.
+
 ### Et la haute disponibilitée
 
 Et la haute disponibilitée dans tout ça ?
@@ -178,6 +247,19 @@ Et voila !
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Et oui, c'est aussi simple que cela de lancer un cluster Kubernetes !
+
+
+## Huston we have a problem !
+
+### Le cluster ne se lance pas correctement
+
+
+### Vous avez perdu un noeud Ceph, comment correctement le supprimmer
+
+
+### Certains volumes Ceph sont verrouillés
+
+
 
 
 ## So watt ?
