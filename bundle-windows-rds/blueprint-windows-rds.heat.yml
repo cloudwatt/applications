@@ -36,11 +36,11 @@ parameters:
     default: RDSFARM
   domain_password:
     type: string
-    default: RDSFarm123
+    default: Pa$$w0rd
     
   ad_ip:
     type: string
-    default: 10.0.250.199
+    default: 10.0.250.100
     
   floating_network_id:
     type: string
@@ -64,7 +64,6 @@ resources:
         type: OS::Neutron::SecurityGroup
         properties:
           rules:
-            #- { direction: ingress, protocol: TCP, port_range_min: 3389, port_range_max: 3389 }
             - { direction: ingress, protocol: TCP }
             - { direction: ingress, protocol: UDP }
             - { direction: ingress, protocol: ICMP }
@@ -115,27 +114,27 @@ resources:
                 template: |
                     #ps1_sysnative
                     $ErrorActionPreference = 'Stop'
-                    Install-WindowsFeature -Name AD-domain-services -IncludeManagementTools
-                    $user = [ADSI]'WinNT://./Administrator'
-                    $user.SetPassword('domain_password')
-                    Import-Module ADDSDeployment
-                    $safedomainpwd = "domain_password" | ConvertTo-SecureString -AsPlainText -Force
-                    Install-AddsForest `
-                        -CreateDnsDelegation:$false `
-                        -DatabasePath "C:\Windows\NTDS" `
-                        -DomainMode "Win2012R2" `
-                        -DomainName "domain_name" `
-                        -DomainNetbiosName "domain_netbios" `
-                        -ForestMode "Win2012R2" `
-                        -InstallDns:$true `
-                        -LogPath "C:\Windows\NTDS" `
-                        -NoRebootOnCompletion `
-                        -SysvolPath "C:\Windows\SYSVOL" `
-                        -SafeModeAdministratorPassword $safedomainpwd `
-                        -Force:$true
-                    exit 1001
-                    
-                    # import-module RemoteDesktop
+                    if ((Get-WmiObject Win32_ComputerSystem).domain -eq "WORKGROUP") {
+                        Install-WindowsFeature -Name AD-domain-services -IncludeManagementTools
+                        $user = [ADSI]'WinNT://./Administrator'
+                        $user.SetPassword('domain_password')
+                        Import-Module ADDSDeployment
+                        $safedomainpwd = "domain_password" | ConvertTo-SecureString -AsPlainText -Force
+                        Install-AddsForest `
+                            -CreateDnsDelegation:$false `
+                            -DatabasePath "C:\Windows\NTDS" `
+                            -DomainMode "Win2012R2" `
+                            -DomainName "domain_name" `
+                            -DomainNetbiosName "domain_netbios" `
+                            -ForestMode "Win2012R2" `
+                            -InstallDns:$true `
+                            -LogPath "C:\Windows\NTDS" `
+                            -NoRebootOnCompletion `
+                            -SysvolPath "C:\Windows\SYSVOL" `
+                            -SafeModeAdministratorPassword $safedomainpwd `
+                            -Force:$true
+                        exit 1003
+                    }
                     
                 params:
                     domain_name: { get_param: domain_name }
@@ -143,46 +142,9 @@ resources:
                     domain_password: { get_param: domain_password }
    
     
-    rds_gw_srv:
-        type: OS::Nova::Server
-        depends_on: rds_shost_srv
-        properties:
-          name: { get_param: rds_gw_name }
-          image: 2de643b8-3a67-4806-91e6-ec7b221ef22b
-          flavor: n2.cw.standard-2
-          key_name: { get_param: key_name }
-          networks:
-            - network: { get_resource: net }
-          security_groups:
-            - { get_resource: rds_gw_nsg }
-          user_data:
-            str_replace:
-                template: |
-                    #ps1_sysnative
-                    Sleep 300
-                    
-                    $domain = "rdsfarm.local"
-                    $password = "domain_password" | ConvertTo-SecureString -asPlainText -Force
-                    $username = "$domain\Administrator" 
-                    $credential = New-Object System.Management.Automation.PSCredential($username,$password)
-                    Add-Computer -DomainName $domain -Credential $credential			
-                    exit 1001
-                    
-                    #after reboot
-                    import-module RemoteDesktop
-                    New-SessionDeployment -ConnectionBroker rds-farm-gw.rdsfarm.local -WebAccessServer rds-farm-gw.rdsfarm.local -SessionHost rds-farm-sh01.rdsfarm.local
-                    New-RDSessionCollection -CollectionName CWSessionCollection -SessionHost rds-farm-sh01.rdsfarm.local -CollectionDescription “Collection exemple pour RDS sur Cloudwatt” -ConnectionBroker rds-farm-gw.rdsfarm.local
-                    New-RDRemoteApp -Alias Wordpad -DisplayName WordPad -FilePath "C:\Program Files\Windows NT\Accessories\wordpad.exe" -ShowInWebAccess 1 -collectionname CWSessionCollection -ConnectionBroker rds-farm-gw.rdsfarm.local
-                    Set-RDRemoteApp -CollectionName CWSessionCollection -Alias Wordpad -ShowInWebAccess $true -ConnectionBroker rds-farm-gw.rdsfarm.local
-
-                params:
-                    domain_password: { get_param: domain_password }
     
-    floating_ip_link:
-        type: OS::Nova::FloatingIPAssociation
-        properties:
-          floating_ip: { get_resource: floating_ip }
-          server_id: { get_resource: rds_gw_srv }
+    
+    
     
     rds_shost_srv:
         type: OS::Nova::Server
@@ -200,13 +162,132 @@ resources:
             str_replace:
                 template: |
                     #ps1_sysnative
-                    Sleep 300
-                    
-                    $domain = "rdsfarm.local"
-                    $password = "domain_password" | ConvertTo-SecureString -asPlainText -Force
-                    $username = "$domain\Administrator" 
-                    $credential = New-Object System.Management.Automation.PSCredential($username,$password)
-                    Add-Computer -DomainName $domain -Credential $credential			
-                    exit 1001
+                    $ErrorActionPreference = 'Stop'
+                    if ((Get-WmiObject Win32_ComputerSystem).domain -eq "WORKGROUP") {
+                        echo "Waiting for the domain to come up..."
+                        Sleep 240
+                        echo "Joining domain..."
+                        $password = "domain_password" | ConvertTo-SecureString -asPlainText -Force
+                        $username = "domain_netbios\Administrator" 
+                        $credential = New-Object System.Management.Automation.PSCredential($username,$password)
+                        Add-Computer -DomainName "domain_name" -Credential $credential
+                        echo "Domain joined. Will reboot next."  			
+                        exit 1003
+                    }
                 params:
+                    domain_name: { get_param: domain_name }
+                    domain_netbios: { get_param: domain_netbios }
                     domain_password: { get_param: domain_password }
+                    
+                    
+    rds_gw_srv:
+        type: OS::Nova::Server
+        depends_on: rds_shost_srv
+        properties:
+          name: { get_param: rds_gw_name }
+          image: 2de643b8-3a67-4806-91e6-ec7b221ef22b
+          flavor: n2.cw.standard-2
+          key_name: { get_param: key_name }
+          networks:
+            - network: { get_resource: net }
+          security_groups:
+            - { get_resource: rds_gw_nsg }
+          user_data:
+            str_replace:
+                template: |
+                    #ps1_sysnative
+                    $ErrorActionPreference="Stop"
+                    
+                    $domain = "domain_name"
+                    $password = "domain_password"
+                    $securePassword = $password | ConvertTo-SecureString -asPlainText -Force
+                    $username = "domain_netbios\Administrator" 
+                    $credential = New-Object System.Management.Automation.PSCredential($username,$securePassword)
+                        
+                    if ((Get-WmiObject Win32_ComputerSystem).domain -eq "WORKGROUP") {
+                        echo "Waiting for the domain to come up..."
+                        Sleep 240
+                        echo "Joining domain..."
+                        Add-Computer -DomainName $domain -Credential $credential
+                        echo "Domain joined. Will reboot next."                        
+                        exit 1003
+                    } else {
+                        echo "After joining domain. Waiting for the session host server to come online..."
+                        #Sleep 120
+                        echo "Schedule execution of the RDP deployment script (in task scheduler)..."
+                        $taskName = "Setup RDS Farm"
+                        $psScript = `
+                            '
+                            $ErrorActionPreference="Stop"
+                            import-module RemoteDesktop
+                            
+                            New-SessionDeployment `
+                                -ConnectionBroker rds-farm-gw.rdsfarm.local `
+                                -WebAccessServer rds-farm-gw.rdsfarm.local `
+                                -SessionHost rds-farm-sh01.rdsfarm.local
+                                
+                            $externalFQDN = "ip-" + "ip_floating".Replace(".","-") + ".rev.cloudwatt.com"
+                            
+                            Add-RDServer -Server rds-farm-ad.rdsfarm.local -Role RDS-LICENSING -ConnectionBroker rds-farm-gw.rdsfarm.local
+                            Set-RDLicenseConfiguration -LicenseServer rds-farm-ad.rdsfarm.local -Mode PerUser -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+
+                            Add-RDServer -Server rds-farm-gw.rdsfarm.local -Role RDS-GATEWAY -ConnectionBroker rds-farm-gw.rdsfarm.local -GatewayExternalFqdn $externalFQDN
+                            Set-RDDeploymentGatewayConfiguration -GatewayMode Custom -GatewayExternalFqdn $externalFQDN -LogonMethod Password -UseCachedCredentials $True -BypassLocal $True -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+
+                            $certPath = "C:\Windows\Temp\RDSCertificate.pfx"
+                            
+                            $password = "domain_password"
+                            $securePassword = $password | ConvertTo-SecureString -asPlainText -Force
+                            New-RDCertificate -Role RDWebAccess -DnsName $externalFQDN -Password $securePassword  -ExportPath $certPath -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+                            Set-RDCertificate -Role RDPublishing -Password $securePassword -ImportPath $certPath -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+                            Set-RDCertificate -Role RDGateway -Password $securePassword -ImportPath $certPath -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+                            # Set-RDCertificate -Role RDRedirector -Password $securePassword -ImportPath $certPath -ConnectionBroker rds-farm-gw.rdsfarm.local -Force
+                            
+                            $collectionName = "RDS Demo Collection"
+                            
+                            New-RDSessionCollection `
+                                -CollectionName $collectionName `
+                                -SessionHost rds-farm-sh01.rdsfarm.local `
+                                -CollectionDescription "Collection exemple pour RDS sur Cloudwatt" `
+                                -ConnectionBroker rds-farm-gw.rdsfarm.local;
+                            
+                            ## how to publish a RemoteApp application
+                            #New-RDRemoteApp `
+                            #   -Alias Wordpad `
+                            #   -DisplayName WordPad `
+                            #   -FilePath "C:\Program Files\Windows NT\Accessories\wordpad.exe" `
+                            #   -ShowInWebAccess 1 `
+                            #   -collectionname $collectionName `
+                            #   -ConnectionBroker rds-farm-gw.rdsfarm.local;
+                            
+                            ## how to publish the Remote Desktop connection
+                            Set-RDRemoteDesktop -CollectionName $collectionName -ConnectionBroker rds-farm-gw.rdsfarm.local -ShowInWebAccess $True -Force
+                            
+                            cp $certPath C:\windows\Web\RDWeb\Pages
+                            '
+                                
+                        $scriptPath = "C:\Windows\Temp\installRDS.ps1"
+                        $psScript > $scriptPath
+                        $cmdArgument = "/C ""powershell.exe -NoProfile -Executionpolicy bypass -file $scriptPath"""
+                        $action = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "$cmdArgument > C:\Windows\Temp\installRDS.log 2>&1"
+                        $execTime = (get-date).AddMinutes(1)
+                        $trigger = New-ScheduledTaskTrigger -Once -At $execTime
+                        $settings = New-ScheduledTaskSettingsSet 
+                        $task = New-ScheduledTask -Action $action -Trigger $trigger -Settings $settings 
+                        Register-ScheduledTask -TaskName $taskName -InputObject $task -User $username -Password $password	
+                        echo "Task scheduled after a minute. Check the execution in the task Scheduler."
+                    }
+
+                params:
+                    domain_name: { get_param: domain_name }
+                    domain_netbios: { get_param: domain_netbios }
+                    domain_password: { get_param: domain_password }
+                    ip_floating: { get_attr: [floating_ip, floating_ip_address]}
+                    
+                    
+                    
+    floating_ip_link:
+        type: OS::Nova::FloatingIPAssociation
+        properties:
+          floating_ip: { get_resource: floating_ip }
+          server_id: { get_resource: rds_gw_srv }
