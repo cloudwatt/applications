@@ -167,25 +167,25 @@ Look at the NodePort, it's the one you can use to access to this service through
 
 To access nginx, you can go to any public ip in your cluster on port 24466.
 
-### J'aimerai persister mes données
+### I would like to persist my data
 
-Il est parfois utile de persister les données des conteneurs mais la tâche est souvent loins d'être facile.
+It is sometimes useful to persist container data but the task is often far from easy.
 
-C'est pourquoi, vous disposez d'un cluster Ceph prêt à l'emploi.
+That's why the stack gives you a Ceph cluster out-of-the-box.
 
-Tappez cette commande pour lister les volumes :
+Type this command to list the volumes:
 
 ```bash
 rbd ls
 ```
 
-Tout d'abord, executez cette commande pour créer un volume de 10Go
+First, run this command to create a volume of 10GB :
 
 ```bash
 rbd create db --size=10G
 ```
 
-Nous allons maintenant lancer une base de donnée MariaDB avec un volume attaché.
+We will now launch a MariaDB database with an attached volume.
 
 ```bash
 cat <<EOF | kubectl create -f -
@@ -224,9 +224,9 @@ spec:
 EOF
 ```
 
-Depuis Kubernetes 1.5, vous pouvez également utiliser l'autoprovisionning de volumes.
+Since Kubernetes 1.5, you can also use volume autoprovisionning.
 
-Un exemple :
+Example :
 
 ```bash
 cat <<EOF | kubectl create -f -
@@ -287,82 +287,83 @@ EOF
 
 ### Monitoring
 
-Il est très important de surveiller l'état de votre cluster, c'est pourquoi, si vous avez coché l'option Monitoring durant la création de la stack, un Grafana est automatiquement disponnible sur n'importe quel machine depuis le port 31000.
+It is very important to monitor the status of your cluster, so if you have checked the Monitoring option during the creation of the stack, a Grafana is automatically available on any machine from port 31000.
 
-Vous obtiendrez une liste des différents dashboards en cliquand sur le menu Home :
+You will get a list of different dashboards by clicking on the Home menu:
 
 ![Monitoring](img/monitoring.png)
 
-Cliquez par exemple sur Kubernetes resources usage monitoring (via Prometheus) pour obtenir un monitoring détailé de votre cluster Kubernetes.
+For example, click on Kubernetes resources usage monitoring (via Prometheus) for detailed monitoring of your Kubernetes cluster.
 
-Vous devriez obtenir cet écran :
+You should get this screen:
 
 ![Monitoring](img/monitoring2.png)
 
 
-### Et la haute disponibilitée dans tout ça ?
+### And high availability in all this?
 
-Rien de plus simple, lancez à nouveau le script stack-start.sh mais sur une région différente de la première et choisissez le mode Join.
-Une fois la stack créée, les deux clusters vont se rejoindre pour ne former plus qu'un. Simple non ?
+Nothing simpler, run again the stack-start.sh script but on a different region of the first one and choose Join mode.
+Once the stack is created, the two clusters will join together to form one. Simple not?
 
-### C'est magique mais comment ça fonctionne ?
+### It's magical but how does it work?
 
-Chaque noeud se connecte de manière sécurisée à un réseau virtuel Weave, de cette façon, tous les conteneurs peuvent discuter les un avec les autres quelque soit leurs localisation.
+Each node connects securely to a Weave virtual network, in this way, all containers can chat with each other regardless of their location.
 
-Une fois interconnecté, Fleet prend le relai pour dispatcher les différents composants Kubernetes à travers le cluster et Pidalio leurs fournit tout ce dont ils ont besoin pour fonctionner correctement.
+Once interconnected, Fleet takes over to dispatch the various Kubernetes components through the cluster and Pidalio provides them with everything they need to function properly.
 
-Et voila !
+There you go !
 
-### Un petit schéma ?
+### A little diagram?
 
 ![Architecture Réseau](img/archi.png)
 
 
-## C’est bien tout ça, mais...
+## All of this is fine, but...
 
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+### A one-click chat sounds really nice...
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Et oui, c'est aussi simple que cela de lancer un cluster Kubernetes !
+... Good! Go to the Apps page on the Cloudwatt website, choose the apps, press DEPLOY and follow the simple steps... 2 minutes later, a green button appears... ACCESS: you have your owncloud server!
 
 
-## Huston we have a problem !
 
-### Le cluster ne se lance pas correctement
+## Huston we have a problem!
 
-Si votre cluster ne se lance pas correctement, essayer de reconstruire la stack.
+### Cluster fails to launch correctly
 
-### Vous avez perdu un noeud Ceph, comment correctement le supprimmer
+If your cluster does not launch properly, try to rebuild the stack.
 
-Lorsque vous ajoutez un noeud de storage, votre cluster Ceph aumente automatiquement.
-Mais lorsqu'un noeud tombe ou est supprimé, nous ne pouvons pas savoir si il reviendra un jour, c'est pourquoi il n'est pas automatiquement supprimé de Ceph.
+### You have lost a Ceph node, how to properly remove it
 
-Avant de supprimer votre noeud, déterminez l'osd à supprimmer :
+When you add a storage node, your Ceph cluster automatically boosts.
+But when a node falls or is removed, we can not know if it will come back someday, which is why it is not automatically deleted from Ceph.
+
+Before you delete your node, determine which osd to delete:
 
 ```bash
 echo $(kubectl --namespace=ceph get pods -o json | jq -r '.items[] | select(.metadata.labels.daemon=="osd") | select(.spec.nodeName=="ip_de_la_machine") | .metadata.name')
 ```
 
-Ceci va vous donner le nom d'un des osd, exemple: ceph-osd-5mi7g
+This will give you the name of one of the osd, example: ceph-osd-5mi7g
 
-Ensuite, il vous faut trouver le numéro de cet osd : 
+Then you have to find the number of this osd:
 
 ```bash
 echo $(ceph osd crush tree | jq '.[].items[] | select(.name=="ceph-osd-5mi7g") | .items[].id')
 ```
 
-Nous allons maintenant sortir cet OSD du cluster :
+We will now output this OSD from the cluster:
 
 ```bash
 ceph osd out numero_de_l_osd
 ```
 
-Ensuite il faut attendre que Ceph ai finit de déplacer les données, vous pouvez vérifier l'état d'avancement grâce à la commande :
+Then you have to wait for Ceph to finish moving the data, you can check the progress status with the command:
 
 ```bash
 ceph -s
 ```
 
-Lorsque le cluster est de nouveau dans un état normal (HEALTH_OK), vous pouvez passer à la suite :
+When the cluster is back in a normal state (HEALTH_OK), you can go on:
 
 ```bash
 ceph osd crush remove nom_de_l_osd
@@ -370,23 +371,23 @@ ceph auth del osd.numero_de_l_osd
 ceph osd rm numero_de_l_osd
 ```
 
-Et voila ! Vous pouvez désormais supprimer la machine.
+There you go ! You can now delete the machine.
 
-### Certains volumes Ceph sont verrouillés
+### Some Ceph volumes are locked
 
-Parfois, un conteneur bloque un volume Ceph, pour supprimer le verrou, executez ceci :
+Sometimes a container blocks a Ceph volume, to remove the lock, run this:
 
 ```bash
 rbd lock list nom_du_volume
 ```
 
-Devrais afficher ceci :
+Should display this:
 
 ```bash
 rbd lock rm nom_du_volume id_du_lock locker
 ```
 
-Exemple:
+Example:
 
 ```bash
 rbd lock rm grafana kubelet_lock_magic_to-hfw3u7-e3pnkzd34lhp-22iuiamqx2s4-node-f644cpr26t7l.novalocal client.14105
@@ -394,11 +395,11 @@ rbd lock rm grafana kubelet_lock_magic_to-hfw3u7-e3pnkzd34lhp-22iuiamqx2s4-node-
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
+This tutorial is intended to accelerate your startup. At this stage **you** are master on board.
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
+You have an entry point on your virtual machine in SSH via the exposed floating IP and your private key (user `core` by default).
 
-### Autres sources pouvant vous intéresser
+### Other sources you might be interested in
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
