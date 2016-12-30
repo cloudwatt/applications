@@ -2,81 +2,81 @@
 
 ![Kubernetes](img/kube.png)
 
-Lorsque vous travaillez avec beaucoup de conteneurs, il devient vite indispensable de les orchestrer.
+When you work with a lot of containers, it quickly becomes essential to orchestrate them.
 
-C'est là que Kubernetes entre en jeu.
+That's where Kubernetes comes in.
 
-Kubernetes est un orchestrateur de conteneur Docker et Rkt initié par Google grâce à son savoir-faire en la matière.
+Kubernetes is a Docker and Rkt container orchestrator initiated by Google.
 
-Cette stack va vous permettre de déployer un cluster de production en quelques clics.
+This stack will allow you to deploy a production cluster in a few clicks.
 
-## Préparations
+## Preparations
 
-### Les versions
+### Versions
 
   - CoreOS Stable 1010.6
   - Docker 1.10.3
   - Kubernetes 1.5.1
   - Ceph 10
 
-### Les pré-requis pour déployer cette stack
+### The prerequisites
 
-Ceci devrait être une routine à présent:
+This should be a routine now:
 
- * Un accès internet
+ * Internet access
 
- * Un shell linux ou avoir accès à la console Cloudwatt
+ * A linux shell or an access to the Cloudwatt console
 
- * Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+ * A [Cloudwatt account](https://www.cloudwatt.com/cockpit/#/create-contact) with an [ existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
 
- * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+ * The Openstack Client [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 
- * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+ * A local clone of the [Cloudwatt applications](https://github.com/cloudwatt/applications) repository
 
-### Taille de l'instance
+### Instance Size
 
-Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+By default, the script proposes a deployment on an instance of type "standard-1" (n1.cw.standard-1). There are a variety of other types of instances for meeting your multiple needs. The instances are invoiced per minute, allowing you to pay only for the services you have consumed and capped at their monthly price (you will find more details on the [rates page](https://www.cloudwatt.com/en/pricing.html) of the Cloudwatt website).
 
-Vous pouvez ajuster les parametres de la stack à votre goût.
+You can adjust the stack parameters to suit your taste.
 
-### Au fait...
+### By the way...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version **"Je lance en 1-clic"** ou **"Je lance avec la console"** en cliquant sur [ce lien](#console)...
+If you do not like the command lines, you can go directly to the version **"I launch in 1-click"** or **"I launch with the console"** by clicking on [this link](#console) ...
 
-## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-kubernetes-ha/`
+## Tour of the owner
 
-* `stack-fr1.yml`: Template d'orchestration HEAT pour la région FR1, il servira à déployer l'infrastructure nécessaire.
-* `stack-fr2.yml`: Template d'orchestration HEAT pour la région FR2, il servira à déployer l'infrastructure nécessaire.
-* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres.
+Once the repository is cloned, you will find the `blueprint-kubernetes-ha/` directory
 
-## Démarrage
+* `stack-fr1.yml`: HEAT orchestration template for region FR1, it will be used to deploy the necessary infrastructure.
+* `stack-fr2.yml`: HEAT orchestration template for region FR2, it will be used to deploy the necessary infrastructure.
+* `stack-start.sh`: Script to launch the stack, which simplifies the input of the parameters.
 
-### Initialiser l'environnement
+## Start-up
 
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
-Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+### Initializing the environment
 
-Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell accesses towards the Cloudwatt APIs.
 
- ~~~ bash
- $ source COMPUTE-[...]-openrc.sh
- Please enter your OpenStack Password:
+Source the downloaded file in your shell. Your password will be requested.
 
- ~~~
+~~~ bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
+~~~
 
-Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
-### Démarrer la stack
+### Launch the stack
 
- Dans un shell, lancer le script `stack-start.sh` :
+In a shell, run the `stack-start.sh` script:
 
  ~~~ bash
  $ ./stack-start.sh
  ~~~
 
- Le script va vous poser plusieurs questions, puis, une fois la stack créer vous afficher deux lignes :
+The script will ask you several questions, then, once the stack create you will display four lines:
 
  ~~~ bash
 scale_dn_url: ...
@@ -85,27 +85,27 @@ scale_storage_dn_url: ...
 scale_storage_up_url: ...
  ~~~
 
-scale_dn_url est une url que vous pouvez appeler pour diminuer la capacitée de votre cluster
+scale_dn_url is a url that you can call to decrease the capacity of your cluster
 
-scale_up_url est une url que vous pouvez appeler pour augmenter la capatictée de votre cluster
+scale_up_url is a url that you can call to increase the capacities of your cluster
 
-scale_storage_up_url est une url que vous pouvez appeler pour augmenter la capacitée du cluster Ceph
+scale_storage_up_url is a url that you can call to increase the capacity of the cluster Ceph
 
-scale_storage_dn_url est une url que vous pouvez appeler pour diminuer la capacitée du cluster Ceph
+scale_storage_dn_url is a url that you can call to decrease the capacity of the cluster Ceph, in this scenario, please look at the FAQ.
 
 ### Et ensuite
 
-Chaque noeud possède une ip publique et privée.
+Each node has a public and private ip.
 
-Le cluster va mettre une dixaine de minutes à s'initialiser, une fois cette durée écoulée, vous pouvez vous connecter en ssh sur l'ip publique de l'un d'entre eux.
+The cluster will take about ten minutes to initialize, once this time has elapsed, you can connect throught ssh to the public ip of one of them.
 
-Pour lister l'état des composants Kubernetes, vous pouvez executer cette commande :
+Then, to list the state of the Kubernetes components, you can execute this command:
 
 ~~~bash
 $ fleetctl list-units
 ~~~
 
-Elle devrais vous afficher ceci :
+It should show you this:
 
 ~~~
 UNIT                       MACHINE                  ACTIVE SUB
@@ -121,34 +121,33 @@ pidalio-scheduler.service  4f723b52.../84.39.36.13  active running
 pidalio.service            4f723b52.../84.39.36.13  active running
 ~~~
 
-Pidalio est un utilitaire permettant de bootstrappé facilement un cluster Kubernetes.
+Pidalio is a utility to easily bootstrapp a Kubernetes cluster.
 
-Il est composé de six parties :
+It is composed of six parts:
 
-	- pidalio : Il met a disposition l'ensemble des certificats et resources nécessaires au fonctionnement du cluster.
-	- pidalio-apiserver : correspond au composant API Server de Kubernetes, il fait office de point central des différents composants
-	- pidalio-controller : correspond au composant Controller Manager de Kubernetes, il s'occupe de vos Pods
-	- pidalio-scheduler : correspond au composant Scheduler, il s'occupe de répartir les Pods dans votre cluster
-	- pidalio-proxy : correspond au composant Kube Proxy, il prend soin de votre table iptable pour rediriger automatiquement les services Kubernetes vers les bons pods
-	- pidalio-node : correspond au Kubelet, l'agent Kubernetes responsable de chaque Noeud.
+	- pidalio: It makes available all the certificates and resources necessary for the operation of the cluster.
+	- pidalio-apiserver: corresponds to the Kubernetes API Server component
+	- pidalio-controller: corresponds to the Controller Manager component of Kubernetes, it takes care of your Pods
+	- pidalio-scheduler: corresponds to the Scheduler component, it distributes the pods in your cluster
+	- pidalio-proxy: corresponds to the Kube Proxy component, it takes care of your iptables to automatically route Kubernetes services ip to the correct pods
+	- pidalio-node: corresponds to the Kubelet, the Kubernetes agent on each node.
 
+You can use the Kubernetes client from any node.
 
-Vous pouvez utiliser le client Kubernetes depuis n'importe quel noeud.
-
-Nous allons utiliser le client Kubernetes pour lancer un serveur nginx dans notre cluster :
+We will use it to run a nginx server in our cluster :
 
 ~~~bash
 kubectl run --image=nginx --port=80 nginx
 ~~~
 
-Ensuite nous allons rendre disponible ce serveur sur internet :
+Then we will make this server available on the internet :
 
 ~~~bash
 kubectl expose deployment nginx --type=NodePort
 kubectl describe service nginx
 ~~~
 
-Cette dernière commande va vous afficher ceci :
+This last command will show you the details about the nginx service:
 
 ~~~bash
 Name:  					nginx
@@ -164,10 +163,9 @@ Session Affinity:      	None
 No events.
 ~~~
 
-Vous pouvez noter la présence d'un champ NodePort, ce port correspond au port que vous devez utiliser pour accéder à nginx depuis une des ip publique de votre cluster.
-Assurez-vous d'avoir ouvert ce port dans votre security-group.
+Look at the NodePort, it's the one you can use to access to this service throught any public ip of your cluster, be careful to open the ports on the cluster security group.
 
-Pour accéder à nginx, vous pouvez vous rendre sur n'importe quel ip publique de votre cluster sur le port 24466
+To access nginx, you can go to any public ip in your cluster on port 24466.
 
 ### J'aimerai persister mes données
 
