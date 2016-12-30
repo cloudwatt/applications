@@ -176,18 +176,48 @@ Tappez cette commande pour lister les volumes :
 rbd ls
 ```
 
-Nous allons maintenant lancer une base de donnée MariaDB avec un volume attaché.
+Tout d'abord, executez cette commande pour créer un volume de 10Go
+
 ```bash
-     volumes:
+rbd create db --size=10G
+```
+
+Nous allons maintenant lancer une base de donnée MariaDB avec un volume attaché.
+
+```bash
+cat <<EOF | kubectl create -f -
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: mariadb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - image: mariadb
+          name: mariadb
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "true"
+          volumeMounts:
+            - name: mariadb-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
 	     - name: mariadb-persistent-storage
 	       rbd:
-	         monitors:
+             monitors:
 	           - ceph-mon.ceph:6789
-	             user: admin
-	             image: db
-	             pool: rbd
-	             secretRef:
-	               name: ceph-client-key
+             user: admin
+             image: db
+             pool: rbd
+             secretRef:
+               name: ceph-admin-key
 EOF
 ```
 
@@ -203,10 +233,12 @@ metadata:
    name: ceph
 provisioner: kubernetes.io/rbd
 parameters:
-    monitors: ceph-mon.ceph:6789
-    adminId: admin
-    adminSecretName: ceph-client-key
-    adminSecretNamespace: "ceph"
+  monitors: ceph-mon.ceph:6789
+  adminId: admin
+  adminSecretName: ceph-admin-key
+  adminSecretNamespace: ceph
+  userId: admin
+  userSecretName: ceph-admin-key
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -237,6 +269,9 @@ spec:
       containers:
         - image: mariadb
           name: mariadb
+          env:
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "true"
           volumeMounts:
             - name: mariadb-persistent-storage
               mountPath: /var/lib/mysql
@@ -246,6 +281,21 @@ spec:
             claimName: db
 EOF
 ```
+
+### Monitoring
+
+Il est très important de surveiller l'état de votre cluster, c'est pourquoi, si vous avez coché l'option Monitoring durant la création de la stack, un Grafana est automatiquement disponnible sur n'importe quel machine depuis le port 31000.
+
+Vous obtiendrez une liste des différents dashboards en cliquand sur le menu Home :
+
+![Monitoring](img/monitoring.png)
+
+Cliquez par exemple sur Kubernetes resources usage monitoring (via Prometheus) pour obtenir un monitoring détailé de votre cluster Kubernetes.
+
+Vous devriez obtenir cet écran :
+
+![Monitoring](img/monitoring2.png)
+
 
 ### Et la haute disponibilitée dans tout ça ?
 
