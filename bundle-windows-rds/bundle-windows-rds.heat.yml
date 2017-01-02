@@ -10,41 +10,44 @@ description:  RDS test installation
 
 parameters:
 
-  key_name:
-    type: string
-    description : Name of a KeyPair to enable access to the instances
- 
-  ad_srv_name:
-    type: string
+  key_name:  
+    type: string  
+    description: The Name of a KeyPair to enable access to the instances
+  ad_srv_name:  
+    type: string  
+    description : The name of the Domain Controller (Active Directory) server in the farm
     default: rds-farm-ad
-  rds_gw_name:
-    type: string
+  rds_gw_name:  
+    type: string  
+    description: The name of the main RDS server in the farm  
     default: rds-farm-gw
-  rds_shost_name:
-    type: string
-    default: rds-farm-sh01
-    
-  rds_shost_image:
-    type: string
+  rds_shost_name:  
+    type: string  
+    description: The name of the (first) Session Host server in the farm  
+    default: rds-farm-sh01  
+  rds_shost_image:  
+    type: string  
+    description: The ID of the image for the Session Host server  
     default: 2de643b8-3a67-4806-91e6-ec7b221ef22b
- 
-  domain_name:
-    type: string
+  domain_name:  
+    type: string  
+    description: The name of the Active Directory domain to be configured  
     default: rdsfarm.local
-  domain_netbios:
-    type: string
+  domain_netbios:  
+    type: string  
+    description: The NetBios name of the Active Directory domain to be configured  
     default: RDSFARM
-  domain_password:
-    type: string
+  domain_password:  
+    type: string  
+    description: The administrative password of the Active Directory domain to be configured  
     default: Pa$$w0rd
-    
-  ad_ip:
-    type: string
-    default: 10.0.250.100
-    
-  floating_network_id:
-    type: string
-    default: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+  ad_ip: 
+    type: string  
+    description: The IP of the Domain Controller (AD) server  
+    default: 10.0.250.100  
+  floating_network_id:   
+    type: string  
+    description: The ID of the floating network to be used for the public (floating) IP which will be provisionned  
 
 resources:
     net:
