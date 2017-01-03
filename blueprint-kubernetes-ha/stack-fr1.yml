@@ -1,0 +1,224 @@
+#
+##
+### Written by the CAT team
+##
+#
+heat_template_version: 2015-04-30
+
+description: Kubernetes HA
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  ceph:
+    description: Activate Ceph
+    label: Ceph
+    type: boolean
+    default: 1
+
+  monitoring:
+    description: Activate Monitoring
+    label: Monitoring
+    type: boolean
+    default: 1
+
+  domain:
+    description: Wildcarded domain, ex example.com must have a *.example.com DNS entry
+    default: cluster.local
+    label: Cloud DNS
+    type: string
+
+  flavor:
+    default: n1.cw.standard-2
+    description: Flavor to use for the deployed instances
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-16
+  node_count:
+    default: 3
+    label: Node Count
+    description: Node counts
+    type: number
+    constraints:
+      - range: { min: 1, max: 50 }
+
+  storage_count:
+    default: 2
+    label: Storage Count
+    description: Storage counts
+    type: number
+    constraints:
+      - range: { min: 1, max: 5 }
+
+  token:
+    default: averylongpassphraseatleast16chars
+    label: Token
+    type: string
+
+  peer:
+    default: 10.1.1.10 10.1.1.11 10.1.1.12
+    label: Peer
+    type: string
+
+  os_username:
+    description: OpenStack Username
+    label: OpenStack Username
+    type: string
+
+  os_password:
+    description: OpenStack Password
+    label: OpenStack Password
+    type: string
+    hidden: true
+
+  os_tenant_name:
+    description: OpenStack Tenant Name
+    label: OpenStack Tenant Name
+    type: string
+
+  os_auth_url:
+    description: OpenStack Auth URL
+    default: https://identity.fr1.cloudwatt.com/v2.0
+    label: OpenStack Auth URL
+    type: string
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.1.0.0/16
+      allocation_pools:
+        - { start: 10.1.1.10, end: 10.1.1.200 }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  stack_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: UDP, port_range_min: 6783, port_range_max: 6783 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: TCP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, remote_mode: remote_group_id, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress }
+
+  nodes:
+    type: OS::Heat::AutoScalingGroup
+    properties:
+      min_size: { get_param: node_count }
+      max_size: 20
+      resource:
+        type: kube-node.heat.yaml
+        properties:
+          token: { get_param: token }
+          peer: { get_param: peer }
+          domain: { get_param: domain }
+          security_group: { get_resource: security_group }
+          network: { get_resource: network }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: flavor }
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant_name: { get_param: os_tenant_name }
+          os_auth_url: { get_param: os_auth_url }
+          os_region: fr1
+          ceph: { get_param: ceph }
+          monitoring: { get_param: monitoring }
+          subnet: { get_resource: subnet }
+          floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  storages:
+    type: OS::Heat::AutoScalingGroup
+    properties:
+      min_size: { get_param: storage_count }
+      max_size: 5
+      resource:
+        type: kube-storage.heat.yaml
+        properties:
+          token: { get_param: token }
+          peer: { get_param: peer }
+          domain: { get_param: domain }
+          security_group: { get_resource: security_group }
+          network: { get_resource: network }
+          keypair_name: { get_param: keypair_name }
+          flavor_name: { get_param: flavor }
+          os_username: { get_param: os_username }
+          os_password: { get_param: os_password }
+          os_tenant_name: { get_param: os_tenant_name }
+          os_auth_url: { get_param: os_auth_url }
+          os_region: fr1
+          ceph: { get_param: ceph }
+          monitoring: { get_param: monitoring }
+          subnet: { get_resource: subnet }
+          floating_network: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  scaleup_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+       adjustment_type: change_in_capacity
+       auto_scaling_group_id: {get_resource: nodes}
+       scaling_adjustment: 1
+  scaledown_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: {get_resource: nodes}
+      scaling_adjustment: -1
+
+  scaleup_storage_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+       adjustment_type: change_in_capacity
+       auto_scaling_group_id: {get_resource: storages}
+       scaling_adjustment: 1
+  scaledown_storage_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: {get_resource: storages}
+      scaling_adjustment: -1
+
+outputs:
+  scale_up_url:
+    description: >
+      This URL is the webhook to scale up the autoscaling group. You can invoke the scale-up operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaleup_policy, alarm_url]}
+  scale_dn_url:
+    description: >
+      his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaledown_policy, alarm_url]}
+  scale_up_storage_url:
+    description: >
+      This URL is the webhook to scale up the autoscaling group. You can invoke the scale-up operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaleup_storage_policy, alarm_url]}
+  scale_dn_storage_url:
+    description: >
+      his URL is the webhook to scale down the autoscaling group. You can invoke the scale-down operation by doing an HTTP POST to this URL; no body nor extra headers are needed.
+    value: {get_attr: [scaledown_storage_policy, alarm_url]}
