@@ -35,9 +35,9 @@ Ceci devrait être une routine à présent:
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour répondre à vos besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-Vous pouvez ajuster les parametres de la stack à votre goût.
+Vous pouvez ajuster les paramètres de la stack à votre goût.
 
 ### Au fait...
 
@@ -49,7 +49,7 @@ Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-kubernetes-
 
 * `stack-fr1.yml`: Template d'orchestration HEAT pour la région FR1, il servira à déployer l'infrastructure nécessaire.
 * `stack-fr2.yml`: Template d'orchestration HEAT pour la région FR2, il servira à déployer l'infrastructure nécessaire.
-* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres.
+* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des paramètres.
 
 ## Démarrage
 
@@ -76,7 +76,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
  $ ./stack-start.sh
  ~~~
 
- Le script va vous poser plusieurs questions, puis, une fois la stack créer vous afficher deux lignes :
+ Le script va vous poser plusieurs questions, puis, une fois la stack crée vous afficher deux lignes :
 
  ~~~ bash
 scale_dn_url: ...
@@ -85,19 +85,19 @@ scale_storage_dn_url: ...
 scale_storage_up_url: ...
  ~~~
 
-scale_dn_url est une url que vous pouvez appeler pour diminuer la capacitée de votre cluster
+scale_dn_url est une url que vous pouvez appeler pour diminuer la capacité de votre cluster
 
-scale_up_url est une url que vous pouvez appeler pour augmenter la capatictée de votre cluster
+scale_up_url est une url que vous pouvez appeler pour augmenter la capacité de votre cluster
 
-scale_storage_up_url est une url que vous pouvez appeler pour augmenter la capacitée du cluster Ceph
+scale_storage_up_url est une url que vous pouvez appeler pour augmenter la capacité du cluster Ceph
 
-scale_storage_dn_url est une url que vous pouvez appeler pour diminuer la capacitée du cluster Ceph
+scale_storage_dn_url est une url que vous pouvez appeler pour diminuer la capacité du cluster Ceph
 
 ### Et ensuite
 
 Chaque noeud possède une ip publique et privée.
 
-Le cluster va mettre une dixaine de minutes à s'initialiser, une fois cette durée écoulée, vous pouvez vous connecter en ssh sur l'ip publique de l'un d'entre eux.
+Le cluster va mettre une dizaine de minutes à s'initialiser, une fois cette durée écoulée, vous pouvez vous connecter en ssh sur l'ip publique de l'un d'entre eux.
 
 Pour lister l'état des composants Kubernetes, vous pouvez executer cette commande :
 
@@ -105,7 +105,7 @@ Pour lister l'état des composants Kubernetes, vous pouvez executer cette comman
 $ fleetctl list-units
 ~~~
 
-Elle devrais vous afficher ceci :
+Elle devrait vous afficher ceci :
 
 ~~~
 UNIT                       MACHINE                  ACTIVE SUB
@@ -125,7 +125,7 @@ Pidalio est un utilitaire permettant de bootstrappé facilement un cluster Kuber
 
 Il est composé de six parties :
 
-	- pidalio : Il met a disposition l'ensemble des certificats et resources nécessaires au fonctionnement du cluster.
+	- pidalio : Il met a disposition l'ensemble des certificats et ressources nécessaires au fonctionnement du cluster.
 	- pidalio-apiserver : correspond au composant API Server de Kubernetes, il fait office de point central des différents composants
 	- pidalio-controller : correspond au composant Controller Manager de Kubernetes, il s'occupe de vos Pods
 	- pidalio-scheduler : correspond au composant Scheduler, il s'occupe de répartir les Pods dans votre cluster
@@ -164,18 +164,18 @@ Session Affinity:      	None
 No events.
 ~~~
 
-Vous pouvez noter la présence d'un champ NodePort, ce port correspond au port que vous devez utiliser pour accéder à nginx depuis une des ip publique de votre cluster.
+Vous pouvez noter la présence d'un champ NodePort, ce port correspond au port que vous devez utiliser pour accéder à nginx depuis une des ip publiques de votre cluster.
 Assurez-vous d'avoir ouvert ce port dans votre security-group.
 
-Pour accéder à nginx, vous pouvez vous rendre sur n'importe quel ip publique de votre cluster sur le port 24466
+Pour accéder à nginx, vous pouvez vous rendre sur n'importe quelle ip publique de votre cluster sur le port 24466
 
-### J'aimerai persister mes données
+### J’aimerais persister mes données
 
-Il est parfois utile de persister les données des conteneurs mais la tâche est souvent loins d'être facile.
+Il est parfois utile de persister les données des conteneurs mais la tâche est souvent loins loin d'être facile.
 
 C'est pourquoi, vous disposez d'un cluster Ceph prêt à l'emploi.
 
-Tappez cette commande pour lister les volumes :
+Tapez cette commande pour lister les volumes :
 
 ```bash
 rbd ls
@@ -249,7 +249,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: db
-  annotations: 
+  annotations:
     "volume.beta.kubernetes.io/storage-class": ceph
 spec:
   accessModes:
@@ -289,7 +289,7 @@ EOF
 
 ### Monitoring
 
-Il est très important de surveiller l'état de votre cluster, c'est pourquoi, si vous avez coché l'option Monitoring durant la création de la stack, un Grafana est automatiquement disponnible sur n'importe quel machine depuis le port 31000.
+Il est très important de surveiller l'état de votre cluster, c'est pourquoi, si vous avez coché l'option Monitoring durant la création de la stack, un Grafana est automatiquement disponible sur n'importe quelle machine depuis le port 31000.
 
 Vous obtiendrez une liste des différents dashboards en cliquand sur le menu Home :
 
@@ -302,14 +302,14 @@ Vous devriez obtenir cet écran :
 ![Monitoring](img/monitoring2.png)
 
 
-### Et la haute disponibilitée dans tout ça ?
+### Et la haute disponibilité dans tout ça ?
 
 Rien de plus simple, lancez à nouveau le script stack-start.sh mais sur une région différente de la première et choisissez le mode Join.
 Une fois la stack créée, les deux clusters vont se rejoindre pour ne former plus qu'un. Simple non ?
 
 ### C'est magique mais comment ça fonctionne ?
 
-Chaque noeud se connecte de manière sécurisée à un réseau virtuel Weave, de cette façon, tous les conteneurs peuvent discuter les un avec les autres quelque soit leurs localisation.
+Chaque noeud se connecte de manière sécurisée à un réseau virtuel Weave, de cette façon, tous les conteneurs peuvent discuter les uns avec les autres quelle que soit leur localisation.
 
 Une fois interconnecté, Fleet prend le relai pour dispatcher les différents composants Kubernetes à travers le cluster et Pidalio leurs fournit tout ce dont ils ont besoin pour fonctionner correctement.
 
@@ -324,10 +324,10 @@ Et voila !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Et oui, c'est aussi simple que cela de lancer un cluster Kubernetes !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laissez-vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Et oui, c'est aussi simple que cela de lancer un cluster Kubernetes !
 
 
-## Huston we have a problem !
+## Houston we have a problem !
 
 ### Le cluster ne se lance pas correctement
 
@@ -336,7 +336,7 @@ Si votre cluster ne se lance pas correctement, essayer de reconstruire la stack.
 ### Vous avez perdu un noeud Ceph, comment correctement le supprimmer
 
 Lorsque vous ajoutez un noeud de storage, votre cluster Ceph aumente automatiquement.
-Mais lorsqu'un noeud tombe ou est supprimé, nous ne pouvons pas savoir si il reviendra un jour, c'est pourquoi il n'est pas automatiquement supprimé de Ceph.
+Mais lorsqu'un noeud tombe ou est supprimé, nous ne pouvons pas savoir s’il reviendra un jour, c'est pourquoi il n'est pas automatiquement supprimé de Ceph.
 
 Avant de supprimer votre noeud, déterminez l'osd à supprimmer :
 
@@ -346,7 +346,7 @@ echo $(kubectl --namespace=ceph get pods -o json | jq -r '.items[] | select(.met
 
 Ceci va vous donner le nom d'un des osd, exemple: ceph-osd-5mi7g
 
-Ensuite, il vous faut trouver le numéro de cet osd : 
+Ensuite, il vous faut trouver le numéro de cet osd :
 
 ```bash
 echo $(ceph osd crush tree | jq '.[].items[] | select(.name=="ceph-osd-5mi7g") | .items[].id')
@@ -358,7 +358,7 @@ Nous allons maintenant sortir cet OSD du cluster :
 ceph osd out numero_de_l_osd
 ```
 
-Ensuite il faut attendre que Ceph ai finit de déplacer les données, vous pouvez vérifier l'état d'avancement grâce à la commande :
+Ensuite il faut attendre que Ceph ai ait finit de déplacer les données, vous pouvez vérifier l'état d'avancement grâce à la commande :
 
 ```bash
 ceph -s
@@ -382,7 +382,7 @@ Parfois, un conteneur bloque un volume Ceph, pour supprimer le verrou, executez 
 rbd lock list nom_du_volume
 ```
 
-Devrais afficher ceci :
+Devrais Devrait afficher ceci :
 
 ```bash
 rbd lock rm nom_du_volume id_du_lock locker
@@ -396,7 +396,7 @@ rbd lock rm grafana kubelet_lock_magic_to-hfw3u7-e3pnkzd34lhp-22iuiamqx2s4-node-
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
