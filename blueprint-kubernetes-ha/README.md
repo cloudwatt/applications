@@ -2,13 +2,17 @@
 
 ![Kubernetes](img/kube.png)
 
-Lorsque vous travaillez avec beaucoup de conteneurs, il devient vite indispensable de les orchestrer.
+Kubernetes est une plate-forme open-source pour automatiser le déploiement, la mise à l'échelle et l'exploitation de conteneurs d'applications à travers des clusters, fournissant une infrastructure centrée sur le conteneur.
+Avec Kubernetes, vous êtes en mesure de répondre rapidement et efficacement à la demande des clients:
+Déployez vos applications rapidement et de façon prévisible.
+Échelonner vos applications à la volée.
+Déployez en toute transparence de nouvelles fonctionnalités.
+Optimisez l'utilisation de votre matériel en utilisant uniquement les ressources dont vous avez besoin.
+Notre objectif est de favoriser un écosystème de composants et d'outils qui soulagent la charge de l'exécution des applications dans les nuages publics et privés.
 
-C'est là que Kubernetes entre en jeu.
 
-Kubernetes est un orchestrateur de conteneur Docker et Rkt initié par Google grâce à son savoir-faire en la matière.
+Cette stack va vous permettre de déployer un cluster en quelques clics.
 
-Cette stack va vous permettre de déployer un cluster de production en quelques clics.
 
 ## Préparations
 
