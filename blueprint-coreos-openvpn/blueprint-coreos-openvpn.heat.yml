@@ -1,0 +1,254 @@
+heat_template_version: 2013-05-23
+
+
+description: Blueprint CoreOS OpenVPN
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+  passphrase:
+    description: Passphrase (at least 4 chars)
+    type: string
+    hidden: true
+    constraints:
+      - length: { min: 4 }
+
+  volume_attachment:
+    description: Attacher un volume cinder de 20GO ?
+    default: 0
+    type: string
+    constraints:
+      - allowed_values:
+          - 0
+          - 1
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: UDP, port_range_min: 1194, port_range_max: 1194 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  ports:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  user:
+    type: OS::Heat::RandomString
+    properties:
+      length: 10
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 1185.5
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+        - port: { get_resource: ports }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
+            $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $passphrase: { get_param: passphrase }
+            $user: { get_resource: user }
+            $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          template: |
+            #cloud-config
+            write_files:
+              - path: /home/core/format.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  eval $(sudo blkid /dev/vdb | awk '{print $3}')
+                  if [[ "$TYPE" != "ext4" ]]; then
+                    /usr/sbin/wipefs -f /dev/vdb
+                    /usr/sbin/mkfs.ext4 -F /dev/vdb
+                  fi
+              - path: /home/core/mount.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  sudo mkdir -p /opt/openvpn/data
+              - path: /home/core/mkuser.sh
+                permissions: 0755
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  echo "script-security 2" > /home/core/$user.ovpn
+                  echo "up /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
+                  echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
+                  /usr/bin/docker run \
+                      --volume /opt/openvpn/data/:/etc/openvpn \
+                      --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
+                  echo "route 185.23.94.0 255.255.255.0 net_gateway" >> /home/core/$user.ovpn
+            coreos:
+              etcd2:
+                name: "%H"
+                advertise-client-urls: http://$private_ipv4:2379
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                initial-cluster: "%H=http://$private_ipv4:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+              units:
+                - name: format.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Formats the ephemeral drive
+                    After=dev-vdb.device
+                    Requires=dev-vdb.device
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/format.sh
+                - name: opt-openvpn.mount
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Mount ephemeral to /var/lib/docker
+                    Requires=format.service
+                    After=format.service
+                    [Mount]
+                    What=/dev/vdb
+                    Where=/opt/openvpn/
+                    Type=ext4
+                - name: openvpn-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=OpenVPN Mount
+                    After=opt-openvpn.mount
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/mount.sh
+                - name: openvpnconf.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=OpenVPN Configuration
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
+                    ExecStartPre=/usr/bin/docker run \
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env DOMAIN_NAME=$floating_ip \
+                             --env PASSPHRASE=$passphrase \
+                             --rm cloudwattfr/openvpn ovpn_init
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env PASSPHRASE=$passphrase \
+                             --env LOGIN=$user \
+                             --rm cloudwattfr/openvpn ovpn_mkuser
+                - name: openvpn.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=OpenVPN
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/openvpn/data:/etc/openvpn \
+                             --privileged \
+                             --publish 1194:1194/udp \
+                             --name openvpn cloudwattfr/openvpn
+                    ExecStop=/usr/bin/docker rm -f openvpn
+                - name: mkuser.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Make user
+                    Requires=openvpn.service
+                    After=openvpn.service
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/mkuser.sh
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+  cinder:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: volume_attachment }
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        properties:
+          server_id: { get_resource: server }
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  config_file_url:
+    description: SCP command to download OpenVPN Configuration File
+    value:
+      str_replace:
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user.ovpn .
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          $user: { get_resource: user }
