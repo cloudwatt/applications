@@ -25,9 +25,11 @@ parameters:
           - n1.cw.standard-16
 
   passphrase:
-    description: Passphrase
+    description: Passphrase (at least 4 chars)
     type: string
     hidden: true
+    constraints:
+      - length: { min: 4 }
 
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
@@ -89,7 +91,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -132,6 +134,7 @@ resources:
                   /usr/bin/docker run \
                       --volume /opt/openvpn/data/:/etc/openvpn \
                       --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
+                  echo "route 185.23.94.0 255.255.255.0 net_gateway" >> /home/core/$user.ovpn
             coreos:
               etcd2:
                 name: "%H"
