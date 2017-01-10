@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: Blueprint CoreOS Drupal Commons
@@ -194,12 +194,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/drupal-commons
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/drupal-commons
                     ExecStart=/usr/bin/docker run \
                              --volume /opt/drupalcommons/data:/var/www/html/sites \
                              --link mysql \
                              --publish 80:80 \
-                             --name=drupalcommons simondecaestecker/drupal-commons
+                             --name=drupalcommons cloudwattfr/drupal-commons
                     ExecStop=/usr/bin/docker rm -f drupalcommons
 
                     [Install]
