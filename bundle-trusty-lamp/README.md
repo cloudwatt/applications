@@ -1,3 +1,5 @@
+### Cet épisode premier sur LAMP est maintenant obsolète. Merci d'utiliser la version LAMP déployable en mode Docker https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-lamp ###
+
 # 5 Minutes Stacks, épisode premier : LAMP #
 
 Bienvenue à l'inauguration de la série des 5 Minutes Stacks !
