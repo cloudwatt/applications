@@ -1,3 +1,5 @@
+### This first episode on LAMP is now obsolete. Thanks to use now the Docker based LAMP blueprint available here  https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-lamp ###
+
 # 5 minutes stacks episode one: LAMP - English version #
 
 Welcome to the inauguration of the 5 Minutes Stacks series !
