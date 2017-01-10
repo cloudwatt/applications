@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : iceScrum #
+# 5 Minutes Stacks, episode 49 : iceScrum #
 
-## Episode X : iceScrum
+## Episode 49 : iceScrum
 
 ![iceScrumlogo](img/icescrumlogo.png)
 
@@ -15,7 +15,7 @@ iceScrum is fully available through an internet browser and it uses a MySQL data
 ## Preparations
 
 ### The Versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - iceScrum R6#14.11
 
 ### The prerequisites to deploy this stack
@@ -67,10 +67,10 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 With the `blueprint-coreos-icescrum.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS iceScrum
+description: Blueprint iceScrum
 
 
 parameters:
@@ -151,9 +151,10 @@ parameters:
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+ 9. Write a passphrase that will be used for the database icescrum user
+ 10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
- The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+ The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You have to wait 5 minutes to the softwares be ready. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
  If you've reached this point, you're already done! Go enjoy iceScrum!
 

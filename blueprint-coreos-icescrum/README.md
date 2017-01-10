@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : iceScrum #
+# 5 Minutes Stacks, épisode 49 : iceScrum #
 
-## Episode X : icescrum
+## Episode 49 : icescrum
 
 ![iceScrumlogo](img/icescrumlogo.png)
 
@@ -15,7 +15,7 @@ iceScrum est accessible à travers votre navigateur et il utilise une base de do
 ## Préparations
 
 ### Les versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - iceScrum R6#14.11
 
 ### Les pré-requis pour déployer cette stack
@@ -68,10 +68,10 @@ Dans le fichier `blueprint-coreos-icescrum.heat.yml` vous trouverez en haut une 
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS iceScrum
+description: Blueprint iceScrum
 
 
 parameters:
@@ -152,9 +152,10 @@ Et bien si ! En utilisant la console, vous pouvez déployer iceScrum :
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+9.  Donner votre passphrase qui servira pour le compte icescrum de votre base de données MySQL
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Il ne vous reste plus qu'à patienter 5 bonnes minutes que les applicatifs se lancent. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
 C’est (déjà) FINI !
 
