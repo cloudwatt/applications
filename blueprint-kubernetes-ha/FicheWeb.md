@@ -27,9 +27,11 @@ composants:
 solutions: "Ce blueprint Kubernetes Multi-X est particulièrement utile pour les solutions Cloudwatt suivantes :"
 solutions-list: 
  - text: "Développement et test"
+ - text: "Sites et applications à fort trafic"
+ - text: "Hébergement d'applications métiers"
 prix: "Gratuit pour le blueprint + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/Innovation-Kubernetes-multi-x.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/Innovation-Labs-Kubernetes-multi-x.html
 install-url:
 comingsoon: false
 custom: false
