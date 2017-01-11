@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS ONLYOFFICE
+description: Blueprint ONLYOFFICE
 
 
 parameters:
@@ -77,7 +77,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:

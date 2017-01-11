@@ -1,19 +1,19 @@
-# 5 Minutes Stacks, episode X : ONLYOFFICE #
+# 5 Minutes Stacks, episode 47 : ONLYOFFICE #
 
-## Episode X : ONLYOFFICE
+## Episode 47 : ONLYOFFICE
 
 ![ONLYOFFICElogo](img/onlyofficelogo.png)
 
-ONLYOFFICE is an online office suite permitting you to edit your files directly through an internet browser.
+ONLYOFFICE is an online office suite permitting you to create and edit your files directly through an internet browser.
 
-In this way, you can edit your files without any other software and, in the case of a company, manage some projects and their achievement and a client database for example.
+In this way, you can edit your files (compatible with Microsoft Office) collaboratively and in real time without any other software, thats improves the security, and in the case of a company, manage some projects and their achievement and a client database for example.
 
-Your emails can be read with ONLYOFFICE and, if you have your own domain name, you can use it with the included email server.
+Your emails can be read with ONLYOFFICE and, if you have your own domain name, you can use it.
 
 ## Preparations
 
 ### The Versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - ONLYOFFICE 8.9.1.191
 
 ### The prerequisites to deploy this stack
@@ -65,10 +65,10 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 With the `blueprint-coreos-onlyoffice.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS ONLYOFFICE
+description: Blueprint ONLYOFFICE
 
 
 parameters:
@@ -149,7 +149,7 @@ parameters:
  8.	Enter the name of your keypair in the « SSH Keypair » field
  9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
- The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+ The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You have to wait 5 minutes to the softwares be ready. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
  If you've reached this point, you're already done! Go enjoy ONLYOFFICE!
 
@@ -162,6 +162,9 @@ parameters:
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
  You are now in possession of ONLYOFFICE, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+
+ After you gave informations about the administrator, you arrive on the interface:
+![interface](img/interface.png)
 
  You can now use your office suite, this one being hosted in France in a safe environment, you can completely trust on this product.
 

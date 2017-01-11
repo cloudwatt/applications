@@ -1,19 +1,19 @@
-# 5 Minutes Stacks, épisode X : ONLYOFFICE #
+# 5 Minutes Stacks, épisode 47 : ONLYOFFICE #
 
-## Episode X : ONLYOFFICE
+## Episode 47 : ONLYOFFICE
 
 ![ONLYOFFICElogo](img/onlyofficelogo.jpg)
  
-ONLYOFFICE est une suite bureautique en ligne vous permettant de modifier vos documents directement à travers un navigateur.
+ONLYOFFICE est une suite bureautique en ligne vous permettant de créer et modifier vos documents directement à travers un navigateur.
 
-Ainsi, il est possible de modifier des fichiers sans l'installation de logiciels tiers, mais aussi, dans le cadre d'une entreprise, de gérer des projets et leur avancement, ainsi qu'une base de données de clients par exemple.
+Ainsi, il est possible de modifier des fichiers (compatibles Microsoft Office) de manière collaborative et en temps réel sans l'installation de logiciels tiers, ce qui est un gain de sécurité, mais aussi, dans le cadre d'une entreprise, de gérer des projets et leur avancement, ainsi qu'une base de données de clients par exemple.
 
-Vos e-mails peuvent être lus directement depuis ONLYOFFICE si vous le désirez, et le serveur de mails intégré vous permets de le faire aussi pour votre propre nom de domaine.
+Vos e-mails peuvent être lus directement depuis ONLYOFFICE si vous le désirez en y indiquant les serveurs de mail à utiliser. Il est également possible d'utiliser votre propre nom de domaine.
 
 ## Préparations
 
 ### Les versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - ONLYOFFICE 8.9.1.191
 
 ### Les pré-requis pour déployer cette stack
@@ -66,10 +66,10 @@ Dans le fichier `blueprint-coreos-onlyoffice.heat.yml` vous trouverez en haut un
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS ONLYOFFICE
+description: Blueprint ONLYOFFICE
 
 
 parameters:
@@ -150,7 +150,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer ONLYOFFICE :
 8.	Entrez votre keypair dans le champ « keypair_name »
 9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Il ne vous reste plus qu'à patienter 5 bonnes minutes que les applicatifs se lancent. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
 C’est (déjà) FINI !
 
@@ -163,6 +163,9 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
 Vous êtes maintenant en possession de ONLYOFFICE. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+
+Une fois les informations de votre choix données pour le compte administrateur, vous arriverez sur l'interface de ONLYOFFICE :
+![interface](img/interface.png)
 
 Vous pouvez à présent utiliser votre suite bureautique, celle-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
