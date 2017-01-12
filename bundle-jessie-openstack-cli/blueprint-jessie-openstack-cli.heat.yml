@@ -11,7 +11,6 @@ parameter_groups:
    parameters:
      - keypair_name
      - flavor_name
-     - network_name
 
  - label: Credentials parameters
    parameters:
@@ -75,13 +74,23 @@ parameters:
     label: OpenStack Auth URL
     type: string
 
-  network_name:
-    description: network name
-    label: network name
-    type: string
-
 
 resources:
+
+  network:
+      type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
 
   sg:
     type: OS::Neutron::SecurityGroup
@@ -97,6 +106,15 @@ resources:
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
+  ports:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: sg }
 
 
   server:
@@ -106,9 +124,7 @@ resources:
       image: 185e1975-c9c5-4358-909e-5e329808902e
       flavor: { get_param: flavor_name }
       networks:
-        - { network: { get_param: network_name } }
-      security_groups:
-        - { get_resource: sg }
+        - port: { get_resource: ports }
       user_data_format: RAW
       user_data:
         str_replace:
