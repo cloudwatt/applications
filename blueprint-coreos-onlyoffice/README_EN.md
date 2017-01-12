@@ -1,22 +1,20 @@
-# 5 Minutes Stacks, episode X : Piwik #
+# 5 Minutes Stacks, episode 48 : ONLYOFFICE #
 
-## Episode X : Piwik
+## Episode 48 : ONLYOFFICE
 
-![Piwiklogo](img/piwiklogo.png)
+![ONLYOFFICElogo](img/onlyofficelogo.png)
 
-Piwik is an open-source analytics platform with a clear and friendly interface.
+ONLYOFFICE is an online office suite permitting you to create and edit your files directly through an internet browser.
 
-You can host your statistics yourself and you don't need a third-party company.
+In this way, you can edit your files (compatible with Microsoft Office) collaboratively and in real time without any other software, thats improves the security, and in the case of a company, manage some projects and their achievement and a client database for example.
 
-Piwik's interface is customizable and you can install several plugins.
-
-Piwik is developed in PHP and uses a MySQL database to save all the data it needs.
+Your emails can be read with ONLYOFFICE and, if you have your own domain name, you can use it.
 
 ## Preparations
 
 ### The Versions
-- CoreOS Stable 1010.6
-- Piwik 2.16.2
+ - CoreOS Stable 1185.5
+ - ONLYOFFICE 8.9.1.191
 
 ### The prerequisites to deploy this stack
 
@@ -29,7 +27,7 @@ These should be routine by now:
 
 ### Size of the instance
 
-By default, the stack deploys on an instance of type "Standard 1" (n1.cw.standard-1). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
+By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
 
  Stack parameters, of course, are yours to tweak at your fancy.
 
@@ -39,9 +37,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-piwik/` repository:
+ Once you have cloned the github, you will find in the `blueprint-coreos-onlyoffice/` repository:
 
- * `blueprint-coreos-piwik.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `blueprint-coreos-onlyoffice.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
  * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -64,13 +62,13 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `blueprint-coreos-piwik.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. You will also enter the `piwik` password account of your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `blueprint-coreos-onlyoffice.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS Piwik
+description: Blueprint ONLYOFFICE
 
 
 parameters:
@@ -80,23 +78,22 @@ parameters:
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-2
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: "password sql (user: piwik)"
+  volume_attachment:
+    description: Attacher un volume cinder de 20GO ?
+    default: 0
     type: string
-    hidden: true
 [...]
 ~~~
 ### Start stack
@@ -105,18 +102,18 @@ parameters:
 
 
  ~~~ bash
- ./stack-start.sh stack_name
+ ./stack-start.sh ONLYOFFICE
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
- | ee873a3a-a306-4127-8647-4bc80469cec4 | Piwik           | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | ONLYOFFICE      | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
  Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
  ~~~
- $ watch heat resource-list Piwik
+ $ watch heat resource-list ONLYOFFICE
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -131,7 +128,7 @@ parameters:
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *Piwik* attached to *Apache2* and his *Mysql* database
+ * Starts an CoreOS based instance with the docker container *ONLYOFFICE Document Server*, the container *ONLYOFFICE Mail Server* and the container *ONLYOFFICE Community Server*
  * Expose it on the Internet via a floating IP.
 
 <a name="console" />
@@ -140,38 +137,36 @@ parameters:
 
 ### You do not have a way to create the stack from the console?
 
- We do indeed! Using the console, you can deploy Piwik:
+ We do indeed! Using the console, you can deploy ONLYOFFICE:
 
- 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-piwik](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-piwik) repository
- 2.	Click on the file named `blueprint-coreos-piwik.heat.yml`
+ 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-onlyoffice](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-onlyoffice) repository
+ 2.	Click on the file named `blueprint-coreos-onlyoffice.heat.yml`
  3.	Click on RAW, a web page will appear containing purely the template
  4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
  5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.  Write a passphrase that will be used for the database piwik user
- 10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+ 9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
- The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+ The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You have to wait 5 minutes to the softwares be ready. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
- If you've reached this point, you're already done! Go enjoy Piwik!
+ If you've reached this point, you're already done! Go enjoy ONLYOFFICE!
 
 ### A one-click deployment sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Piwik.
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your ONLYOFFICE.
 
 ## Enjoy
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own Piwik analytics tool, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of ONLYOFFICE, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
-At your first connexion you will ask to give the information about the website you want to analyze and how to access to the database. Complete the fields as below, the password is which one you chose when you created the stack.
+ After you gave informations about the administrator, you arrive on the interface:
+![interface](img/interface.png)
 
-![firstco](img/firstco.png)
-
-You can now setup Piwik, this one being hosted in France in a safe environment, you can completely trust on this product.
+ You can now use your office suite, this one being hosted in France in a safe environment, you can completely trust on this product.
 
 ## So watt?
 
@@ -183,9 +178,8 @@ You now have an SSH access point on your virtual machine through the floating-IP
 
 * Here are some news sites to learn more:
 
-- https://www.piwik.org/
-- https://www.piwik.org/docs/
-
+  - http://www.onlyoffice.org/
+  - http://helpcenter.onlyoffice.com/
 
 ----
 Have fun. Hack in peace.

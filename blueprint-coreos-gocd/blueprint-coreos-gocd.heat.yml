@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Joomla!
+description: Blueprint CoreOS GoCD
 
 
 parameters:
@@ -23,11 +23,6 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-
-  sqlpass:
-    description: "password sql (user: joomla)"
-    type: string
-    hidden: true
 
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
@@ -58,12 +53,12 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 8153, port_range_max: 8154 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-  
+
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -79,7 +74,7 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
-  random_root_pass:
+  random_agent_key:
     type: OS::Heat::RandomString
     properties:
       length: 15
@@ -98,8 +93,7 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $sqlpass: { get_param: sqlpass }
-            $rootpass: { get_resource: random_root_pass }
+            $random_agent_key: { get_resource: random_agent_key }
           template: |
             #cloud-config
             write_files:
@@ -118,15 +112,8 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /joomla/{data,mysql}
-              - path: /home/core/mysql.env
-                permissions: 0775
-                owner: "core:core"
-                content: |
-                    MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=joomla
-                    MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=joomla
+                  sudo mkdir -p /opt/gocd/{etc,lib,log}
+                  sudo chown -R 999 /opt/gocd
             coreos:
               etcd2:
                 name: "%H"
@@ -136,6 +123,22 @@ resources:
                 listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
                 listen-peer-urls: http://$private_ipv4:2380
               units:
+                - name: etcd2.service
+                  command: start
+                - name: fleet.service
+                  command: start
+                - name: docker-tcp.socket
+                  command: start
+                  enable: true
+                  content: |
+                    [Unit]
+                    Description=Docker Socket for the API
+                    [Socket]
+                    ListenStream=2375
+                    BindIPv6Only=both
+                    Service=docker.service
+                    [Install]
+                    WantedBy=sockets.target
                 - name: format.service
                   command: start
                   content: |
@@ -147,7 +150,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: joomla.mount
+                - name: opt-gocd.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,44 +159,55 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/joomla/
+                    Where=/opt/gocd/
                     Type=ext4
+                - name: gocd-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=GoCD Mount
+                    After=opt-gocd.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
-                - name: mysql.service
+                - name: gocdserver.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=GoCD Server
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql
+                    ExecStartPre=/usr/bin/docker pull gocd/gocd-server:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/mysql/:/var/lib/mysql \
-                             --env-file /home/core/mysql.env \
-                             --name=mysql mysql
-                    ExecStop=/usr/bin/docker rm -f mysql
-                - name: joomla.service
+                             --publish=8153:8153 \
+                             --publish=8154:8154 \
+                             --volume /opt/gocd/etc:/etc/go \
+                             --volume /opt/gocd/lib:/var/lib/go-server \
+                             --volume /opt/gocd/log:/var/log/go-server \
+                             --env AGENT_KEY=$random_agent_key \
+                             --name=gocd-server gocd/gocd-server:latest
+                    ExecStop=/usr/bin/docker rm -f gocd-server
+                - name: gocdagent.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=GoCD Agent
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull joomla:latest
-                    ExecStart=/usr/bin/docker run \
-                             --volume /joomla/data/:/var/www/html \
-                             --publish=80:80 \
-                             --link=mysql \
-                             --name=joomla joomla:latest
-                    ExecStop=/usr/bin/docker rm -f joomla
+                    ExecStartPre=/usr/bin/docker pull gocd/gocd-agent:latest
+                    ExecStartPre=-/usr/bin/docker create \
+                             --env GO_SERVER=gocd-server \
+                             --env AGENT_KEY=$random_agent_key \
+                             --link gocd-server \
+                             --name=gocd-agent gocd/gocd-agent:latest
+                    ExecStart=/usr/bin/docker start gocd-agent
 
                     [Install]
                     WantedBy=multi-user.target
@@ -201,11 +215,11 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      count: { get_param: volume_attachment } 
+      count: { get_param: volume_attachment }
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
-          server_id: { get_resource: server }  
+          server_id: { get_resource: server }
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -215,16 +229,12 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Joomla URL
+    description: GoCD Server URL
     value:
       str_replace:
-        template: http://$floating_ip
+        template: http://$floating_ip:8153
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
-  root_password:
-    description: MySQL Root Password
-    value:
-      str_replace:
-        template: $rootpass
-        params:
-          $rootpass: { get_resource: random_root_pass }
+  random_agent_key:
+    description: GoCD Agent Key
+    value: { get_resource: random_agent_key }

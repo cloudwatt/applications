@@ -1,22 +1,22 @@
-# 5 Minutes Stacks, episode X : Piwik #
+# 5 Minutes Stacks, episode X : LAMP #
 
-## Episode X : Piwik
+## Episode X : LAMP
 
-![Piwiklogo](img/piwiklogo.png)
+![LAMPlogo](img/lamplogo.gif)
 
-Piwik is an open-source analytics platform with a clear and friendly interface.
-
-You can host your statistics yourself and you don't need a third-party company.
-
-Piwik's interface is customizable and you can install several plugins.
-
-Piwik is developed in PHP and uses a MySQL database to save all the data it needs.
+LAMP is a web server composed by 4 open-source tools:
+ - **L**inux for the Operating System which host the server
+ - **A**pache for the HTTP server which is in link with the client
+ - **M**ySQL for the databases server
+ - **P**HP to execute dynamic web pages
 
 ## Preparations
 
 ### The Versions
-- CoreOS Stable 1010.6
-- Piwik 2.16.2
+ - CoreOS Stable 1010.6
+ - Apache2
+ - MySQL 5.7.15
+ - PHP 7.0
 
 ### The prerequisites to deploy this stack
 
@@ -39,9 +39,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-piwik/` repository:
+ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository:
 
- * `blueprint-coreos-piwik.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `blueprint-coreos-lamp.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
  * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -64,13 +64,13 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `blueprint-coreos-piwik.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. You will also enter the `piwik` password account of your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `blueprint-coreos-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.You will also enter the `lamp` password account of the FTP server and your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Piwik
+description: Blueprint CoreOS LAMP
 
 
 parameters:
@@ -93,8 +93,8 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: "password sql (user: piwik)"
+  pass:
+    description: "password ftp et sql (user: lamp)"
     type: string
     hidden: true
 [...]
@@ -109,14 +109,14 @@ parameters:
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
- | ee873a3a-a306-4127-8647-4bc80469cec4 | Piwik           | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | LAMP            | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
  Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
  ~~~
- $ watch heat resource-list Piwik
+ $ watch heat resource-list LAMP
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -131,7 +131,7 @@ parameters:
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *Piwik* attached to *Apache2* and his *Mysql* database
+ * Starts an CoreOS based instance with the docker container *Apache2* attached to his *MySQL* database
  * Expose it on the Internet via a floating IP.
 
 <a name="console" />
@@ -140,38 +140,43 @@ parameters:
 
 ### You do not have a way to create the stack from the console?
 
- We do indeed! Using the console, you can deploy Piwik:
+ We do indeed! Using the console, you can deploy LAMP:
 
- 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-piwik](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-piwik) repository
- 2.	Click on the file named `blueprint-coreos-piwik.heat.yml`
+ 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-lamp](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-lamp) repository
+ 2.	Click on the file named `blueprint-coreos-lamp.heat.yml`
  3.	Click on RAW, a web page will appear containing purely the template
  4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
  5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.  Write a passphrase that will be used for the database piwik user
+ 9.  Write a passphrase that will be used for the FTP server and the database lamp user
  10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
- If you've reached this point, you're already done! Go enjoy Piwik!
+ If you've reached this point, you're already done! Go enjoy LAMP!
 
 ### A one-click deployment sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Piwik.
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your LAMP server.
 
 ## Enjoy
 
- Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
+Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own Piwik analytics tool, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+You are now in possession of your own LAMP server, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
-At your first connexion you will ask to give the information about the website you want to analyze and how to access to the database. Complete the fields as below, the password is which one you chose when you created the stack.
+Here is the default homepage of your website:
+![DefaultHomepage](img/default-homepage.png)
 
-![firstco](img/firstco.png)
+You can directly manage your database with phpMyAdmin:
+![pmaOverview](img/pma-overview.png)
 
-You can now setup Piwik, this one being hosted in France in a safe environment, you can completely trust on this product.
+To upload new files reachable online, you can use a FTP client software as *FileZilla*:
+![FileZillaConnected](img/filezilla-connected.png)
+
+You can now setup your website, this one being hosted in France in a safe environment, you can completely trust on this product.
 
 ## So watt?
 
@@ -179,13 +184,8 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You have access to the web interface via the address specified in your output stack in horizon console.
-
-* Here are some news sites to learn more:
-
-- https://www.piwik.org/
-- https://www.piwik.org/docs/
-
+* You just have to copy your files through the FTP server on port 2176 and they will be available via the floating IP specified in your output stack in horizon console.
+* You can manage your databases easily with phpMyAdmin in your browser on port 8059.
 
 ----
 Have fun. Hack in peace.

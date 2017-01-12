@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Joomla!
+description: Blueprint CoreOS LAMP
 
 
 parameters:
@@ -24,8 +24,8 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: "password sql (user: joomla)"
+  pass:
+    description: "password ftp et sql (user: lamp)"
     type: string
     hidden: true
 
@@ -59,6 +59,9 @@ resources:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
         - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 2176, port_range_max: 2176 }
+        - { direction: ingress, protocol: TCP, port_range_min: 4559, port_range_max: 4564 }
+        - { direction: ingress, protocol: TCP, port_range_min: 8059, port_range_max: 8059 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -98,7 +101,7 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $sqlpass: { get_param: sqlpass }
+            $pass: { get_param: pass }
             $rootpass: { get_resource: random_root_pass }
           template: |
             #cloud-config
@@ -118,15 +121,23 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /joomla/{data,mysql}
+                  sudo mkdir -p /opt/lamp/{data,mysql}
+                  sudo chown 48:48 /opt/lamp/data
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=joomla
-                    MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=joomla
+                    MYSQL_USER=lamp
+                    MYSQL_PASSWORD=$pass
+                    MYSQL_DATABASE=lamp
+              - path: /home/core/write_index.sh
+                permissions: 0775
+                owner: "root:root"
+                content: |
+                  #!/bin/bash
+                  echo -e "Hello world" > /opt/lamp/data/index.html
+                  chown 48:48 /opt/lamp/data/index.html
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +158,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: joomla.mount
+                - name: opt-lamp.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,44 +167,102 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/joomla/
+                    Where=/opt/lamp/
                     Type=ext4
+                - name: lamp-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=LAMP Mount
+                    After=opt-lamp.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
+                - name: write-index.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Write index.html file
+                    After=opt-lamp.mount
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/write_index.sh
+                - name: vsftpd.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=vsftpd
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull panubo/vsftpd:latest
+                    ExecStart=/usr/bin/docker run \
+                             --publish=2176:21 \
+                             --publish=4559:4559 \
+                             --publish=4560:4560 \
+                             --publish=4561:4561 \
+                             --publish=4562:4562 \
+                             --publish=4563:4563 \
+                             --publish=4564:4564 \
+                             --volume /opt/lamp/data/:/srv \
+                             --env FTP_USER=lamp \
+                             --env FTP_PASSWORD=$pass \
+                             --name=vsftpd panubo/vsftpd:latest
+                    ExecStop=/usr/bin/docker rm -f vsftpd
                 - name: mysql.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=MySQL
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql
+                    ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/mysql/:/var/lib/mysql \
+                             --volume /opt/lamp/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
-                             --name=mysql mysql
+                             --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: joomla.service
+                - name: phpmyadmin.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=phpMyAdmin
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull joomla:latest
+                    ExecStartPre=/usr/bin/docker pull phpmyadmin/phpmyadmin:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/data/:/var/www/html \
+                             --link mysql \
+                             --publish=8059:80 \
+                             --env PMA_HOST=mysql \
+                             --name=phpmyadmin phpmyadmin/phpmyadmin:latest
+                    ExecStop=/usr/bin/docker rm -f phpmyadmin
+                - name: apache2.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=apache2
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/php7-apache2
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/lamp/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
-                             --name=joomla joomla:latest
-                    ExecStop=/usr/bin/docker rm -f joomla
+                             --name=apache2 cloudwattfr/php7-apache2
+                    ExecStop=/usr/bin/docker rm -f apache2
 
                     [Install]
                     WantedBy=multi-user.target
@@ -215,7 +284,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Joomla URL
+    description: LAMP URL
     value:
       str_replace:
         template: http://$floating_ip

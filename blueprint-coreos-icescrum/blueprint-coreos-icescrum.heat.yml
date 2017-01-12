@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS Joomla!
+description: Blueprint iceScrum
 
 
 parameters:
@@ -21,11 +21,9 @@ parameters:
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: joomla)"
+    description: "password sql (user: icescrum)"
     type: string
     hidden: true
 
@@ -63,7 +61,7 @@ resources:
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-  
+
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -88,7 +86,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -100,6 +98,7 @@ resources:
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $sqlpass: { get_param: sqlpass }
             $rootpass: { get_resource: random_root_pass }
+            $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           template: |
             #cloud-config
             write_files:
@@ -118,15 +117,15 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /joomla/{data,mysql}
+                  sudo mkdir -p /opt/icescrum/{data,mysql}
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=joomla
+                    MYSQL_USER=icescrum
                     MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=joomla
+                    MYSQL_DATABASE=icescrum
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +146,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: joomla.mount
+                - name: opt-icescrum.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,44 +155,54 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/joomla/
+                    Where=/opt/icescrum/
                     Type=ext4
+                - name: icescrum-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=iceScrum Mount
+                    After=opt-icescrum.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
                 - name: mysql.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=iceScrum DB
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql
+                    ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/mysql/:/var/lib/mysql \
+                             --volume /opt/icescrum/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
-                             --name=mysql mysql
+                             --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: joomla.service
+                - name: icescrum.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=iceScrum UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull joomla:latest
+                    ExecStartPre=/usr/bin/docker pull icescrum/icescrum
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/data/:/var/www/html \
-                             --publish=80:80 \
-                             --link=mysql \
-                             --name=joomla joomla:latest
-                    ExecStop=/usr/bin/docker rm -f joomla
+                             --link mysql \
+                             --publish 80:8080 \
+                             --env ICESCRUM_HOST=$floating_ip \
+                             --env ICESCRUM_PORT=80 \
+                             --env ICESCRUM_CONTEXT=/ \
+                             --volume /opt/icescrum/data:/root \
+                             --name=icescrum icescrum/icescrum
+                    ExecStop=/usr/bin/docker rm -f icescrum
 
                     [Install]
                     WantedBy=multi-user.target
@@ -201,11 +210,11 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      count: { get_param: volume_attachment } 
+      count: { get_param: volume_attachment }
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
-          server_id: { get_resource: server }  
+          server_id: { get_resource: server }
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -215,7 +224,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Joomla URL
+    description: iceScrum URL
     value:
       str_replace:
         template: http://$floating_ip

@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: password root sql
+    description: "password sql (user: piwik)"
     type: string
     hidden: true
 
@@ -79,6 +79,11 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
+  random_root_pass:
+    type: OS::Heat::RandomString
+    properties:
+      length: 15
+
   server:
     type: OS::Nova::Server
     properties:
@@ -94,6 +99,7 @@ resources:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $sqlpass: { get_param: sqlpass }
+            $rootpass: { get_resource: random_root_pass }
           template: |
             #cloud-config
             write_files:
@@ -117,7 +123,9 @@ resources:
                 permissions: 0775
                 owner: "core:core"
                 content: |
-                    MYSQL_ROOT_PASSWORD=$sqlpass
+                    MYSQL_ROOT_PASSWORD=$rootpass
+                    MYSQL_USER=piwik
+                    MYSQL_PASSWORD=$sqlpass
                     MYSQL_DATABASE=piwik
             coreos:
               etcd2:
@@ -128,22 +136,6 @@ resources:
                 listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
                 listen-peer-urls: http://$private_ipv4:2380
               units:
-                - name: etcd2.service
-                  command: start
-                - name: fleet.service
-                  command: start
-                - name: docker-tcp.socket
-                  command: start
-                  enable: true
-                  content: |
-                    [Unit]
-                    Description=Docker Socket for the API
-                    [Socket]
-                    ListenStream=2375
-                    BindIPv6Only=both
-                    Service=docker.service
-                    [Install]
-                    WantedBy=sockets.target
                 - name: format.service
                   command: start
                   content: |
@@ -179,13 +171,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill mysql
-                    ExecStartPre=-/usr/bin/docker rm mysql
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
                              --volume /piwik/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
+                    ExecStop=/usr/bin/docker rm -f mysql
                 - name: apache2.service
                   command: start
                   content: |
@@ -196,14 +187,13 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill apache2
-                    ExecStartPre=-/usr/bin/docker rm apache2
-                    ExecStartPre=/usr/bin/docker pull simondecaestecker/php7-apache2
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/php7-apache2
                     ExecStart=/usr/bin/docker run \
                              --volume /piwik/data/:/var/www/html \
                              --publish=80:80 \
                              --link=mysql \
-                             --name=apache2 simondecaestecker/php7-apache2
+                             --name=apache2 cloudwattfr/php7-apache2
+                    ExecStop=/usr/bin/docker rm -f apache2
                 - name: piwik.service
                   command: start
                   content: |
@@ -214,12 +204,11 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill piwik
-                    ExecStartPre=-/usr/bin/docker rm piwik
                     ExecStartPre=/usr/bin/docker pull piwik:latest
                     ExecStart=/usr/bin/docker run \
                              --volume /piwik/data/:/var/www/html \
                              --name=piwik piwik:latest
+                    ExecStop=/usr/bin/docker rm -f piwik
 
                     [Install]
                     WantedBy=multi-user.target
@@ -247,3 +236,10 @@ outputs:
         template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+  root_password:
+    description: MySQL Root Password
+    value:
+      str_replace:
+        template: $rootpass
+        params:
+          $rootpass: { get_resource: random_root_pass }

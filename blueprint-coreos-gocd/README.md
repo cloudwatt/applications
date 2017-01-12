@@ -1,22 +1,21 @@
-# 5 Minutes Stacks, épisode X : Piwik #
+# 5 Minutes Stacks, épisode X : GoCD #
 
-## Episode X : Piwik
+## Episode X : GoCD
 
-![Piwiklogo](img/piwiklogo.png)
+![Gologo](img/gologo.png)
 
-Piwik est un outil libre de mesure et d'analyse d'audience web avec une interface claire et intuitive.
+Go Continuous Delivery est un outil de gestion du cycle de vie des applications permettant le _continuous delivery_, le déploiement continu jusque dans la production.
 
-Il vous permet d'héberger par vous même les données statistiques de votre site et donc de vous affranchir de toute société tierse.
+Ainsi, il est possible de mettre en oeuvre toutes les étapes de la fabrication d’un logiciel, à savoir la compilation, les tests unitaires, le déploiement dans un environnement de test, les tests de performance, le déploiement en pré-production et enfin le déploiement en production.
 
-L'interface de Piwik est également personnalisable, et diverses extensions sont disponibles.
+Le système Go Continuous Delivery est composé d'un serveur et d'un ou plusieurs agents. Les agents s’adressent au serveur principal pour recevoir des tâches à exécuter.
 
-Piwik est développé en PHP et utilise une base de données de type MySQL pour sauvegarder les informations.
-
-## Preparations
+## Préparations
 
 ### Les versions
  - CoreOS Stable 1010.6
- - Piwik 2.16.2
+ - GoCD Server 16.10.0
+ - GoCD Agent 16.10.0
 
 ### Les pré-requis pour déployer cette stack
 
@@ -38,9 +37,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-piwik/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-gocd/`
 
-* `blueprint-coreos-piwik.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `blueprint-coreos-gocd.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
@@ -64,14 +63,14 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-piwik.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `piwik` de votre base `MySQL`.
+Dans le fichier `blueprint-coreos-gocd.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. 
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
- ~~~ yaml
+~~~ yaml
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Piwik
+description: Blueprint CoreOS GoCD
 
 
 parameters:
@@ -94,29 +93,29 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: "password sql (user: piwik)"
+  volume_attachment:
+    description: Attacher un volume cinder de 20GO ?
+    default: 0
     type: string
-    hidden: true
 [...]
- ~~~
+~~~
 ### Démarrer la stack
 
 Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~ bash
- $ ./stack-start.sh Piwik
+ $ ./stack-start.sh GoCD
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | ed4ac18a-4415-467e-928c-1bef193e4f38 | Piwik      | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+ | ed4ac18a-4415-467e-928c-1bef193e4f38 | GoCD       | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
  +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 
  ~~~ bash
- $ watch heat resource-list Piwik
+ $ watch heat resource-list GoCD
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -131,7 +130,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Coreos y deposer le conteneur *Piwik* rattaché à *Apache2* et à sa database *Mysql*,
+   * démarrer une instance basée sur Coreos y déposer le conteneur *GoCD Server* et le conteneur *GoCD Agent*,
 
    * l'exposer sur Internet via une IP flottante.
 
@@ -141,18 +140,17 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer Piwik :
+Et bien si ! En utilisant la console, vous pouvez déployer GoCD :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-piwik](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-piwik)
-2.	Cliquez sur le fichier nommé `blueprint-coreos-piwik.heat.yml`
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-gocd](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-gocd)
+2.	Cliquez sur le fichier nommé `blueprint-coreos-gocd.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.  Donner votre passphrase qui servira pour le compte piwik de votre base de données MySQL
-10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
@@ -160,19 +158,15 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Piwik !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez accès à GoCD Server !
 
 ## Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous êtes maintenant en possession de votre propre outil de statistiques Piwik. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+Vous êtes maintenant en possession de GoCD. Vous pouvez y acceder via l'url `http://ip-floatingip:8153`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
-Lors de votre première connexion, il vous sera demandé de saisir les informations concernant le site a analyser ainsi que celles pour accéder à la base de données ; remplissez les champs comme ci-dessous, le mot de passe étant celui choisi lors de la création de la stack :
-
-![firstco](img/firstco.png)
-
-Vous pouvez à présent mettre en place Piwik, celui ci étant hébergé en France dans un environnement maitrisé, vous pouvez avoir une totale confiance dans ce produit.
+Vous pouvez à présent mettre en place votre outil de déploiement, celui-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
 ## So watt ?
 
@@ -180,14 +174,25 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-* Vous avez accès à l'interface web en http via l'adresse indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
+Un agent est déjà à votre disposition, vous pouvez en ajouter d'autres si nécessaire en indiquant l'adresse IP flottante du serveur ainsi que la clé de 15 caractères générée aléatoirement et disponible dans la console Cloudwatt.
 
-* Voici quelques sites d'informations avant d'aller plus loin :
+Vous pouvez maintenant lancer un travail avec votre outil de déploiement continu.
 
-  - https://www.piwik.org/
-  - https://www.piwik.org/docs/
+En premier lieu, vous pouvez créer un nouveau pipeline en indiquant son nom :
+![createPipeline](img/createPipeline.png)
 
+Vous pouvez maintenant indiquer les ressources à utiliser (material), par exemple un dépôt Git :
+![chooseMaterial](img/chooseMaterial.png)
 
+Puis il est nécessaire d'indiquer la tâche à effectuer (job) :
+![createJob](img/createJob.png)
+
+Vous n'avez plus qu'à démarrer le pipeline en cliquant sur le bouton pause :
+![startPipeline](img/startPipeline.png)
+
+Une fois que la tâche s'est exécutée, vous pouvez visualiser les logs d'exécution :
+![jobFinished](img/jobFinished.png)
+![jobConsole](img/jobConsole.png)
 
 ----
 Have fun. Hack in peace.

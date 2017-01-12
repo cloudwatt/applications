@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Joomla!
+description: Blueprint CoreOS Piwigo
 
 
 parameters:
@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: joomla)"
+    description: "password sql (user: piwigo)"
     type: string
     hidden: true
 
@@ -63,7 +63,7 @@ resources:
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-  
+
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -118,15 +118,15 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /joomla/{data,mysql}
+                  sudo mkdir -p /opt/piwigo/mysql
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=joomla
+                    MYSQL_USER=piwigo
                     MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=joomla
+                    MYSQL_DATABASE=piwigo
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +147,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: joomla.mount
+                - name: opt-piwigo.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,44 +156,50 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/joomla/
+                    Where=/opt/piwigo/
                     Type=ext4
+                - name: piwigo-mount.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Piwigo Mount
+                    After=opt-piwigo.mount
                     [Service]
                     Type=oneshot
+                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
                 - name: mysql.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=Piwigo DB
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql
+                    ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /joomla/mysql/:/var/lib/mysql \
+                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
-                             --name=mysql mysql
+                             --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: joomla.service
+                - name: piwigo.service
                   command: start
                   content: |
                     [Unit]
-                    Description=joomla UI
+                    Description=Piwigo UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull joomla:latest
-                    ExecStart=/usr/bin/docker run \
-                             --volume /joomla/data/:/var/www/html \
-                             --publish=80:80 \
-                             --link=mysql \
-                             --name=joomla joomla:latest
-                    ExecStop=/usr/bin/docker rm -f joomla
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
+                    ExecStartPre=-/usr/bin/docker create \
+                             --link mysql \
+                             --publish 80:80 \
+                             --name=piwigo cloudwattfr/piwigo:2.8.2
+                    ExecStart=/usr/bin/docker start piwigo
 
                     [Install]
                     WantedBy=multi-user.target
@@ -201,11 +207,11 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      count: { get_param: volume_attachment } 
+      count: { get_param: volume_attachment }
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
-          server_id: { get_resource: server }  
+          server_id: { get_resource: server }
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -215,7 +221,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Joomla URL
+    description: Piwigo URL
     value:
       str_replace:
         template: http://$floating_ip
