@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 46 episode : Blueprint-jessie-openstack-cli #
+# 5 Minutes Stacks, 46 episode : OpenStack CLI #
 
-## Episode 46 : Blueprint-jessie-openstack-cli
+## Episode 46 : OpenStack CLI
 
 This stack helps you to control the different modules of the CloudWatt Openstack infrastructure.
 We start by Debian Jessie image with the openstack client installed and your credentials that will allow you to access the Cloudwatt API via the shell of the instance.
