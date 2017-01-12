@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 47 : ONLYOFFICE #
+# 5 Minutes Stacks, episode 48 : ONLYOFFICE #
 
-## Episode 47 : ONLYOFFICE
+## Episode 48 : ONLYOFFICE
 
 ![ONLYOFFICElogo](img/onlyofficelogo.png)
 

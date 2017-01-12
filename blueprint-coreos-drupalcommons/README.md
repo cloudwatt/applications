@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 46 : Drupal Commons #
+# 5 Minutes Stacks, épisode 47 : Drupal Commons #
 
-## Episode 46 : Drupal Commons
+## Episode 47 : Drupal Commons
 
 ![DrupalCommonslogo](img/drupalcommonslogo.png)
 
