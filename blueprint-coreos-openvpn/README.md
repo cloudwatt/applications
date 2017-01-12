@@ -1,10 +1,10 @@
-# 5 Minutes Stacks, episode X : OpenVPN #
+# 5 Minutes Stacks, episode 49 : OpenVPN #
 
-## Episode X : OpenVPN
+## Episode 49 : OpenVPN
 
 ![OpenVPNlogo](img/openvpnlogo.png)
 
-OpenVPN est un outil libre permettant de mettre en place un VPN, *Virtual Private Network* ou réseau privé virtuel, afin de, notamment, pouvoir accéder à vos instances sans les exposer publiquement sur Internet.
+OpenVPN est un outil libre permettant de mettre en place un VPN, *Virtual Private Network* ou réseau privé virtuel, afin de, notamment, pouvoir accéder à vos instances sans les exposer publiquement sur Internet ou de vous connecter sur Internet avec une adresse IP française.
 
 Le chiffrement des données au sein du tunnel créé par OpenVPN repose sur un jeu de clé RSA (clé privée et clé publique).
 
@@ -13,7 +13,7 @@ L'un des avantages d'OpenVPN est qu'il existe des clients sur toutes les platefo
 ## Préparations
 
 ### Les versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - OpenVPN 2.3.11
 
 ### Les pré-requis pour déployer cette stack
@@ -66,10 +66,10 @@ Dans le fichier `blueprint-coreos-openvpn.heat.yml` vous trouverez en haut une s
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS OpenVPN
+description: Blueprint OpenVPN
 
 
 parameters:
@@ -153,7 +153,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer OpenVPN :
 9.  Donner votre passphrase qui servira pour générer les clés
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Il ne vous reste plus qu'à patienter 5 bonnes minutes que les applicatifs se lancent. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
 
 C’est (déjà) FINI !
 
@@ -175,7 +175,7 @@ Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes 
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `core` par défaut).
 
-* Vous avez accès au fichier de configuration client grâce à la commande indiquée dans la sortie de votre stack sur la console horizon Cloudwatt.
+* Vous avez accès au fichier de configuration client grâce aux commandes indiquées dans la sortie de votre stack sur la console horizon Cloudwatt. Utilisez celle qui correspond à votre système d'exploitation.
 
 * Voici quelques sites d'informations avant d'aller plus loin :
 

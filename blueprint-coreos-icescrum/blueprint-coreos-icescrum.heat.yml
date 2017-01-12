@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint iceScrum
 
 
 parameters:
@@ -21,11 +21,9 @@ parameters:
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: piwigo)"
+    description: "password sql (user: icescrum)"
     type: string
     hidden: true
 
@@ -88,7 +86,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -100,6 +98,7 @@ resources:
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $sqlpass: { get_param: sqlpass }
             $rootpass: { get_resource: random_root_pass }
+            $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           template: |
             #cloud-config
             write_files:
@@ -118,15 +117,15 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/piwigo/mysql
+                  sudo mkdir -p /opt/icescrum/{data,mysql}
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=piwigo
+                    MYSQL_USER=icescrum
                     MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=piwigo
+                    MYSQL_DATABASE=icescrum
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +146,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: opt-piwigo.mount
+                - name: opt-icescrum.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,14 +155,14 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/opt/piwigo/
+                    Where=/opt/icescrum/
                     Type=ext4
-                - name: piwigo-mount.service
+                - name: icescrum-mount.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo Mount
-                    After=opt-piwigo.mount
+                    Description=iceScrum Mount
+                    After=opt-icescrum.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
@@ -172,7 +171,7 @@ resources:
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo DB
+                    Description=iceScrum DB
                     After=docker.service
                     Requires=docker.service
                     [Service]
@@ -180,26 +179,30 @@ resources:
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
+                             --volume /opt/icescrum/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: piwigo.service
+                - name: icescrum.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo UI
+                    Description=iceScrum UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
-                    ExecStartPre=-/usr/bin/docker create \
+                    ExecStartPre=/usr/bin/docker pull icescrum/icescrum
+                    ExecStart=/usr/bin/docker run \
                              --link mysql \
-                             --publish 80:80 \
-                             --name=piwigo cloudwattfr/piwigo:2.8.2
-                    ExecStart=/usr/bin/docker start piwigo
+                             --publish 80:8080 \
+                             --env ICESCRUM_HOST=$floating_ip \
+                             --env ICESCRUM_PORT=80 \
+                             --env ICESCRUM_CONTEXT=/ \
+                             --volume /opt/icescrum/data:/root \
+                             --name=icescrum icescrum/icescrum
+                    ExecStop=/usr/bin/docker rm -f icescrum
 
                     [Install]
                     WantedBy=multi-user.target
@@ -221,7 +224,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Piwigo URL
+    description: iceScrum URL
     value:
       str_replace:
         template: http://$floating_ip

@@ -1,20 +1,22 @@
-# 5 Minutes Stacks, episode 49 : OpenVPN #
+# 5 Minutes Stacks, episode 50 : iceScrum #
 
-## Episode 49 : OpenVPN
+## Episode 50 : iceScrum
 
-![OpenVPNlogo](img/openvpnlogo.png)
+![iceScrumlogo](img/icescrumlogo.png)
 
-OpenVPN is an open source tool allowing you to create your own VPN, *Virtual Private Network*, in the aim to access to your instances without exposing them on Internet or to surf on Internet with a French IP address.
+iceScrum is a project management tool following "agile" method.
 
-Data inside OpenVPN's tunnel are encrypted thanks to a RSA keypair (public and private key).
+This tool will allow you to have a global preview of your project, and hence the analyses and the productivity.
 
-An advantage of OpenVPN is that you can use it on all your devices whether it be in a desktop environment or on a mobile phone.
+A friendly dashboard shows useful indicators for the setting up of your project or the few last changes which were made.
+
+iceScrum is fully available through an internet browser and it uses a MySQL database to store all its informations.
 
 ## Preparations
 
 ### The Versions
  - CoreOS Stable 1185.5
- - OpenVPN 2.3.11
+ - iceScrum R6#14.11
 
 ### The prerequisites to deploy this stack
 
@@ -37,9 +39,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `blueprint-coreos-openvpn/` repository:
+ Once you have cloned the github, you will find in the `blueprint-coreos-icescrum/` repository:
 
- * `blueprint-coreos-openvpn.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `blueprint-coreos-icescrum.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
  * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -62,13 +64,13 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `blueprint-coreos-openvpn.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `blueprint-coreos-icescrum.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 heat_template_version: 2015-04-30
 
 
-description: Blueprint OpenVPN
+description: Blueprint iceScrum
 
 
 parameters:
@@ -91,10 +93,10 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  passphrase:
-    description: Passphrase
+  sqlpass:
+    description: password root sql
     type: string
-    hidden: trues
+    hidden: true
 
 [...]
 ~~~
@@ -104,18 +106,18 @@ parameters:
 
 
  ~~~ bash
- ./stack-start.sh OpenVPN
+ ./stack-start.sh iceScrum
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
- | ee873a3a-a306-4127-8647-4bc80469cec4 | OpenVPN         | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | iceScrum        | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
  Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
  ~~~
- $ watch heat resource-list OpenVPN
+ $ watch heat resource-list iceScrum
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -130,8 +132,8 @@ parameters:
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *OpenVPN*
- * Provide the configuration file with a `scp` command
+ * Starts an CoreOS based instance with the docker container *iceScrum* and the container *MySQL*
+ * Expose it on the Internet via a floating IP.
 
 <a name="console" />
 
@@ -139,34 +141,38 @@ parameters:
 
 ### You do not have a way to create the stack from the console?
 
- We do indeed! Using the console, you can deploy OpenVPN:
+ We do indeed! Using the console, you can deploy iceScrum:
 
- 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-openvpn](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-openvpn) repository
- 2.	Click on the file named `blueprint-coreos-openvpn.heat.yml`
+ 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-icescrum](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-icescrum) repository
+ 2.	Click on the file named `blueprint-coreos-icescrum.heat.yml`
  3.	Click on RAW, a web page will appear containing purely the template
  4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
  5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
  6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
  7.	Name your stack in the « Stack name » field
  8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.  Write a passphrase that will be used to generate public and private keys
+ 9. Write a passphrase that will be used for the database icescrum user
  10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You have to wait 5 minutes to the softwares be ready. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
- If you've reached this point, you're already done! Go enjoy your VPN!
+ If you've reached this point, you're already done! Go enjoy iceScrum!
 
 ### A one-click deployment sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have now the configuration file to connect you to the VPN.
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your e-commerce platform.
 
 ## Enjoy
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of OpenVPN, you can download your configuration file by using the command present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of iceScrum, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
-You can now create other instances on the same network and access to them without giving them a floating IP. Your VPN being hosted in France in a safe environment, you can completely trust on this product.
+ At your first connexion you will ask to give some information and how to access to the database. Complete the fields as below (MySQL's URL is `jdbc:mysql://mysql:3306/icescrum?useUnicode=true&characterEncoding=utf8`), the password is which one you chose when you created the stack.
+
+![firstco](img/firstco.png)
+
+When setup is completed, you have to restart iceScrum with the following command:`docker restart icescrum`
 
 ## So watt?
 
@@ -174,11 +180,12 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You have access to the configuration file with the commands specified in your output stack in horizon console. Use the right one regarding your Operating System.
+* You have access to the web interface via the address specified in your output stack in horizon console.
 
 * Here are some news sites to learn more:
 
-  - https://openvpn.net/
+  - https://www.icescrum.com/
+  - https://www.icescrum.com/documentation/
 
 ----
 Have fun. Hack in peace.
