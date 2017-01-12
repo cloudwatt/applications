@@ -1,0 +1,147 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+description: Bundle Openstack Cli
+parameter_groups:
+ - label: General parameters
+   parameters:
+     - keypair_name
+     - flavor_name
+     - network_name
+
+ - label: Credentials parameters
+   parameters:
+     - os_auth_url
+     - os_region_name
+     - os_tenant_name
+     - os_username
+     - os_password
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instances
+    type: string
+
+  flavor_name:
+    default: t1.cw.tiny
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n1.cw.standard-1
+        - n1.cw.standard-2
+        - n1.cw.standard-4
+        - n1.cw.standard-8
+        - n1.cw.standard-12
+        - n1.cw.standard-16
+
+
+  os_region_name:
+      default: fr1
+      label: OpenStack region
+      description: OpenStack region
+      type: string
+      constraints:
+        - allowed_values:
+          - fr1
+          - fr2
+
+  os_username:
+    description: OpenStack Username
+    label: OpenStack Username
+    type: string
+
+  os_password:
+    description: OpenStack Password
+    label: OpenStack Password
+    type: string
+    hidden: true
+
+  os_tenant_name:
+    description: OpenStack Tenant Name
+    label: OpenStack Tenant Name
+    type: string
+
+  os_auth_url:
+    description: OpenStack Auth URL
+    default: https://identity.fr1.cloudwatt.com/v2.0
+    label: OpenStack Auth URL
+    type: string
+
+  network_name:
+    description: network name
+    label: network name
+    type: string
+
+
+resources:
+
+  sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 185e1975-c9c5-4358-909e-5e329808902e
+      flavor: { get_param: flavor_name }
+      networks:
+        - { network: { get_param: network_name } }
+      security_groups:
+        - { get_resource: sg }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+            export DEBIAN_FRONTEND=noninteractive
+            sudo apt-get update
+            sudo apt-get -o Dpkg::Options::="--force-confold" upgrade -y
+            sudo apt-get -o Dpkg::Options::="--force-confold" remove python-pip --purge -y
+            sudo apt-get -o Dpkg::Options::="--force-confold" install python-dev python-pip -y
+            sudo pip install python-openstackclient
+            cat <<EOF >> /home/cloud/.bashrc
+              export OS_USERNAME="$os_username"
+              export OS_TENANT_NAME="$os_tenant_name"
+              export OS_PASSWORD="$os_password"
+              export OS_REGION_NAME="$os_region_name"
+              export OS_AUTH_URL="$os_auth_url"
+            EOF
+          params:
+             $os_username: { get_param: os_username}
+             $os_password: { get_param: os_password}
+             $os_tenant_name: { get_param: os_tenant_name}
+             $os_auth_url: { get_param: os_auth_url}
+             $os_region_name: { get_param: os_region_name}
+
+
+  factory_internet_surface:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: IP address of the deployed compute instance
+    value: { get_attr: [ip, floating_ip_address] }
