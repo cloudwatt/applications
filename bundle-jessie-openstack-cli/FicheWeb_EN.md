@@ -2,7 +2,7 @@
 layout: applications-fiche
 pictonic: true
 title: "Openstack Cli"
-url: biolinux.html
+url: openctackcli.html
 date: 2017-01-12 00:00:00
 date-creation: "January 12, 2017"
 date-maj: "January 12, 2017"
@@ -11,6 +11,8 @@ github: https://github.com/cloudwatt/applications/tree/master/bundle-jessie-open
 siteofficiel: https://www.cloudwatt.com/fr/
 sitesupport: https://support.cloudwatt.com/
 composants:
+ - logo: ""
+   version: "Debian Jessie"
  - logo: ""
    version: "openstackclient 3.6.0"
 prix: "FREE for software + Cloudwatt usage fees"
