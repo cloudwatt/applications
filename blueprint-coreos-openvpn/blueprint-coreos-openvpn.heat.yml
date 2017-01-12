@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS OpenVPN
+description: Blueprint OpenVPN
 
 
 parameters:
@@ -21,8 +21,6 @@ parameters:
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
   passphrase:
     description: Passphrase (at least 4 chars)
@@ -128,13 +126,14 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  echo "script-security 2" > /home/core/$user.ovpn
-                  echo "up /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
-                  echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user.ovpn
                   /usr/bin/docker run \
                       --volume /opt/openvpn/data/:/etc/openvpn \
-                      --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user.ovpn
-                  echo "route 185.23.94.0 255.255.255.0 net_gateway" >> /home/core/$user.ovpn
+                      --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user_others.ovpn
+                  echo "route 185.23.94.0 255.255.255.0 net_gateway" >> /home/core/$user_others.ovpn
+                  echo "script-security 2" > /home/core/$user_debian.ovpn
+                  echo "up /etc/openvpn/update-resolv-conf" >> /home/core/$user_debian.ovpn
+                  echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user_debian.ovpn
+                  cat /home/core/$user_others.ovpn >> /home/core/$user_debian.ovpn
             coreos:
               etcd2:
                 name: "%H"
@@ -244,11 +243,20 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  config_file_url:
-    description: SCP command to download OpenVPN Configuration File
+  config_file_url_debian:
+    description: SCP command to download OpenVPN Configuration File for Debian/Ubuntu
     value:
       str_replace:
-        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user.ovpn .
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user_debian.ovpn .
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          $user: { get_resource: user }
+
+  config_file_url_others:
+    description: SCP command to download OpenVPN Configuration File for others distributions
+    value:
+      str_replace:
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user_others.ovpn .
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           $user: { get_resource: user }

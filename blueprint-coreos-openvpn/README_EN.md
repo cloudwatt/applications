@@ -1,10 +1,10 @@
-# 5 Minutes Stacks, episode X : OpenVPN #
+# 5 Minutes Stacks, episode 49 : OpenVPN #
 
-## Episode X : OpenVPN
+## Episode 49 : OpenVPN
 
 ![OpenVPNlogo](img/openvpnlogo.png)
 
-OpenVPN is an open source tool allowing you to create your own VPN, *Virtual Private Network*, in the aim to access to your instances without exposing them on Internet.
+OpenVPN is an open source tool allowing you to create your own VPN, *Virtual Private Network*, in the aim to access to your instances without exposing them on Internet or to surf on Internet with a French IP address.
 
 Data inside OpenVPN's tunnel are encrypted thanks to a RSA keypair (public and private key).
 
@@ -13,7 +13,7 @@ An advantage of OpenVPN is that you can use it on all your devices whether it be
 ## Preparations
 
 ### The Versions
- - CoreOS Stable 1010.6
+ - CoreOS Stable 1185.5
  - OpenVPN 2.3.11
 
 ### The prerequisites to deploy this stack
@@ -65,10 +65,10 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 With the `blueprint-coreos-openvpn.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS OpenVPN
+description: Blueprint OpenVPN
 
 
 parameters:
@@ -152,7 +152,7 @@ parameters:
  9.  Write a passphrase that will be used to generate public and private keys
  10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
- The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+ The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You have to wait 5 minutes to the softwares be ready. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
  If you've reached this point, you're already done! Go enjoy your VPN!
 
@@ -174,7 +174,7 @@ The goal of this tutorial is to accelerate your start. At this point **you** are
 
 You now have an SSH access point on your virtual machine through the floating-IP and your private keypair (default userusername `core`).
 
-* You have access to the configuration file with the command specified in your output stack in horizon console.
+* You have access to the configuration file with the commands specified in your output stack in horizon console. Use the right one regarding your Operating System.
 
 * Here are some news sites to learn more:
 
