@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : iceHRM #
+# 5 Minutes Stacks, épisode 52 : iceHRM #
 
-## Episode X : iceHRM
+## Episode 52 : iceHRM
 
 ![iceHRMlogo](img/icehrmlogo.png)
 
@@ -10,14 +10,15 @@ L'interface de iceHRM permet une utilisation intuitive de l'outil.
 
 iceHRM est développé en PHP et utilise une base de données MariaDB pour sauvegarder les informations diverses.
 
-Cet épisode va vous permettre de déployer iceHRM sur deux instances derrière un load-balancer, les deux instances étant répliquées mutuellement en temps réel.
+Cet épisode va vous permettre de déployer iceHRM de manière hautement disponible (HA) sur deux instances derrière un load-balancer, les deux instances étant répliquées mutuellement en temps réel.
 
 ## Préparations
 
 ### Les versions
  - Ubuntu 16.04
  - Apache 2.4.18
- - MariaDB 10.0.28
+ - MariaDB Galera Cluster 5.5.53
+ - GlusterFS 3.7.6
  - iceHRM 18.0.OS
 
 ### Les pré-requis pour déployer cette stack
@@ -151,7 +152,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer GoCD :
+Et bien si ! En utilisant la console, vous pouvez déployer iceHRM :
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-xenial-icehrm](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-icehrm)
 2.	Cliquez sur le fichier nommé `bundle-xenial-icehrm.heat.yml`
@@ -176,9 +177,21 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Vous êtes maintenant en possession de iceHRM. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
+La stack se compose ainsi :
+
+![schema](img/schema.png)
+
 Lors de votre première connexion, il vous sera demandé de saisir les informations pour accéder à la base de données ; remplissez les champs comme ci-dessous, le mot de passe étant celui choisi lors de la création de la stack :
 
 ![firstco](img/firstco.png)
+
+L'identifiant et le mot de passe par défaut pour vous connecter à iceHRM sont `admin`.
+
+![login](img/login.png)
+
+Vous pouvez maintenant découvrir l'interface de iceHRM :
+
+![interface](img/interface.png)
 
 Vous pouvez à présent mettre en place votre outil de Ressources Humaines, celui-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 

@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : iceHRM #
+# 5 Minutes Stacks, episode 52 : iceHRM #
 
-## Episode X : iceHRM
+## Episode 52 : iceHRM
 
 ![iceHRMlogo](img/icehrmlogo.png)
 
@@ -8,14 +8,15 @@ iceHRM is a Human Resources Management tool allowing to manage a company ant its
 
 iceHRM is developed in PHP and uses a MariaDB database to save all the data it needs.
 
-This episode will help you to deploy iceHRM on a cluster of two instances behind a load-balancer, each instance being mutually replicated in real time.
+This episode will help you to deploy iceHRM with a High Availability (HA) on a cluster of two instances behind a load-balancer, each instance being mutually replicated in real time.
 
 ## Preparations
 
 ### The Versions
  - Ubuntu 16.04
  - Apache 2.4.18
- - MariaDB 10.0.28
+ - MariaDB Galera Cluster 5.5.53
+ - GlusterFS 3.7.6
  - iceHRM 18.0.OS
 
 ### The prerequisites to deploy this stack
@@ -148,7 +149,7 @@ parameters:
 
 ### You do not have a way to create the stack from the console?
 
- We do indeed! Using the console, you can deploy GoCD:
+ We do indeed! Using the console, you can deploy iceHRM:
 
  1.	Go the Cloudwatt Github in the [applications/bundle-xenial-icehrm](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-icehrm) repository
  2.	Click on the file named `bundle-xenial-icehrm.heat.yml`
@@ -173,9 +174,21 @@ parameters:
 
 You are now in possession of iceHRM, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
+The stack is composed like this:
+
+![schema](img/schema.png)
+
 At your first connexion you will ask to give the information about how to access to the database. Complete the fields as below, the password is which one you chose when you created the stack.
 
 ![firstco](img/firstco.png)
+
+The default username and password to connect to iceHRM are `admin`.
+
+![login](img/login.png)
+
+You can now discover the iceHRM's interface:
+
+![interface](img/interface.png)
 
 You can now setup your Human Resources Management tool, this one being hosted in France in a safe environment, you can completely trust on this product.
 

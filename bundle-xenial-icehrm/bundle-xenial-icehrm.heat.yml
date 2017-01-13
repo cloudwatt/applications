@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: All-in-one iceHRM stack
@@ -17,8 +17,6 @@ parameters:
     label: Type instance - Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - t1.cw.tiny
-          - s1.cw.small-1
           - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
