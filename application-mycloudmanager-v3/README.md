@@ -55,6 +55,7 @@ MyCloudManager se lance par le **1-clic** de **Cloudwatt** via la page web
 
 Après avoir entré vos login/password de votre compte, le wizard de lancement apparait :
 
+
 ![oneclick](img/oneclick1.png)
 ![oneclick](img/oneclick2.png)
 
