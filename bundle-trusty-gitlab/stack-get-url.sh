@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! "$1" ]; then
-  echo "Usage: ./minecraft-server-address.sh STACK_NAME"
+  echo "Usage: ./stack-get-url.sh STACK_NAME"
   exit 1
 fi
 
