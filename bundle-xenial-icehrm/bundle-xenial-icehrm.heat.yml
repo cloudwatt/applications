@@ -1,0 +1,194 @@
+heat_template_version: 2015-04-30
+
+
+description: All-in-one iceHRM stack
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instances
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+          - n1.cw.highmem-2
+          - n1.cw.highmem-4
+          - n1.cw.highmem-8
+          - n1.cw.highmem-12
+
+  sqlpass:
+    description: "password sql (user: icehrmuser)"
+    type: string
+    hidden: true
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.0.0/24
+      allocation_pools:
+        - { start: 10.0.0.100, end: 10.0.0.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 3306, port_range_max: 3306 }
+        - { direction: ingress, protocol: TCP, port_range_min: 4444, port_range_max: 4444 }
+        - { direction: ingress, protocol: TCP, port_range_min: 4567, port_range_max: 4567 }
+        - { direction: ingress, protocol: TCP, port_range_min: 24007, port_range_max: 24007 }
+        - { direction: ingress, protocol: TCP, port_range_min: 49152, port_range_max: 49152 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  inst1_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: network }
+      fixed_ips:
+        - subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  inst2_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: network }
+      fixed_ips:
+        - subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  inst1_cinder:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: 1
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        properties:
+          server_id: { get_resource: inst1 }
+
+  inst2_cinder:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: 1
+      resource_def:
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        properties:
+          server_id: { get_resource: inst2 }
+
+  inst1:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 2dc27f39-b7e1-4282-ac84-5aeefadc8466
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: inst1_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          params:
+            $sqlpass: { get_param: sqlpass }
+            $inst1_ip: { get_attr: [ inst1_port, fixed_ips, 0, ip_address ] }
+            $inst2_ip: { get_attr: [ inst2_port, fixed_ips, 0, ip_address ] }
+          template:  |
+            #!/bin/bash
+            echo -e "$inst1_ip inst1\n$inst2_ip inst2" >> /etc/hosts
+            echo -e "$inst1_ip inst1\n$inst2_ip inst2" >> /etc/cloud/templates/hosts.debian.tmpl
+            mkdir /etc/ansible
+            echo -e "[local]\n127.0.0.1 ansible_ssh_user=cloud ansible_connection=local" > /etc/ansible/hosts
+            ansible-playbook /root/config.yml --extra-vars '{"instance_name":"inst1","sqlpass":"$sqlpass"}'
+            rm /root/{format,config*.yml,mariadb_*.cnf,rc.local,testmysql}
+
+  inst2:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: 2dc27f39-b7e1-4282-ac84-5aeefadc8466
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: inst2_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          params:
+            $inst1_ip: { get_attr: [ inst1_port, fixed_ips, 0, ip_address ] }
+            $inst2_ip: { get_attr: [ inst2_port, fixed_ips, 0, ip_address ] }
+          template:  |
+            #!/bin/bash
+            echo -e "$inst1_ip inst1\n$inst2_ip inst2" >> /etc/hosts
+            echo -e "$inst1_ip inst1\n$inst2_ip inst2" >> /etc/cloud/templates/hosts.debian.tmpl
+            mkdir /etc/ansible
+            echo -e "[local]\n127.0.0.1 ansible_ssh_user=cloud ansible_connection=local" > /etc/ansible/hosts
+            ansible-playbook /root/config.yml --extra-vars '{"instance_name":"inst2","sqlpass":"$sqlpass"}'
+            rm /root/{format,config*.yml,mariadb_*.cnf,rc.local,testmysql}
+
+  lbaas_vip_port:
+    type: OS::Neutron::Port
+    properties:
+      security_groups: [{ get_resource: security_group }]
+      network_id: { get_resource: network }
+      fixed_ips:
+        - subnet_id: { get_resource: subnet }
+
+  lbaas_vip_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+      port_id: { get_resource: lbaas_vip_port }
+
+  lbaas_pool_vip:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: { get_resource: lbaas_vip_floating_ip }
+      port_id: { get_attr: [ lbaas_pool, vip, port_id ] }
+
+  lbaas_pool:
+    type: OS::Neutron::Pool
+    properties:
+      name: lbaas_front_pool
+      protocol: HTTP
+      subnet_id: { get_resource: subnet }
+      lb_method: ROUND_ROBIN
+      vip:
+        name: lbaas_front_vip
+        description: iceHRM Front-end VIP
+        protocol_port: 80
+
+  lbaas:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      members: [ { get_resource: inst1 }, { get_resource: inst2 } ]
+      pool_id: { get_resource: lbaas_pool }
+      protocol_port: 80
+
+outputs:
+  lbaas_floating_ip:
+    description: iceHRM LBaas Floating IP
+    value:
+      str_replace:
+         template: http://$floating_ip
+         params:
+           $floating_ip: { get_attr: [ lbaas_vip_floating_ip, floating_ip_address ] }

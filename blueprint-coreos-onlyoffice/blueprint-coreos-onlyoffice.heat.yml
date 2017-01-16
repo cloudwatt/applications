@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint ONLYOFFICE
 
 
 parameters:
@@ -11,23 +11,17 @@ parameters:
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-2
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-
-  sqlpass:
-    description: "password sql (user: piwigo)"
-    type: string
-    hidden: true
 
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
@@ -79,16 +73,11 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
-  random_root_pass:
-    type: OS::Heat::RandomString
-    properties:
-      length: 15
-
   server:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -98,8 +87,6 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $sqlpass: { get_param: sqlpass }
-            $rootpass: { get_resource: random_root_pass }
           template: |
             #cloud-config
             write_files:
@@ -118,15 +105,11 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/piwigo/mysql
-              - path: /home/core/mysql.env
-                permissions: 0775
-                owner: "core:core"
-                content: |
-                    MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=piwigo
-                    MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=piwigo
+                  sudo mkdir -p /opt/onlyoffice/{communityserver,documentserver,mailserver}
+                  sudo mkdir -p /opt/onlyoffice/communityserver/{data,logs,mysql}
+                  sudo mkdir -p /opt/onlyoffice/documentserver/{data,logs}
+                  sudo mkdir -p /opt/onlyoffice/mailserver/{data,logs,mysql}
+                  sudo mkdir -p /opt/onlyoffice/mailserver/data/certs
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +130,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: opt-piwigo.mount
+                - name: opt-onlyoffice.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,50 +139,85 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/opt/piwigo/
+                    Where=/opt/onlyoffice/
                     Type=ext4
-                - name: piwigo-mount.service
+                - name: onlyoffice-mount.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo Mount
-                    After=opt-piwigo.mount
+                    Description=ONLYOFFICE Mount
+                    After=opt-onlyoffice.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
-                - name: mysql.service
+                - name: onlyoffice-documentserver.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo DB
+                    Description=ONLYOFFICE Document Server
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql:latest
-                    ExecStart=/usr/bin/docker run \
-                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
-                             --env-file /home/core/mysql.env \
-                             --name=mysql mysql:latest
-                    ExecStop=/usr/bin/docker rm -f mysql
-                - name: piwigo.service
-                  command: start
-                  content: |
-                    [Unit]
-                    Description=Piwigo UI
-                    After=docker.service
-                    Requires=docker.service
-                    [Service]
-                    TimeoutStartSec=0
-                    Restart=Always
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/documentserver:latest
                     ExecStartPre=-/usr/bin/docker create \
-                             --link mysql \
+                             -ti \
+                             --restart=always \
+                             --volume /opt/onlyoffice/documentserver/data:/var/www/onlyoffice/Data \
+                             --volume /opt/onlyoffice/documentserver/logs:/var/log/onlyoffice \
+                             --name=onlyoffice-documentserver onlyoffice/documentserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-documentserver
+                - name: onlyoffice-mailserver.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Mail Server
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/mailserver:latest
+                    ExecStartPre=-/usr/bin/docker create \
+                             -ti \
+                             --privileged \
+                             --restart=always \
+                             --publish "25:25" \
+                             --publish "143:143" \
+                             --publish "587:587" \
+                             --volume /opt/onlyoffice/mailserver/data:/var/vmail \
+                             --volume /opt/onlyoffice/mailserver/data/certs:/etc/pki/tls/mailserver \
+                             --volume /opt/onlyoffice/mailserver/logs:/var/log \
+                             --volume /opt/onlyoffice/mailserver/mysql:/var/lib/mysql \
+                             --hostname "domain.tld" \
+                             --name=onlyoffice-mailserver onlyoffice/mailserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-mailserver
+                - name: onlyoffice-communityserver.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=ONLYOFFICE Community Server
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull onlyoffice/communityserver:latest
+                    ExecStartPre=-/usr/bin/docker create \
+                             -ti \
+                             --restart=always \
                              --publish 80:80 \
-                             --name=piwigo cloudwattfr/piwigo:2.8.2
-                    ExecStart=/usr/bin/docker start piwigo
+                             --volume /opt/onlyoffice/communityserver/data:/var/www/onlyoffice/Data \
+                             --volume /opt/onlyoffice/communityserver/logs:/var/log/onlyoffice \
+                             --volume /opt/onlyoffice/communityserver/mysql:/var/lib/mysql \
+                             --env DOCUMENT_SERVER_PORT_80_TCP_ADDR=onlyoffice-documentserver \
+                             --env MAIL_SERVER_DB_HOST=onlyoffice-mailserver \
+                             --link onlyoffice-documentserver \
+                             --link onlyoffice-mailserver \
+                             --name=onlyoffice-communityserver onlyoffice/communityserver:latest
+                    ExecStart=/usr/bin/docker start onlyoffice-communityserver
 
                     [Install]
                     WantedBy=multi-user.target
@@ -221,16 +239,9 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Piwigo URL
+    description: ONLYOFFICE URL
     value:
       str_replace:
         template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
-  root_password:
-    description: MySQL Root Password
-    value:
-      str_replace:
-        template: $rootpass
-        params:
-          $rootpass: { get_resource: random_root_pass }

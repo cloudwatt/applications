@@ -1,7 +1,7 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint OpenVPN
 
 
 parameters:
@@ -21,13 +21,13 @@ parameters:
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
 
-  sqlpass:
-    description: "password sql (user: piwigo)"
+  passphrase:
+    description: Passphrase (at least 4 chars)
     type: string
     hidden: true
+    constraints:
+      - length: { min: 4 }
 
   volume_attachment:
     description: Attacher un volume cinder de 20GO ?
@@ -37,6 +37,7 @@ parameters:
       - allowed_values:
           - 0
           - 1
+
 resources:
   network:
     type: OS::Neutron::Net
@@ -58,7 +59,7 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: UDP, port_range_min: 1194, port_range_max: 1194 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -79,16 +80,16 @@ resources:
       security_groups:
         - { get_resource: security_group }
 
-  random_root_pass:
+  user:
     type: OS::Heat::RandomString
     properties:
-      length: 15
+      length: 10
 
   server:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: CoreOS Stable 1185.5
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -98,8 +99,9 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $sqlpass: { get_param: sqlpass }
-            $rootpass: { get_resource: random_root_pass }
+            $passphrase: { get_param: passphrase }
+            $user: { get_resource: user }
+            $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
           template: |
             #cloud-config
             write_files:
@@ -118,15 +120,20 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/piwigo/mysql
-              - path: /home/core/mysql.env
-                permissions: 0775
-                owner: "core:core"
+                  sudo mkdir -p /opt/openvpn/data
+              - path: /home/core/mkuser.sh
+                permissions: 0755
+                owner: "root:root"
                 content: |
-                    MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=piwigo
-                    MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=piwigo
+                  #!/bin/bash
+                  /usr/bin/docker run \
+                      --volume /opt/openvpn/data/:/etc/openvpn \
+                      --rm cloudwattfr/openvpn ovpn_getclient $user >> /home/core/$user_others.ovpn
+                  echo "route 185.23.94.0 255.255.255.0 net_gateway" >> /home/core/$user_others.ovpn
+                  echo "script-security 2" > /home/core/$user_debian.ovpn
+                  echo "up /etc/openvpn/update-resolv-conf" >> /home/core/$user_debian.ovpn
+                  echo "down /etc/openvpn/update-resolv-conf" >> /home/core/$user_debian.ovpn
+                  cat /home/core/$user_others.ovpn >> /home/core/$user_debian.ovpn
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +154,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: opt-piwigo.mount
+                - name: opt-openvpn.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,50 +163,66 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/opt/piwigo/
+                    Where=/opt/openvpn/
                     Type=ext4
-                - name: piwigo-mount.service
+                - name: openvpn-mount.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo Mount
-                    After=opt-piwigo.mount
+                    Description=OpenVPN Mount
+                    After=opt-openvpn.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
-                - name: mysql.service
+                - name: openvpnconf.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo DB
+                    Description=OpenVPN Configuration
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
-                    Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql:latest
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
+                    ExecStartPre=/usr/bin/docker run \
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env DOMAIN_NAME=$floating_ip \
+                             --env PASSPHRASE=$passphrase \
+                             --rm cloudwattfr/openvpn ovpn_init
                     ExecStart=/usr/bin/docker run \
-                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
-                             --env-file /home/core/mysql.env \
-                             --name=mysql mysql:latest
-                    ExecStop=/usr/bin/docker rm -f mysql
-                - name: piwigo.service
+                             --volume /opt/openvpn/data/:/etc/openvpn \
+                             --env PASSPHRASE=$passphrase \
+                             --env LOGIN=$user \
+                             --rm cloudwattfr/openvpn ovpn_mkuser
+                - name: openvpn.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo UI
+                    Description=OpenVPN
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
-                    ExecStartPre=-/usr/bin/docker create \
-                             --link mysql \
-                             --publish 80:80 \
-                             --name=piwigo cloudwattfr/piwigo:2.8.2
-                    ExecStart=/usr/bin/docker start piwigo
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/openvpn
+                    ExecStart=/usr/bin/docker run \
+                             --volume /opt/openvpn/data:/etc/openvpn \
+                             --privileged \
+                             --publish 1194:1194/udp \
+                             --name openvpn cloudwattfr/openvpn
+                    ExecStop=/usr/bin/docker rm -f openvpn
+                - name: mkuser.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Make user
+                    Requires=openvpn.service
+                    After=openvpn.service
+                    [Service]
+                    Type=oneshot
+                    RemainAfterExit=yes
+                    ExecStart=/home/core/mkuser.sh
 
                     [Install]
                     WantedBy=multi-user.target
@@ -220,17 +243,20 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip_url:
-    description: Piwigo URL
+  config_file_url_debian:
+    description: SCP command to download OpenVPN Configuration File for Debian/Ubuntu
     value:
       str_replace:
-        template: http://$floating_ip
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user_debian.ovpn .
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
-  root_password:
-    description: MySQL Root Password
+          $user: { get_resource: user }
+
+  config_file_url_others:
+    description: SCP command to download OpenVPN Configuration File for others distributions
     value:
       str_replace:
-        template: $rootpass
+        template: scp -i YOUR_KEY_FILE core@$floating_ip:/home/core/$user_others.ovpn .
         params:
-          $rootpass: { get_resource: random_root_pass }
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          $user: { get_resource: user }

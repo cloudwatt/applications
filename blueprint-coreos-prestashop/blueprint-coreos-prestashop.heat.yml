@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint CoreOS PrestaShop
 
 
 parameters:
@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: piwigo)"
+    description: "password sql (user: prestashop)"
     type: string
     hidden: true
 
@@ -118,15 +118,15 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/piwigo/mysql
+                  sudo mkdir -p /opt/prestashop/mysql
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=piwigo
+                    MYSQL_USER=prestashop
                     MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=piwigo
+                    MYSQL_DATABASE=prestashop
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +147,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: opt-piwigo.mount
+                - name: opt-prestashop.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,14 +156,14 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/opt/piwigo/
+                    Where=/opt/prestashop/
                     Type=ext4
-                - name: piwigo-mount.service
+                - name: prestashop-mount.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo Mount
-                    After=opt-piwigo.mount
+                    Description=PrestaShop Mount
+                    After=opt-prestashop.mount
                     [Service]
                     Type=oneshot
                     RemainAfterExit=yes
@@ -172,7 +172,7 @@ resources:
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo DB
+                    Description=PrestaShop DB
                     After=docker.service
                     Requires=docker.service
                     [Service]
@@ -180,26 +180,29 @@ resources:
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
+                             --volume /opt/prestashop/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: piwigo.service
+                - name: prestashop.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo UI
+                    Description=PrestaShop UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
+                    ExecStartPre=/usr/bin/docker pull prestashop/prestashop:1.6.1.7
                     ExecStartPre=-/usr/bin/docker create \
+                             --env DB_SERVER=mysql \
+                             --env DB_USER=prestashop \
+                             --env DB_PASSWD=$sqlpass \
                              --link mysql \
                              --publish 80:80 \
-                             --name=piwigo cloudwattfr/piwigo:2.8.2
-                    ExecStart=/usr/bin/docker start piwigo
+                             --name=prestashop prestashop/prestashop:1.6.1.7
+                    ExecStart=/usr/bin/docker start prestashop
 
                     [Install]
                     WantedBy=multi-user.target
@@ -221,7 +224,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Piwigo URL
+    description: PrestaShop URL
     value:
       str_replace:
         template: http://$floating_ip

@@ -1,22 +1,22 @@
-# 5 Minutes Stacks, épisode 40 : Piwigo #
+# 5 Minutes Stacks, épisode X : PrestaShop #
 
-## Episode 40 : Piwigo
+## Episode X : PrestaShop
 
-![Piwigologo](img/piwigologo.png)
+![PrestaShoplogo](img/prestashoplogo.png)
 
-Piwigo est un outil libre permettant de mettre en place une galerie photos sur internet. Il est ainsi possible de gérer les photos, les utilisateurs et les permissions de ceux-ci directemennt depuis la page d'administration.
+PrestaShop est un CMS, un système de gestion de contenu, permettant de mettre en place un site d'e-commerce. Il est possible de gérer le catalogue des produits, les commandes et les livraisons. 
 
-Grâce à la communauté de contributeurs, de multiples modules sont disponibles afin d'ajouter de nouvelles fonctionnalités à Piwigo.
+Grâce à la communauté de contributeurs, de multiples modules sont disponibles afin de notamment intégrer les réseaux sociaux ou améliorer le référencement de l'e-boutique. D'autres sont, quant à eux, conçus pour adapter rapidement le site à la vente dans de nombreux pays.
 
-Son interface est intuitive et aucune compétence en développement n'est requise pour mettre en ligne vos premières photos.
+Son interface est intuitive et responsive pour proposer aux clients une expérience agréable sur tous les supports. Aucune compétence en développement n'est requise pour mettre en vente vos premiers objets.
 
-Piwigo est développé entièrement en PHP et utilise une base de données de type MySQL pour sauvegarder les informations diverses.
+PrestaShop est développé entièrement en PHP et utilise une base de données de type MySQL pour sauvegarder les informations diverses.
 
 ## Préparations
 
 ### Les versions
  - CoreOS Stable 1010.6
- - Piwigo 2.8.2
+ - PrestaShop 1.6.1.7
 
 ### Les pré-requis pour déployer cette stack
 
@@ -38,9 +38,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-piwigo/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-prestashop/`
 
-* `blueprint-coreos-piwigo.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `blueprint-coreos-prestashop.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
@@ -64,14 +64,14 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-piwigo.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `piwigo` de votre base `MySQL`.
+Dans le fichier `blueprint-coreos-prestashop.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. Vous devrez aussi saisir le mot de passe qui sera donné au compte `prestashop` de votre base `MySQL`.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint CoreOS PrestaShop
 
 
 parameters:
@@ -95,7 +95,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: piwigo)"
+    description: "password sql (user: prestashop)"
     type: string
     hidden: true
 
@@ -106,18 +106,18 @@ parameters:
 Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
 
 ~~~ bash
- $ ./stack-start.sh Piwigo
+ $ ./stack-start.sh PrestaShop
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | ed4ac18a-4415-467e-928c-1bef193e4f38 | Piwigo     | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+ | ed4ac18a-4415-467e-928c-1bef193e4f38 | PrestaShop | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
  +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 
  ~~~ bash
- $ watch heat resource-list Piwigo
+ $ watch heat resource-list PrestaShop
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
  | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
  +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -132,7 +132,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Coreos y déposer le conteneur *Piwigo* et le conteneur *MySQL*,
+   * démarrer une instance basée sur Coreos y déposer le conteneur *PrestaShop* et le conteneur *MySQL*,
 
    * l'exposer sur Internet via une IP flottante.
 
@@ -142,17 +142,17 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer Piwigo :
+Et bien si ! En utilisant la console, vous pouvez déployer PrestaShop :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-piwigo](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-piwigo)
-2.	Cliquez sur le fichier nommé `blueprint-coreos-piwigo.heat.yml`
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-coreos-prestashop](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-prestashop)
+2.	Cliquez sur le fichier nommé `blueprint-coreos-prestashop.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.  Donner votre passphrase qui servira pour le compte piwigo de votre base de données MySQL
+9.  Donner votre passphrase qui servira pour le compte prestashop de votre base de données MySQL
 10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
@@ -161,21 +161,21 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez accès à votre galerie photos !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez accès à votre site de e-commerce !
 
 ## Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter sur votre serveur en SSH en utilisant votre keypair préalablement téléchargée sur votre poste.
 
-Vous êtes maintenant en possession de Piwigo. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
+Vous êtes maintenant en possession de PrestaShop. Vous pouvez y acceder via l'url `http://ip-floatingip`. Votre url complète sera présente dans la vue d'ensemble de votre stack sur la console horizon Cloudwatt.
 
 Lors de votre première connexion, il vous sera demandé de saisir les informations concernant votre site ainsi que celles pour accéder à la base de données ; remplissez les champs comme ci-dessous, le mot de passe étant celui choisi lors de la création de la stack :
 
 ![firstco](img/firstco.png)
 
-Pensez à sauvegarder le fichier `local/config/database.inc.php` afin de pouvoir le restaurer en cas de problème.
+Pensez à sauvegarder le fichier `config/settings.inc.php` afin de pouvoir le restaurer en cas de problème.
 
-Vous pouvez à présent mettre en place votre galerie photos, celle-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
+Vous pouvez à présent mettre en place votre site de e-commerce, celui-ci étant hébergé en France dans un environnement maîtrisé, vous pouvez avoir une totale confiance dans ce produit.
 
 ## So watt ?
 
@@ -187,8 +187,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Voici quelques sites d'informations avant d'aller plus loin :
 
-  - http://www.piwigo.org/
-  - http://www.piwigo.org/doc/
+  - https://www.prestashop.com/
+  - https://www.prestashop.com/fr/documentation
 
 ----
 Have fun. Hack in peace.

@@ -1,7 +1,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Piwigo
+description: Blueprint CoreOS Piwik
 
 
 parameters:
@@ -25,7 +25,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
-    description: "password sql (user: piwigo)"
+    description: "password sql (user: piwik)"
     type: string
     hidden: true
 
@@ -63,7 +63,7 @@ resources:
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
-
+  
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
@@ -118,15 +118,15 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /opt/piwigo/mysql
+                  sudo mkdir -p /piwik/{apache2,data,mysql}
               - path: /home/core/mysql.env
                 permissions: 0775
                 owner: "core:core"
                 content: |
                     MYSQL_ROOT_PASSWORD=$rootpass
-                    MYSQL_USER=piwigo
+                    MYSQL_USER=piwik
                     MYSQL_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=piwigo
+                    MYSQL_DATABASE=piwik
             coreos:
               etcd2:
                 name: "%H"
@@ -147,7 +147,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: opt-piwigo.mount
+                - name: piwik.mount
                   command: start
                   content: |
                     [Unit]
@@ -156,23 +156,16 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/opt/piwigo/
+                    Where=/piwik/
                     Type=ext4
-                - name: piwigo-mount.service
-                  command: start
-                  content: |
-                    [Unit]
-                    Description=Piwigo Mount
-                    After=opt-piwigo.mount
                     [Service]
                     Type=oneshot
-                    RemainAfterExit=yes
                     ExecStart=/home/core/mount.sh
                 - name: mysql.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo DB
+                    Description=piwik UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
@@ -180,26 +173,42 @@ resources:
                     Restart=Always
                     ExecStartPre=/usr/bin/docker pull mysql:latest
                     ExecStart=/usr/bin/docker run \
-                             --volume /opt/piwigo/mysql/:/var/lib/mysql \
+                             --volume /piwik/mysql/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
                              --name=mysql mysql:latest
                     ExecStop=/usr/bin/docker rm -f mysql
-                - name: piwigo.service
+                - name: apache2.service
                   command: start
                   content: |
                     [Unit]
-                    Description=Piwigo UI
+                    Description=apache2 UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/piwigo:2.8.2
-                    ExecStartPre=-/usr/bin/docker create \
-                             --link mysql \
-                             --publish 80:80 \
-                             --name=piwigo cloudwattfr/piwigo:2.8.2
-                    ExecStart=/usr/bin/docker start piwigo
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/php7-apache2
+                    ExecStart=/usr/bin/docker run \
+                             --volume /piwik/data/:/var/www/html \
+                             --publish=80:80 \
+                             --link=mysql \
+                             --name=apache2 cloudwattfr/php7-apache2
+                    ExecStop=/usr/bin/docker rm -f apache2
+                - name: piwik.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=piwik UI
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull piwik:latest
+                    ExecStart=/usr/bin/docker run \
+                             --volume /piwik/data/:/var/www/html \
+                             --name=piwik piwik:latest
+                    ExecStop=/usr/bin/docker rm -f piwik
 
                     [Install]
                     WantedBy=multi-user.target
@@ -207,11 +216,11 @@ resources:
   cinder:
     type: OS::Heat::ResourceGroup
     properties:
-      count: { get_param: volume_attachment }
+      count: { get_param: volume_attachment } 
       resource_def:
         type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
-          server_id: { get_resource: server }
+          server_id: { get_resource: server }  
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
@@ -221,7 +230,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: Piwigo URL
+    description: Piwik URL
     value:
       str_replace:
         template: http://$floating_ip
