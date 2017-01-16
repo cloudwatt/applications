@@ -2,6 +2,9 @@
 
 ## Episode 52 : iceHRM
 
+
+WORK IN PROGRESS .....
+
 ![iceHRMlogo](img/icehrmlogo.png)
 
 iceHRM est un outil de Ressources Humaines permettant de gérer une entreprise et ses salariés. Il est ainsi possible d'y enregistrer leurs informations personnelles, de gérer les plannings et les absences, de générer des fiches de paie, mais aussi de mettre en place des projets.
