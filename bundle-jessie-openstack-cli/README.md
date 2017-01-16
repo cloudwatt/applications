@@ -36,15 +36,15 @@ Et bien si ! En utilisant la console, vous pouvez déployer votre stack:
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name »
-10. Entrez votre network_name dans le champ « network_name »
-11. Entrez votre os_auth_url dans le champ « os_auth_url  »
-12. Choisissez la région (fr1 ou fr2) parmi le menu déroulant « os_region_name »
-13. Entrez votre os_tenant_name dans le champ « os_tenant_name »
-14. Entrez votre os_username dans le champ « os_username »
-15. Entrez votre os_password dans le champ « os_password » enfin cliquez sur « LANCER »
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée.
+8.	Entrez votre keession cliquant sur ypair dans le champ « keypair_name »
+                                                                                      9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name »
+                                                                                      10. Entrez votre network_name dans le champ « network_name »
+                                                                                      11. Entrez votre os_auth_url dans le champ « os_auth_url  »
+                                                                                      12. Choisissez la région (fr1 ou fr2) parmi le menu déroulant « os_region_name »
+                                                                                      13. Entrez votre os_tenant_name dans le champ « os_tenant_name »
+                                                                                      14. Entrez votre os_username dans le champ « os_username »
+                                                                                      15. Entrez votre os_password dans le champ « os_password » enfin cliquez sur « LANCER »
+                                                                                      La stack va se créer automatiquement (vous pouvez en voir la progrson nom). Quand tous les modules deviendront « verts », la création sera terminée.
 C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
