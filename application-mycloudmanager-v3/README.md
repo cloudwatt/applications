@@ -55,7 +55,8 @@ MyCloudManager se lance par le **1-clic** de **Cloudwatt** via la page web
 
 Après avoir entré vos login/password de votre compte, le wizard de lancement apparait :
 
-![oneclick](img/oneclick.png)
+![oneclick](img/oneclick1.png)
+![oneclick](img/oneclick2.png)
 
 Comme vous avez pu le constater le wizard du 1-Clic vous demande de saisir votre mot de passe Openstack. En effet ces informations vont permettre à la stack de sauvegarder la configuration du cluster dans un conteneur Swift sur votre tenant.
 
