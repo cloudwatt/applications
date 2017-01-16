@@ -8,7 +8,7 @@ L’adoption du modèle cloud dépend de la capacité des entreprises à démarr
 * des interfaces programmables (API) ouvertes, 
 * un choix d’applications variées
 
-C’est sur ce dernier point que Cloudwatt poursuit ses efforts et lance cette semaine ses premières stacks applicatives pour déployer facilement un site web: Wordpress et LAMP (Linux, Apache, MySQL et PHP).
+C’est sur ce dernier point que Cloudwatt poursuit ses efforts et lance cette semaine (NDLR : nous étions en Mai 2015 !) ses premières stacks applicatives pour déployer facilement un site web: Wordpress et LAMP (Linux, Apache, MySQL et PHP).
 
 Cette première en appellera d’autres. A un rythme régulier, Cloudwatt publiera de façon conjointe sur son [blog technique](http://dev.cloudwatt.com/fr/blog/index.html) et sur son github, des stacks applicatives et leurs guides de déploiement pas à pas. 
 
