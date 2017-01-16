@@ -4,7 +4,7 @@
 
 ![DrupalCommonslogo](img/drupalcommonslogo.png)
 
-Drupal Commons is an Enterprise Social Network allowing relationships between employees of a company inside communities. en relation les salariés d'une entreprise au sein de communautés.
+Drupal Commons is an Enterprise Social Network allowing relationships between employees of a company inside communities.
 
 Thanks to an active community of contributors, many plugins are available to add interactivity.
 
