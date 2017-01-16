@@ -135,7 +135,7 @@ resources:
       min_size: { get_param: node_count }
       max_size: 20
       resource:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v3/kube-node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/kubeha/kube-node.heat.yaml
         properties:
           token: { get_param: token }
           peer: { get_param: peer }
@@ -160,7 +160,7 @@ resources:
       min_size: { get_param: storage_count }
       max_size: 5
       resource:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/toolbox-v3/kube-storage.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_772be1ffb32e42a28ac8e0205c0b0b90/kubeha/kube-storage.heat.yaml
         properties:
           token: { get_param: token }
           peer: { get_param: peer }
