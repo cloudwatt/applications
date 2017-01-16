@@ -50,7 +50,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-kubernetes-ha/`
 
-* `stack-fr1.yml`: Template d'orchestration HEAT pour la région FR1, il servira à déployer l'infrastructure nécessaire.
+* `stack-fr1-cli.yml`: Template d'orchestration HEAT pour la région FR1, il servira à déployer l'infrastructure nécessaire.
 * `stack-fr2.yml`: Template d'orchestration HEAT pour la région FR2, il servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des paramètres.
 

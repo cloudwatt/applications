@@ -50,8 +50,8 @@ If you do not like the command lines, you can go directly to the version **"I la
 
 Once the repository is cloned, you will find the `blueprint-kubernetes-ha/` directory
 
-* `stack-fr1.yml`: HEAT orchestration template for region FR1, it will be used to deploy the necessary infrastructure.
-* `stack-fr2.yml`: HEAT orchestration template for region FR2, it will be used to deploy the necessary infrastructure.
+* `stack-fr1-cli.yml`: HEAT orchestration template for region FR1, it will be used to deploy the necessary infrastructure.
+* `stack-fr2-cli.yml`: HEAT orchestration template for region FR2, it will be used to deploy the necessary infrastructure.
 * `stack-start.sh`: Script to launch the stack, which simplifies the input of the parameters.
 
 ## Start-up
