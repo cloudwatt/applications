@@ -1,3 +1,11 @@
 #!/bin/bash
 
-echo $1 "http://$(heat resource-list $1 | grep floating_ip_link | tr -d " " | cut -d "|" -f3 | rev | cut -d "-" -f1 | rev)"
+if [ ! "$1" ]; then
+  echo "Usage: ./stack-get-url.sh STACK_NAME"
+  exit 1
+fi
+
+floating_id=$(openstack stack resource list $1 | grep "OS::Neutron::FloatingIP" | awk '{print $4}')
+floating_ip=$(openstack floating ip show ${floating_id} | grep "floating_ip_address" | awk '{print $4}')
+
+echo $1 "https://${floating_ip}"
