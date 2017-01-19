@@ -188,8 +188,8 @@ You now have an SSH access point on your virtual machine through the floating-IP
 
 * Here are some news sites to learn more:
 
-  - https://www.drupalcommons.com/
-  - https://www.drupalcommons.com/fr/documentatio
+  - https://www.drupal.org/project/commons
+  - https://docs.acquia.com/commons
 
 ----
 Have fun. Hack in peace.
