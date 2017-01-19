@@ -9,7 +9,7 @@ date-maj: "January 16, 2017"
 description: "Drupal Commons is an Enterprise Social Network allowing relationships between employees of a company inside communities."
 github: https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-drupalcommons
 siteofficiel: https://www.drupal.org/project/commons
-sitesupport: https://support.cloudwatt.com/
+sitesupport: https://docs.acquia.com/commons
 composants:
  - logo: ""
    version: "CoreOS Stable 1185.5"  
