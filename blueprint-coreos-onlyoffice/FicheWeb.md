@@ -26,6 +26,7 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-quarante-huit-onlyoffice.html
 install-url:
 comingsoon: false
+custom: false
 type: modele
 categories: ["Collaboratif"]
 ---
