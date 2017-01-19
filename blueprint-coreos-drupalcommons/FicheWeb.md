@@ -6,10 +6,10 @@ url: drupal-commons.html
 date: 2017-01-16 00:00:00
 date-creation: "16 janvier 2017"
 date-maj: "16 janvier 2017"
-description: "Drupal Commons est un RSE, un Réseau Social d'Entreprise, permettant de mettre en relation les salariés d'une entreprise au sein de communautés."
+description: "Drupal Commons est un RSE, un Réseau Social d'Entreprise, permettant de mettre en relation les salariés d'une entreprise au sein de communautés. Grâce à la communauté de contributeurs, de multiples modules sont disponibles afin d'ajouter de l'intéractivité entre les utilisateurs. Son interface est intuitive et permet à tous de l'utiliser sans difficultés. Drupal Commons est développé entièrement en PHP et utilise une base de données de type MySQL pour sauvegarder les informations diverses."
 github: https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-drupalcommons
 siteofficiel: https://www.drupal.org/project/commons
-sitesupport: https://support.cloudwatt.com/
+sitesupport: https://docs.acquia.com/commons
 composants:
  - logo: ""
    version: "CoreOS Stable 1185.5"  
