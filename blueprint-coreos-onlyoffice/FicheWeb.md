@@ -6,10 +6,10 @@ url: onlyoffice.html
 date: 2017-01-17 00:00:00
 date-creation: "17 janvier 2017"
 date-maj: "17 janvier 2017"
-description: "ONLYOFFICE est une suite bureautique en ligne vous permettant de créer et modifier vos documents directement à travers un navigateur."
+description: "ONLYOFFICE est une suite bureautique en ligne vous permettant de créer et modifier vos documents directement à travers un navigateur. Ainsi, il est possible de modifier des fichiers (compatibles Microsoft Office) de manière collaborative et en temps réel sans l'installation de logiciels tiers, ce qui est un gain de sécurité, mais aussi, dans le cadre d'une entreprise, de gérer des projets et leur avancement, ainsi qu'une base de données de clients par exemple. Vos e-mails peuvent être lus directement depuis ONLYOFFICE si vous le désirez en y indiquant les serveurs de mail à utiliser. Il est également possible d'utiliser votre propre nom de domaine."
 github: https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-onlyoffice
 siteofficiel: http://www.onlyoffice.org/
-sitesupport: https://support.cloudwatt.com/
+sitesupport: http://helpcenter.onlyoffice.com/
 composants:
  - logo: ""
    version: "CoreOS Stable 1185.5"  
