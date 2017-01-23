@@ -24,6 +24,7 @@ logo:
 blogpost-url: 
 install-url:
 comingsoon: false
+custom: false
 type: blueprint
 categories: ["siteweb"]
 ---

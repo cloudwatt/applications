@@ -20,6 +20,7 @@ logo:
 blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-forty-piwigo.html
 install-url: 
 comingsoon: false
+custom: false
 type: blueprint
 categories: ["dev&test"]
 ---

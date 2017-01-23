@@ -20,6 +20,7 @@ logo:
 blogpost-url: 
 install-url: 
 comingsoon: false
-type: modele
+custom: false
+type: blueprint
 categories: ["siteweb"]
 ---
