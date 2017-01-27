@@ -203,8 +203,9 @@ Vous pouvez à présent mettre en place votre outil de Ressources Humaines, celu
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
 
 Quelques liens utiles:
-[Home iceHRM](https://www.icehrm.com/)
-[Help iceHRM](http://blog.icehrm.com/docs/home/)
+
+* [Home iceHRM](https://www.icehrm.com/)
+* [Help iceHRM](http://blog.icehrm.com/docs/home/)
 
 ----
 Have fun. Hack in peace.

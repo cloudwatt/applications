@@ -197,8 +197,8 @@ You can now setup your Human Resources Management tool, this one being hosted in
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.
 
 Some useful links:
-[Home iceHRM](https://www.icehrm.com/)
-[Help iceHRM](http://blog.icehrm.com/docs/home/)
+* [Home iceHRM](https://www.icehrm.com/)
+* [Help iceHRM](http://blog.icehrm.com/docs/home/)
 
 ----
 Have fun. Hack in peace.
