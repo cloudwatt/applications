@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode X : PrestaShop #
+# 5 Minutes Stacks, épisode 50 : PrestaShop #
 
-## Episode X : PrestaShop
+## Episode 50 : PrestaShop
 
 ![PrestaShoplogo](img/prestashoplogo.png)
 
