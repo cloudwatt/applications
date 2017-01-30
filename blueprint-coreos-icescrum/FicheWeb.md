@@ -6,7 +6,7 @@ url: icescrum.html
 date: 2017-01-30 00:00:00
 date-creation: "30 Janvier 2017"
 date-maj: "30 Janvier 2017"
-description: "iceScrum est un outil de gestion de projet selon la méthode "agile". Cet outil vous permet d'avoir un aperçu global du projet, et d'ainsi améliorer les analyses et donc la productivité."
+description: "IceScrum est un outil de gestion de projet selon la méthode "agile". Cet outil vous permet d'avoir un aperçu global du projet, et d'ainsi améliorer les analyses et donc la productivité. Un tableau de bord intuitif vous permet de voir des indicateurs clés de la mise en oeuvre de votre projet ou les dernières modifications effectuées. IceScrum est accessible à travers votre navigateur et il utilise une base de données de type MySQL pour sauvegarder les informations diverses."
 github: https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-icescrum
 siteofficiel: https://www.icescrum.com/
 sitesupport: https://www.icescrum.com/documentation/
@@ -26,5 +26,5 @@ install-url:
 comingsoon: false
 custom: false
 type: modele
-categories: ["admin"]
+categories: ["admin", "dev & test"]
 ---
