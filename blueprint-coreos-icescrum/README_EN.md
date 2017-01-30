@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 50 : iceScrum #
+# 5 Minutes Stacks, episode 53 : iceScrum #
 
-## Episode 50 : iceScrum
+## Episode 53 : iceScrum
 
 ![iceScrumlogo](img/icescrumlogo.png)
 
