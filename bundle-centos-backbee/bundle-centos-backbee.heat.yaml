@@ -1,0 +1,98 @@
+heat_template_version: 2013-05-23
+
+
+description: All-in-one Backbee stack
+
+
+parameters:
+  keypair_name:
+    default: cloudwatt
+    description: Paire de cles a injecter dans instance - Keypair to inject in instance
+    label: Paire de cles SSH - SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n2.cw.standard-1
+    description: Type instance a deployer - Flavor to use for the deployed instance
+    type: string
+    label: Type instance - Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-12
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-12
+
+
+
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      cidr: 10.0.3.0/24
+      allocation_pools:
+        - { start: 10.0.3.100, end: 10.0.3.199 }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: ded8c98b-50fb-4b48-ad88-9b81f0479002
+      flavor: { get_param: flavor_name }
+      networks:
+        - network: { get_resource: network }
+      security_groups:
+        - { get_resource: security_group }
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip_url:
+    description: Backbee URL
+    value:
+      str_replace:
+        template: http://$floating_ip/
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+
+  floating_ip_url_passowrd:
+    description: Backbee URL
+    value:
+      str_replace:
+        template: http://$floating_ip/password.txt
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
