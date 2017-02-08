@@ -31,7 +31,7 @@ parameters:
           - n1.cw.standard-16
   volume_size:
     default: 10
-    label: Backup Volume Size
+    label: Volume Size
     description: Size of Volume for Storage (Gigabytes)
     type: number
     constraints:
@@ -40,7 +40,7 @@ parameters:
 
   volume_type:
     default: standard
-    label: Backup Volume Type
+    label: Volume Type
     description: Performance flavor of the linked Volume for Storage
     type: string
     constraints:
