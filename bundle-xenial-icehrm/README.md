@@ -3,7 +3,6 @@
 ## Episode 52 : iceHRM
 
 
-WORK IN PROGRESS .....
 
 ![iceHRMlogo](img/icehrmlogo.png)
 
