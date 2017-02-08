@@ -32,7 +32,7 @@ parameters:
   volume_size:
     default: 10
     label: Backup Volume Size
-    description: Size of Volume for couchbase Storage (Gigabytes)
+    description: Size of Volume for Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 5, max: 10000 }
@@ -41,7 +41,7 @@ parameters:
   volume_type:
     default: standard
     label: Backup Volume Type
-    description: Performance flavor of the linked Volume for couchbase Storage
+    description: Performance flavor of the linked Volume for Storage
     type: string
     constraints:
       - allowed_values:
