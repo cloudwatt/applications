@@ -85,7 +85,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottan
 Les chemins intéressants sur votre machine :
 
 - `/home/www` : Répertoire d'installation de BackBee
-- [Site de l'editeur](http://developers.backbee.com)
+- [Site de l'editeur](https://backbee.com/)
+- [Site Dev](http://developers.backbee.com/)
 
 
 <a name="cli" />
