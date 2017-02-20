@@ -17,7 +17,6 @@ parameters:
     label: Type instance - Instance Type (Flavor)
     constraints:
       - allowed_values:
-          - t1.cw.tiny
           - s1.cw.small-1
           - n2.cw.standard-1
           - n2.cw.standard-2
