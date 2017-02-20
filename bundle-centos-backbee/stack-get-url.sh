@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [ ! "$1" ]; then
+  echo "Usage: ./stack-get-url.sh STACK_NAME"
+  exit 1
+fi
+
+floating_id=$(openstack stack resource list $1 | grep "OS::Neutron::FloatingIP" | awk '{print $4}')
+floating_ip=$(openstack floating ip show ${floating_id} | grep "floating_ip_address" | awk '{print $4}')
+
+echo $1 
+echo "Site : http://${floating_ip}"
+echo "password : http://${floating_ip}/password.txt"
