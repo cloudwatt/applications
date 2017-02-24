@@ -1,0 +1,168 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+heat_template_version: 2013-05-23
+
+description: Openstack Image Factory
+
+parameters:
+  openstack_username:
+    description: OS_Username for OpenStack
+    type: string
+
+  openstack_password:
+    description: OS_Password for OpenStack
+    type: string
+    hidden: true
+
+  tenant_name:
+    description: OS_TENANT_NAME for OpenStack
+    type: string
+
+  keypair_name:
+    description: Keypair to inject in instances
+    type: string
+
+  flavor_name:
+    default: n1.cw.highcpu-2
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    constraints:
+      - allowed_values:
+        - n1.cw.highcpu-2
+        - n1.cw.highcpu-4
+        - n1.cw.highcpu-8
+        - n1.cw.standard-1
+        - n1.cw.standard-2
+        - n1.cw.standard-4
+        - n1.cw.standard-8
+        - n1.cw.standard-12
+        - n1.cw.standard-16
+        - n1.cw.highmem-2
+        - n1.cw.highmem-4
+        - n1.cw.highmem-8
+        - n1.cw.highmem-12
+
+
+resources:
+  dmz:
+    type: OS::Neutron::Net
+
+  dmz_subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: dmz }
+      ip_version: 4
+      cidr: 10.42.42.0/24
+      allocation_pools:
+        - { start: 10.42.42.100, end: 10.42.42.199 }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : dmz_subnet }
+
+  sg:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  jenkins_profile:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+        write_files:
+          - path: /var/lib/jenkins/.profile
+            permissions: '0644'
+            owner: jenkins:jenkins
+            content:
+              str_replace:
+                template: |
+                  # Set with your own tenant values
+                  export OS_USERNAME=$OS_USERNAME$
+                  export OS_TENANT_NAME=$OS_TENANT_NAME$
+                  export OS_PASSWORD=$OS_PASSWORD$
+                  export OS_ENDPOINT_TYPE=publicURL
+                  export OS_INTERFACE=public
+                  export OS_IDENTITY_API_VERSION=2
+
+                  export OS_REGION_NAME="fr1"
+                  export OS_AUTH_URL="https://identity.fr1.cloudwatt.com/v2.0"
+
+                  export FACTORY_NETWORK_ID=$network_id$
+                  export FACTORY_SECURITY_GROUP_ID=$security_group_id$
+
+                  if [ ! -z "$OS_USERNAME" -a ! -z "$OS_PASSWORD" ]; then
+                    if [ ! -z "$OS_TENANT_NAME" ]; then
+                      export FACTORY_SECURITY_GROUP_NAME="$(neutron security-group-show $FACTORY_SECURITY_GROUP_ID | grep name | cut -d"|" -f3 | tr -d " ")"
+                      export OS_TENANT_ID="$(openstack project show $OS_TENANT_NAME$ | grep  "id" | awk '{print $4}')"
+                    fi
+                  fi
+                params:
+                  $network_id$: { get_resource: dmz }
+                  $security_group_id$: { get_resource: sg }
+                  $OS_USERNAME$: {get_param: openstack_username}
+                  $OS_PASSWORD$: {get_param: openstack_password}
+                  $OS_TENANT_NAME$: {get_param: tenant_name}
+
+  jenkins_restart:
+      type: OS::Heat::SoftwareConfig
+      properties:
+        config: |
+          #!/bin/bash
+          systemctl restart jenkins
+
+
+  init_server:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: { get_resource: jenkins_profile }
+      - config: { get_resource: jenkins_restart }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: dc32060d-dde7-4e6f-81eb-bd671f660d15
+      flavor: { get_param: flavor_name }
+      networks:
+        - { network: { get_resource: dmz } }
+      security_groups:
+        - { get_resource: sg }
+      user_data_format: RAW
+      user_data:
+        get_resource: init_server
+
+
+  factory_internet_surface:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: IP address of the deployed compute instance
+    value: { get_attr: [ip, floating_ip_address] }
