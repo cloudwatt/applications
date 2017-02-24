@@ -210,6 +210,7 @@ resources:
                              --volume /opt/openvpn/data:/etc/openvpn \
                              --privileged \
                              --publish 1194:1194/udp \
+                             --publish 943:943 \
                              --name openvpn cloudwattfr/openvpn
                     ExecStop=/usr/bin/docker rm -f openvpn
                 - name: mkuser.service
