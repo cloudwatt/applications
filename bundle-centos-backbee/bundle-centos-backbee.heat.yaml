@@ -6,7 +6,6 @@ description: All-in-one Backbee stack
 
 parameters:
   keypair_name:
-    default: cloudwatt
     description: Paire de cles a injecter dans instance - Keypair to inject in instance
     label: Paire de cles SSH - SSH Keypair
     type: string
