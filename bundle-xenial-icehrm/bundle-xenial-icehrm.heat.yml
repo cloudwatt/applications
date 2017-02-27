@@ -94,7 +94,7 @@ resources:
     properties:
       count: 1
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1é/AUTH_7da34701e2fe488683d8a8382ee6f454/cinder/cinder.heat.yaml
         properties:
           server_id: { get_resource: inst2 }
 
