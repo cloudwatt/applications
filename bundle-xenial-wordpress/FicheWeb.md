@@ -3,10 +3,10 @@ layout: applications-fiche
 pictonic: true
 title: "Wordpress"
 url: wordpress.html
-date: 2017-02-20 00:00:00
-date-creation: "20 Février 2017"
-date-maj: "20 Février 2017"
-description: "Dans la galaxie des CMS Open-Source, WordPress figure en bonne place en termes de communauté, de fonctionnalités et d'adoption. La société Automattic, qui développe et distribue WordPress, fourni une offre SaaS permettant de créer son blog en quelques minutes. Pour autant, ceux qui en ont fait l'expérience savent qu'on se retrouve rapidement limité par le cadre d'hébergement de wordpress.com. Aujourd'hui nous mettons à votre disposition de quoi démarrer votre instance WordPress en quelques minutes et rester maître à bord pour la faire vivre. La base de déploiement est une instance unique Ubuntu Xenial pré-provisionnée avec les serveurs Apache et Mariadb."
+date: 2017-03-21 00:00:00
+date-creation: "21 Mars 2017"
+date-maj: "21 Mars 2017"
+description: "Dans la galaxie des CMS Open-Source, WordPress figure en bonne place en termes de communauté, de fonctionnalités et d'adoption. La société Automattic, qui développe et distribue WordPress, fournit une offre SaaS permettant de créer son blog en quelques minutes. Pour autant, ceux qui en ont fait l'expérience savent qu'on se retrouve rapidement limité par le cadre d'hébergement de wordpress.com. Aujourd'hui nous mettons à votre disposition de quoi démarrer votre instance WordPress en quelques minutes et rester maître à bord pour la faire vivre. La base de déploiement est une instance unique Ubuntu Xenial pré-provisionnée avec les serveurs Apache et Mariadb."
 github: https://github.com/cloudwatt/applications/tree/master/bundle-xenial-wordpress
 siteofficiel: https://wordpress.com/
 sitesupport: https://wpfr.net/support/
@@ -30,6 +30,6 @@ blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-cinquant
 install-url:
 comingsoon: false
 custom: false
-type: modele
+type: application
 categories: ["siteweb"]
 ---
