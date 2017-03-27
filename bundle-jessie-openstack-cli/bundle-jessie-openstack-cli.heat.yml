@@ -121,7 +121,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 185e1975-c9c5-4358-909e-5e329808902e
+      image: 	Debian Jessie
       flavor: { get_param: flavor_name }
       networks:
         - port: { get_resource: ports }
