@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 56 : LAMP #
+# 5 Minutes Stacks, épisode 57 : LAMP #
 
-## Episode 56 : Linux-Apache-MySQL-PHP7
+## Episode 57 : Linux-Apache-MySQL-PHP7
 
 ![logo](img/lamplogo.gif)
 
