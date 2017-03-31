@@ -24,7 +24,7 @@ The deployement base is an Ubuntu xenial instance. The Apache and MySQL servers 
 
  ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Wordpress!.
 
-### All of this is fine, but you do not have a way to run the stack thru the console ?
+### Don't you have a way to run the stack thru the console ?
 
 Yes ! Using the console, you can deploy a LAMP server:
 
