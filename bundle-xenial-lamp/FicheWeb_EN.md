@@ -21,7 +21,7 @@ composants:
    version: "PHP 7.0.15"
 prix: "FREE for software + Cloudwatt usage fees"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-fifty-six-lamp.html
+blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-fifty-sept-lamp.html
 install-url: 
 comingsoon: false
 custom: false
