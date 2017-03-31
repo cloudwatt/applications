@@ -24,7 +24,7 @@ La base de déploiement est une instance Ubuntu Xenial. Les serveurs Apache et M
 
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
 
-## C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+## Vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
 
