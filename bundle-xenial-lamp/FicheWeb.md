@@ -24,7 +24,7 @@ solutions-list:
  - text: "Hébergement d'applications métiers"
 prix: "Gratuit pour l'application + consommation à l'usage"
 logo: 
-blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-cinquante-six-lamp.html
+blogpost-url: http://dev.cloudwatt.com/fr/blog/5-minutes-stacks-episode-cinquante-sept-lamp.html
 install-url:
 comingsoon: false
 custom: false
