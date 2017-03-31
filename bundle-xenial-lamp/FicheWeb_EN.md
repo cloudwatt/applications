@@ -1,8 +1,8 @@
 ---
 layout: applications-fiche
 pictonic: true
-title: "WordPress"
-url: wordpress.html
+title: "Lamp 2"
+url: lamp2.html
 date: 2017-03-23 00:00:00
 date-creation: "March 23, 2017"
 date-maj: "March 23, 2017"
