@@ -25,6 +25,6 @@ blogpost-url: http://dev.cloudwatt.com/en/blog/5-minutes-stacks-episode-fifty-se
 install-url: 
 comingsoon: false
 custom: false
-type: modele
+type: application
 categories: ["devtest"]
 ---
