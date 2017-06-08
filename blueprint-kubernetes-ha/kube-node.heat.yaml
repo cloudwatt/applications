@@ -67,7 +67,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: CoreOS Stable 1010.6
+      image: "CoreOS Stable 1353.7"
       flavor: { get_param: flavor_name }
       user_data_format: RAW
       networks:
@@ -98,6 +98,7 @@ resources:
                   echo WEAVE_PEERS=\"$peer$\" > /etc/weave.env
                   echo WEAVEPROXY_ARGS=\"--rewrite-inspect\" >> /etc/weave.env
                   echo WEAVE_PASSWORD=\"$token$\" >> /etc/weave.env
+                  echo CHECKPOINT_DISABLE=1 >> /etc/weave.env
               - path: /opt/pidalio-init.sh
                 permissions: 0700
                 owner: "root:root"
@@ -120,7 +121,9 @@ resources:
                   NODE_IP=$private_ipv4$
                   NODE_PUBLIC_IP=$public_ipv4$
                   NODE_TYPE=$os_region$
+                  NODE_NETWORK=master
                   NODE_STORAGE=false
+                  STACK_NAME=$stack_name$
                   CEPH=$ceph$
                   CEPH_DISK=True
                   CEPH_DISK_DEVICE=/dev/vdb
@@ -135,7 +138,7 @@ resources:
                   then
                     echo "Pidalio already checkout"
                   else
-                    git clone https://github.com/juliend88/pidaliokube.git /opt/pidalio
+                    git clone -b v3.5 https://github.com/juliend88/pidaliokube.git /opt/pidalio
                   fi
                   /opt/pidalio/init.sh
               - path: /opt/pidalio-units.sh
@@ -249,7 +252,7 @@ resources:
                     ExecStartPre=/usr/bin/curl \
                       --silent \
                       --location \
-                      git.io/weave \
+                      https://github.com/weaveworks/weave/releases/download/v1.8.2/weave \
                       --output /opt/bin/weave
                     ExecStartPre=/usr/bin/chmod +x /opt/bin/weave
                     ExecStart=/opt/bin/weave setup
