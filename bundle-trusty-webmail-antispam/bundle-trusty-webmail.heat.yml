@@ -99,6 +99,9 @@ resources:
                   mkdir /etc/ansible
                   echo "[local]" >> /etc/ansible/hosts
                   echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                  
+                  sed -i 's/library/#library/g' /etc/ansible/ansible.cfg
+                  
                   cat << EOF > /etc/ansible/mail-vars.yml
                   ---
                   mysql_mailuser_password: '$mysql_password$'
